@@ -1,0 +1,32 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /invitations/{invitationId} {
+      // Public read only once published. Pending-payment drafts are never
+      // readable by clients.
+      allow get: if resource.data.status == 'published';
+      allow list: if false;
+
+      // All writes (drafts, publish, edits) go through the Admin SDK in
+      // server route handlers, which bypass these rules entirely. Direct
+      // client writes are always denied.
+      allow create, update, delete: if false;
+
+      match /rsvps/{rsvpId} {
+        // RSVPs are readable alongside a published invitation (e.g. for a
+        // guest list view) but only ever written via the Admin SDK so we can
+        // rate-limit and validate server-side.
+        allow get, list: if get(/databases/$(database)/documents/invitations/$(invitationId)).data.status == 'published';
+        allow create, update, delete: if false;
+      }
+
+      // editToken / Razorpay payment ids — never exposed to clients, even
+      // for a published invitation. Admin SDK only.
+      match /private/{docId} {
+        allow read, write: if false;
+      }
+    }
+  }
+}
