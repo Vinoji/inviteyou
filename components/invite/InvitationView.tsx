@@ -15,6 +15,7 @@ import EnvelopeIntro from "./EnvelopeIntro";
 import AudioToggle from "./AudioToggle";
 import ThingsToKnow from "./ThingsToKnow";
 import Reveal from "./Reveal";
+import ScrollScene from "./ScrollScene";
 
 /**
  * Composes every section of an invitation. Shared between the editor's live
@@ -82,103 +83,121 @@ export default function InvitationView({
         coverPhoto={data.photos[0]}
       />
       {sections.story && (
-        <Reveal>
-          <Story
-            story={data.story}
-            accentColor={data.accentColor}
-            fontPairing={data.fontPairing}
-            templateId={data.templateId}
-            title={category.storyTitle}
-          />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="story">
+          <Reveal>
+            <Story
+              story={data.story}
+              accentColor={data.accentColor}
+              fontPairing={data.fontPairing}
+              templateId={data.templateId}
+              title={category.storyTitle}
+            />
+          </Reveal>
+        </ScrollScene>
       )}
       {category.familyTitle && sections.family && (
-        <Reveal>
-          <Family
-            groomName={data.groomName}
-            brideName={data.brideName}
-            groomParents={data.groomParents}
-            brideParents={data.brideParents}
-            accentColor={data.accentColor}
-            fontPairing={data.fontPairing}
-            templateId={data.templateId}
-            title={category.familyTitle}
-          />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="family">
+          <Reveal delay={0.03}>
+            <Family
+              groomName={data.groomName}
+              brideName={data.brideName}
+              groomParents={data.groomParents}
+              brideParents={data.brideParents}
+              accentColor={data.accentColor}
+              fontPairing={data.fontPairing}
+              templateId={data.templateId}
+              title={category.familyTitle}
+            />
+          </Reveal>
+        </ScrollScene>
       )}
       {sections.schedule && (
-        <Reveal>
-          <Schedule
-            ceremonyTime={data.ceremonyTime}
-            ceremonyVenue={data.ceremonyVenue}
-            receptionTime={data.receptionTime}
-            receptionVenue={data.receptionVenue}
-            accentColor={data.accentColor}
-            fontPairing={data.fontPairing}
-            templateId={data.templateId}
-            eventALabel={category.eventALabel}
-            eventBLabel={category.eventBLabel || "Reception"}
-          />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="schedule">
+          <Reveal delay={0.06}>
+            <Schedule
+              ceremonyTime={data.ceremonyTime}
+              ceremonyVenue={data.ceremonyVenue}
+              receptionTime={data.receptionTime}
+              receptionVenue={data.receptionVenue}
+              accentColor={data.accentColor}
+              fontPairing={data.fontPairing}
+              templateId={data.templateId}
+              eventALabel={category.eventALabel}
+              eventBLabel={category.eventBLabel || "Reception"}
+            />
+          </Reveal>
+        </ScrollScene>
       )}
       {sections.gallery && (
-        <Reveal>
-          <Gallery
-            photos={data.photos}
-            accentColor={data.accentColor}
-            templateId={data.templateId}
-            coupleLabel={coupleLabel}
-          />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="gallery">
+          <Reveal delay={0.09}>
+            <Gallery
+              photos={data.photos}
+              accentColor={data.accentColor}
+              templateId={data.templateId}
+              coupleLabel={coupleLabel}
+            />
+          </Reveal>
+        </ScrollScene>
       )}
       {sections.guestPhotos && (
-        <Reveal>
-          <GuestGallery
-            slug={slug}
-            photos={guestPhotos}
-            accentColor={data.accentColor}
-            fontPairing={data.fontPairing}
-            templateId={data.templateId}
-            mode={mode}
-          />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="guestPhotos">
+          <Reveal delay={0.04}>
+            <GuestGallery
+              slug={slug}
+              photos={guestPhotos}
+              accentColor={data.accentColor}
+              fontPairing={data.fontPairing}
+              templateId={data.templateId}
+              mode={mode}
+            />
+          </Reveal>
+        </ScrollScene>
       )}
       {sections.faq && (
-        <Reveal>
-          <ThingsToKnow
-            faq={data.faq ?? []}
-            accentColor={data.accentColor}
-            fontPairing={data.fontPairing}
-            templateId={data.templateId}
-          />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="faq">
+          <Reveal delay={0.07}>
+            <ThingsToKnow
+              faq={data.faq ?? []}
+              accentColor={data.accentColor}
+              fontPairing={data.fontPairing}
+              templateId={data.templateId}
+            />
+          </Reveal>
+        </ScrollScene>
       )}
       {sections.rsvp && (
-        <Reveal>
-          <RsvpForm
-            slug={slug}
-            accentColor={data.accentColor}
-            templateId={data.templateId}
-            brideName={data.brideName}
-            groomName={data.groomName}
-            mode={mode}
-          />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="rsvp">
+          <Reveal delay={0.08}>
+            <RsvpForm
+              slug={slug}
+              accentColor={data.accentColor}
+              templateId={data.templateId}
+              brideName={data.brideName}
+              groomName={data.groomName}
+              mode={mode}
+            />
+          </Reveal>
+        </ScrollScene>
       )}
       {sections.rsvp && mode === "public" && rsvpMessages.length > 0 && (
-        <Reveal>
-          <BlessingsWall
-            messages={rsvpMessages}
-            accentColor={data.accentColor}
-            fontPairing={data.fontPairing}
-            templateId={data.templateId}
-          />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="blessings">
+          <Reveal delay={0.06}>
+            <BlessingsWall
+              messages={rsvpMessages}
+              accentColor={data.accentColor}
+              fontPairing={data.fontPairing}
+              templateId={data.templateId}
+            />
+          </Reveal>
+        </ScrollScene>
       )}
       {mode === "public" && (
-        <Reveal>
-          <ShareBox slug={slug} occasionTitle={occasionTitle} accentColor={data.accentColor} />
-        </Reveal>
+        <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="share">
+          <Reveal delay={0.04}>
+            <ShareBox slug={slug} occasionTitle={occasionTitle} accentColor={data.accentColor} />
+          </Reveal>
+        </ScrollScene>
       )}
 
       <footer className="px-6 pb-10 text-center text-xs text-neutral-400">

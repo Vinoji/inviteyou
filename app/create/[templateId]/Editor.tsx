@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Monitor, Plus, Smartphone, Tablet, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Script from "next/script";
@@ -82,6 +82,7 @@ export default function Editor({
   const [publishing, setPublishing] = useState(false);
   const [publishError, setPublishError] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
+  const [previewDevice, setPreviewDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [razorpayReady, setRazorpayReady] = useState(false);
 
   useEffect(() => {
@@ -735,11 +736,50 @@ export default function Editor({
 
       {/* Live preview panel */}
       <div
-        className={`flex-1 overflow-y-auto bg-neutral-100 ${
-          mobileView === "edit" ? "hidden lg:block" : "block"
+        className={`flex-1 flex-col overflow-hidden bg-neutral-100 ${
+          mobileView === "edit" ? "hidden lg:flex" : "flex"
         }`}
       >
-        <InvitationView data={data} slug={editSlug ?? "preview"} mode="preview" />
+        <div className="hidden items-center justify-between border-b border-neutral-200 bg-white/90 px-4 py-2 backdrop-blur lg:flex">
+          <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
+            Preview
+          </p>
+          <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-1">
+            {[
+              { id: "desktop", label: "Desktop", icon: Monitor },
+              { id: "tablet", label: "Tablet", icon: Tablet },
+              { id: "mobile", label: "Mobile", icon: Smartphone },
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setPreviewDevice(id as typeof previewDevice)}
+                className={`inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition ${
+                  previewDevice === id
+                    ? "bg-white text-neutral-900 shadow-sm"
+                    : "text-neutral-500 hover:text-neutral-900"
+                }`}
+                aria-pressed={previewDevice === id}
+              >
+                <Icon size={14} aria-hidden />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex-1 overflow-y-auto">
+          <div
+            className={`mx-auto min-h-full bg-white shadow-sm transition-[max-width] duration-300 ${
+              previewDevice === "mobile"
+                ? "max-w-[390px]"
+                : previewDevice === "tablet"
+                  ? "max-w-[768px]"
+                  : "max-w-none"
+            }`}
+          >
+            <InvitationView data={data} slug={editSlug ?? "preview"} mode="preview" />
+          </div>
+        </div>
       </div>
 
       {/* Mobile edit/preview toggle */}
