@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import useSafeReducedMotion from "../useSafeReducedMotion";
 
 /**
  * A soft radial glow that drifts slowly across the hero — the kind of
@@ -11,7 +12,7 @@ import { motion, useReducedMotion } from "framer-motion";
  * stay understated — this gives them *some* motion without clutter.
  */
 export default function Spotlight({ accentColor }: { accentColor: string }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useSafeReducedMotion();
 
   if (reduceMotion) return null;
 

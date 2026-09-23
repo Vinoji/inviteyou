@@ -17,6 +17,20 @@ service firebase.storage {
       allow delete: if false;
     }
 
+    // Guest-submitted photos, uploaded straight from the public invite
+    // page. Unlike the path above, this folder is reachable by anyone with
+    // the (intentionally public) invite link — that's the point, guests
+    // are meant to add photos here. The per-invitation photo count cap and
+    // rate limiting live in the Admin SDK route that registers each
+    // upload in Firestore (POST /api/guest-photos/[slug]), not here —
+    // Storage rules alone can't count existing files or rate-limit.
+    match /invitations/{invitationId}/guest-photos/{fileName} {
+      allow read: if true;
+      allow write: if request.resource.contentType.matches('image/.*')
+                   && request.resource.size < 8 * 1024 * 1024;
+      allow delete: if false;
+    }
+
     match /{allPaths=**} {
       allow read, write: if false;
     }

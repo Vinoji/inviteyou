@@ -343,9 +343,20 @@ export default function Editor({
               {isEditMode ? "Edit your invitation" : "Create your invitation"}
             </h1>
           </div>
-          <Link href="/" className="text-xs text-neutral-400 hover:text-neutral-700">
-            Change template
-          </Link>
+          <div className="flex shrink-0 items-center gap-3">
+            {isEditMode && editSlug && editToken && (
+              <Link
+                href={`/rsvps/${editSlug}?token=${editToken}`}
+                className="text-xs font-semibold hover:underline"
+                style={{ color: data.accentColor }}
+              >
+                View RSVPs
+              </Link>
+            )}
+            <Link href="/" className="text-xs text-neutral-400 hover:text-neutral-700">
+              Change template
+            </Link>
+          </div>
         </header>
 
         {loadingExisting ? (
@@ -544,6 +555,20 @@ export default function Editor({
               <p className="text-xs text-neutral-400">
                 The first photo always becomes your hero background, even if
                 the gallery below is hidden.
+              </p>
+            </FormSection>
+
+            <FormSection
+              title="Guest photos"
+              toggle={{
+                enabled: data.sections.guestPhotos,
+                onChange: (v) => updateSection("guestPhotos", v),
+              }}
+            >
+              <p className="text-xs text-neutral-400">
+                Lets guests upload their own photos from the published page —
+                a shared carousel everyone can add to and see. Turn this off
+                if you&apos;d rather keep photos to just what you upload above.
               </p>
             </FormSection>
 

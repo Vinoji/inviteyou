@@ -19,6 +19,7 @@ export interface SectionToggles {
   gallery: boolean;
   rsvp: boolean;
   faq: boolean;
+  guestPhotos: boolean;
 }
 
 export const DEFAULT_SECTIONS: SectionToggles = {
@@ -28,6 +29,7 @@ export const DEFAULT_SECTIONS: SectionToggles = {
   gallery: true,
   rsvp: true,
   faq: true,
+  guestPhotos: true,
 };
 
 export interface FaqItem {
@@ -89,6 +91,13 @@ export interface RsvpEntry {
   attending: boolean;
   side?: AttendingSide;
   message?: string;
+  createdAt: number;
+}
+
+/** invitations/{slug}/guestPhotos/{autoId} — photos guests upload themselves. */
+export interface GuestPhoto {
+  uploaderName: string;
+  url: string;
   createdAt: number;
 }
 

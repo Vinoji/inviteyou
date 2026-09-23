@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import useSafeReducedMotion from "./useSafeReducedMotion";
 import { getFontPairing } from "@/lib/fontPairings";
 import { getCategory } from "@/lib/categories";
 import { getTemplate } from "@/lib/templates";
@@ -76,7 +77,7 @@ export default function EnvelopeIntro({
   const font = getFontPairing(fontPairing);
   const theme = getThemeClasses(templateId);
   const category = getCategory(getTemplate(templateId).category);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useSafeReducedMotion();
 
   useEffect(() => {
     // Deferred into a callback (rather than called synchronously in the

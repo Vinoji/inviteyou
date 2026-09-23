@@ -42,10 +42,28 @@ export function sanitizeSections(v: unknown): SectionToggles {
   // in the spread would otherwise overwrite the default with `undefined`
   // rather than being skipped.
   const partial: Partial<SectionToggles> = {};
-  for (const key of ["story", "family", "schedule", "gallery", "rsvp", "faq"] as const) {
+  for (const key of ["story", "family", "schedule", "gallery", "rsvp", "faq", "guestPhotos"] as const) {
     if (typeof obj[key] === "boolean") partial[key] = obj[key] as boolean;
   }
   return withDefaultSections(partial);
+}
+
+export function sanitizeUploaderName(v: unknown): string {
+  return typeof v === "string" ? v.trim().slice(0, 100) : "";
+}
+
+/** A Firebase Storage download URL a guest just uploaded to. Restricted to
+ * that host specifically (not just "any string") so this route can't be
+ * used to register arbitrary external image URLs into the gallery. */
+export function sanitizeGuestPhotoUrl(v: unknown): string {
+  if (typeof v !== "string" || v.length > 1000) return "";
+  try {
+    const parsed = new URL(v);
+    if (parsed.hostname !== "firebasestorage.googleapis.com") return "";
+    return v;
+  } catch {
+    return "";
+  }
 }
 
 export function sanitizeFaq(v: unknown): FaqItem[] {

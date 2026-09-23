@@ -8,6 +8,9 @@ import {
   Lato,
   Cinzel,
   EB_Garamond,
+  Kavivanar,
+  Meera_Inimai,
+  Catamaran,
 } from "next/font/google";
 import "./globals.css";
 
@@ -51,6 +54,24 @@ const ebGaramond = EB_Garamond({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
 });
+// Tamil-script fonts — none of the Latin fonts above have Tamil glyphs at
+// all, so Tamil text typed into the editor would silently fall back to a
+// default system font without these.
+const kavivanar = Kavivanar({
+  variable: "--font-kavivanar",
+  subsets: ["tamil"],
+  weight: ["400"],
+});
+const meeraInimai = Meera_Inimai({
+  variable: "--font-meera-inimai",
+  subsets: ["tamil"],
+  weight: ["400"],
+});
+const catamaran = Catamaran({
+  variable: "--font-catamaran",
+  subsets: ["tamil", "latin"],
+  weight: ["400", "500", "600"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
@@ -71,6 +92,9 @@ const fontVariables = [
   lato.variable,
   cinzel.variable,
   ebGaramond.variable,
+  kavivanar.variable,
+  meeraInimai.variable,
+  catamaran.variable,
 ].join(" ");
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

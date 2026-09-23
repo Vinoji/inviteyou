@@ -1,7 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import { Heart } from "lucide-react";
-import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
+import useSafeReducedMotion from "./useSafeReducedMotion";
 import { getFontPairing } from "@/lib/fontPairings";
 import { getCategory } from "@/lib/categories";
 import { getTemplate } from "@/lib/templates";
@@ -11,6 +13,10 @@ import HeroOrnaments from "./decor/HeroOrnaments";
 import ParticlesLoader from "./decor/ParticlesLoader";
 import Spotlight from "./decor/Spotlight";
 import RingSceneLoader from "./decor/RingSceneLoader";
+import Moon from "./decor/Moon";
+import Clouds from "./decor/Clouds";
+import HillSilhouette from "./decor/HillSilhouette";
+import ParallaxLayer from "./ParallaxLayer";
 import type { ParticleVariant } from "./decor/Particles";
 
 // Only templates whose whole identity isn't "restraint" get ambient
@@ -57,7 +63,8 @@ export default function Hero({
   const theme = getThemeClasses(templateId);
   const category = getCategory(getTemplate(templateId).category);
   const variant = particleVariant(templateId);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useSafeReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
   const dateLabel = weddingDate
     ? new Date(weddingDate).toLocaleDateString("en-IN", {
         weekday: "long",
@@ -68,23 +75,33 @@ export default function Hero({
     : "Date to be announced";
 
   return (
-    <section className="relative flex min-h-[85vh] w-full items-end overflow-hidden sm:min-h-[90vh]">
-      {coverPhoto ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={coverPhoto}
-          alt={category.singlePerson ? brideName : `${brideName} & ${groomName}`}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
-      ) : (
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(160deg, ${accentColor}33, ${accentColor}11)`,
-          }}
-        />
-      )}
+    <section
+      ref={heroRef}
+      className="relative flex min-h-[85vh] w-full items-end overflow-hidden sm:min-h-[90vh]"
+    >
+      <ParallaxLayer speed={0.12} className="absolute -inset-y-8 inset-x-0">
+        {coverPhoto ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={coverPhoto}
+            alt={category.singlePerson ? brideName : `${brideName} & ${groomName}`}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div
+            className="h-full w-full"
+            style={{
+              background: `linear-gradient(160deg, ${accentColor}33, ${accentColor}11)`,
+            }}
+          />
+        )}
+      </ParallaxLayer>
       <div className={`absolute inset-0 ${theme.heroOverlay}`} />
+      {templateId === "proposal-starlit" && <HillSilhouette />}
+      {(templateId === "proposal-starlit" || templateId === "beach-boho") && <Clouds />}
+      {templateId === "proposal-starlit" && (
+        <Moon containerRef={heroRef} className="absolute top-10 right-8 sm:top-14 sm:right-14" />
+      )}
       <HeroOrnaments templateId={templateId} hasPhoto={Boolean(coverPhoto)} />
       {variant && <ParticlesLoader variant={variant} accentColor={accentColor} />}
       {!variant && <Spotlight accentColor={accentColor} />}

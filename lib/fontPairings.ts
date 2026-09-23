@@ -30,6 +30,20 @@ export const FONT_PAIRINGS: FontPairing[] = [
     headingVar: "var(--font-cinzel)",
     bodyVar: "var(--font-ebgaramond)",
   },
+  {
+    // Named in Tamil script itself so the picker shows off the actual
+    // glyphs, not a Latin fallback rendering of an English label.
+    id: "tamil-calligraphy",
+    name: "தமிழ் எழில் (Tamil Calligraphy)",
+    headingVar: "var(--font-kavivanar)",
+    bodyVar: "var(--font-catamaran)",
+  },
+  {
+    id: "tamil-classic",
+    name: "தமிழ் பாரம்பரியம் (Tamil Classic)",
+    headingVar: "var(--font-meera-inimai)",
+    bodyVar: "var(--font-catamaran)",
+  },
 ];
 
 export function getFontPairing(id: string): FontPairing {

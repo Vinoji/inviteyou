@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, PartyPopper, X } from "lucide-react";
+import Link from "next/link";
+import { Check, Copy, PartyPopper, Users, X } from "lucide-react";
 
 /**
  * Shown once, right after a successful publish. The edit link (with its
@@ -48,6 +49,13 @@ export default function WelcomeBanner({
           only way to make changes later.
         </p>
         <div className="flex shrink-0 items-center gap-2">
+          <Link
+            href={`/rsvps/${slug}?token=${editToken}`}
+            className="inline-flex items-center gap-1.5 rounded-md border border-amber-300 px-3 py-1.5 text-xs font-semibold text-amber-800"
+          >
+            <Users size={13} />
+            View RSVPs
+          </Link>
           <button
             onClick={copyEditLink}
             style={{ backgroundColor: accentColor }}

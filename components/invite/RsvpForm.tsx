@@ -2,19 +2,26 @@
 
 import { useState, type FormEvent } from "react";
 import { PartyPopper } from "lucide-react";
+import { getCategory } from "@/lib/categories";
+import { getTemplate } from "@/lib/templates";
 import SectionDivider from "./SectionDivider";
 
 export default function RsvpForm({
   slug,
   accentColor,
   templateId,
+  brideName,
+  groomName,
   mode = "public",
 }: {
   slug: string;
   accentColor: string;
   templateId: string;
+  brideName: string;
+  groomName: string;
   mode?: "public" | "preview";
 }) {
+  const category = getCategory(getTemplate(templateId).category);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -136,22 +143,24 @@ export default function RsvpForm({
               </select>
             </div>
           </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium text-neutral-700">
-              Whose side are you on? (optional)
-            </label>
-            <select
-              value={form.side}
-              onChange={(e) => setForm((f) => ({ ...f, side: e.target.value }))}
-              className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
-              disabled={mode === "preview"}
-            >
-              <option value="">Prefer not to say</option>
-              <option value="groom">Groom&apos;s side</option>
-              <option value="bride">Bride&apos;s side</option>
-              <option value="friend">Friend of both</option>
-            </select>
-          </div>
+          {!category.singlePerson && (
+            <div>
+              <label className="mb-1 block text-sm font-medium text-neutral-700">
+                Whose side are you on? (optional)
+              </label>
+              <select
+                value={form.side}
+                onChange={(e) => setForm((f) => ({ ...f, side: e.target.value }))}
+                className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
+                disabled={mode === "preview"}
+              >
+                <option value="">Prefer not to say</option>
+                <option value="bride">{brideName || "Their"}&apos;s side</option>
+                <option value="groom">{groomName || "Their"}&apos;s side</option>
+                <option value="friend">Friend of both</option>
+              </select>
+            </div>
+          )}
           <div>
             <label className="mb-1 block text-sm font-medium text-neutral-700">
               Message (optional)

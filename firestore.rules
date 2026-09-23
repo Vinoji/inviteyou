@@ -22,6 +22,16 @@ service cloud.firestore {
         allow create, update, delete: if false;
       }
 
+      match /guestPhotos/{photoId} {
+        // Same pattern as rsvps: the actual image bytes go straight to
+        // Storage from the client (storage.rules validates content-type/
+        // size), but registering that upload in Firestore — where it can
+        // be rate-limited and count-capped — always goes through the
+        // Admin SDK.
+        allow get, list: if get(/databases/$(database)/documents/invitations/$(invitationId)).data.status == 'published';
+        allow create, update, delete: if false;
+      }
+
       // editToken / Razorpay payment ids — never exposed to clients, even
       // for a published invitation. Admin SDK only.
       match /private/{docId} {

@@ -1,4 +1,4 @@
-import { withDefaultSections, type InvitationData, type RsvpEntry } from "@/lib/types";
+import { withDefaultSections, type InvitationData, type RsvpEntry, type GuestPhoto } from "@/lib/types";
 import { getThemeClasses } from "./theme";
 import { getTemplate } from "@/lib/templates";
 import { getCategory, formatOccasionTitle } from "@/lib/categories";
@@ -7,6 +7,7 @@ import Story from "./Story";
 import Family from "./Family";
 import Schedule from "./Schedule";
 import Gallery from "./Gallery";
+import GuestGallery from "./GuestGallery";
 import RsvpForm from "./RsvpForm";
 import BlessingsWall from "./BlessingsWall";
 import ShareBox from "./ShareBox";
@@ -31,12 +32,15 @@ export default function InvitationView({
   slug,
   mode,
   rsvpMessages = [],
+  guestPhotos = [],
 }: {
   data: InvitationData;
   slug: string;
   mode: "preview" | "public";
   /** Accepted RSVPs with a message, newest first — public mode only. */
   rsvpMessages?: RsvpEntry[];
+  /** Guest-uploaded photos, newest first — public mode only. */
+  guestPhotos?: GuestPhoto[];
 }) {
   const theme = getThemeClasses(data.templateId);
   const category = getCategory(getTemplate(data.templateId).category);
@@ -127,6 +131,18 @@ export default function InvitationView({
           />
         </Reveal>
       )}
+      {sections.guestPhotos && (
+        <Reveal>
+          <GuestGallery
+            slug={slug}
+            photos={guestPhotos}
+            accentColor={data.accentColor}
+            fontPairing={data.fontPairing}
+            templateId={data.templateId}
+            mode={mode}
+          />
+        </Reveal>
+      )}
       {sections.faq && (
         <Reveal>
           <ThingsToKnow
@@ -143,6 +159,8 @@ export default function InvitationView({
             slug={slug}
             accentColor={data.accentColor}
             templateId={data.templateId}
+            brideName={data.brideName}
+            groomName={data.groomName}
             mode={mode}
           />
         </Reveal>

@@ -4,7 +4,7 @@ import { getAdminDb } from "@/lib/firebase-admin";
 import InvitationView from "@/components/invite/InvitationView";
 import ViewTracker from "@/components/invite/ViewTracker";
 import WelcomeBanner from "@/components/invite/WelcomeBanner";
-import type { InvitationData, RsvpEntry } from "@/lib/types";
+import type { InvitationData, RsvpEntry, GuestPhoto } from "@/lib/types";
 import { getTemplate } from "@/lib/templates";
 import { getCategory, formatOccasionTitle } from "@/lib/categories";
 
@@ -37,6 +37,19 @@ async function getBlessings(slug: string): Promise<RsvpEntry[]> {
     .map((d) => d.data() as RsvpEntry)
     .filter((r) => r.attending && r.message && r.message.trim().length > 0)
     .slice(0, 12);
+}
+
+/** Newest first, capped — this is a display list, not an archive. */
+async function getGuestPhotos(slug: string): Promise<GuestPhoto[]> {
+  const db = getAdminDb();
+  const snap = await db
+    .collection("invitations")
+    .doc(slug)
+    .collection("guestPhotos")
+    .orderBy("createdAt", "desc")
+    .limit(40)
+    .get();
+  return snap.docs.map((d) => d.data() as GuestPhoto);
 }
 
 export async function generateMetadata({
@@ -76,7 +89,10 @@ export default async function InvitePage({
   const { welcome, editToken, templateId } = await searchParams;
   const data = await getInvitation(slug);
   if (!data) notFound();
-  const rsvpMessages = await getBlessings(slug);
+  const [rsvpMessages, guestPhotos] = await Promise.all([
+    getBlessings(slug),
+    getGuestPhotos(slug),
+  ]);
 
   return (
     <>
@@ -89,7 +105,13 @@ export default async function InvitePage({
         />
       )}
       <ViewTracker slug={slug} />
-      <InvitationView data={data} slug={slug} mode="public" rsvpMessages={rsvpMessages} />
+      <InvitationView
+        data={data}
+        slug={slug}
+        mode="public"
+        rsvpMessages={rsvpMessages}
+        guestPhotos={guestPhotos}
+      />
     </>
   );
 }

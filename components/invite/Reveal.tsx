@@ -1,14 +1,15 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { ReactNode } from "react";
+import useSafeReducedMotion from "./useSafeReducedMotion";
 
 /**
  * Fades + slides a section up into place the first time it scrolls into
  * view, then leaves it alone (no re-hiding on scroll back up — that reads
  * as flickery, not elegant). Built on Framer Motion's `whileInView` so the
  * animation uses real spring physics instead of a CSS transition, and
- * respects prefers-reduced-motion via `useReducedMotion`.
+ * respects prefers-reduced-motion via `useSafeReducedMotion`.
  */
 export default function Reveal({
   children,
@@ -19,7 +20,7 @@ export default function Reveal({
   className?: string;
   delay?: number;
 }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useSafeReducedMotion();
 
   if (reduceMotion) {
     return <div className={className}>{children}</div>;

@@ -1,0 +1,11 @@
+import { chromium } from "playwright";
+const browser = await chromium.launch();
+const context = await browser.newContext({ reducedMotion: "reduce" });
+const page = await context.newPage();
+const errors = [];
+page.on("pageerror", (err) => errors.push(err.message.split("\n")[0]));
+await page.goto("http://localhost:3000/create/minimal-modern", { waitUntil: "networkidle", timeout: 30000 });
+await page.waitForTimeout(600);
+console.log("minimal-modern errors:", errors.length, errors);
+await context.close();
+await browser.close();
