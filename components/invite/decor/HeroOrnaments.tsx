@@ -3,6 +3,10 @@ import PaisleyCorner from "./PaisleyCorner";
 import FloralSprig from "./FloralSprig";
 import HairlineDiamond from "./HairlineDiamond";
 import PalmFrond from "./PalmFrond";
+import RingMotif from "./RingMotif";
+import HouseMotif from "./HouseMotif";
+import BalloonMotif from "./BalloonMotif";
+import { Heart } from "lucide-react";
 
 /**
  * Decorative overlay for the hero section, distinct per template. Purely
@@ -162,6 +166,112 @@ export default function HeroOrnaments({
             />
           </>
         )}
+      </div>
+    );
+  }
+
+  if (templateId === "anniversary-emerald") {
+    return (
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%]">
+          <MandalaMotif color="#ffffff" size={hasPhoto ? 340 : 420} opacity={hasPhoto ? 0.12 : 0.18} />
+        </div>
+        <HairlineDiamond
+          color="#ffffff"
+          size={20}
+          className="absolute top-6 left-6 opacity-60 sm:top-10 sm:left-10"
+        />
+        <HairlineDiamond
+          color="#ffffff"
+          size={20}
+          className="absolute top-6 right-6 opacity-60 sm:top-10 sm:right-10"
+        />
+      </div>
+    );
+  }
+
+  if (templateId === "valentine-blush") {
+    return (
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <Heart
+          size={hasPhoto ? 200 : 260}
+          fill="#ffffff"
+          color="#ffffff"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] opacity-10"
+        />
+        <FloralSprig
+          color="#ffffff"
+          size={64}
+          className="absolute bottom-4 left-3 opacity-60 sm:bottom-8 sm:left-6"
+        />
+        <FloralSprig
+          color="#ffffff"
+          size={64}
+          flip
+          className="absolute right-3 bottom-4 opacity-60 sm:right-6 sm:bottom-8"
+        />
+      </div>
+    );
+  }
+
+  if (templateId === "proposal-starlit") {
+    return (
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <RingMotif
+          color="#ffffff"
+          size={hasPhoto ? 110 : 150}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[70%] opacity-25"
+        />
+        <RingMotif
+          color="#ffffff"
+          size={40}
+          className="absolute top-8 left-6 opacity-30 sm:top-12 sm:left-10"
+        />
+        <RingMotif
+          color="#ffffff"
+          size={40}
+          className="absolute top-8 right-6 opacity-30 sm:top-12 sm:right-10"
+        />
+      </div>
+    );
+  }
+
+  if (templateId === "birthday-confetti") {
+    return (
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <BalloonMotif
+          color="#ffffff"
+          size={70}
+          className="absolute top-6 left-4 opacity-50 sm:top-10 sm:left-10"
+        />
+        <BalloonMotif
+          color="#ffffff"
+          size={70}
+          className="absolute top-6 right-4 -scale-x-100 opacity-50 sm:top-10 sm:right-10"
+        />
+      </div>
+    );
+  }
+
+  if (templateId === "housewarming-terracotta") {
+    return (
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <HouseMotif
+          color="#ffffff"
+          size={hasPhoto ? 90 : 130}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[65%] opacity-20"
+        />
+        <FloralSprig
+          color="#ffffff"
+          size={60}
+          className="absolute bottom-4 left-3 opacity-55 sm:bottom-8 sm:left-6"
+        />
+        <FloralSprig
+          color="#ffffff"
+          size={60}
+          flip
+          className="absolute right-3 bottom-4 opacity-55 sm:right-6 sm:bottom-8"
+        />
       </div>
     );
   }

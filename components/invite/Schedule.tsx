@@ -75,6 +75,8 @@ export default function Schedule({
   accentColor,
   fontPairing,
   templateId,
+  eventALabel = "Ceremony",
+  eventBLabel = "Reception",
 }: {
   ceremonyTime: string;
   ceremonyVenue: VenueInfo;
@@ -83,6 +85,8 @@ export default function Schedule({
   accentColor: string;
   fontPairing: string;
   templateId: string;
+  eventALabel?: string;
+  eventBLabel?: string;
 }) {
   const hasAny =
     ceremonyTime || ceremonyVenue?.name || receptionTime || receptionVenue?.name;
@@ -103,7 +107,7 @@ export default function Schedule({
       </div>
       <div className="mt-8 flex flex-col gap-6 sm:flex-row">
         <EventCard
-          title="Ceremony"
+          title={eventALabel}
           time={ceremonyTime}
           venue={ceremonyVenue}
           accentColor={accentColor}
@@ -111,7 +115,7 @@ export default function Schedule({
           templateId={templateId}
         />
         <EventCard
-          title="Reception"
+          title={eventBLabel}
           time={receptionTime}
           venue={receptionVenue}
           accentColor={accentColor}

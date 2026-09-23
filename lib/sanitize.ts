@@ -1,5 +1,6 @@
 import "server-only";
-import type { VenueInfo } from "./types";
+import type { VenueInfo, SectionToggles, FaqItem } from "./types";
+import { withDefaultSections } from "./types";
 
 export function sanitizeVenue(v: unknown): VenueInfo {
   if (!v || typeof v !== "object") return { name: "", address: "", mapsLink: "" };
@@ -33,4 +34,28 @@ export function sanitizeBackgroundMusic(v: unknown): string {
 
 export function sanitizeAttendingSide(v: unknown): "groom" | "bride" | "friend" | undefined {
   return v === "groom" || v === "bride" || v === "friend" ? v : undefined;
+}
+
+export function sanitizeSections(v: unknown): SectionToggles {
+  const obj = v && typeof v === "object" ? (v as Record<string, unknown>) : {};
+  // Only include keys that are genuinely booleans — an explicit `undefined`
+  // in the spread would otherwise overwrite the default with `undefined`
+  // rather than being skipped.
+  const partial: Partial<SectionToggles> = {};
+  for (const key of ["story", "family", "schedule", "gallery", "rsvp", "faq"] as const) {
+    if (typeof obj[key] === "boolean") partial[key] = obj[key] as boolean;
+  }
+  return withDefaultSections(partial);
+}
+
+export function sanitizeFaq(v: unknown): FaqItem[] {
+  if (!Array.isArray(v)) return [];
+  return v
+    .filter((x): x is Record<string, unknown> => Boolean(x) && typeof x === "object")
+    .map((x) => ({
+      question: typeof x.question === "string" ? x.question.slice(0, 150) : "",
+      answer: typeof x.answer === "string" ? x.answer.slice(0, 500) : "",
+    }))
+    .filter((x) => x.question.trim() || x.answer.trim())
+    .slice(0, 4);
 }

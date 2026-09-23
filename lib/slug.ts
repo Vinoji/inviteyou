@@ -17,7 +17,7 @@ export async function generateUniqueSlug(
   const db = getAdminDb();
   const base =
     slugify(`${brideName}-${groomName}`, { lower: true, strict: true }) ||
-    "our-wedding";
+    "our-celebration";
 
   let candidate = base;
   for (let attempt = 0; attempt < 8; attempt++) {

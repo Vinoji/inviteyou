@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
-import { TEMPLATE_IDS } from "@/lib/templates";
+import { TEMPLATE_IDS, getTemplate } from "@/lib/templates";
+import { getCategory } from "@/lib/categories";
 import {
   sanitizeAccentColor,
   sanitizeBackgroundMusic,
+  sanitizeFaq,
   sanitizeParentsLine,
   sanitizePhotos,
+  sanitizeSections,
   sanitizeVenue,
 } from "@/lib/sanitize";
 
@@ -39,6 +42,8 @@ export async function POST(req: NextRequest) {
     fontPairing,
     photos,
     backgroundMusic,
+    sections,
+    faq,
   } = body;
 
   if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
@@ -47,9 +52,13 @@ export async function POST(req: NextRequest) {
   if (typeof templateId !== "string" || !TEMPLATE_IDS.includes(templateId)) {
     return NextResponse.json({ error: "Invalid template." }, { status: 400 });
   }
-  if (!String(groomName ?? "").trim() || !String(brideName ?? "").trim()) {
+  const category = getCategory(getTemplate(templateId).category);
+  if (
+    !String(brideName ?? "").trim() ||
+    (!category.singlePerson && !String(groomName ?? "").trim())
+  ) {
     return NextResponse.json(
-      { error: "Groom and bride names are required." },
+      { error: "Please fill in the name field(s)." },
       { status: 400 }
     );
   }
@@ -81,6 +90,8 @@ export async function POST(req: NextRequest) {
     fontPairing: fontPairing ? String(fontPairing) : "classic-serif",
     photos: sanitizePhotos(photos),
     backgroundMusic: sanitizeBackgroundMusic(backgroundMusic),
+    sections: sanitizeSections(sections),
+    faq: sanitizeFaq(faq),
     status: "pending_payment",
     slug: null,
     viewCount: existing.exists ? (existing.data()?.viewCount ?? 0) : 0,

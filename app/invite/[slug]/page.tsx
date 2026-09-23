@@ -5,6 +5,8 @@ import InvitationView from "@/components/invite/InvitationView";
 import ViewTracker from "@/components/invite/ViewTracker";
 import WelcomeBanner from "@/components/invite/WelcomeBanner";
 import type { InvitationData, RsvpEntry } from "@/lib/types";
+import { getTemplate } from "@/lib/templates";
+import { getCategory, formatOccasionTitle } from "@/lib/categories";
 
 async function getInvitation(slug: string) {
   const db = getAdminDb();
@@ -46,12 +48,14 @@ export async function generateMetadata({
   const data = await getInvitation(slug);
   if (!data) return { title: "Invitation not found" };
 
-  const title = `${data.brideName} & ${data.groomName}'s Wedding`;
+  const category = getCategory(getTemplate(data.templateId).category);
+  const title = formatOccasionTitle(category, data.brideName, data.groomName);
   const description = data.weddingDate
-    ? `Join us in celebrating the wedding of ${data.brideName} and ${data.groomName} on ${new Date(
-        data.weddingDate
-      ).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}.`
-    : `Join us in celebrating the wedding of ${data.brideName} and ${data.groomName}.`;
+    ? `Join us in celebrating — ${title} on ${new Date(data.weddingDate).toLocaleDateString(
+        "en-IN",
+        { day: "numeric", month: "long", year: "numeric" }
+      )}.`
+    : `Join us in celebrating — ${title}.`;
 
   return {
     title,

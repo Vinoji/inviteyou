@@ -1,10 +1,12 @@
 import { ImageResponse } from "next/og";
 import { getAdminDb } from "@/lib/firebase-admin";
+import { getTemplate } from "@/lib/templates";
+import { getCategory } from "@/lib/categories";
 
 // Uses the Admin SDK (Node-only APIs), so this must run on the Node runtime
 // rather than the default Edge runtime for metadata image routes.
 export const runtime = "nodejs";
-export const alt = "Wedding Invitation";
+export const alt = "Invitation";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -13,6 +15,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
   const snap = await db.collection("invitations").doc(params.slug).get();
   const data = snap.data();
 
+  const category = getCategory(getTemplate(data?.templateId ?? "traditional-gold").category);
   const bride = data?.brideName || "Bride";
   const groom = data?.groomName || "Groom";
   const accent = data?.accentColor || "#b8860b";
@@ -60,8 +63,12 @@ export default async function Image({ params }: { params: { slug: string } }) {
           }}
         >
           <span>{bride}</span>
-          <span style={{ color: accent, margin: "0 28px" }}>&amp;</span>
-          <span>{groom}</span>
+          {!category.singlePerson && (
+            <>
+              <span style={{ color: accent, margin: "0 28px" }}>&amp;</span>
+              <span>{groom}</span>
+            </>
+          )}
         </div>
         {dateLabel && (
           <div style={{ fontSize: 32, color: "#e5d9c9", marginTop: 32 }}>

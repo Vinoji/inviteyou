@@ -55,11 +55,11 @@ const ebGaramond = EB_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: {
-    default: "Namma Vivaham — Beautiful Wedding Invitations Online",
+    default: "Namma Vivaham — Beautiful Invitations for Every Celebration",
     template: "%s | Namma Vivaham",
   },
   description:
-    "Create a stunning, shareable wedding invitation website in minutes. Pick a template, add your details and photos, and get a link to share with guests.",
+    "Create a stunning, shareable invitation website in minutes — weddings, anniversaries, proposals, birthdays, and house warmings. Pick a template, add your details and photos, and get a link to share with guests.",
 };
 
 const fontVariables = [

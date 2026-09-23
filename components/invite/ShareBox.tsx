@@ -6,11 +6,12 @@ import QRCodeBox from "./QRCodeBox";
 
 export default function ShareBox({
   slug,
-  coupleLabel,
+  occasionTitle,
   accentColor,
 }: {
   slug: string;
-  coupleLabel: string;
+  /** Fully formatted, e.g. "Priya & Arjun's Wedding" or "Zara's Birthday". */
+  occasionTitle: string;
   accentColor: string;
 }) {
   const [copied, setCopied] = useState(false);
@@ -34,8 +35,8 @@ export default function ShareBox({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `${coupleLabel}'s Wedding`,
-          text: `You're invited! ${coupleLabel}'s wedding invitation:`,
+          title: occasionTitle,
+          text: `You're invited! ${occasionTitle}:`,
           url,
         });
       } catch {

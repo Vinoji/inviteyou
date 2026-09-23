@@ -6,6 +6,44 @@ export interface VenueInfo {
   mapsLink?: string;
 }
 
+/**
+ * Explicit per-section visibility, independent of whether a section has
+ * data — a story can be filled in and still switched off. Sections still
+ * also self-hide when genuinely empty (see each component), so both checks
+ * apply; this is the user's own override on top of that.
+ */
+export interface SectionToggles {
+  story: boolean;
+  family: boolean;
+  schedule: boolean;
+  gallery: boolean;
+  rsvp: boolean;
+  faq: boolean;
+}
+
+export const DEFAULT_SECTIONS: SectionToggles = {
+  story: true,
+  family: true,
+  schedule: true,
+  gallery: true,
+  rsvp: true,
+  faq: true,
+};
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+/** Merges possibly-partial/missing toggles over the all-on default — safe
+ * for documents published before this field existed (they just show
+ * everything, same as their original behavior). */
+export function withDefaultSections(
+  sections: Partial<SectionToggles> | null | undefined
+): SectionToggles {
+  return { ...DEFAULT_SECTIONS, ...(sections ?? {}) };
+}
+
 /** Fields the user controls in the editor. */
 export interface InvitationData {
   templateId: string;
@@ -23,6 +61,8 @@ export interface InvitationData {
   fontPairing: string; // id from FONT_PAIRINGS
   photos: string[]; // Storage download URLs
   backgroundMusic: string; // Storage download URL for an optional audio track, "" = none
+  sections: SectionToggles;
+  faq: FaqItem[]; // up to 4 — "Things to Know" (dress code, parking, etc.)
 }
 
 /** Full document shape at invitations/{slug|draftId}. */

@@ -1,17 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Plus, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Script from "next/script";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { getTemplate } from "@/lib/templates";
+import { getCategory } from "@/lib/categories";
 import { FONT_PAIRINGS } from "@/lib/fontPairings";
 import { getDefaultInvitationData } from "@/lib/defaultContent";
 import type { InvitationData } from "@/lib/types";
 import InvitationView from "@/components/invite/InvitationView";
-import { FormSection, Field, inputClass } from "@/components/editor/FormFields";
+import { FormSection, Field, inputClass, SectionToggle } from "@/components/editor/FormFields";
 import PhotoSlot from "@/components/editor/PhotoSlot";
 
 interface RazorpayResponse {
@@ -68,6 +70,7 @@ export default function Editor({
 }) {
   const router = useRouter();
   const template = getTemplate(templateId);
+  const category = getCategory(template.category);
   const isEditMode = Boolean(editSlug && editToken);
 
   const [draftId] = useState(() => generateDraftId());
@@ -116,6 +119,24 @@ export default function Editor({
     value: string
   ) {
     setData((d) => ({ ...d, [which]: { ...d[which], [field]: value } }));
+  }
+  function updateSection(key: keyof InvitationData["sections"], value: boolean) {
+    setData((d) => ({ ...d, sections: { ...d.sections, [key]: value } }));
+  }
+  function updateFaq(index: number, field: "question" | "answer", value: string) {
+    setData((d) => {
+      const faq = [...d.faq];
+      faq[index] = { ...faq[index], [field]: value };
+      return { ...d, faq };
+    });
+  }
+  function addFaqItem() {
+    setData((d) =>
+      d.faq.length >= 4 ? d : { ...d, faq: [...d.faq, { question: "", answer: "" }] }
+    );
+  }
+  function removeFaqItem(index: number) {
+    setData((d) => ({ ...d, faq: d.faq.filter((_, i) => i !== index) }));
   }
 
   async function handlePhotoChange(index: number, file: File | null) {
@@ -195,7 +216,9 @@ export default function Editor({
     }
   }
 
-  const canSubmit = Boolean(data.groomName.trim() && data.brideName.trim()) && !publishing;
+  const canSubmit =
+    Boolean(data.brideName.trim() && (category.singlePerson || data.groomName.trim())) &&
+    !publishing;
 
   async function handleSaveEdit() {
     if (!editSlug || !editToken) return;
@@ -253,7 +276,9 @@ export default function Editor({
         currency: order.currency,
         order_id: order.orderId,
         name: "Namma Vivaham",
-        description: `${data.brideName} & ${data.groomName} — Wedding Invitation`,
+        description: category.singlePerson
+          ? `${data.brideName} — ${template.name}`
+          : `${data.brideName} & ${data.groomName} — ${template.name}`,
         theme: { color: data.accentColor },
         handler: async (response) => {
           try {
@@ -329,8 +354,8 @@ export default function Editor({
           <div className="p-6 text-sm text-red-600">{loadError}</div>
         ) : (
           <div className="flex-1 space-y-8 overflow-y-auto px-5 py-6">
-            <FormSection title="The couple">
-              <Field label="Bride's name">
+            <FormSection title={category.singlePerson ? "About you" : "The couple"}>
+              <Field label={category.personALabel}>
                 <input
                   className={inputClass}
                   value={data.brideName}
@@ -338,17 +363,19 @@ export default function Editor({
                   placeholder="Priya"
                 />
               </Field>
-              <Field label="Groom's name">
-                <input
-                  className={inputClass}
-                  value={data.groomName}
-                  onChange={(e) => update("groomName", e.target.value)}
-                  placeholder="Arjun"
-                />
-              </Field>
+              {!category.singlePerson && (
+                <Field label={category.personBLabel}>
+                  <input
+                    className={inputClass}
+                    value={data.groomName}
+                    onChange={(e) => update("groomName", e.target.value)}
+                    placeholder="Arjun"
+                  />
+                </Field>
+              )}
             </FormSection>
 
-            <FormSection title="Wedding date">
+            <FormSection title={category.dateLabel}>
               <Field label="Date">
                 <input
                   type="date"
@@ -359,113 +386,149 @@ export default function Editor({
               </Field>
             </FormSection>
 
-            <FormSection title="Ceremony">
-              <Field label="Time">
-                <input
-                  className={inputClass}
-                  value={data.ceremonyTime}
-                  onChange={(e) => update("ceremonyTime", e.target.value)}
-                  placeholder="10:00 AM"
+            <div>
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <h2 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
+                  Event Schedule
+                </h2>
+                <SectionToggle
+                  enabled={data.sections.schedule}
+                  onChange={(v) => updateSection("schedule", v)}
                 />
-              </Field>
-              <Field label="Venue name">
-                <input
-                  className={inputClass}
-                  value={data.ceremonyVenue.name}
-                  onChange={(e) => updateVenue("ceremonyVenue", "name", e.target.value)}
-                  placeholder="Sri Kalyana Mandapam"
-                />
-              </Field>
-              <Field label="Address">
-                <textarea
-                  className={inputClass}
-                  rows={2}
-                  value={data.ceremonyVenue.address}
-                  onChange={(e) => updateVenue("ceremonyVenue", "address", e.target.value)}
-                  placeholder="123 Temple Street, Chennai"
-                />
-              </Field>
-              <Field label="Google Maps link (optional)">
-                <input
-                  type="url"
-                  className={inputClass}
-                  value={data.ceremonyVenue.mapsLink ?? ""}
-                  onChange={(e) => updateVenue("ceremonyVenue", "mapsLink", e.target.value)}
-                  placeholder="https://maps.google.com/..."
-                />
-              </Field>
-            </FormSection>
+              </div>
+              <div
+                className={`space-y-8 transition-opacity ${!data.sections.schedule ? "opacity-45" : ""}`}
+              >
+                <FormSection title={category.eventALabel}>
+                  <Field label="Time">
+                    <input
+                      className={inputClass}
+                      value={data.ceremonyTime}
+                      onChange={(e) => update("ceremonyTime", e.target.value)}
+                      placeholder="10:00 AM"
+                    />
+                  </Field>
+                  <Field label="Venue name">
+                    <input
+                      className={inputClass}
+                      value={data.ceremonyVenue.name}
+                      onChange={(e) => updateVenue("ceremonyVenue", "name", e.target.value)}
+                      placeholder="Sri Kalyana Mandapam"
+                    />
+                  </Field>
+                  <Field label="Address">
+                    <textarea
+                      className={inputClass}
+                      rows={2}
+                      value={data.ceremonyVenue.address}
+                      onChange={(e) => updateVenue("ceremonyVenue", "address", e.target.value)}
+                      placeholder="123 Temple Street, Chennai"
+                    />
+                  </Field>
+                  <Field label="Google Maps link (optional)">
+                    <input
+                      type="url"
+                      className={inputClass}
+                      value={data.ceremonyVenue.mapsLink ?? ""}
+                      onChange={(e) => updateVenue("ceremonyVenue", "mapsLink", e.target.value)}
+                      placeholder="https://maps.google.com/..."
+                    />
+                  </Field>
+                </FormSection>
 
-            <FormSection title="Reception">
-              <Field label="Time">
-                <input
-                  className={inputClass}
-                  value={data.receptionTime}
-                  onChange={(e) => update("receptionTime", e.target.value)}
-                  placeholder="7:00 PM"
-                />
-              </Field>
-              <Field label="Venue name">
-                <input
-                  className={inputClass}
-                  value={data.receptionVenue.name}
-                  onChange={(e) => updateVenue("receptionVenue", "name", e.target.value)}
-                  placeholder="Grand Ballroom, Taj Hotel"
-                />
-              </Field>
-              <Field label="Address">
-                <textarea
-                  className={inputClass}
-                  rows={2}
-                  value={data.receptionVenue.address}
-                  onChange={(e) => updateVenue("receptionVenue", "address", e.target.value)}
-                  placeholder="456 Beach Road, Chennai"
-                />
-              </Field>
-              <Field label="Google Maps link (optional)">
-                <input
-                  type="url"
-                  className={inputClass}
-                  value={data.receptionVenue.mapsLink ?? ""}
-                  onChange={(e) => updateVenue("receptionVenue", "mapsLink", e.target.value)}
-                  placeholder="https://maps.google.com/..."
-                />
-              </Field>
-            </FormSection>
+                {category.eventBLabel && (
+                  <FormSection title={category.eventBLabel}>
+                    <Field label="Time">
+                      <input
+                        className={inputClass}
+                        value={data.receptionTime}
+                        onChange={(e) => update("receptionTime", e.target.value)}
+                        placeholder="7:00 PM"
+                      />
+                    </Field>
+                    <Field label="Venue name">
+                      <input
+                        className={inputClass}
+                        value={data.receptionVenue.name}
+                        onChange={(e) => updateVenue("receptionVenue", "name", e.target.value)}
+                        placeholder="Grand Ballroom, Taj Hotel"
+                      />
+                    </Field>
+                    <Field label="Address">
+                      <textarea
+                        className={inputClass}
+                        rows={2}
+                        value={data.receptionVenue.address}
+                        onChange={(e) => updateVenue("receptionVenue", "address", e.target.value)}
+                        placeholder="456 Beach Road, Chennai"
+                      />
+                    </Field>
+                    <Field label="Google Maps link (optional)">
+                      <input
+                        type="url"
+                        className={inputClass}
+                        value={data.receptionVenue.mapsLink ?? ""}
+                        onChange={(e) =>
+                          updateVenue("receptionVenue", "mapsLink", e.target.value)
+                        }
+                        placeholder="https://maps.google.com/..."
+                      />
+                    </Field>
+                  </FormSection>
+                )}
+              </div>
+            </div>
 
-            <FormSection title="Our story">
+            <FormSection
+              title={category.storyTitle}
+              toggle={{ enabled: data.sections.story, onChange: (v) => updateSection("story", v) }}
+            >
               <textarea
                 className={inputClass}
                 rows={5}
                 value={data.story}
                 onChange={(e) => update("story", e.target.value)}
-                placeholder="Tell your guests how you met, your journey together, and what this day means to you..."
+                placeholder="Tell your guests the story behind this celebration..."
               />
             </FormSection>
 
-            <FormSection title="Family (optional)">
-              <Field label="Groom's parents">
-                <input
-                  className={inputClass}
-                  value={data.groomParents}
-                  onChange={(e) => update("groomParents", e.target.value)}
-                  placeholder="Mr. & Mrs. Rajendran Kumar"
-                />
-              </Field>
-              <Field label="Bride's parents">
-                <input
-                  className={inputClass}
-                  value={data.brideParents}
-                  onChange={(e) => update("brideParents", e.target.value)}
-                  placeholder="Mr. & Mrs. Suresh Rao"
-                />
-              </Field>
-              <p className="text-xs text-neutral-400">
-                Leave both blank to hide the Family &amp; Blessings section.
-              </p>
-            </FormSection>
+            {category.familyTitle && (
+              <FormSection
+                title={category.familyTitle}
+                toggle={{
+                  enabled: data.sections.family,
+                  onChange: (v) => updateSection("family", v),
+                }}
+              >
+                <Field label="Groom's parents">
+                  <input
+                    className={inputClass}
+                    value={data.groomParents}
+                    onChange={(e) => update("groomParents", e.target.value)}
+                    placeholder="Mr. & Mrs. Rajendran Kumar"
+                  />
+                </Field>
+                <Field label="Bride's parents">
+                  <input
+                    className={inputClass}
+                    value={data.brideParents}
+                    onChange={(e) => update("brideParents", e.target.value)}
+                    placeholder="Mr. & Mrs. Suresh Rao"
+                  />
+                </Field>
+                <p className="text-xs text-neutral-400">
+                  Also hides automatically if both are left blank.
+                </p>
+              </FormSection>
+            )}
 
-            <FormSection title="Photos (up to 6)">
+            <FormSection
+              title="Photo gallery"
+              toggle={{
+                enabled: data.sections.gallery,
+                onChange: (v) => updateSection("gallery", v),
+              }}
+            >
               <div className="grid grid-cols-3 gap-3">
                 {[0, 1, 2, 3, 4, 5].map((i) => (
                   <PhotoSlot
@@ -479,7 +542,67 @@ export default function Editor({
                 ))}
               </div>
               <p className="text-xs text-neutral-400">
-                The first photo becomes your hero background.
+                The first photo always becomes your hero background, even if
+                the gallery below is hidden.
+              </p>
+            </FormSection>
+
+            <FormSection
+              title="Things to know"
+              toggle={{ enabled: data.sections.faq, onChange: (v) => updateSection("faq", v) }}
+            >
+              <div className="space-y-4">
+                {data.faq.map((item, i) => (
+                  <div key={i} className="rounded-lg border border-neutral-200 p-3">
+                    <div className="mb-2 flex items-center justify-between">
+                      <span className="text-xs font-semibold text-neutral-400">
+                        Question {i + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => removeFaqItem(i)}
+                        className="text-neutral-400 hover:text-red-600"
+                        aria-label="Remove this question"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    </div>
+                    <input
+                      className={`${inputClass} mb-2`}
+                      value={item.question}
+                      onChange={(e) => updateFaq(i, "question", e.target.value)}
+                      placeholder="What's the dress code?"
+                    />
+                    <textarea
+                      className={inputClass}
+                      rows={2}
+                      value={item.answer}
+                      onChange={(e) => updateFaq(i, "answer", e.target.value)}
+                      placeholder="Smart casual — come as you are."
+                    />
+                  </div>
+                ))}
+              </div>
+              {data.faq.length < 4 && (
+                <button
+                  type="button"
+                  onClick={addFaqItem}
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-neutral-900"
+                >
+                  <Plus size={14} />
+                  Add a question ({data.faq.length}/4)
+                </button>
+              )}
+            </FormSection>
+
+            <FormSection
+              title="Guest RSVP"
+              toggle={{ enabled: data.sections.rsvp, onChange: (v) => updateSection("rsvp", v) }}
+            >
+              <p className="text-xs text-neutral-400">
+                Lets guests confirm attendance and leave a message from the
+                published page. Turn this off if you&apos;re collecting RSVPs
+                another way.
               </p>
             </FormSection>
 

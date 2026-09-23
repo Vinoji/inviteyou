@@ -9,6 +9,8 @@ export default function Family({
   accentColor,
   fontPairing,
   templateId,
+  title = "Family & Blessings",
+  intro = "With the loving blessings of our families, we joyfully invite you to celebrate with us.",
 }: {
   groomName: string;
   brideName: string;
@@ -17,6 +19,8 @@ export default function Family({
   accentColor: string;
   fontPairing: string;
   templateId: string;
+  title?: string;
+  intro?: string;
 }) {
   if (!groomParents && !brideParents) return null;
   const font = getFontPairing(fontPairing);
@@ -27,7 +31,7 @@ export default function Family({
         className="text-sm font-semibold tracking-[0.3em] uppercase"
         style={{ color: accentColor }}
       >
-        Family &amp; Blessings
+        {title}
       </h2>
       <div className="mt-3">
         <SectionDivider templateId={templateId} accent={accentColor} />
@@ -36,8 +40,7 @@ export default function Family({
         className="mx-auto mt-6 max-w-md text-sm text-neutral-500 italic"
         style={{ fontFamily: font.bodyVar }}
       >
-        With the loving blessings of our families, we joyfully invite you to
-        celebrate our wedding.
+        {intro}
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
@@ -47,7 +50,7 @@ export default function Family({
               className="text-xs font-semibold tracking-widest text-neutral-400 uppercase"
               style={{ fontFamily: font.bodyVar }}
             >
-              Parents of the Groom
+              Parents of {groomName || "the Groom"}
             </p>
             <p
               className="mt-2 text-lg font-semibold text-neutral-900"
@@ -55,7 +58,6 @@ export default function Family({
             >
               {groomParents}
             </p>
-            <p className="mt-1 text-sm text-neutral-500">{groomName || "Groom"}</p>
           </div>
         )}
         {brideParents && (
@@ -64,7 +66,7 @@ export default function Family({
               className="text-xs font-semibold tracking-widest text-neutral-400 uppercase"
               style={{ fontFamily: font.bodyVar }}
             >
-              Parents of the Bride
+              Parents of {brideName || "the Bride"}
             </p>
             <p
               className="mt-2 text-lg font-semibold text-neutral-900"
@@ -72,7 +74,6 @@ export default function Family({
             >
               {brideParents}
             </p>
-            <p className="mt-1 text-sm text-neutral-500">{brideName || "Bride"}</p>
           </div>
         )}
       </div>

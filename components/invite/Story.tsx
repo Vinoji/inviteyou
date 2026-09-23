@@ -6,11 +6,13 @@ export default function Story({
   accentColor,
   fontPairing,
   templateId,
+  title = "Our Story",
 }: {
   story: string;
   accentColor: string;
   fontPairing: string;
   templateId: string;
+  title?: string;
 }) {
   if (!story) return null;
   const font = getFontPairing(fontPairing);
@@ -21,7 +23,7 @@ export default function Story({
         className="text-sm font-semibold tracking-[0.3em] uppercase"
         style={{ color: accentColor }}
       >
-        Our Story
+        {title}
       </h2>
       <div className="mt-3">
         <SectionDivider templateId={templateId} accent={accentColor} />

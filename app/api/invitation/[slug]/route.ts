@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
-import { TEMPLATE_IDS } from "@/lib/templates";
+import { TEMPLATE_IDS, getTemplate } from "@/lib/templates";
+import { getCategory } from "@/lib/categories";
+import { withDefaultSections } from "@/lib/types";
 import {
   sanitizeAccentColor,
   sanitizeBackgroundMusic,
+  sanitizeFaq,
   sanitizeParentsLine,
   sanitizePhotos,
+  sanitizeSections,
   sanitizeVenue,
 } from "@/lib/sanitize";
 
@@ -42,7 +46,12 @@ export async function GET(
   if (!snap.exists) {
     return NextResponse.json({ error: "Invitation not found." }, { status: 404 });
   }
-  return NextResponse.json({ invitation: snap.data() });
+  const data = snap.data()!;
+  // Docs published before section toggles existed won't have this field —
+  // fill it in so the edit form always gets a fully-shaped object.
+  return NextResponse.json({
+    invitation: { ...data, sections: withDefaultSections(data.sections), faq: data.faq ?? [] },
+  });
 }
 
 /** Updates a published invitation. Editing is always free — no re-charge. */
@@ -73,14 +82,20 @@ export async function PUT(
     fontPairing,
     photos,
     backgroundMusic,
+    sections,
+    faq,
   } = body ?? {};
 
   if (typeof templateId !== "string" || !TEMPLATE_IDS.includes(templateId)) {
     return NextResponse.json({ error: "Invalid template." }, { status: 400 });
   }
-  if (!String(groomName ?? "").trim() || !String(brideName ?? "").trim()) {
+  const category = getCategory(getTemplate(templateId).category);
+  if (
+    !String(brideName ?? "").trim() ||
+    (!category.singlePerson && !String(groomName ?? "").trim())
+  ) {
     return NextResponse.json(
-      { error: "Groom and bride names are required." },
+      { error: "Please fill in the name field(s)." },
       { status: 400 }
     );
   }
@@ -104,6 +119,8 @@ export async function PUT(
       fontPairing: fontPairing ? String(fontPairing) : "classic-serif",
       photos: sanitizePhotos(photos),
       backgroundMusic: sanitizeBackgroundMusic(backgroundMusic),
+      sections: sanitizeSections(sections),
+      faq: sanitizeFaq(faq),
       updatedAt: Date.now(),
     });
 
