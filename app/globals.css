@@ -1,20 +1,102 @@
 @import "tailwindcss";
 
+/*
+ * Global theme tokens — the single source of truth for the app *shell*'s
+ * colors (landing page, editor, RSVP admin view, language/theme switchers).
+ * Published invitation pages intentionally keep each template's own
+ * designed palette (see components/invite/theme.ts) regardless of this
+ * setting — a couple's chosen wedding-invite colors aren't meant to flip
+ * with a guest's OS theme, the same way a printed card wouldn't.
+ *
+ * `dark:` utilities respond to EITHER an explicit `.dark` class on <html>
+ * (the manual toggle's "Dark" choice) OR the OS preference when neither
+ * override class is present (the toggle's "System" choice, which clears
+ * the cookie instead of setting a class — see components/ThemeToggle.tsx).
+ * Both branches must stay in sync with the --background/--foreground
+ * custom-property rules below (:root.dark and the prefers-color-scheme
+ * block), which is what a plain `@custom-variant dark (&:where(.dark, .dark
+ * *));` (class-only) previously got wrong: under "System" with a dark OS,
+ * the CSS-variable-driven body background went dark but every `dark:`
+ * Tailwind utility across the app (text/border colors, card backgrounds —
+ * the bulk of the actual dark styling) stayed off, since that variant only
+ * ever matched the class. See app/[locale]/layout.tsx, which reads the
+ * `theme` cookie and sets the class server-side for the "Dark"/"Light"
+ * cases — the class (or its absence, for "System") is already correct in
+ * the very first HTML the browser paints, so no client-side init script is
+ * needed either way.
+ */
+@custom-variant dark {
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:not(.light, .light *)) {
+      @slot;
+    }
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --surface: #ffffff;
+  --surface-muted: #fafafa;
+  --border: #e5e5e5;
   --accent: #b8860b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+    --surface: #171717;
+    --surface-muted: #1f1f1f;
+    --border: #2e2e2e;
+  }
+}
+
+:root.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --surface: #171717;
+  --surface-muted: #1f1f1f;
+  --border: #2e2e2e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
   --color-accent: var(--accent);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/*
+ * Smooth color/background/border transitions app-wide, so a theme change
+ * (or the class-level part of a locale change) crossfades instead of
+ * snapping instantly. Kept short and GPU-cheap (color-family properties
+ * only, no layout-triggering ones) so it never feels laggy. Respects
+ * prefers-reduced-motion like the rest of the app's animations do.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: 0.15s;
+    transition-timing-function: ease;
+  }
+}
+
+/* Tuned down from the browser's default (longer, more zoom-heavy) crossfade
+   for the theme toggle's document.startViewTransition — see ThemeToggle.tsx. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.2s;
 }
 
 /* Simple line-clamp / scrollbar niceties used across the app. */

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { getFontPairing } from "@/lib/fontPairings";
 import SectionDivider from "./SectionDivider";
 import RotateReveal from "./RotateReveal";
@@ -10,7 +11,7 @@ export default function Story({
   accentColor,
   fontPairing,
   templateId,
-  title = "Our Story",
+  title,
 }: {
   story: string;
   accentColor: string;
@@ -18,8 +19,10 @@ export default function Story({
   templateId: string;
   title?: string;
 }) {
+  const t = useTranslations("invite.story");
   if (!story) return null;
   const font = getFontPairing(fontPairing);
+  const resolvedTitle = title ?? t("defaultTitle");
 
   const floral = FLORAL_TEMPLATES.has(templateId);
 
@@ -48,7 +51,7 @@ export default function Story({
         className="text-sm font-semibold tracking-[0.3em] uppercase"
         style={{ color: accentColor }}
       >
-        {title}
+        {resolvedTitle}
       </h2>
       <div className="mt-3">
         <SectionDivider templateId={templateId} accent={accentColor} />

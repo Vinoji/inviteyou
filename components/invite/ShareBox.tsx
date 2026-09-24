@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Check, Copy, Share2 } from "lucide-react";
 import QRCodeBox from "./QRCodeBox";
 
@@ -14,6 +15,7 @@ export default function ShareBox({
   occasionTitle: string;
   accentColor: string;
 }) {
+  const t = useTranslations("invite.share");
   const [copied, setCopied] = useState(false);
   const url =
     typeof window !== "undefined"
@@ -36,7 +38,7 @@ export default function ShareBox({
       try {
         await navigator.share({
           title: occasionTitle,
-          text: `You're invited! ${occasionTitle}:`,
+          text: t("shareText", { title: occasionTitle }),
           url,
         });
       } catch {
@@ -51,11 +53,9 @@ export default function ShareBox({
     <section className="mx-auto max-w-lg px-6 py-14 sm:py-20">
       <div className="rounded-2xl border border-neutral-200 p-6 text-center sm:p-8">
         <h3 className="font-serif text-lg font-bold text-neutral-900">
-          Share this invitation
+          {t("heading")}
         </h3>
-        <p className="mt-1 text-sm text-neutral-500">
-          Send this link to your guests, or let them scan the QR code.
-        </p>
+        <p className="mt-1 text-sm text-neutral-500">{t("subheading")}</p>
 
         <div className="mt-5 flex items-center gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-2">
           <input
@@ -70,7 +70,7 @@ export default function ShareBox({
             className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white"
           >
             {copied ? <Check size={13} /> : <Copy size={13} />}
-            {copied ? "Copied!" : "Copy"}
+            {copied ? t("copied") : t("copy")}
           </button>
         </div>
 
@@ -79,7 +79,7 @@ export default function ShareBox({
           className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-800 sm:hidden"
         >
           <Share2 size={15} />
-          Share via...
+          {t("shareVia")}
         </button>
 
         <div className="mt-6 flex justify-center">

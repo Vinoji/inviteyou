@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 /**
  * A swipeable photo carousel — native CSS scroll-snap for the actual
@@ -21,6 +22,7 @@ export default function Carousel({
   /** Optional per-image caption (e.g. "— uploaded by Kavya"), same length as images. */
   captions?: (string | undefined)[];
 }) {
+  const t = useTranslations("invite.carousel");
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -104,7 +106,7 @@ export default function Carousel({
             disabled={active === 0}
             className="absolute top-1/2 left-1 hidden -translate-y-1/2 rounded-full bg-white/90 p-2 shadow disabled:opacity-30 sm:flex"
             style={{ color: accentColor }}
-            aria-label="Previous photo"
+            aria-label={t("previous")}
           >
             <ChevronLeft size={18} />
           </button>
@@ -114,12 +116,12 @@ export default function Carousel({
             disabled={active === images.length - 1}
             className="absolute top-1/2 right-1 hidden -translate-y-1/2 rounded-full bg-white/90 p-2 shadow disabled:opacity-30 sm:flex"
             style={{ color: accentColor }}
-            aria-label="Next photo"
+            aria-label={t("next")}
           >
             <ChevronRight size={18} />
           </button>
 
-          <div className="mt-3 flex justify-center gap-1.5" role="tablist" aria-label={`${altPrefix} navigation`}>
+          <div className="mt-3 flex justify-center gap-1.5" role="tablist" aria-label={t("navAria", { prefix: altPrefix })}>
             {images.map((_, i) => (
               <button
                 key={i}
@@ -132,7 +134,7 @@ export default function Carousel({
                   width: active === i ? 18 : 6,
                   backgroundColor: active === i ? accentColor : `${accentColor}40`,
                 }}
-                aria-label={`Go to photo ${i + 1}`}
+                aria-label={t("goTo", { n: i + 1 })}
               />
             ))}
           </div>
@@ -156,7 +158,7 @@ export default function Carousel({
           <button
             className="absolute top-5 right-5 text-2xl text-white"
             onClick={() => setLightboxIndex(null)}
-            aria-label="Close"
+            aria-label={t("close")}
           >
             <X aria-hidden />
           </button>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Check, Copy, PartyPopper, Users, X } from "lucide-react";
 
 /**
@@ -21,6 +22,7 @@ export default function WelcomeBanner({
   editToken: string;
   accentColor: string;
 }) {
+  const t = useTranslations("invite.welcomeBanner");
   const [dismissed, setDismissed] = useState(false);
   const [copied, setCopied] = useState(false);
   if (dismissed) return null;
@@ -45,8 +47,7 @@ export default function WelcomeBanner({
       <div className="mx-auto flex max-w-3xl flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="flex items-center gap-2 font-medium">
           <PartyPopper size={16} className="shrink-0" aria-hidden />
-          Your invitation is live! Save your private edit link — it&apos;s the
-          only way to make changes later.
+          {t("message")}
         </p>
         <div className="flex shrink-0 items-center gap-2">
           <Link
@@ -54,7 +55,7 @@ export default function WelcomeBanner({
             className="inline-flex items-center gap-1.5 rounded-md border border-amber-300 px-3 py-1.5 text-xs font-semibold text-amber-800"
           >
             <Users size={13} />
-            View RSVPs
+            {t("viewRsvps")}
           </Link>
           <button
             onClick={copyEditLink}
@@ -62,12 +63,12 @@ export default function WelcomeBanner({
             className="inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-white"
           >
             {copied ? <Check size={13} /> : <Copy size={13} />}
-            {copied ? "Copied!" : "Copy edit link"}
+            {copied ? t("copied") : t("copyEditLink")}
           </button>
           <button
             onClick={() => setDismissed(true)}
             className="rounded-md border border-amber-300 px-2 py-1.5 text-xs font-semibold text-amber-800"
-            aria-label="Dismiss"
+            aria-label={t("dismiss")}
           >
             <X size={13} />
           </button>

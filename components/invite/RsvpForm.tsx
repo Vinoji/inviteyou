@@ -2,8 +2,9 @@
 
 import { useState, type FormEvent } from "react";
 import { PartyPopper } from "lucide-react";
-import { getCategory } from "@/lib/categories";
-import { getTemplate } from "@/lib/templates";
+import { useTranslations } from "next-intl";
+import { getCategoryMeta } from "@/lib/i18n/categories";
+import { getTemplateConfig } from "@/lib/templates";
 import SectionDivider from "./SectionDivider";
 
 export default function RsvpForm({
@@ -21,7 +22,9 @@ export default function RsvpForm({
   groomName: string;
   mode?: "public" | "preview";
 }) {
-  const category = getCategory(getTemplate(templateId).category);
+  const t = useTranslations("invite.rsvp");
+  const tCategories = useTranslations("categories");
+  const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +41,7 @@ export default function RsvpForm({
     setError(null);
     if (mode === "preview") return;
     if (!form.guestName.trim()) {
-      setError("Please enter your name.");
+      setError(t("errName"));
       return;
     }
     setLoading(true);
@@ -56,11 +59,11 @@ export default function RsvpForm({
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error ?? "Something went wrong. Please try again.");
+        throw new Error(data.error ?? t("errGeneric"));
       }
       setSubmitted(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(err instanceof Error ? err.message : t("errGeneric"));
     } finally {
       setLoading(false);
     }
@@ -73,7 +76,7 @@ export default function RsvpForm({
           className="text-sm font-semibold tracking-[0.3em] uppercase"
           style={{ color: accentColor }}
         >
-          RSVP
+          {t("heading")}
         </h2>
         <div className="mt-3">
           <SectionDivider templateId={templateId} accent={accentColor} />
@@ -89,32 +92,29 @@ export default function RsvpForm({
             aria-hidden
           />
           <h3 className="mt-2 font-serif text-xl font-bold text-neutral-900">
-            Thank you!
+            {t("thankYouTitle")}
           </h3>
-          <p className="mt-2 text-sm text-neutral-600">
-            Your RSVP has been recorded. We can&apos;t wait to celebrate with
-            you.
-          </p>
+          <p className="mt-2 text-sm text-neutral-600">{t("thankYouBody")}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
             <label className="mb-1 block text-sm font-medium text-neutral-700">
-              Your name
+              {t("nameLabel")}
             </label>
             <input
               type="text"
               value={form.guestName}
               onChange={(e) => setForm((f) => ({ ...f, guestName: e.target.value }))}
               className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
-              placeholder="Full name"
+              placeholder={t("namePlaceholder")}
               disabled={mode === "preview"}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="mb-1 block text-sm font-medium text-neutral-700">
-                Guests (incl. you)
+                {t("guestCountLabel")}
               </label>
               <input
                 type="number"
@@ -130,7 +130,7 @@ export default function RsvpForm({
             </div>
             <div>
               <label className="mb-1 block text-sm font-medium text-neutral-700">
-                Will you attend?
+                {t("attendingLabel")}
               </label>
               <select
                 value={form.attending}
@@ -138,15 +138,15 @@ export default function RsvpForm({
                 className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
                 disabled={mode === "preview"}
               >
-                <option value="yes">Joyfully accept</option>
-                <option value="no">Regretfully decline</option>
+                <option value="yes">{t("optionYes")}</option>
+                <option value="no">{t("optionNo")}</option>
               </select>
             </div>
           </div>
           {!category.singlePerson && (
             <div>
               <label className="mb-1 block text-sm font-medium text-neutral-700">
-                Whose side are you on? (optional)
+                {t("sideLabel")}
               </label>
               <select
                 value={form.side}
@@ -154,23 +154,23 @@ export default function RsvpForm({
                 className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
                 disabled={mode === "preview"}
               >
-                <option value="">Prefer not to say</option>
-                <option value="bride">{brideName || "Their"}&apos;s side</option>
-                <option value="groom">{groomName || "Their"}&apos;s side</option>
-                <option value="friend">Friend of both</option>
+                <option value="">{t("sideNotSay")}</option>
+                <option value="bride">{t("sideOf", { name: brideName || "Their" })}</option>
+                <option value="groom">{t("sideOf", { name: groomName || "Their" })}</option>
+                <option value="friend">{t("sideFriend")}</option>
               </select>
             </div>
           )}
           <div>
             <label className="mb-1 block text-sm font-medium text-neutral-700">
-              Message (optional)
+              {t("messageLabel")}
             </label>
             <textarea
               value={form.message}
               onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
               rows={3}
               className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
-              placeholder="Wishes for the couple..."
+              placeholder={t("messagePlaceholder")}
               disabled={mode === "preview"}
             />
           </div>
@@ -181,11 +181,11 @@ export default function RsvpForm({
             style={{ backgroundColor: accentColor }}
             className="w-full rounded-lg px-4 py-3 text-sm font-semibold text-white transition disabled:opacity-60"
           >
-            {loading ? "Sending..." : "Send RSVP"}
+            {loading ? t("sending") : t("send")}
           </button>
           {mode === "preview" && (
             <p className="text-center text-xs text-neutral-400">
-              This form is disabled in the live preview.
+              {t("disabledPreview")}
             </p>
           )}
         </form>

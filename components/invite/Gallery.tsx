@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import SectionDivider from "./SectionDivider";
 import Carousel from "./Carousel";
 import ZoomReveal from "./ZoomReveal";
@@ -13,6 +14,7 @@ export default function Gallery({
   templateId: string;
   coupleLabel: string;
 }) {
+  const t = useTranslations("invite.gallery");
   // Skip the first photo — it's already shown as the hero background.
   const carouselPhotos = photos.slice(1);
   if (carouselPhotos.length === 0) return null;
@@ -24,7 +26,7 @@ export default function Gallery({
           className="text-sm font-semibold tracking-[0.3em] uppercase"
           style={{ color: accentColor }}
         >
-          Gallery
+          {t("heading")}
         </h2>
         <div className="mt-3">
           <SectionDivider templateId={templateId} accent={accentColor} />
@@ -33,7 +35,7 @@ export default function Gallery({
       <ZoomReveal className="mt-8">
         <Carousel
           images={carouselPhotos}
-          altPrefix={`${coupleLabel} photo`}
+          altPrefix={t("altPrefix", { coupleLabel })}
           accentColor={accentColor}
         />
       </ZoomReveal>

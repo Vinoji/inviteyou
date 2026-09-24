@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 function getParts(targetMs: number) {
   const diff = Math.max(0, targetMs - Date.now());
@@ -31,6 +32,7 @@ function getParts(targetMs: number) {
  * hydration is already done, so it's just an ordinary re-render.
  */
 export default function Countdown({ targetDate }: { targetDate: string }) {
+  const t = useTranslations("invite.countdown");
   const targetMs = new Date(targetDate).getTime();
   const [parts, setParts] = useState(() => getParts(targetMs));
   const [mounted, setMounted] = useState(false);
@@ -49,16 +51,16 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   }, []);
 
   const units: { label: string; value: number }[] = [
-    { label: "Days", value: parts.days },
-    { label: "Hours", value: parts.hours },
-    { label: "Min", value: parts.minutes },
-    { label: "Sec", value: parts.seconds },
+    { label: t("days"), value: parts.days },
+    { label: t("hours"), value: parts.hours },
+    { label: t("minutes"), value: parts.minutes },
+    { label: t("seconds"), value: parts.seconds },
   ];
 
   if (parts.done) {
     return (
       <p className="text-sm font-medium tracking-wide uppercase opacity-90">
-        The celebration has begun!
+        {t("began")}
       </p>
     );
   }

@@ -1,7 +1,8 @@
 import { ImageResponse } from "next/og";
+import { getTranslations, getFormatter } from "next-intl/server";
 import { getAdminDb } from "@/lib/firebase-admin";
-import { getTemplate } from "@/lib/templates";
-import { getCategory } from "@/lib/categories";
+import { getTemplateConfig } from "@/lib/templates";
+import { getCategoryConfig } from "@/lib/categories";
 
 // Uses the Admin SDK (Node-only APIs), so this must run on the Node runtime
 // rather than the default Edge runtime for metadata image routes.
@@ -10,17 +11,25 @@ export const alt = "Invitation";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default async function Image({ params }: { params: { slug: string } }) {
+export default async function Image({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params;
   const db = getAdminDb();
-  const snap = await db.collection("invitations").doc(params.slug).get();
+  const snap = await db.collection("invitations").doc(slug).get();
   const data = snap.data();
 
-  const category = getCategory(getTemplate(data?.templateId ?? "traditional-gold").category);
-  const bride = data?.brideName || "Bride";
-  const groom = data?.groomName || "Groom";
+  const t = await getTranslations({ locale, namespace: "invite.opengraph" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
+  const category = getCategoryConfig(getTemplateConfig(data?.templateId ?? "traditional-gold").category);
+  const bride = data?.brideName || tCommon("brideFallback");
+  const groom = data?.groomName || tCommon("groomFallback");
   const accent = data?.accentColor || "#b8860b";
+  const format = await getFormatter({ locale });
   const dateLabel = data?.weddingDate
-    ? new Date(data.weddingDate).toLocaleDateString("en-IN", {
+    ? format.dateTime(new Date(data.weddingDate), {
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -51,7 +60,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
             marginBottom: 24,
           }}
         >
-          You&apos;re Invited
+          {t("youreInvited")}
         </div>
         <div
           style={{

@@ -1,12 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { getTranslations, getFormatter, setRequestLocale } from "next-intl/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 import InvitationView from "@/components/invite/InvitationView";
 import ViewTracker from "@/components/invite/ViewTracker";
 import WelcomeBanner from "@/components/invite/WelcomeBanner";
 import type { InvitationData, RsvpEntry, GuestPhoto } from "@/lib/types";
-import { getTemplate } from "@/lib/templates";
-import { getCategory, formatOccasionTitle } from "@/lib/categories";
+import { getTemplateConfig } from "@/lib/templates";
+import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
 
 async function getInvitation(slug: string) {
   const db = getAdminDb();
@@ -55,20 +56,29 @@ async function getGuestPhotos(slug: string): Promise<GuestPhoto[]> {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const data = await getInvitation(slug);
-  if (!data) return { title: "Invitation not found" };
+  const tInvitePage = await getTranslations({ locale, namespace: "invitePage" });
+  if (!data) return { title: tInvitePage("notFoundTitle") };
 
-  const category = getCategory(getTemplate(data.templateId).category);
-  const title = formatOccasionTitle(category, data.brideName, data.groomName);
+  const tCategories = await getTranslations({ locale, namespace: "categories" });
+  const tCommon = await getTranslations({ locale, namespace: "common" });
+  const category = getCategoryMeta(getTemplateConfig(data.templateId).category, tCategories);
+  const title = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
+
+  const format = await getFormatter({ locale });
   const description = data.weddingDate
-    ? `Join us in celebrating — ${title} on ${new Date(data.weddingDate).toLocaleDateString(
-        "en-IN",
-        { day: "numeric", month: "long", year: "numeric" }
-      )}.`
-    : `Join us in celebrating — ${title}.`;
+    ? tInvitePage("joinUsWithDate", {
+        title,
+        date: format.dateTime(new Date(data.weddingDate), {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
+      })
+    : tInvitePage("joinUs", { title });
 
   return {
     title,
@@ -82,10 +92,11 @@ export default async function InvitePage({
   params,
   searchParams,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
   searchParams: Promise<{ welcome?: string; editToken?: string; templateId?: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
   const { welcome, editToken, templateId } = await searchParams;
   const data = await getInvitation(slug);
   if (!data) notFound();

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
-import { TEMPLATE_IDS, getTemplate } from "@/lib/templates";
-import { getCategory } from "@/lib/categories";
+import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
+import { getCategoryConfig } from "@/lib/categories";
 import {
   sanitizeAccentColor,
   sanitizeBackgroundMusic,
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
   if (typeof templateId !== "string" || !TEMPLATE_IDS.includes(templateId)) {
     return NextResponse.json({ error: "Invalid template." }, { status: 400 });
   }
-  const category = getCategory(getTemplate(templateId).category);
+  const category = getCategoryConfig(getTemplateConfig(templateId).category);
   if (
     !String(brideName ?? "").trim() ||
     (!category.singlePerson && !String(groomName ?? "").trim())

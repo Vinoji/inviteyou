@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Upload } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { getFontPairing } from "@/lib/fontPairings";
@@ -25,6 +26,7 @@ export default function GuestGallery({
   templateId: string;
   mode: "preview" | "public";
 }) {
+  const t = useTranslations("invite.guestGallery");
   const [name, setName] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,15 +36,15 @@ export default function GuestGallery({
   async function handleFile(file: File | null) {
     if (!file || mode === "preview") return;
     if (!name.trim()) {
-      setError("Please enter your name first.");
+      setError(t("errName"));
       return;
     }
     if (!file.type.startsWith("image/")) {
-      setError("Please choose an image file.");
+      setError(t("errImageFile"));
       return;
     }
     if (file.size > 8 * 1024 * 1024) {
-      setError("Image must be under 8MB.");
+      setError(t("errImageSize"));
       return;
     }
     setError(null);
@@ -63,11 +65,11 @@ export default function GuestGallery({
       });
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
-        throw new Error(j.error ?? "Upload failed. Please try again.");
+        throw new Error(j.error ?? t("errUploadFailed"));
       }
       setDone(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed. Please try again.");
+      setError(err instanceof Error ? err.message : t("errUploadFailed"));
     } finally {
       setUploading(false);
     }
@@ -80,7 +82,7 @@ export default function GuestGallery({
           className="text-sm font-semibold tracking-[0.3em] uppercase"
           style={{ color: accentColor }}
         >
-          Share Your Photos
+          {t("heading")}
         </h2>
         <div className="mt-3">
           <SectionDivider templateId={templateId} accent={accentColor} />
@@ -89,7 +91,7 @@ export default function GuestGallery({
           className="mx-auto mt-4 max-w-md text-sm text-neutral-500"
           style={{ fontFamily: font.bodyVar }}
         >
-          Snap something at the celebration? Add it here for everyone to see.
+          {t("subheading")}
         </p>
       </div>
 
@@ -97,9 +99,9 @@ export default function GuestGallery({
         <ZoomReveal className="mt-8">
           <Carousel
             images={photos.map((p) => p.url)}
-            altPrefix="Guest photo"
+            altPrefix={t("guestPhotoAlt")}
             accentColor={accentColor}
-            captions={photos.map((p) => (p.uploaderName ? `Shared by ${p.uploaderName}` : undefined))}
+            captions={photos.map((p) => (p.uploaderName ? t("sharedBy", { name: p.uploaderName }) : undefined))}
           />
         </ZoomReveal>
       )}
@@ -107,14 +109,14 @@ export default function GuestGallery({
       <div className="mx-auto mt-8 max-w-sm">
         {done ? (
           <p className="text-center text-sm font-semibold" style={{ color: accentColor }}>
-            Thanks for sharing! 🎉
+            {t("thanks")}
           </p>
         ) : (
           <div className="space-y-3">
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Your name"
+              placeholder={t("namePlaceholder")}
               disabled={mode === "preview"}
               className="w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-500 focus:outline-none"
             />
@@ -124,7 +126,7 @@ export default function GuestGallery({
               }`}
             >
               <Upload size={15} aria-hidden />
-              {uploading ? "Uploading…" : "Add a photo"}
+              {uploading ? t("uploading") : t("addPhoto")}
               <input
                 type="file"
                 accept="image/*"
@@ -136,7 +138,7 @@ export default function GuestGallery({
             {error && <p className="text-center text-xs text-red-600">{error}</p>}
             {mode === "preview" && (
               <p className="text-center text-xs text-neutral-400">
-                Disabled in the live preview.
+                {t("disabledPreview")}
               </p>
             )}
           </div>

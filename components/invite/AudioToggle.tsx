@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Music } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useAmbientTone } from "./decor/useAmbientTone";
 
 /**
@@ -22,6 +23,7 @@ export default function AudioToggle({
   templateId: string;
   accentColor: string;
 }) {
+  const t = useTranslations("invite.audio");
   const audioRef = useRef<HTMLAudioElement>(null);
   const [filePlaying, setFilePlaying] = useState(false);
   const ambient = useAmbientTone(templateId);
@@ -63,7 +65,7 @@ export default function AudioToggle({
       <button
         onClick={toggle}
         aria-pressed={playing}
-        aria-label={playing ? "Pause background music" : "Play background music"}
+        aria-label={playing ? t("pause") : t("play")}
         style={{ backgroundColor: accentColor }}
         className="fixed right-5 bottom-5 z-40 flex h-12 w-12 items-center justify-center rounded-full text-white shadow-lg transition-transform active:scale-90"
       >

@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { Monitor, Plus, Smartphone, Tablet, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useRouter, Link } from "@/i18n/navigation";
 import Script from "next/script";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { storage } from "@/lib/firebase";
-import { getTemplate } from "@/lib/templates";
-import { getCategory } from "@/lib/categories";
+import { getTemplateMeta } from "@/lib/i18n/templates";
+import { getCategoryMeta } from "@/lib/i18n/categories";
+import { getDefaultInvitationData } from "@/lib/i18n/defaultContent";
 import { FONT_PAIRINGS } from "@/lib/fontPairings";
-import { getDefaultInvitationData } from "@/lib/defaultContent";
 import type { InvitationData } from "@/lib/types";
 import InvitationView from "@/components/invite/InvitationView";
 import { FormSection, Field, inputClass, SectionToggle } from "@/components/editor/FormFields";
@@ -69,12 +69,18 @@ export default function Editor({
   editToken: string | null;
 }) {
   const router = useRouter();
-  const template = getTemplate(templateId);
-  const category = getCategory(template.category);
+  const t = useTranslations("editor");
+  const tTemplates = useTranslations("templates");
+  const tCategories = useTranslations("categories");
+  const tDefaultContent = useTranslations("defaultContent");
+  const template = getTemplateMeta(templateId, tTemplates);
+  const category = getCategoryMeta(template.category, tCategories);
   const isEditMode = Boolean(editSlug && editToken);
 
   const [draftId] = useState(() => generateDraftId());
-  const [data, setData] = useState<InvitationData>(() => getDefaultInvitationData(templateId));
+  const [data, setData] = useState<InvitationData>(() =>
+    getDefaultInvitationData(templateId, tDefaultContent)
+  );
   const [loadingExisting, setLoadingExisting] = useState(isEditMode);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
@@ -93,14 +99,12 @@ export default function Editor({
         const res = await fetch(
           `/api/invitation/${editSlug}?token=${encodeURIComponent(editToken)}`
         );
-        if (!res.ok) throw new Error("This edit link is invalid or has expired.");
+        if (!res.ok) throw new Error(t("errEditLinkInvalid"));
         const json = await res.json();
         if (!cancelled) setData(json.invitation);
       } catch (err) {
         if (!cancelled) {
-          setLoadError(
-            err instanceof Error ? err.message : "Failed to load invitation."
-          );
+          setLoadError(err instanceof Error ? err.message : t("errLoadFailed"));
         }
       } finally {
         if (!cancelled) setLoadingExisting(false);
@@ -109,6 +113,7 @@ export default function Editor({
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditMode, editSlug, editToken]);
 
   function update<K extends keyof InvitationData>(key: K, value: InvitationData[K]) {
@@ -143,11 +148,11 @@ export default function Editor({
   async function handlePhotoChange(index: number, file: File | null) {
     if (!file) return;
     if (!file.type.startsWith("image/")) {
-      alert("Please choose an image file.");
+      alert(t("errImageFile"));
       return;
     }
     if (file.size > 8 * 1024 * 1024) {
-      alert("Image must be under 8MB.");
+      alert(t("errImageSize"));
       return;
     }
     setUploadingIndex(index);
@@ -163,7 +168,7 @@ export default function Editor({
       });
     } catch (err) {
       console.error(err);
-      alert("Photo upload failed. Please try again.");
+      alert(t("errPhotoUpload"));
     } finally {
       setUploadingIndex(null);
     }
@@ -186,11 +191,11 @@ export default function Editor({
   async function handleMusicChange(file: File | null) {
     if (!file) return;
     if (!file.type.startsWith("audio/")) {
-      alert("Please choose an audio file (MP3, WAV, etc.).");
+      alert(t("errAudioFile"));
       return;
     }
     if (file.size > 15 * 1024 * 1024) {
-      alert("Audio file must be under 15MB.");
+      alert(t("errAudioSize"));
       return;
     }
     setUploadingMusic(true);
@@ -202,7 +207,7 @@ export default function Editor({
       update("backgroundMusic", url);
     } catch (err) {
       console.error(err);
-      alert("Audio upload failed. Please try again.");
+      alert(t("errAudioUpload"));
     } finally {
       setUploadingMusic(false);
     }
@@ -233,11 +238,11 @@ export default function Editor({
       });
       if (!res.ok) {
         const j = await res.json().catch(() => ({}));
-        throw new Error(j.error ?? "Failed to save changes.");
+        throw new Error(j.error ?? t("errSaveFailed"));
       }
       router.push(`/invite/${editSlug}`);
     } catch (err) {
-      setPublishError(err instanceof Error ? err.message : "Failed to save changes.");
+      setPublishError(err instanceof Error ? err.message : t("errSaveFailed"));
       setPublishing(false);
     }
   }
@@ -253,7 +258,7 @@ export default function Editor({
       });
       if (!draftRes.ok) {
         const j = await draftRes.json().catch(() => ({}));
-        throw new Error(j.error ?? "Could not save your details. Please try again.");
+        throw new Error(j.error ?? t("errDraftSaveFailed"));
       }
 
       const orderRes = await fetch("/api/create-order", {
@@ -263,12 +268,12 @@ export default function Editor({
       });
       if (!orderRes.ok) {
         const j = await orderRes.json().catch(() => ({}));
-        throw new Error(j.error ?? "Could not start payment. Please try again.");
+        throw new Error(j.error ?? t("errPaymentStart"));
       }
       const order = await orderRes.json();
 
       if (!window.Razorpay) {
-        throw new Error("Payment library failed to load. Please refresh and try again.");
+        throw new Error(t("errPaymentLibrary"));
       }
 
       const rz = new window.Razorpay({
@@ -290,16 +295,14 @@ export default function Editor({
             });
             if (!verifyRes.ok) {
               const j = await verifyRes.json().catch(() => ({}));
-              throw new Error(j.error ?? "Payment verification failed. Please contact support.");
+              throw new Error(j.error ?? t("errPaymentVerifyFailed"));
             }
             const { slug, editToken: newToken } = await verifyRes.json();
             router.push(
               `/invite/${slug}?welcome=1&editToken=${encodeURIComponent(newToken)}&templateId=${encodeURIComponent(templateId)}`
             );
           } catch (err) {
-            setPublishError(
-              err instanceof Error ? err.message : "Payment verification failed."
-            );
+            setPublishError(err instanceof Error ? err.message : t("errPaymentVerifyFailed"));
             setPublishing(false);
           }
         },
@@ -311,12 +314,12 @@ export default function Editor({
         },
       });
       rz.on("payment.failed", () => {
-        setPublishError("Payment failed. Please try again.");
+        setPublishError(t("errPaymentFailed"));
         setPublishing(false);
       });
       rz.open();
     } catch (err) {
-      setPublishError(err instanceof Error ? err.message : "Something went wrong.");
+      setPublishError(err instanceof Error ? err.message : t("errGeneric"));
       setPublishing(false);
     }
   }
@@ -331,17 +334,17 @@ export default function Editor({
 
       {/* Form panel */}
       <div
-        className={`flex-1 flex-col overflow-hidden lg:flex lg:w-[440px] lg:flex-none lg:border-r lg:border-neutral-200 ${
+        className={`flex-1 flex-col overflow-hidden lg:flex lg:w-[440px] lg:flex-none lg:border-r lg:border-neutral-200 dark:lg:border-neutral-800 ${
           mobileView === "preview" ? "hidden lg:flex" : "flex"
         }`}
       >
-        <header className="flex items-center justify-between border-b border-neutral-200 px-5 py-4">
+        <header className="flex items-center justify-between border-b border-neutral-200 px-5 py-4 dark:border-neutral-800">
           <div>
             <p className="text-xs font-semibold tracking-widest text-amber-700 uppercase">
               {template.name}
             </p>
-            <h1 className="font-serif text-lg font-bold text-neutral-900">
-              {isEditMode ? "Edit your invitation" : "Create your invitation"}
+            <h1 className="font-serif text-lg font-bold text-neutral-900 dark:text-neutral-50">
+              {isEditMode ? t("editHeading") : t("createHeading")}
             </h1>
           </div>
           <div className="flex shrink-0 items-center gap-3">
@@ -351,28 +354,28 @@ export default function Editor({
                 className="text-xs font-semibold hover:underline"
                 style={{ color: data.accentColor }}
               >
-                View RSVPs
+                {t("viewRsvps")}
               </Link>
             )}
-            <Link href="/" className="text-xs text-neutral-400 hover:text-neutral-700">
-              Change template
+            <Link href="/" className="text-xs text-neutral-400 hover:text-neutral-700 dark:text-neutral-500 dark:hover:text-neutral-300">
+              {t("changeTemplate")}
             </Link>
           </div>
         </header>
 
         {loadingExisting ? (
-          <div className="p-6 text-sm text-neutral-500">Loading your invitation…</div>
+          <div className="p-6 text-sm text-neutral-500">{t("loading")}</div>
         ) : loadError ? (
           <div className="p-6 text-sm text-red-600">{loadError}</div>
         ) : (
           <div className="flex-1 space-y-8 overflow-y-auto px-5 py-6">
-            <FormSection title={category.singlePerson ? "About you" : "The couple"}>
+            <FormSection title={category.singlePerson ? t("sectionAboutYou") : t("sectionCouple")}>
               <Field label={category.personALabel}>
                 <input
                   className={inputClass}
                   value={data.brideName}
                   onChange={(e) => update("brideName", e.target.value)}
-                  placeholder="Priya"
+                  placeholder={t("namePlaceholderA")}
                 />
               </Field>
               {!category.singlePerson && (
@@ -381,14 +384,14 @@ export default function Editor({
                     className={inputClass}
                     value={data.groomName}
                     onChange={(e) => update("groomName", e.target.value)}
-                    placeholder="Arjun"
+                    placeholder={t("namePlaceholderB")}
                   />
                 </Field>
               )}
             </FormSection>
 
             <FormSection title={category.dateLabel}>
-              <Field label="Date">
+              <Field label={t("dateFieldLabel")}>
                 <input
                   type="date"
                   className={inputClass}
@@ -400,8 +403,8 @@ export default function Editor({
 
             <div>
               <div className="mb-3 flex items-center justify-between gap-3">
-                <h2 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
-                  Event Schedule
+                <h2 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
+                  {t("eventSchedule")}
                 </h2>
                 <SectionToggle
                   enabled={data.sections.schedule}
@@ -412,70 +415,70 @@ export default function Editor({
                 className={`space-y-8 transition-opacity ${!data.sections.schedule ? "opacity-45" : ""}`}
               >
                 <FormSection title={category.eventALabel}>
-                  <Field label="Time">
+                  <Field label={t("timeLabel")}>
                     <input
                       className={inputClass}
                       value={data.ceremonyTime}
                       onChange={(e) => update("ceremonyTime", e.target.value)}
-                      placeholder="10:00 AM"
+                      placeholder={t("ceremonyPlaceholderTime")}
                     />
                   </Field>
-                  <Field label="Venue name">
+                  <Field label={t("venueNameLabel")}>
                     <input
                       className={inputClass}
                       value={data.ceremonyVenue.name}
                       onChange={(e) => updateVenue("ceremonyVenue", "name", e.target.value)}
-                      placeholder="Sri Kalyana Mandapam"
+                      placeholder={t("ceremonyPlaceholderVenue")}
                     />
                   </Field>
-                  <Field label="Address">
+                  <Field label={t("addressLabel")}>
                     <textarea
                       className={inputClass}
                       rows={2}
                       value={data.ceremonyVenue.address}
                       onChange={(e) => updateVenue("ceremonyVenue", "address", e.target.value)}
-                      placeholder="123 Temple Street, Chennai"
+                      placeholder={t("ceremonyPlaceholderAddress")}
                     />
                   </Field>
-                  <Field label="Google Maps link (optional)">
+                  <Field label={t("mapsLinkLabel")}>
                     <input
                       type="url"
                       className={inputClass}
                       value={data.ceremonyVenue.mapsLink ?? ""}
                       onChange={(e) => updateVenue("ceremonyVenue", "mapsLink", e.target.value)}
-                      placeholder="https://maps.google.com/..."
+                      placeholder={t("mapsPlaceholder")}
                     />
                   </Field>
                 </FormSection>
 
                 {category.eventBLabel && (
                   <FormSection title={category.eventBLabel}>
-                    <Field label="Time">
+                    <Field label={t("timeLabel")}>
                       <input
                         className={inputClass}
                         value={data.receptionTime}
                         onChange={(e) => update("receptionTime", e.target.value)}
-                        placeholder="7:00 PM"
+                        placeholder={t("receptionPlaceholderTime")}
                       />
                     </Field>
-                    <Field label="Venue name">
+                    <Field label={t("venueNameLabel")}>
                       <input
                         className={inputClass}
                         value={data.receptionVenue.name}
                         onChange={(e) => updateVenue("receptionVenue", "name", e.target.value)}
-                        placeholder="Grand Ballroom, Taj Hotel"
+                        placeholder={t("receptionPlaceholderVenue")}
                       />
                     </Field>
-                    <Field label="Address">
+                    <Field label={t("addressLabel")}>
                       <textarea
                         className={inputClass}
                         rows={2}
                         value={data.receptionVenue.address}
                         onChange={(e) => updateVenue("receptionVenue", "address", e.target.value)}
-                        placeholder="456 Beach Road, Chennai"
+                        placeholder={t("receptionPlaceholderAddress")}
                       />
                     </Field>
-                    <Field label="Google Maps link (optional)">
+                    <Field label={t("mapsLinkLabel")}>
                       <input
                         type="url"
                         className={inputClass}
@@ -483,7 +486,7 @@ export default function Editor({
                         onChange={(e) =>
                           updateVenue("receptionVenue", "mapsLink", e.target.value)
                         }
-                        placeholder="https://maps.google.com/..."
+                        placeholder={t("mapsPlaceholder")}
                       />
                     </Field>
                   </FormSection>
@@ -500,7 +503,7 @@ export default function Editor({
                 rows={5}
                 value={data.story}
                 onChange={(e) => update("story", e.target.value)}
-                placeholder="Tell your guests the story behind this celebration..."
+                placeholder={t("storyPlaceholder")}
               />
             </FormSection>
 
@@ -512,30 +515,28 @@ export default function Editor({
                   onChange: (v) => updateSection("family", v),
                 }}
               >
-                <Field label="Groom's parents">
+                <Field label={t("groomParentsLabel")}>
                   <input
                     className={inputClass}
                     value={data.groomParents}
                     onChange={(e) => update("groomParents", e.target.value)}
-                    placeholder="Mr. & Mrs. Rajendran Kumar"
+                    placeholder={t("groomParentsPlaceholder")}
                   />
                 </Field>
-                <Field label="Bride's parents">
+                <Field label={t("brideParentsLabel")}>
                   <input
                     className={inputClass}
                     value={data.brideParents}
                     onChange={(e) => update("brideParents", e.target.value)}
-                    placeholder="Mr. & Mrs. Suresh Rao"
+                    placeholder={t("brideParentsPlaceholder")}
                   />
                 </Field>
-                <p className="text-xs text-neutral-400">
-                  Also hides automatically if both are left blank.
-                </p>
+                <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("familyHint")}</p>
               </FormSection>
             )}
 
             <FormSection
-              title="Photo gallery"
+              title={t("photoGallery")}
               toggle={{
                 enabled: data.sections.gallery,
                 onChange: (v) => updateSection("gallery", v),
@@ -553,42 +554,35 @@ export default function Editor({
                   />
                 ))}
               </div>
-              <p className="text-xs text-neutral-400">
-                The first photo always becomes your hero background, even if
-                the gallery below is hidden.
-              </p>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("photoGalleryHint")}</p>
             </FormSection>
 
             <FormSection
-              title="Guest photos"
+              title={t("guestPhotosTitle")}
               toggle={{
                 enabled: data.sections.guestPhotos,
                 onChange: (v) => updateSection("guestPhotos", v),
               }}
             >
-              <p className="text-xs text-neutral-400">
-                Lets guests upload their own photos from the published page —
-                a shared carousel everyone can add to and see. Turn this off
-                if you&apos;d rather keep photos to just what you upload above.
-              </p>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("guestPhotosHint")}</p>
             </FormSection>
 
             <FormSection
-              title="Things to know"
+              title={t("thingsToKnowTitle")}
               toggle={{ enabled: data.sections.faq, onChange: (v) => updateSection("faq", v) }}
             >
               <div className="space-y-4">
                 {data.faq.map((item, i) => (
-                  <div key={i} className="rounded-lg border border-neutral-200 p-3">
+                  <div key={i} className="rounded-lg border border-neutral-200 p-3 dark:border-neutral-800">
                     <div className="mb-2 flex items-center justify-between">
-                      <span className="text-xs font-semibold text-neutral-400">
-                        Question {i + 1}
+                      <span className="text-xs font-semibold text-neutral-400 dark:text-neutral-500">
+                        {t("questionLabel", { n: i + 1 })}
                       </span>
                       <button
                         type="button"
                         onClick={() => removeFaqItem(i)}
-                        className="text-neutral-400 hover:text-red-600"
-                        aria-label="Remove this question"
+                        className="text-neutral-400 hover:text-red-600 dark:text-neutral-500 dark:hover:text-red-400"
+                        aria-label={t("removeQuestion")}
                       >
                         <Trash2 size={14} />
                       </button>
@@ -597,14 +591,14 @@ export default function Editor({
                       className={`${inputClass} mb-2`}
                       value={item.question}
                       onChange={(e) => updateFaq(i, "question", e.target.value)}
-                      placeholder="What's the dress code?"
+                      placeholder={t("questionPlaceholder")}
                     />
                     <textarea
                       className={inputClass}
                       rows={2}
                       value={item.answer}
                       onChange={(e) => updateFaq(i, "answer", e.target.value)}
-                      placeholder="Smart casual — come as you are."
+                      placeholder={t("answerPlaceholder")}
                     />
                   </div>
                 ))}
@@ -613,26 +607,22 @@ export default function Editor({
                 <button
                   type="button"
                   onClick={addFaqItem}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-neutral-900"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
                 >
                   <Plus size={14} />
-                  Add a question ({data.faq.length}/4)
+                  {t("addQuestion", { count: data.faq.length })}
                 </button>
               )}
             </FormSection>
 
             <FormSection
-              title="Guest RSVP"
+              title={t("guestRsvpTitle")}
               toggle={{ enabled: data.sections.rsvp, onChange: (v) => updateSection("rsvp", v) }}
             >
-              <p className="text-xs text-neutral-400">
-                Lets guests confirm attendance and leave a message from the
-                published page. Turn this off if you&apos;re collecting RSVPs
-                another way.
-              </p>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("guestRsvpHint")}</p>
             </FormSection>
 
-            <FormSection title="Background music (optional)">
+            <FormSection title={t("musicTitle")}>
               {data.backgroundMusic ? (
                 <div className="space-y-2">
                   <audio controls src={data.backgroundMusic} className="w-full" />
@@ -641,12 +631,12 @@ export default function Editor({
                     onClick={removeMusic}
                     className="text-xs font-semibold text-red-600 hover:underline"
                   >
-                    Remove track
+                    {t("removeTrack")}
                   </button>
                 </div>
               ) : (
                 <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-neutral-300 px-4 py-3 text-sm text-neutral-500 hover:border-neutral-400">
-                  {uploadingMusic ? "Uploading…" : "Upload an audio file (MP3, WAV)"}
+                  {uploadingMusic ? t("uploading") : t("uploadAudio")}
                   <input
                     type="file"
                     accept="audio/*"
@@ -656,13 +646,10 @@ export default function Editor({
                   />
                 </label>
               )}
-              <p className="text-xs text-neutral-400">
-                Plays only if a guest taps the music button — never
-                auto-plays with sound.
-              </p>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("musicHint")}</p>
             </FormSection>
 
-            <FormSection title="Accent color">
+            <FormSection title={t("accentColorTitle")}>
               <div className="flex flex-wrap items-center gap-2">
                 {ACCENT_PRESETS.map((c) => (
                   <button
@@ -674,7 +661,7 @@ export default function Editor({
                       backgroundColor: c,
                       borderColor: data.accentColor === c ? "#0a0a0a" : "transparent",
                     }}
-                    aria-label={`Use accent color ${c}`}
+                    aria-label={t("accentColorAria", { color: c })}
                   />
                 ))}
                 <input
@@ -682,12 +669,12 @@ export default function Editor({
                   value={data.accentColor}
                   onChange={(e) => update("accentColor", e.target.value)}
                   className="h-8 w-8 cursor-pointer rounded border border-neutral-300 bg-transparent p-0"
-                  aria-label="Custom accent color"
+                  aria-label={t("customAccentAria")}
                 />
               </div>
             </FormSection>
 
-            <FormSection title="Font pairing">
+            <FormSection title={t("fontPairingTitle")}>
               <div className="grid grid-cols-2 gap-2">
                 {FONT_PAIRINGS.map((f) => (
                   <button
@@ -696,8 +683,8 @@ export default function Editor({
                     onClick={() => update("fontPairing", f.id)}
                     className={`rounded-lg border px-3 py-2 text-left text-sm transition ${
                       data.fontPairing === f.id
-                        ? "border-neutral-900 bg-neutral-50"
-                        : "border-neutral-200 hover:border-neutral-300"
+                        ? "border-neutral-900 bg-neutral-50 dark:border-neutral-100 dark:bg-neutral-800"
+                        : "border-neutral-200 hover:border-neutral-300 dark:border-neutral-700 dark:hover:border-neutral-600"
                     }`}
                   >
                     <span style={{ fontFamily: f.headingVar }} className="block text-base">
@@ -710,7 +697,7 @@ export default function Editor({
           </div>
         )}
 
-        <div className="border-t border-neutral-200 p-4">
+        <div className="border-t border-neutral-200 p-4 dark:border-neutral-800">
           {publishError && <p className="mb-2 text-sm text-red-600">{publishError}</p>}
           {isEditMode ? (
             <button
@@ -719,7 +706,7 @@ export default function Editor({
               style={{ backgroundColor: data.accentColor }}
               className="w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50"
             >
-              {publishing ? "Saving…" : "Save changes"}
+              {publishing ? t("saving") : t("saveChanges")}
             </button>
           ) : (
             <button
@@ -728,7 +715,7 @@ export default function Editor({
               style={{ backgroundColor: data.accentColor }}
               className="w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50"
             >
-              {publishing ? "Processing…" : "Publish & Get Your Link — ₹199"}
+              {publishing ? t("processing") : t("publishCta")}
             </button>
           )}
         </div>
@@ -736,19 +723,19 @@ export default function Editor({
 
       {/* Live preview panel */}
       <div
-        className={`flex-1 flex-col overflow-hidden bg-neutral-100 ${
+        className={`flex-1 flex-col overflow-hidden bg-neutral-100 dark:bg-neutral-950 ${
           mobileView === "edit" ? "hidden lg:flex" : "flex"
         }`}
       >
-        <div className="hidden items-center justify-between border-b border-neutral-200 bg-white/90 px-4 py-2 backdrop-blur lg:flex">
-          <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">
-            Preview
+        <div className="hidden items-center justify-between border-b border-neutral-200 bg-white/90 px-4 py-2 backdrop-blur lg:flex dark:border-neutral-800 dark:bg-neutral-900/90">
+          <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
+            {t("previewLabel")}
           </p>
-          <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-1">
+          <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-1 dark:border-neutral-800 dark:bg-neutral-900">
             {[
-              { id: "desktop", label: "Desktop", icon: Monitor },
-              { id: "tablet", label: "Tablet", icon: Tablet },
-              { id: "mobile", label: "Mobile", icon: Smartphone },
+              { id: "desktop", label: t("desktop"), icon: Monitor },
+              { id: "tablet", label: t("tablet"), icon: Tablet },
+              { id: "mobile", label: t("mobile"), icon: Smartphone },
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
@@ -756,8 +743,8 @@ export default function Editor({
                 onClick={() => setPreviewDevice(id as typeof previewDevice)}
                 className={`inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition ${
                   previewDevice === id
-                    ? "bg-white text-neutral-900 shadow-sm"
-                    : "text-neutral-500 hover:text-neutral-900"
+                    ? "bg-white text-neutral-900 shadow-sm dark:bg-neutral-700 dark:text-neutral-50"
+                    : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
                 }`}
                 aria-pressed={previewDevice === id}
               >
@@ -769,7 +756,7 @@ export default function Editor({
         </div>
         <div className="flex-1 overflow-y-auto">
           <div
-            className={`mx-auto min-h-full bg-white shadow-sm transition-[max-width] duration-300 ${
+            className={`mx-auto min-h-full bg-white shadow-sm transition-[max-width] duration-300 dark:bg-neutral-900 ${
               previewDevice === "mobile"
                 ? "max-w-[390px]"
                 : previewDevice === "tablet"
@@ -783,22 +770,22 @@ export default function Editor({
       </div>
 
       {/* Mobile edit/preview toggle */}
-      <div className="flex border-t border-neutral-200 bg-white lg:hidden">
+      <div className="flex border-t border-neutral-200 bg-white lg:hidden dark:border-neutral-800 dark:bg-neutral-900">
         <button
           onClick={() => setMobileView("edit")}
           className={`flex-1 py-3 text-sm font-semibold ${
-            mobileView === "edit" ? "text-neutral-900" : "text-neutral-400"
+            mobileView === "edit" ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-400 dark:text-neutral-600"
           }`}
         >
-          Edit
+          {t("editTab")}
         </button>
         <button
           onClick={() => setMobileView("preview")}
           className={`flex-1 py-3 text-sm font-semibold ${
-            mobileView === "preview" ? "text-neutral-900" : "text-neutral-400"
+            mobileView === "preview" ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-400 dark:text-neutral-600"
           }`}
         >
-          Preview
+          {t("previewTab")}
         </button>
       </div>
     </div>
