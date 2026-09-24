@@ -3,10 +3,11 @@
 import { useRef } from "react";
 import { Heart } from "lucide-react";
 import { motion, type Variants } from "framer-motion";
+import { useTranslations, useFormatter } from "next-intl";
 import useSafeReducedMotion from "./useSafeReducedMotion";
 import { getFontPairing } from "@/lib/fontPairings";
-import { getCategory } from "@/lib/categories";
-import { getTemplate } from "@/lib/templates";
+import { getCategoryMeta } from "@/lib/i18n/categories";
+import { getTemplateConfig } from "@/lib/templates";
 import { getThemeClasses } from "./theme";
 import Countdown from "./Countdown";
 import HeroOrnaments from "./decor/HeroOrnaments";
@@ -59,20 +60,24 @@ export default function Hero({
   templateId: string;
   coverPhoto?: string;
 }) {
+  const t = useTranslations("invite.hero");
+  const tCommon = useTranslations("common");
+  const tCategories = useTranslations("categories");
+  const format = useFormatter();
   const font = getFontPairing(fontPairing);
   const theme = getThemeClasses(templateId);
-  const category = getCategory(getTemplate(templateId).category);
+  const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories);
   const variant = particleVariant(templateId);
   const reduceMotion = useSafeReducedMotion();
   const heroRef = useRef<HTMLElement>(null);
   const dateLabel = weddingDate
-    ? new Date(weddingDate).toLocaleDateString("en-IN", {
+    ? format.dateTime(new Date(weddingDate), {
         weekday: "long",
         day: "numeric",
         month: "long",
         year: "numeric",
       })
-    : "Date to be announced";
+    : t("dateTba");
 
   return (
     <section
@@ -125,13 +130,13 @@ export default function Hero({
           className="mt-4 text-4xl leading-tight font-bold text-balance sm:text-6xl"
           style={{ fontFamily: font.headingVar }}
         >
-          {brideName || (category.singlePerson ? "You" : "Bride")}
+          {brideName || (category.singlePerson ? tCommon("youFallback") : tCommon("brideFallback"))}
           {!category.singlePerson && (
             <span className="mx-3 inline-block opacity-80" style={{ color: accentColor }}>
               &amp;
             </span>
           )}
-          {!category.singlePerson && (groomName || "Groom")}
+          {!category.singlePerson && (groomName || tCommon("groomFallback"))}
         </motion.h1>
         <motion.p
           variants={item}

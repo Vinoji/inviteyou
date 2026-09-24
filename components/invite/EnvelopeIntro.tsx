@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTranslations, useFormatter } from "next-intl";
 import useSafeReducedMotion from "./useSafeReducedMotion";
 import { getFontPairing } from "@/lib/fontPairings";
-import { getCategory } from "@/lib/categories";
-import { getTemplate } from "@/lib/templates";
+import { getCategoryMeta } from "@/lib/i18n/categories";
+import { getTemplateConfig } from "@/lib/templates";
 import { getThemeClasses } from "./theme";
 import WaxSeal from "./decor/WaxSeal";
 import MandalaMotif from "./decor/MandalaMotif";
@@ -74,9 +75,13 @@ export default function EnvelopeIntro({
   const [open, setOpen] = useState(false);
   const [instant, setInstant] = useState(false);
 
+  const t = useTranslations("invite.envelope");
+  const tCommon = useTranslations("common");
+  const tCategories = useTranslations("categories");
+  const format = useFormatter();
   const font = getFontPairing(fontPairing);
   const theme = getThemeClasses(templateId);
-  const category = getCategory(getTemplate(templateId).category);
+  const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories);
   const reduceMotion = useSafeReducedMotion();
 
   useEffect(() => {
@@ -116,7 +121,7 @@ export default function EnvelopeIntro({
   }
 
   const dateLabel = weddingDate
-    ? new Date(weddingDate).toLocaleDateString("en-IN", {
+    ? format.dateTime(new Date(weddingDate), {
         day: "numeric",
         month: "short",
         year: "numeric",
@@ -157,7 +162,7 @@ export default function EnvelopeIntro({
               className="mt-3 text-2xl font-bold text-neutral-900 sm:text-3xl"
               style={{ fontFamily: font.headingVar }}
             >
-              {brideName || (category.singlePerson ? "You" : "Bride")}
+              {brideName || (category.singlePerson ? tCommon("youFallback") : tCommon("brideFallback"))}
             </p>
             {!category.singlePerson && (
               <>
@@ -168,7 +173,7 @@ export default function EnvelopeIntro({
                   className="text-2xl font-bold text-neutral-900 sm:text-3xl"
                   style={{ fontFamily: font.headingVar }}
                 >
-                  {groomName || "Groom"}
+                  {groomName || tCommon("groomFallback")}
                 </p>
               </>
             )}
@@ -186,14 +191,14 @@ export default function EnvelopeIntro({
               />
               <button
                 onClick={handleOpen}
-                aria-label="Open the invitation"
+                aria-label={t("open")}
                 className="relative cursor-pointer transition-transform active:scale-90"
               >
                 <WaxSeal color={accentColor} size={72} fontFamily={font.headingVar} />
               </button>
             </div>
             <p className="mt-4 text-xs font-medium tracking-wide text-neutral-400 uppercase">
-              Tap the seal to open
+              {t("tapToOpen")}
             </p>
           </motion.div>
 

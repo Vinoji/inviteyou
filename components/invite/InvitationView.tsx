@@ -1,7 +1,8 @@
+import { useTranslations } from "next-intl";
 import { withDefaultSections, type InvitationData, type RsvpEntry, type GuestPhoto } from "@/lib/types";
 import { getThemeClasses } from "./theme";
-import { getTemplate } from "@/lib/templates";
-import { getCategory, formatOccasionTitle } from "@/lib/categories";
+import { getTemplateConfig } from "@/lib/templates";
+import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
 import Hero from "./Hero";
 import Story from "./Story";
 import Family from "./Family";
@@ -43,15 +44,18 @@ export default function InvitationView({
   /** Guest-uploaded photos, newest first — public mode only. */
   guestPhotos?: GuestPhoto[];
 }) {
+  const t = useTranslations("invite.view");
+  const tCommon = useTranslations("common");
+  const tCategories = useTranslations("categories");
   const theme = getThemeClasses(data.templateId);
-  const category = getCategory(getTemplate(data.templateId).category);
+  const category = getCategoryMeta(getTemplateConfig(data.templateId).category, tCategories);
   // Safe even for docs published before section toggles existed — missing
   // keys default to shown, matching their original always-on behavior.
   const sections = withDefaultSections(data.sections);
   const coupleLabel = category.singlePerson
-    ? data.brideName || "Friend"
-    : `${data.brideName || "Bride"} & ${data.groomName || "Groom"}`;
-  const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName);
+    ? data.brideName || tCommon("friendFallback")
+    : `${data.brideName || tCommon("brideFallback")} & ${data.groomName || tCommon("groomFallback")}`;
+  const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
 
   return (
     <div className={`min-h-full w-full ${theme.page}`} style={{ ["--accent" as string]: data.accentColor }}>
@@ -123,7 +127,7 @@ export default function InvitationView({
               fontPairing={data.fontPairing}
               templateId={data.templateId}
               eventALabel={category.eventALabel}
-              eventBLabel={category.eventBLabel || "Reception"}
+              eventBLabel={category.eventBLabel || t("defaultReception")}
             />
           </Reveal>
         </ScrollScene>
@@ -201,7 +205,7 @@ export default function InvitationView({
       )}
 
       <footer className="px-6 pb-10 text-center text-xs text-neutral-400">
-        Made with love for {coupleLabel} &middot; via Namma Vivaham
+        {t("madeWith", { couple: coupleLabel })}
       </footer>
     </div>
   );

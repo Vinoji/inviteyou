@@ -1,0 +1,603 @@
+{
+  "common": {
+    "occasionTitle": "{who}'s {category}",
+    "aFriend": "A friend",
+    "unknownName": "?",
+    "brideFallback": "Bride",
+    "groomFallback": "Groom",
+    "youFallback": "You",
+    "friendFallback": "Friend"
+  },
+  "landing": {
+    "eyebrow": "Namma Vivaham",
+    "heading": "A beautiful invitation, live in minutes",
+    "subheading": "Weddings, anniversaries, proposals, birthdays, house warmings — pick a template, add your story and photos, and share one link with every guest, with RSVPs, a countdown, directions, and a QR code built in.",
+    "useTemplate": "Use this template",
+    "feature1Title": "Live preview",
+    "feature1Body": "See your invitation update as you type — names, dates, photos, colors, all in real time.",
+    "feature2Title": "One link, one QR code",
+    "feature2Body": "Share a single page with every guest, with directions, RSVPs and a live countdown.",
+    "feature3Title": "₹199, pay once",
+    "feature3Body": "Publish for a flat one-time fee. Editing afterwards is always free."
+  },
+  "notFound": {
+    "eyebrow": "404",
+    "heading": "We couldn't find that invitation",
+    "body": "This link may be mistyped, or the invitation hasn't been published yet.",
+    "cta": "Create your own invitation"
+  },
+  "editor": {
+    "pageTitleCreate": "Create — {name}",
+    "editHeading": "Edit your invitation",
+    "createHeading": "Create your invitation",
+    "viewRsvps": "View RSVPs",
+    "changeTemplate": "Change template",
+    "loading": "Loading your invitation…",
+    "sectionCouple": "The couple",
+    "sectionAboutYou": "About you",
+    "dateFieldLabel": "Date",
+    "eventSchedule": "Event Schedule",
+    "timeLabel": "Time",
+    "venueNameLabel": "Venue name",
+    "addressLabel": "Address",
+    "mapsLinkLabel": "Google Maps link (optional)",
+    "namePlaceholderA": "Priya",
+    "namePlaceholderB": "Arjun",
+    "ceremonyPlaceholderTime": "10:00 AM",
+    "ceremonyPlaceholderVenue": "Sri Kalyana Mandapam",
+    "ceremonyPlaceholderAddress": "123 Temple Street, Chennai",
+    "mapsPlaceholder": "https://maps.google.com/...",
+    "receptionPlaceholderTime": "7:00 PM",
+    "receptionPlaceholderVenue": "Grand Ballroom, Taj Hotel",
+    "receptionPlaceholderAddress": "456 Beach Road, Chennai",
+    "storyPlaceholder": "Tell your guests the story behind this celebration...",
+    "groomParentsLabel": "Groom's parents",
+    "brideParentsLabel": "Bride's parents",
+    "groomParentsPlaceholder": "Mr. & Mrs. Rajendran Kumar",
+    "brideParentsPlaceholder": "Mr. & Mrs. Suresh Rao",
+    "familyHint": "Also hides automatically if both are left blank.",
+    "photoGallery": "Photo gallery",
+    "photoGalleryHint": "The first photo always becomes your hero background, even if the gallery below is hidden.",
+    "guestPhotosTitle": "Guest photos",
+    "guestPhotosHint": "Lets guests upload their own photos from the published page — a shared carousel everyone can add to and see. Turn this off if you'd rather keep photos to just what you upload above.",
+    "thingsToKnowTitle": "Things to know",
+    "questionLabel": "Question {n}",
+    "removeQuestion": "Remove this question",
+    "questionPlaceholder": "What's the dress code?",
+    "answerPlaceholder": "Smart casual — come as you are.",
+    "addQuestion": "Add a question ({count}/4)",
+    "guestRsvpTitle": "Guest RSVP",
+    "guestRsvpHint": "Lets guests confirm attendance and leave a message from the published page. Turn this off if you're collecting RSVPs another way.",
+    "musicTitle": "Background music (optional)",
+    "removeTrack": "Remove track",
+    "uploadAudio": "Upload an audio file (MP3, WAV)",
+    "uploading": "Uploading…",
+    "musicHint": "Plays only if a guest taps the music button — never auto-plays with sound.",
+    "accentColorTitle": "Accent color",
+    "accentColorAria": "Use accent color {color}",
+    "customAccentAria": "Custom accent color",
+    "fontPairingTitle": "Font pairing",
+    "saving": "Saving…",
+    "saveChanges": "Save changes",
+    "processing": "Processing…",
+    "publishCta": "Publish & Get Your Link — ₹199",
+    "previewLabel": "Preview",
+    "desktop": "Desktop",
+    "tablet": "Tablet",
+    "mobile": "Mobile",
+    "editTab": "Edit",
+    "previewTab": "Preview",
+    "errImageFile": "Please choose an image file.",
+    "errImageSize": "Image must be under 8MB.",
+    "errPhotoUpload": "Photo upload failed. Please try again.",
+    "errAudioFile": "Please choose an audio file (MP3, WAV, etc.).",
+    "errAudioSize": "Audio file must be under 15MB.",
+    "errAudioUpload": "Audio upload failed. Please try again.",
+    "errEditLinkInvalid": "This edit link is invalid or has expired.",
+    "errLoadFailed": "Failed to load invitation.",
+    "errSaveFailed": "Failed to save changes.",
+    "errDraftSaveFailed": "Could not save your details. Please try again.",
+    "errPaymentStart": "Could not start payment. Please try again.",
+    "errPaymentLibrary": "Payment library failed to load. Please refresh and try again.",
+    "errPaymentVerifyFailed": "Payment verification failed. Please contact support.",
+    "errPaymentFailed": "Payment failed. Please try again.",
+    "errGeneric": "Something went wrong.",
+    "hideSection": "Hide this section",
+    "showSection": "Show this section",
+    "shown": "Shown",
+    "hidden": "Hidden",
+    "removePhoto": "Remove photo",
+    "photoLabel": "Photo {n}"
+  },
+  "invite": {
+    "hero": {
+      "dateTba": "Date to be announced"
+    },
+    "countdown": {
+      "days": "Days",
+      "hours": "Hours",
+      "minutes": "Min",
+      "seconds": "Sec",
+      "began": "The celebration has begun!"
+    },
+    "blessings": {
+      "heading": "Blessings & Wishes",
+      "sideGroom": "Groom's side",
+      "sideBride": "Bride's side",
+      "sideFriend": "Friend"
+    },
+    "family": {
+      "defaultTitle": "Family & Blessings",
+      "defaultIntro": "With the loving blessings of our families, we joyfully invite you to celebrate with us.",
+      "parentsOf": "Parents of {name}",
+      "theGroom": "the Groom",
+      "theBride": "the Bride"
+    },
+    "gallery": {
+      "heading": "Gallery",
+      "altPrefix": "{coupleLabel} photo"
+    },
+    "guestGallery": {
+      "heading": "Share Your Photos",
+      "subheading": "Snap something at the celebration? Add it here for everyone to see.",
+      "namePlaceholder": "Your name",
+      "uploading": "Uploading…",
+      "addPhoto": "Add a photo",
+      "thanks": "Thanks for sharing! 🎉",
+      "disabledPreview": "Disabled in the live preview.",
+      "errName": "Please enter your name first.",
+      "errImageFile": "Please choose an image file.",
+      "errImageSize": "Image must be under 8MB.",
+      "errUploadFailed": "Upload failed. Please try again.",
+      "sharedBy": "Shared by {name}",
+      "guestPhotoAlt": "Guest photo"
+    },
+    "qr": {
+      "generating": "Generating QR...",
+      "alt": "QR code linking to the invitation",
+      "download": "Download QR code"
+    },
+    "rsvp": {
+      "heading": "RSVP",
+      "thankYouTitle": "Thank you!",
+      "thankYouBody": "Your RSVP has been recorded. We can't wait to celebrate with you.",
+      "nameLabel": "Your name",
+      "namePlaceholder": "Full name",
+      "guestCountLabel": "Guests (incl. you)",
+      "attendingLabel": "Will you attend?",
+      "optionYes": "Joyfully accept",
+      "optionNo": "Regretfully decline",
+      "sideLabel": "Whose side are you on? (optional)",
+      "sideNotSay": "Prefer not to say",
+      "sideOf": "{name}'s side",
+      "sideFriend": "Friend of both",
+      "messageLabel": "Message (optional)",
+      "messagePlaceholder": "Wishes for the couple...",
+      "errName": "Please enter your name.",
+      "errGeneric": "Something went wrong. Please try again.",
+      "sending": "Sending...",
+      "send": "Send RSVP",
+      "disabledPreview": "This form is disabled in the live preview."
+    },
+    "schedule": {
+      "heading": "Event Schedule",
+      "directions": "Get Directions",
+      "defaultEventA": "Ceremony",
+      "defaultEventB": "Reception"
+    },
+    "share": {
+      "heading": "Share this invitation",
+      "subheading": "Send this link to your guests, or let them scan the QR code.",
+      "copied": "Copied!",
+      "copy": "Copy",
+      "shareVia": "Share via...",
+      "shareText": "You're invited! {title}:"
+    },
+    "story": {
+      "defaultTitle": "Our Story"
+    },
+    "thingsToKnow": {
+      "heading": "Things to Know"
+    },
+    "welcomeBanner": {
+      "message": "Your invitation is live! Save your private edit link — it's the only way to make changes later.",
+      "viewRsvps": "View RSVPs",
+      "copied": "Copied!",
+      "copyEditLink": "Copy edit link",
+      "dismiss": "Dismiss"
+    },
+    "envelope": {
+      "open": "Open the invitation",
+      "tapToOpen": "Tap the seal to open"
+    },
+    "audio": {
+      "pause": "Pause background music",
+      "play": "Play background music"
+    },
+    "carousel": {
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "goTo": "Go to photo {n}",
+      "close": "Close",
+      "navAria": "{prefix} navigation"
+    },
+    "view": {
+      "madeWith": "Made with love for {couple} · via Namma Vivaham",
+      "defaultReception": "Reception"
+    },
+    "opengraph": {
+      "youreInvited": "You're Invited"
+    }
+  },
+  "rsvpsPage": {
+    "private": "Private guest list",
+    "onlyVisible": "Only visible to whoever holds this link — guests never see this page.",
+    "responses": "Responses",
+    "attending": "Attending",
+    "cantMakeIt": "Can't make it",
+    "guest": "guest",
+    "guests": "guests",
+    "noRsvpsYet": "No RSVPs yet — once you share your invitation link, responses will show up here.",
+    "sideOf": "{name}'s side",
+    "friendOfBoth": "Friend of both",
+    "backToEdit": "← Back to edit your invitation"
+  },
+  "invitePage": {
+    "joinUsWithDate": "Join us in celebrating — {title} on {date}.",
+    "joinUs": "Join us in celebrating — {title}.",
+    "notFoundTitle": "Invitation not found"
+  },
+  "languageSwitcher": {
+    "en": "English",
+    "ta": "தமிழ்"
+  },
+  "categories": {
+    "wedding": {
+      "label": "Wedding",
+      "tagline": "For the big day",
+      "heroEyebrow": "We're getting married",
+      "dateLabel": "Wedding date",
+      "eventALabel": "Ceremony",
+      "eventBLabel": "Reception",
+      "storyTitle": "Our Story",
+      "familyTitle": "Family & Blessings",
+      "personALabel": "Bride's name",
+      "personBLabel": "Groom's name"
+    },
+    "anniversary": {
+      "label": "Anniversary",
+      "tagline": "Celebrating years together",
+      "heroEyebrow": "Celebrating our anniversary",
+      "dateLabel": "Anniversary date",
+      "eventALabel": "Celebration",
+      "eventBLabel": "",
+      "storyTitle": "Our Journey",
+      "familyTitle": "With Love, Our Family",
+      "personALabel": "Her name",
+      "personBLabel": "His name"
+    },
+    "valentine": {
+      "label": "Valentine's Day",
+      "tagline": "For the one you love",
+      "heroEyebrow": "Happy Valentine's Day",
+      "dateLabel": "Date",
+      "eventALabel": "The Plan",
+      "eventBLabel": "",
+      "storyTitle": "Our Story",
+      "familyTitle": "",
+      "personALabel": "Your name",
+      "personBLabel": "Their name"
+    },
+    "proposal": {
+      "label": "Proposal",
+      "tagline": "For the question you're about to ask",
+      "heroEyebrow": "Will you marry me?",
+      "dateLabel": "The date",
+      "eventALabel": "The Proposal",
+      "eventBLabel": "Celebrate With Us",
+      "storyTitle": "Why You",
+      "familyTitle": "",
+      "personALabel": "Your name",
+      "personBLabel": "Their name"
+    },
+    "birthday": {
+      "label": "Birthday",
+      "tagline": "A wish for someone's big day",
+      "heroEyebrow": "Happy Birthday!",
+      "dateLabel": "Party date",
+      "eventALabel": "The Party",
+      "eventBLabel": "",
+      "storyTitle": "A Birthday Wish",
+      "familyTitle": "",
+      "personALabel": "Whose birthday is it?",
+      "personBLabel": ""
+    },
+    "housewarming": {
+      "label": "House Warming",
+      "tagline": "New home, new memories",
+      "heroEyebrow": "We've moved in!",
+      "dateLabel": "Open house date",
+      "eventALabel": "Open House",
+      "eventBLabel": "",
+      "storyTitle": "About Our New Home",
+      "familyTitle": "",
+      "personALabel": "Host name(s)",
+      "personBLabel": ""
+    }
+  },
+  "templates": {
+    "traditional-gold": {
+      "name": "Traditional Gold",
+      "tagline": "Temple motifs & rich maroon",
+      "description": "Ornamental borders, deep maroon and gold — classic South Asian wedding elegance."
+    },
+    "minimal-modern": {
+      "name": "Minimal Modern",
+      "tagline": "Clean lines, editorial calm",
+      "description": "Generous whitespace and crisp typography for a contemporary, understated invite."
+    },
+    "floral-pastel": {
+      "name": "Floral Pastel",
+      "tagline": "Blush, sage & botanicals",
+      "description": "Soft blush and sage tones with delicate floral accents for a romantic garden feel."
+    },
+    "elegant-bw": {
+      "name": "Elegant Black & White",
+      "tagline": "High-contrast monochrome",
+      "description": "Fine hairline rules and dramatic contrast for a timeless, editorial black & white look."
+    },
+    "beach-boho": {
+      "name": "Beach Boho",
+      "tagline": "Terracotta & ivory warmth",
+      "description": "Warm terracotta, sand and teal for a relaxed destination or beachside celebration."
+    },
+    "anniversary-emerald": {
+      "name": "Emerald Anniversary",
+      "tagline": "Deep emerald & gold",
+      "description": "Rich emerald and gold for celebrating another year of a lasting love."
+    },
+    "valentine-blush": {
+      "name": "Blush Valentine",
+      "tagline": "Red, blush & romance",
+      "description": "Warm reds and soft blush for a sweet, romantic Valentine's Day note."
+    },
+    "proposal-starlit": {
+      "name": "Starlit Proposal",
+      "tagline": "Midnight blue & stars",
+      "description": "A midnight-blue, starlit scene for announcing the moment someone said yes."
+    },
+    "birthday-confetti": {
+      "name": "Confetti Birthday",
+      "tagline": "Bright, playful & fun",
+      "description": "Bold color and confetti for a birthday party invite that isn't shy about it."
+    },
+    "housewarming-terracotta": {
+      "name": "Terracotta House Warming",
+      "tagline": "Warm clay & greenery",
+      "description": "Earthy terracotta and greenery for welcoming friends to your new home."
+    }
+  },
+  "defaultContent": {
+    "traditional-gold": {
+      "brideName": "Priya",
+      "groomName": "Arjun",
+      "ceremonyVenueName": "Sri Kalyana Mandapam",
+      "ceremonyVenueAddress": "12 Temple Tank Road, Mylapore, Chennai",
+      "receptionVenueName": "Grand Ballroom, The Leela Palace",
+      "receptionVenueAddress": "MRC Nagar, Chennai",
+      "groomParents": "Mr. & Mrs. Rajendran Kumar",
+      "brideParents": "Mr. & Mrs. Suresh Rao",
+      "story": "Priya and Arjun met at a college reunion in Chennai and knew almost instantly that they'd found their person. Six years, countless train journeys between cities, and one very persistent proposal later, they're ready to begin the next chapter — surrounded by the families who raised them and the friends who never doubted it. We'd be honored to have you there as we tie the knot the traditional way, with all the rituals, music, and mounds of food that make a South Indian wedding what it is.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Traditional Indian attire is encouraged — silk sarees, lehengas, and kurtas in festive colors."
+        },
+        {
+          "question": "Is parking available?",
+          "answer": "Yes, valet parking is available at the venue entrance."
+        }
+      ]
+    },
+    "minimal-modern": {
+      "brideName": "Meera",
+      "groomName": "Rohan",
+      "ceremonyVenueName": "The Glasshouse",
+      "ceremonyVenueAddress": "Cunningham Road, Bengaluru",
+      "receptionVenueName": "Rooftop at The Oberoi",
+      "receptionVenueAddress": "MG Road, Bengaluru",
+      "groomParents": "Anil & Kavitha Mehta",
+      "brideParents": "Suresh & Lata Iyer",
+      "story": "Meera and Rohan met on a rainy Tuesday, arguing over the last seat at a coffee shop. Neither of them remembers who won. What started as an accidental conversation turned into five years of building a life together — through new cities, new jobs, and a shared love of terrible puns. Now they're making it official, and they'd love for you to be part of the day.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Smart casual to semi-formal — no strict dress code, just come comfortable."
+        },
+        {
+          "question": "Are kids welcome?",
+          "answer": "Absolutely — this is a family-friendly celebration."
+        }
+      ]
+    },
+    "floral-pastel": {
+      "brideName": "Ananya",
+      "groomName": "Kabir",
+      "ceremonyVenueName": "Bloom Garden Estate",
+      "ceremonyVenueAddress": "Whitefield, Bengaluru",
+      "receptionVenueName": "The Orchid Lawns",
+      "receptionVenueAddress": "Whitefield, Bengaluru",
+      "groomParents": "Mr. & Mrs. Farhan Khan",
+      "brideParents": "Mr. & Mrs. Ravi Nair",
+      "story": "Ananya and Kabir's story began with a shared plant obsession and a balcony full of dying succulents. Somewhere between learning how to keep a fern alive and planning weekend hikes, they fell in love. This February, under strings of fairy lights and more flowers than either of them can name, they're saying 'I do' — and they can't imagine the day without you in it.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Garden party attire — pastels and florals are very welcome."
+        },
+        {
+          "question": "Will the ceremony be outdoors?",
+          "answer": "Yes, weather permitting — we'll have a backup indoor space just in case."
+        }
+      ]
+    },
+    "elegant-bw": {
+      "brideName": "Naina",
+      "groomName": "Vikram",
+      "ceremonyVenueName": "The Imperial Ballroom",
+      "ceremonyVenueAddress": "Janpath, New Delhi",
+      "receptionVenueName": "The Imperial Ballroom",
+      "receptionVenueAddress": "Janpath, New Delhi",
+      "groomParents": "Mr. & Mrs. Arvind Malhotra",
+      "brideParents": "Mr. & Mrs. Deepak Singh",
+      "story": "Naina and Vikram met at a mutual friend's wedding and spent the entire reception talking instead of dancing — which, in hindsight, said everything. Three years on, they're ready for a wedding of their own. Join us for an evening of quiet elegance, old favorites, and the beginning of forever.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Black tie optional — think classic evening wear."
+        },
+        {
+          "question": "Is there a gift registry?",
+          "answer": "Your presence is the only present we need."
+        }
+      ]
+    },
+    "beach-boho": {
+      "brideName": "Diya",
+      "groomName": "Aryan",
+      "ceremonyVenueName": "Ashwem Beach Shack",
+      "ceremonyVenueAddress": "Ashwem, North Goa",
+      "receptionVenueName": "Sunset Deck, Ashwem",
+      "receptionVenueAddress": "Ashwem, North Goa",
+      "groomParents": "Rajiv & Meena Kapoor",
+      "brideParents": "Sanjay & Neha D'Souza",
+      "story": "Diya and Aryan fell in love on a backpacking trip through Goa, somewhere between a sunset and a plate of prawn curry. Barefoot on the sand felt like the only honest place to start forever, so that's exactly where they're getting married. Pack light, bring your dancing shoes, and come celebrate with us by the sea.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Light, breezy fabrics — it's a beach, so skip the heels."
+        },
+        {
+          "question": "Is there parking nearby?",
+          "answer": "Limited parking at the venue — we recommend carpooling or a cab."
+        }
+      ]
+    },
+    "anniversary-emerald": {
+      "brideName": "Meena",
+      "groomName": "Suresh",
+      "ceremonyVenueName": "The Fern Residency",
+      "ceremonyVenueAddress": "Banjara Hills, Hyderabad",
+      "receptionVenueName": "",
+      "receptionVenueAddress": "",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "Twenty-five years ago, Meena and Suresh promised each other a lifetime — and somehow, between raising a family, moving three cities, and never quite agreeing on the thermostat, they've kept it. This December, they'd love for the people who've been part of that story to raise a glass with them and celebrate a quarter-century of choosing each other, again and again.",
+      "faq": [
+        {
+          "question": "Should I bring a gift?",
+          "answer": "Just your company — but if you insist, a bottle of wine never hurts."
+        },
+        {
+          "question": "What's the dress code?",
+          "answer": "Smart casual — come as you are."
+        }
+      ]
+    },
+    "valentine-blush": {
+      "brideName": "Ria",
+      "groomName": "Dev",
+      "ceremonyVenueName": "Ivy & Rose Rooftop",
+      "ceremonyVenueAddress": "Bandra West, Mumbai",
+      "receptionVenueName": "",
+      "receptionVenueAddress": "",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "No grand speeches, no big reveal — just the two of us, a table for two, and every reason to celebrate another year of picking each other. Happy Valentine's Day. Here's to us.",
+      "faq": [
+        {
+          "question": "Do I need to RSVP?",
+          "answer": "Just show up looking cute — that's the only RSVP I need."
+        },
+        {
+          "question": "What should I wear?",
+          "answer": "Whatever makes you feel good. I'm not picky."
+        }
+      ]
+    },
+    "proposal-starlit": {
+      "brideName": "Karan",
+      "groomName": "Meher",
+      "ceremonyVenueName": "Nandi Hills Viewpoint",
+      "ceremonyVenueAddress": "Nandi Hills, Bengaluru",
+      "receptionVenueName": "",
+      "receptionVenueAddress": "",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "Meher, from that first terrible cup of coffee we both pretended to like, I knew I wanted a lifetime of terrible coffee with you. Every plan I make these days has your name written into it, whether you know it or not. So here's one more: meet me at Nandi Hills at sunset. I have a question for you.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Something you love — comfortable shoes recommended for the walk up."
+        },
+        {
+          "question": "Anything I should know?",
+          "answer": "Just trust me and show up. That's all I ask."
+        }
+      ]
+    },
+    "birthday-confetti": {
+      "brideName": "Zara",
+      "groomName": "",
+      "ceremonyVenueName": "The Backyard Bistro",
+      "ceremonyVenueAddress": "Koramangala, Bengaluru",
+      "receptionVenueName": "",
+      "receptionVenueAddress": "",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "Happy birthday, Zara! Another trip around the sun and you're still the most fun person we know — the one who somehow makes every plan better just by showing up. Hope your day is full of cake, terrible karaoke, and everyone who loves you. Can't wait to celebrate with you.",
+      "faq": [
+        {
+          "question": "What should I bring?",
+          "answer": "Just yourself — and maybe your best dance moves."
+        },
+        {
+          "question": "Is there a dress code?",
+          "answer": "Come as you are — casual and fun."
+        }
+      ]
+    },
+    "housewarming-terracotta": {
+      "brideName": "Rahul & Simran Desai",
+      "groomName": "",
+      "ceremonyVenueName": "14 Palm Grove Lane",
+      "ceremonyVenueAddress": "Whitefield, Bengaluru",
+      "receptionVenueName": "",
+      "receptionVenueAddress": "",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "After a year of boxes, paint swatches, and way too many trips to the hardware store, our new home is finally starting to feel like one. We'd love for you to be the first to see it — come by for snacks, a house tour, and (hopefully) working Wi-Fi.",
+      "faq": [
+        {
+          "question": "Should I bring anything?",
+          "answer": "Just yourself! If you want to bring something, a plant for the new place would be lovely."
+        },
+        {
+          "question": "Is there parking?",
+          "answer": "Street parking is available — please be mindful of our neighbors."
+        }
+      ]
+    }
+  },
+  "themeToggle": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "errorBoundary": {
+    "heading": "Something went wrong",
+    "body": "An unexpected error occurred. You can try again, or head back home.",
+    "retry": "Try again",
+    "goHome": "Go home"
+  }
+}

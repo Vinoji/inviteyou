@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { getFontPairing } from "@/lib/fontPairings";
 import { getThemeClasses } from "./theme";
 import SectionDivider from "./SectionDivider";
@@ -78,6 +79,7 @@ export default function ThingsToKnow({
   fontPairing: string;
   templateId: string;
 }) {
+  const t = useTranslations("invite.thingsToKnow");
   const items = faq.filter((f) => f.question.trim() && f.answer.trim());
   const [openIndex, setOpenIndex] = useState<number | null>(items.length > 0 ? 0 : null);
   const theme = getThemeClasses(templateId);
@@ -91,7 +93,7 @@ export default function ThingsToKnow({
           className="text-sm font-semibold tracking-[0.3em] uppercase"
           style={{ color: accentColor }}
         >
-          Things to Know
+          {t("heading")}
         </h2>
         <div className="mt-3">
           <SectionDivider templateId={templateId} accent={accentColor} />

@@ -1,12 +1,7 @@
+import { useTranslations } from "next-intl";
 import { getFontPairing } from "@/lib/fontPairings";
 import SectionDivider from "./SectionDivider";
 import type { RsvpEntry } from "@/lib/types";
-
-const SIDE_LABEL: Record<string, string> = {
-  groom: "Groom's side",
-  bride: "Bride's side",
-  friend: "Friend",
-};
 
 export default function BlessingsWall({
   messages,
@@ -19,6 +14,12 @@ export default function BlessingsWall({
   fontPairing: string;
   templateId: string;
 }) {
+  const t = useTranslations("invite.blessings");
+  const SIDE_LABEL: Record<string, string> = {
+    groom: t("sideGroom"),
+    bride: t("sideBride"),
+    friend: t("sideFriend"),
+  };
   if (messages.length === 0) return null;
   const font = getFontPairing(fontPairing);
 
@@ -29,7 +30,7 @@ export default function BlessingsWall({
           className="text-sm font-semibold tracking-[0.3em] uppercase"
           style={{ color: accentColor }}
         >
-          Blessings &amp; Wishes
+          {t("heading")}
         </h2>
         <div className="mt-3">
           <SectionDivider templateId={templateId} accent={accentColor} />

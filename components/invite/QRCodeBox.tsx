@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import QRCode from "qrcode";
 import { Download } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function QRCodeBox({
   url,
@@ -13,6 +14,7 @@ export default function QRCodeBox({
   fileName: string;
   accentColor: string;
 }) {
+  const t = useTranslations("invite.qr");
   const [dataUrl, setDataUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function QRCodeBox({
   if (!dataUrl) {
     return (
       <div className="flex h-40 w-40 animate-pulse items-center justify-center rounded-lg bg-neutral-100 text-xs text-neutral-400">
-        Generating QR...
+        {t("generating")}
       </div>
     );
   }
@@ -46,7 +48,7 @@ export default function QRCodeBox({
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={dataUrl}
-        alt="QR code linking to the invitation"
+        alt={t("alt")}
         className="h-40 w-40 rounded-lg border border-neutral-200 p-2"
       />
       <a
@@ -56,7 +58,7 @@ export default function QRCodeBox({
         className="inline-flex items-center gap-1.5 text-sm font-semibold underline underline-offset-4"
       >
         <Download size={14} />
-        Download QR code
+        {t("download")}
       </a>
     </div>
   );

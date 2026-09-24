@@ -1,4 +1,5 @@
 import { Clock, MapPin, ExternalLink } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { getFontPairing } from "@/lib/fontPairings";
 import { getThemeClasses } from "./theme";
 import SectionDivider from "./SectionDivider";
@@ -19,6 +20,7 @@ function EventCard({
   fontPairing: string;
   templateId: string;
 }) {
+  const t = useTranslations("invite.schedule");
   const font = getFontPairing(fontPairing);
   const theme = getThemeClasses(templateId);
   if (!time && !venue?.name) return null;
@@ -60,7 +62,7 @@ function EventCard({
           className="mt-4 inline-flex items-center gap-1 pl-[21px] text-sm font-semibold underline underline-offset-4"
           style={{ color: accentColor }}
         >
-          Get Directions <ExternalLink size={13} aria-hidden />
+          {t("directions")} <ExternalLink size={13} aria-hidden />
         </a>
       )}
     </div>
@@ -75,8 +77,8 @@ export default function Schedule({
   accentColor,
   fontPairing,
   templateId,
-  eventALabel = "Ceremony",
-  eventBLabel = "Reception",
+  eventALabel,
+  eventBLabel,
 }: {
   ceremonyTime: string;
   ceremonyVenue: VenueInfo;
@@ -88,6 +90,7 @@ export default function Schedule({
   eventALabel?: string;
   eventBLabel?: string;
 }) {
+  const t = useTranslations("invite.schedule");
   const hasAny =
     ceremonyTime || ceremonyVenue?.name || receptionTime || receptionVenue?.name;
   if (!hasAny) return null;
@@ -99,7 +102,7 @@ export default function Schedule({
           className="text-sm font-semibold tracking-[0.3em] uppercase"
           style={{ color: accentColor }}
         >
-          Event Schedule
+          {t("heading")}
         </h2>
         <div className="mt-3">
           <SectionDivider templateId={templateId} accent={accentColor} />
@@ -107,7 +110,7 @@ export default function Schedule({
       </div>
       <div className="mt-8 flex flex-col gap-6 sm:flex-row">
         <EventCard
-          title={eventALabel}
+          title={eventALabel ?? t("defaultEventA")}
           time={ceremonyTime}
           venue={ceremonyVenue}
           accentColor={accentColor}
@@ -115,7 +118,7 @@ export default function Schedule({
           templateId={templateId}
         />
         <EventCard
-          title={eventBLabel}
+          title={eventBLabel ?? t("defaultEventB")}
           time={receptionTime}
           venue={receptionVenue}
           accentColor={accentColor}

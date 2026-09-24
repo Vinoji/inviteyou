@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { getFontPairing } from "@/lib/fontPairings";
 import SectionDivider from "./SectionDivider";
 
@@ -9,8 +10,8 @@ export default function Family({
   accentColor,
   fontPairing,
   templateId,
-  title = "Family & Blessings",
-  intro = "With the loving blessings of our families, we joyfully invite you to celebrate with us.",
+  title,
+  intro,
 }: {
   groomName: string;
   brideName: string;
@@ -22,8 +23,11 @@ export default function Family({
   title?: string;
   intro?: string;
 }) {
+  const t = useTranslations("invite.family");
   if (!groomParents && !brideParents) return null;
   const font = getFontPairing(fontPairing);
+  const resolvedTitle = title ?? t("defaultTitle");
+  const resolvedIntro = intro ?? t("defaultIntro");
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-14 text-center sm:py-20">
@@ -31,7 +35,7 @@ export default function Family({
         className="text-sm font-semibold tracking-[0.3em] uppercase"
         style={{ color: accentColor }}
       >
-        {title}
+        {resolvedTitle}
       </h2>
       <div className="mt-3">
         <SectionDivider templateId={templateId} accent={accentColor} />
@@ -40,7 +44,7 @@ export default function Family({
         className="mx-auto mt-6 max-w-md text-sm text-neutral-500 italic"
         style={{ fontFamily: font.bodyVar }}
       >
-        {intro}
+        {resolvedIntro}
       </p>
 
       <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2">
@@ -50,7 +54,7 @@ export default function Family({
               className="text-xs font-semibold tracking-widest text-neutral-400 uppercase"
               style={{ fontFamily: font.bodyVar }}
             >
-              Parents of {groomName || "the Groom"}
+              {t("parentsOf", { name: groomName || t("theGroom") })}
             </p>
             <p
               className="mt-2 text-lg font-semibold text-neutral-900"
@@ -66,7 +70,7 @@ export default function Family({
               className="text-xs font-semibold tracking-widest text-neutral-400 uppercase"
               style={{ fontFamily: font.bodyVar }}
             >
-              Parents of {brideName || "the Bride"}
+              {t("parentsOf", { name: brideName || t("theBride") })}
             </p>
             <p
               className="mt-2 text-lg font-semibold text-neutral-900"
