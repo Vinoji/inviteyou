@@ -1,0 +1,121 @@
+/* Blooming Bud intro (floral-pastel). Fills IntroHost's slot. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  background: #fffbf5;
+  color: #4a3b3f;
+}
+
+/* Watercolour wash: soft radial layers, plus a turbulence-displaced blot
+ * layer. Both are static — filters never run on moving layers. */
+.wash {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 45%, rgba(246, 214, 214, 0.5), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 80%, rgba(168, 191, 160, 0.25), transparent 70%),
+    radial-gradient(ellipse 35% 25% at 85% 15%, rgba(203, 184, 224, 0.25), transparent 70%);
+}
+.washEdge {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.vine {
+  position: absolute;
+  left: 4px;
+  bottom: 0;
+  width: 44px;
+  height: 78%;
+  overflow: visible;
+}
+.vineRight {
+  left: auto;
+  right: 4px;
+  transform: scaleX(-1);
+}
+
+.column {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: min(2.4cqh, 20px);
+  padding: 0 40px;
+  text-align: center;
+}
+.lead {
+  font-size: min(6cqw, 26px);
+  font-style: italic;
+  max-width: 14em;
+}
+.flowerBox {
+  width: min(62cqw, 300px, 40cqh);
+  aspect-ratio: 1;
+}
+.bud {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.bud:focus-visible {
+  outline: 2px solid #e79aa8;
+  outline-offset: 4px;
+}
+.bud svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.breathe {
+  animation: breathe 3s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+@keyframes breathe {
+  50% {
+    transform: scale(1.03);
+  }
+}
+.names {
+  font-size: min(8cqw, 34px);
+  color: #b96a7c;
+}
+.hint {
+  font-size: 10.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #7d6a6e;
+}
+.viewBtn {
+  border: 1px solid #e79aa8;
+  background: rgba(246, 214, 214, 0.35);
+  color: #4a3b3f;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.root:lang(ta) .hint,
+.root:lang(ta) .viewBtn {
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .breathe {
+    animation: none;
+  }
+}

@@ -1,22 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations, useFormatter } from "next-intl";
-import useSafeReducedMotion from "./useSafeReducedMotion";
-import { getFontPairing } from "@/lib/fontPairings";
-import { getCategoryMeta } from "@/lib/i18n/categories";
-import { getTemplateConfig } from "@/lib/templates";
-import { getThemeClasses } from "./theme";
-import WaxSeal from "./decor/WaxSeal";
-import MandalaMotif from "./decor/MandalaMotif";
-import FloralSprig from "./decor/FloralSprig";
-import HairlineDiamond from "./decor/HairlineDiamond";
-import PalmFrond from "./decor/PalmFrond";
-import RingMotif from "./decor/RingMotif";
-import HouseMotif from "./decor/HouseMotif";
-import BalloonMotif from "./decor/BalloonMotif";
+import useSafeReducedMotion from "../useSafeReducedMotion";
+import { getThemeClasses } from "../theme";
+import WaxSeal from "../decor/WaxSeal";
+import MandalaMotif from "../decor/MandalaMotif";
+import FloralSprig from "../decor/FloralSprig";
+import HairlineDiamond from "../decor/HairlineDiamond";
+import PalmFrond from "../decor/PalmFrond";
+import RingMotif from "../decor/RingMotif";
+import HouseMotif from "../decor/HouseMotif";
+import BalloonMotif from "../decor/BalloonMotif";
 import { Heart } from "lucide-react";
+import type { IntroProps } from "./types";
 
 function CardMotif({ templateId, accentColor }: { templateId: string; accentColor: string }) {
   if (templateId === "traditional-gold" || templateId === "anniversary-emerald") {
@@ -47,77 +45,29 @@ function CardMotif({ templateId, accentColor }: { templateId: string; accentColo
 }
 
 /**
- * A closed-envelope splash shown once per browser session before the
- * invitation itself. Tapping the wax seal plays a short opening transition
- * (Framer Motion spring, so it feels like a physical card sliding away
- * rather than a CSS fade) and reveals the page underneath. Server always
- * renders the closed state (deterministic, no hydration mismatch); a
- * post-mount effect checks sessionStorage and — if this guest already
- * opened it this session — skips straight past it with no animation.
+ * Intro "envelope": a closed card with a wax seal. Tapping the seal plays a
+ * short opening transition (Framer Motion spring, so it feels like a
+ * physical card sliding away rather than a CSS fade) and reveals the page
+ * underneath. IntroHost handles the session skip and scroll lock.
  */
 export default function EnvelopeIntro({
-  slug,
-  brideName,
-  groomName,
+  names,
   weddingDate,
-  accentColor,
-  fontPairing,
+  fonts,
+  accent: accentColor,
   templateId,
-}: {
-  slug: string;
-  brideName: string;
-  groomName: string;
-  weddingDate: string;
-  accentColor: string;
-  fontPairing: string;
-  templateId: string;
-}) {
+  onOpen,
+  onDone,
+}: IntroProps) {
   const [open, setOpen] = useState(false);
-  const [instant, setInstant] = useState(false);
-
   const t = useTranslations("invite.envelope");
-  const tCommon = useTranslations("common");
-  const tCategories = useTranslations("categories");
   const format = useFormatter();
-  const font = getFontPairing(fontPairing);
   const theme = getThemeClasses(templateId);
-  const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories);
   const reduceMotion = useSafeReducedMotion();
-
-  useEffect(() => {
-    // Deferred into a callback (rather than called synchronously in the
-    // effect body) so this is a reaction to a check, not a render-blocking
-    // state write — same pattern as Countdown's ticking interval.
-    const t = setTimeout(() => {
-      try {
-        if (sessionStorage.getItem(`envelope-opened:${slug}`)) {
-          setInstant(true);
-          setOpen(true);
-        }
-      } catch {
-        // sessionStorage unavailable — just show the intro every time, harmless.
-      }
-    }, 0);
-    return () => clearTimeout(t);
-  }, [slug]);
-
-  // Lock background scroll for as long as the envelope is showing.
-  // AnimatePresence owns the actual mount/unmount + exit animation now —
-  // no separate timer needed to tear the overlay down.
-  useEffect(() => {
-    document.body.style.overflow = open ? "" : "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
 
   function handleOpen() {
     setOpen(true);
-    try {
-      sessionStorage.setItem(`envelope-opened:${slug}`, "1");
-    } catch {
-      // Ignore — worst case the intro replays on the next page load.
-    }
+    onOpen();
   }
 
   const dateLabel = weddingDate
@@ -129,17 +79,15 @@ export default function EnvelopeIntro({
     : "";
 
   return (
-    <AnimatePresence>
+    <AnimatePresence onExitComplete={onDone}>
       {!open && (
         <motion.div
-          className={`fixed inset-0 z-50 flex items-center justify-center px-6 ${theme.page}`}
+          className={`absolute inset-0 flex items-center justify-center px-6 ${theme.page}`}
+          role="dialog"
+          aria-label={t("dialogLabel")}
           initial={false}
-          exit={
-            reduceMotion
-              ? { opacity: 0 }
-              : { opacity: 0, scale: 1.08, filter: "blur(6px)" }
-          }
-          transition={{ duration: instant ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
+          exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 1.08, filter: "blur(6px)" }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <motion.div
             className="flex w-full max-w-xs flex-col items-center rounded-2xl border border-black/5 bg-[#fdfaf3] px-8 py-10 text-center shadow-2xl sm:max-w-sm"
@@ -160,20 +108,20 @@ export default function EnvelopeIntro({
 
             <p
               className="mt-3 text-2xl font-bold text-neutral-900 sm:text-3xl"
-              style={{ fontFamily: font.headingVar }}
+              style={{ fontFamily: fonts.display }}
             >
-              {brideName || (category.singlePerson ? tCommon("youFallback") : tCommon("brideFallback"))}
+              {names.a}
             </p>
-            {!category.singlePerson && (
+            {names.b !== undefined && (
               <>
                 <span className="my-1 text-sm opacity-70" style={{ color: accentColor }}>
                   &amp;
                 </span>
                 <p
                   className="text-2xl font-bold text-neutral-900 sm:text-3xl"
-                  style={{ fontFamily: font.headingVar }}
+                  style={{ fontFamily: fonts.display }}
                 >
-                  {groomName || tCommon("groomFallback")}
+                  {names.b}
                 </p>
               </>
             )}
@@ -194,7 +142,7 @@ export default function EnvelopeIntro({
                 aria-label={t("open")}
                 className="relative cursor-pointer transition-transform active:scale-90"
               >
-                <WaxSeal color={accentColor} size={72} fontFamily={font.headingVar} />
+                <WaxSeal color={accentColor} size={72} fontFamily={fonts.display} />
               </button>
             </div>
             <p className="mt-4 text-xs font-medium tracking-wide text-neutral-400 uppercase">

@@ -52,7 +52,7 @@ export default function ShareBox({
   return (
     <section className="mx-auto max-w-lg px-6 py-14 sm:py-20">
       <div className="rounded-2xl border border-neutral-200 p-6 text-center sm:p-8">
-        <h3 className="font-serif text-lg font-bold text-neutral-900">
+        <h3 className="font-[family-name:var(--inv-heading)] text-lg font-bold text-neutral-900">
           {t("heading")}
         </h3>
         <p className="mt-1 text-sm text-neutral-500">{t("subheading")}</p>

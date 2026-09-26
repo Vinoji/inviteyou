@@ -7,8 +7,10 @@ import {
   sanitizeBackgroundMusic,
   sanitizeFaq,
   sanitizeParentsLine,
+  sanitizePlaces,
   sanitizePhotos,
   sanitizeSections,
+  sanitizeTravel,
   sanitizeVenue,
 } from "@/lib/sanitize";
 
@@ -44,6 +46,8 @@ export async function POST(req: NextRequest) {
     backgroundMusic,
     sections,
     faq,
+    travel,
+    places,
   } = body;
 
   if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
@@ -92,6 +96,8 @@ export async function POST(req: NextRequest) {
     backgroundMusic: sanitizeBackgroundMusic(backgroundMusic),
     sections: sanitizeSections(sections),
     faq: sanitizeFaq(faq),
+    travel: sanitizeTravel(travel),
+    places: sanitizePlaces(places),
     status: "pending_payment",
     slug: null,
     viewCount: existing.exists ? (existing.data()?.viewCount ?? 0) : 0,

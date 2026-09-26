@@ -1,0 +1,104 @@
+/* Swiss Split intro (minimal-modern). Fills IntroHost's slot. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  color: #111111;
+}
+
+.names {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fafaf7;
+  font-size: min(13cqw, 9cqh, 96px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+.amp {
+  position: relative;
+  font-size: 0.5em;
+  margin: 0.15em 0;
+}
+.underline {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: -0.05em;
+  height: 2px;
+  transform-origin: 0 50%;
+}
+
+.half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: #fafaf7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px;
+}
+.top {
+  top: 0;
+  justify-content: flex-end;
+  padding-bottom: 18px;
+}
+.bottom {
+  top: 50%;
+  justify-content: space-between;
+  padding-top: 18px;
+  padding-bottom: 40px;
+}
+
+.caps {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+.date {
+  font-size: min(15cqw, 88px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.hint {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #6b6b6b;
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: #111111;
+  transform-origin: 0 50%;
+}
+
+.tapArea {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.tapArea:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: -8px;
+}
+
+.root:lang(ta) .caps,
+.root:lang(ta) .hint {
+  letter-spacing: 0.02em;
+}

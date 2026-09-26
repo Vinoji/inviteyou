@@ -1,0 +1,45 @@
+/*
+ * IntroHost framing. On the public page the intro covers the window
+ * (.fixedLayer). In the editor preview it can't, so it covers only the
+ * invitation: an absolute layer over the whole page with a sticky,
+ * pane-tall frame pinned at the top. The layer itself never takes clicks;
+ * only the intro slot does, and only while the intro is showing.
+ */
+.fixedLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+.fixedLayer .frame {
+  position: absolute;
+  inset: 0;
+}
+
+.paneLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 45;
+  pointer-events: none;
+}
+.paneLayer .frame {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.slot {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+
+.particles {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}

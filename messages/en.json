@@ -107,7 +107,44 @@
     "shown": "Shown",
     "hidden": "Hidden",
     "removePhoto": "Remove photo",
-    "photoLabel": "Photo {n}"
+    "photoLabel": "Photo {n}",
+    "travelTitle": "Travel Guide",
+    "travelHint": "Help out-of-town guests plan their trip. Leave a list empty to hide it.",
+    "cityLabel": "Destination city",
+    "cityCodeLabel": "Short code (e.g. MAA)",
+    "airportsLabel": "Nearby airports",
+    "airportCode": "Code",
+    "airportName": "Airport / city",
+    "airportDistance": "Distance",
+    "addAirport": "Add airport ({count}/3)",
+    "trainRoutesLabel": "Train routes",
+    "routeFromLabel": "Travelling from",
+    "routeFromPlaceholder": "e.g. Bengaluru",
+    "addRoute": "Add route ({count}/2)",
+    "removeRoute": "Remove route",
+    "trainNumber": "Train no.",
+    "trainName": "Train name",
+    "fromStation": "From station",
+    "departs": "Departs",
+    "toStation": "To station",
+    "arrives": "Arrives",
+    "frequency": "Runs",
+    "addTrain": "Add train ({count}/3)",
+    "removeItem": "Remove",
+    "placesTitle": "Places to Explore",
+    "placesHint": "Suggest a few sights near the venue for guests who stay longer.",
+    "placeLabel": "Place {n}",
+    "placeTitle": "Place name",
+    "placeDescription": "Short description",
+    "placeDistance": "Distance from venue",
+    "placeScene": "Illustration",
+    "addPlace": "Add place ({count}/6)",
+    "sceneTemple": "Temple",
+    "scenePalace": "Palace",
+    "sceneNature": "Nature",
+    "sceneHeritage": "Heritage",
+    "sceneBeach": "Beach",
+    "replayIntro": "Replay intro"
   },
   "invite": {
     "hero": {
@@ -208,7 +245,8 @@
     },
     "envelope": {
       "open": "Open the invitation",
-      "tapToOpen": "Tap the seal to open"
+      "tapToOpen": "Tap the seal to open",
+      "dialogLabel": "Invitation cover"
     },
     "audio": {
       "pause": "Pause background music",
@@ -227,6 +265,121 @@
     },
     "opengraph": {
       "youreInvited": "You're Invited"
+    },
+    "royal": {
+      "intro": {
+        "eyebrow": "With all our hearts",
+        "title": "You are invited",
+        "sub": "to celebrate with us",
+        "open": "Open invitation",
+        "dialogLabel": "Invitation cover"
+      },
+      "hero": {
+        "lead": "Together with our families,\nwe invite you to celebrate our forever",
+        "weds": "Weds",
+        "countdownAria": "Time until the wedding"
+      },
+      "note": {
+        "eyebrow": "A moment made complete by you",
+        "heading": "With Grateful Hearts",
+        "open": "Open",
+        "openSub": "A note for you",
+        "openAria": "Open the couple's note",
+        "to": "To our dearest family & friends",
+        "sign": "With love, {names}",
+        "portraitHint": "Your first photo appears here"
+      },
+      "family": {
+        "eyebrow": "With the blessings of",
+        "heading": "Our Families",
+        "intro": "With joyful hearts, we invite you to celebrate our wedding",
+        "groom": "The Groom",
+        "bride": "The Bride",
+        "sonOf": "Beloved son of",
+        "daughterOf": "Beloved daughter of",
+        "and": "And"
+      },
+      "events": {
+        "heading": "The Wedding",
+        "sub": "A day of music, blessings and a beautiful new beginning",
+        "location": "Location",
+        "venue": "Venue",
+        "directions": "Get directions"
+      },
+      "memories": {
+        "heading": "Our Memories",
+        "sub": "A collection of cherished moments, captured with love",
+        "previous": "Previous photo",
+        "next": "Next photo",
+        "carouselLabel": "Photo memories",
+        "photoAlt": "Memory {n}"
+      },
+      "travel": {
+        "eyebrow": "Plan your journey",
+        "heading": "Travel Guide",
+        "sub": "Everything you need to reach us — kindly plan ahead",
+        "destination": "Final destination",
+        "byFlight": "Arriving by flight",
+        "airports": "Nearest Airports",
+        "byTrain": "Via train",
+        "trains": "Recommended Trains",
+        "from": "From {city}",
+        "note": "Timings can change — please confirm with the railways before booking."
+      },
+      "places": {
+        "eyebrow": "While you are here",
+        "heading": "Places to Explore",
+        "sub": "Hand-picked spots that capture the soul of {city}",
+        "subNoCity": "Hand-picked spots worth a visit"
+      },
+      "rsvp": {
+        "eyebrow": "R · S · V · P",
+        "heading": "Join us",
+        "headingScript": "in Celebration",
+        "sub": "We would be honoured to celebrate this beautiful journey with you."
+      },
+      "thanks": {
+        "eyebrow": "With grateful hearts",
+        "heading": "Thank You",
+        "body": "Your presence and blessings will make our celebration complete. We are honoured to share this beautiful beginning with you.",
+        "replay": "Replay the opening"
+      },
+      "pinned": {
+        "daysToGo": "days to go"
+      }
+    },
+    "intros": {
+      "kolam": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "With the blessings of the divine",
+        "tapBell": "Tap the bell",
+        "view": "View invitation"
+      },
+      "split": {
+        "dialogLabel": "Invitation cover",
+        "saveTheDate": "Save the date",
+        "tapAnywhere": "Tap anywhere",
+        "openAria": "Open the invitation"
+      },
+      "bloom": {
+        "dialogLabel": "Invitation cover",
+        "lead": "Something beautiful is blooming",
+        "tapBud": "Tap the bud",
+        "view": "View invitation"
+      },
+      "giftbox": {
+        "dialogLabel": "Invitation cover",
+        "pull": "Pull the ribbon",
+        "together": "Together with their families",
+        "view": "View invitation"
+      },
+      "bottle": {
+        "dialogLabel": "Invitation cover",
+        "lead": "A message washed ashore for you",
+        "tapCork": "Tap the cork",
+        "eyebrow": "You are invited",
+        "view": "View invitation"
+      }
     }
   },
   "rsvpsPage": {
@@ -328,28 +481,28 @@
   "templates": {
     "traditional-gold": {
       "name": "Traditional Gold",
-      "tagline": "Temple motifs & rich maroon",
-      "description": "Ornamental borders, deep maroon and gold — classic South Asian wedding elegance."
+      "tagline": "Kolam, brass lamps & temple bells",
+      "description": "A kolam draws itself on granite and the temple bell rings open your invitation — temple gold, jasmine and lamp light throughout."
     },
     "minimal-modern": {
       "name": "Minimal Modern",
       "tagline": "Clean lines, editorial calm",
-      "description": "Generous whitespace and crisp typography for a contemporary, understated invite."
+      "description": "A single hairline splits the page to reveal your names — generous whitespace, big confident type, and nothing more."
     },
     "floral-pastel": {
       "name": "Floral Pastel",
       "tagline": "Blush, sage & botanicals",
-      "description": "Soft blush and sage tones with delicate floral accents for a romantic garden feel."
+      "description": "A peony bud blooms open and butterflies fly out — soft blush and sage, with a vine that grows as guests scroll."
     },
     "elegant-bw": {
       "name": "Elegant Black & White",
-      "tagline": "High-contrast monochrome",
-      "description": "Fine hairline rules and dramatic contrast for a timeless, editorial black & white look."
+      "tagline": "Black tie & silver foil",
+      "description": "Guests pull a satin ribbon to open a black gift box and lift out a silver card — monochrome, theatrical, timeless."
     },
     "beach-boho": {
       "name": "Beach Boho",
-      "tagline": "Terracotta & ivory warmth",
-      "description": "Warm terracotta, sand and teal for a relaxed destination or beachside celebration."
+      "tagline": "Sand, sea & golden hour",
+      "description": "A message in a bottle washes ashore and a wave reveals your invitation — the sky turns from noon to sunset as guests scroll."
     },
     "anniversary-emerald": {
       "name": "Emerald Anniversary",
@@ -397,6 +550,101 @@
           "question": "Is parking available?",
           "answer": "Yes, valet parking is available at the venue entrance."
         }
+      ],
+      "travel": {
+        "city": "Chennai",
+        "cityCode": "MAA",
+        "airports": [
+          {
+            "code": "MAA",
+            "name": "Chennai",
+            "distance": "16 km"
+          },
+          {
+            "code": "TIR",
+            "name": "Tirupati",
+            "distance": "140 km"
+          },
+          {
+            "code": "BLR",
+            "name": "Bengaluru",
+            "distance": "335 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Bengaluru",
+            "trains": [
+              {
+                "number": "12028",
+                "name": "Shatabdi Express",
+                "fromStation": "KSR Bengaluru",
+                "departs": "6:00 AM",
+                "toStation": "Chennai Central",
+                "arrives": "11:00 AM",
+                "frequency": "Daily"
+              },
+              {
+                "number": "12608",
+                "name": "Lalbagh Express",
+                "fromStation": "KSR Bengaluru",
+                "departs": "6:30 AM",
+                "toStation": "Chennai Central",
+                "arrives": "12:30 PM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Madurai",
+            "trains": [
+              {
+                "number": "12636",
+                "name": "Vaigai Express",
+                "fromStation": "Madurai Jn",
+                "departs": "7:10 AM",
+                "toStation": "Chennai Egmore",
+                "arrives": "2:30 PM",
+                "frequency": "Daily"
+              },
+              {
+                "number": "12638",
+                "name": "Pandian Express",
+                "fromStation": "Madurai Jn",
+                "departs": "9:35 PM",
+                "toStation": "Chennai Egmore",
+                "arrives": "5:20 AM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Kapaleeshwarar Temple",
+          "description": "The 7th-century Shiva temple at the heart of Mylapore, with a towering painted gopuram.",
+          "distance": "1 km from venue",
+          "scene": "temple"
+        },
+        {
+          "title": "Marina Beach",
+          "description": "One of the world's longest urban beaches — perfect for an evening stroll and sundal.",
+          "distance": "3 km from venue",
+          "scene": "beach"
+        },
+        {
+          "title": "Fort St. George",
+          "description": "India's first British fortress, now home to a museum of colonial-era history.",
+          "distance": "7 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Government Museum",
+          "description": "Bronze galleries with some of the finest Chola-era sculpture anywhere.",
+          "distance": "5 km from venue",
+          "scene": "palace"
+        }
       ]
     },
     "minimal-modern": {
@@ -417,6 +665,92 @@
         {
           "question": "Are kids welcome?",
           "answer": "Absolutely — this is a family-friendly celebration."
+        }
+      ],
+      "travel": {
+        "city": "Bengaluru",
+        "cityCode": "BLR",
+        "airports": [
+          {
+            "code": "BLR",
+            "name": "Bengaluru",
+            "distance": "35 km"
+          },
+          {
+            "code": "MYQ",
+            "name": "Mysuru",
+            "distance": "150 km"
+          },
+          {
+            "code": "MAA",
+            "name": "Chennai",
+            "distance": "340 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "12027",
+                "name": "Shatabdi Express",
+                "fromStation": "Chennai Central",
+                "departs": "5:50 AM",
+                "toStation": "KSR Bengaluru",
+                "arrives": "10:50 AM",
+                "frequency": "Daily"
+              },
+              {
+                "number": "12607",
+                "name": "Lalbagh Express",
+                "fromStation": "Chennai Central",
+                "departs": "3:30 PM",
+                "toStation": "KSR Bengaluru",
+                "arrives": "9:30 PM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Hyderabad",
+            "trains": [
+              {
+                "number": "12785",
+                "name": "Kacheguda Express",
+                "fromStation": "Kacheguda",
+                "departs": "7:05 PM",
+                "toStation": "KSR Bengaluru",
+                "arrives": "6:40 AM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Bangalore Palace",
+          "description": "A Tudor-style palace with turrets, carved wood interiors and royal portraits.",
+          "distance": "4 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Lalbagh Botanical Garden",
+          "description": "240 acres of old trees, a glass house and a 3,000-million-year-old rock.",
+          "distance": "5 km from venue",
+          "scene": "nature"
+        },
+        {
+          "title": "Cubbon Park",
+          "description": "Shaded walking paths right in the middle of the city.",
+          "distance": "1 km from venue",
+          "scene": "nature"
+        },
+        {
+          "title": "ISKCON Temple",
+          "description": "A hilltop temple complex, lovely in the evening lights.",
+          "distance": "9 km from venue",
+          "scene": "temple"
         }
       ]
     },
@@ -439,6 +773,92 @@
           "question": "Will the ceremony be outdoors?",
           "answer": "Yes, weather permitting — we'll have a backup indoor space just in case."
         }
+      ],
+      "travel": {
+        "city": "Bengaluru",
+        "cityCode": "BLR",
+        "airports": [
+          {
+            "code": "BLR",
+            "name": "Bengaluru",
+            "distance": "40 km"
+          },
+          {
+            "code": "MYQ",
+            "name": "Mysuru",
+            "distance": "175 km"
+          },
+          {
+            "code": "MAA",
+            "name": "Chennai",
+            "distance": "320 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "12027",
+                "name": "Shatabdi Express",
+                "fromStation": "Chennai Central",
+                "departs": "5:50 AM",
+                "toStation": "KR Puram",
+                "arrives": "10:15 AM",
+                "frequency": "Daily"
+              },
+              {
+                "number": "12639",
+                "name": "Brindavan Express",
+                "fromStation": "Chennai Central",
+                "departs": "7:50 AM",
+                "toStation": "KR Puram",
+                "arrives": "1:20 PM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Mysuru",
+            "trains": [
+              {
+                "number": "12610",
+                "name": "Mysuru – Chennai Express",
+                "fromStation": "Mysuru Jn",
+                "departs": "12:45 PM",
+                "toStation": "KSR Bengaluru",
+                "arrives": "3:50 PM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Lalbagh Botanical Garden",
+          "description": "Famous for its flower shows, glass house and centuries-old trees.",
+          "distance": "22 km from venue",
+          "scene": "nature"
+        },
+        {
+          "title": "Bangalore Palace",
+          "description": "Tudor-style towers and royal interiors, a short drive into town.",
+          "distance": "20 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Varthur Lake",
+          "description": "A quiet lakeside for early-morning birdwatching.",
+          "distance": "6 km from venue",
+          "scene": "nature"
+        },
+        {
+          "title": "ISKCON Temple",
+          "description": "A hilltop temple complex, beautiful at dusk.",
+          "distance": "24 km from venue",
+          "scene": "temple"
+        }
       ]
     },
     "elegant-bw": {
@@ -460,6 +880,92 @@
           "question": "Is there a gift registry?",
           "answer": "Your presence is the only present we need."
         }
+      ],
+      "travel": {
+        "city": "New Delhi",
+        "cityCode": "DEL",
+        "airports": [
+          {
+            "code": "DEL",
+            "name": "Indira Gandhi Intl",
+            "distance": "15 km"
+          },
+          {
+            "code": "HDO",
+            "name": "Hindon",
+            "distance": "30 km"
+          },
+          {
+            "code": "JAI",
+            "name": "Jaipur",
+            "distance": "270 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Mumbai",
+            "trains": [
+              {
+                "number": "12951",
+                "name": "Mumbai Rajdhani",
+                "fromStation": "Mumbai Central",
+                "departs": "5:00 PM",
+                "toStation": "New Delhi",
+                "arrives": "8:30 AM",
+                "frequency": "Daily"
+              },
+              {
+                "number": "12953",
+                "name": "August Kranti Rajdhani",
+                "fromStation": "Mumbai Central",
+                "departs": "5:10 PM",
+                "toStation": "H. Nizamuddin",
+                "arrives": "10:05 AM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Jaipur",
+            "trains": [
+              {
+                "number": "12016",
+                "name": "Ajmer Shatabdi",
+                "fromStation": "Jaipur Jn",
+                "departs": "6:00 PM",
+                "toStation": "New Delhi",
+                "arrives": "10:40 PM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Humayun's Tomb",
+          "description": "The garden tomb that inspired the Taj Mahal, calm and symmetrical.",
+          "distance": "6 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Qutub Minar",
+          "description": "A 73-metre victory tower of carved red sandstone from 1193.",
+          "distance": "14 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Lodhi Garden",
+          "description": "15th-century tombs set among lawns — Delhi's favourite morning walk.",
+          "distance": "4 km from venue",
+          "scene": "nature"
+        },
+        {
+          "title": "Akshardham",
+          "description": "An intricately carved temple complex with an evening water show.",
+          "distance": "9 km from venue",
+          "scene": "temple"
+        }
       ]
     },
     "beach-boho": {
@@ -480,6 +986,92 @@
         {
           "question": "Is there parking nearby?",
           "answer": "Limited parking at the venue — we recommend carpooling or a cab."
+        }
+      ],
+      "travel": {
+        "city": "North Goa",
+        "cityCode": "GOX",
+        "airports": [
+          {
+            "code": "GOX",
+            "name": "Mopa, Goa",
+            "distance": "22 km"
+          },
+          {
+            "code": "GOI",
+            "name": "Dabolim, Goa",
+            "distance": "55 km"
+          },
+          {
+            "code": "IXG",
+            "name": "Belagavi",
+            "distance": "150 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Mumbai",
+            "trains": [
+              {
+                "number": "22119",
+                "name": "Tejas Express",
+                "fromStation": "Mumbai CSMT",
+                "departs": "5:50 AM",
+                "toStation": "Thivim",
+                "arrives": "1:40 PM",
+                "frequency": "Except Thu"
+              },
+              {
+                "number": "10103",
+                "name": "Mandovi Express",
+                "fromStation": "Mumbai CSMT",
+                "departs": "7:10 AM",
+                "toStation": "Thivim",
+                "arrives": "5:50 PM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Bengaluru",
+            "trains": [
+              {
+                "number": "17311",
+                "name": "Vasco Express",
+                "fromStation": "SMVT Bengaluru",
+                "departs": "8:00 PM",
+                "toStation": "Madgaon",
+                "arrives": "11:45 AM",
+                "frequency": "Weekly"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Morjim Beach",
+          "description": "Soft sand and olive ridley turtles, just down the coast.",
+          "distance": "3 km from venue",
+          "scene": "beach"
+        },
+        {
+          "title": "Chapora Fort",
+          "description": "Laterite ramparts with sweeping views over the river mouth.",
+          "distance": "10 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Basilica of Bom Jesus",
+          "description": "A 16th-century baroque church in Old Goa, a UNESCO World Heritage Site.",
+          "distance": "35 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Mapusa Friday Market",
+          "description": "Spices, cashews and local sausages at North Goa's busiest market.",
+          "distance": "14 km from venue",
+          "scene": "temple"
         }
       ]
     },

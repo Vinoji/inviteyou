@@ -1,6 +1,14 @@
 import { getTemplateConfig } from "@/lib/templates";
 import { DEFAULT_CONTENT_DATES } from "@/lib/defaultContent";
-import { DEFAULT_SECTIONS, type InvitationData, type FaqItem, type VenueInfo } from "@/lib/types";
+import {
+  DEFAULT_SECTIONS,
+  EMPTY_TRAVEL,
+  type InvitationData,
+  type FaqItem,
+  type VenueInfo,
+  type TravelInfo,
+  type Place,
+} from "@/lib/types";
 
 /** A translation function scoped to the `defaultContent` namespace, with
  * `.raw()` for the non-interpolated `faq` array (as next-intl provides). */
@@ -34,6 +42,11 @@ export function getDefaultInvitationData(templateId: string, t: TFunc): Invitati
   const id = template.id;
   const dates = DEFAULT_CONTENT_DATES[id] ?? DEFAULT_CONTENT_DATES["traditional-gold"];
   const faq = t.raw(`${id}.faq`) as FaqItem[];
+  // Only wedding templates use the palace layout that renders the Travel
+  // Guide / Places to Explore sections, so only they ship seed content.
+  const isWedding = template.category === "wedding";
+  const travel = isWedding ? (t.raw(`${id}.travel`) as TravelInfo) : EMPTY_TRAVEL;
+  const places = isWedding ? (t.raw(`${id}.places`) as Place[]) : [];
 
   return {
     templateId: id,
@@ -53,5 +66,7 @@ export function getDefaultInvitationData(templateId: string, t: TFunc): Invitati
     brideParents: t(`${id}.brideParents`),
     story: t(`${id}.story`),
     faq,
+    travel,
+    places,
   };
 }

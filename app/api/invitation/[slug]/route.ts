@@ -2,14 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
-import { withDefaultSections } from "@/lib/types";
+import { withDefaultSections, EMPTY_TRAVEL } from "@/lib/types";
 import {
   sanitizeAccentColor,
   sanitizeBackgroundMusic,
   sanitizeFaq,
   sanitizeParentsLine,
+  sanitizePlaces,
   sanitizePhotos,
   sanitizeSections,
+  sanitizeTravel,
   sanitizeVenue,
 } from "@/lib/sanitize";
 
@@ -50,7 +52,13 @@ export async function GET(
   // Docs published before section toggles existed won't have this field —
   // fill it in so the edit form always gets a fully-shaped object.
   return NextResponse.json({
-    invitation: { ...data, sections: withDefaultSections(data.sections), faq: data.faq ?? [] },
+    invitation: {
+      ...data,
+      sections: withDefaultSections(data.sections),
+      faq: data.faq ?? [],
+      travel: data.travel ?? EMPTY_TRAVEL,
+      places: data.places ?? [],
+    },
   });
 }
 
@@ -84,6 +92,8 @@ export async function PUT(
     backgroundMusic,
     sections,
     faq,
+    travel,
+    places,
   } = body ?? {};
 
   if (typeof templateId !== "string" || !TEMPLATE_IDS.includes(templateId)) {
@@ -121,6 +131,8 @@ export async function PUT(
       backgroundMusic: sanitizeBackgroundMusic(backgroundMusic),
       sections: sanitizeSections(sections),
       faq: sanitizeFaq(faq),
+      travel: sanitizeTravel(travel),
+      places: sanitizePlaces(places),
       updatedAt: Date.now(),
     });
 

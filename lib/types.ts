@@ -20,6 +20,8 @@ export interface SectionToggles {
   rsvp: boolean;
   faq: boolean;
   guestPhotos: boolean;
+  travel: boolean;
+  places: boolean;
 }
 
 export const DEFAULT_SECTIONS: SectionToggles = {
@@ -30,11 +32,56 @@ export const DEFAULT_SECTIONS: SectionToggles = {
   rsvp: true,
   faq: true,
   guestPhotos: true,
+  travel: true,
+  places: true,
 };
 
 export interface FaqItem {
   question: string;
   answer: string;
+}
+
+export interface Airport {
+  code: string; // e.g. "MAA"
+  name: string;
+  distance: string; // free text, e.g. "18 km"
+}
+
+export interface Train {
+  number: string;
+  name: string;
+  fromStation: string;
+  departs: string; // free text, e.g. "6:00 AM"
+  toStation: string;
+  arrives: string;
+  frequency: string; // e.g. "Daily"
+}
+
+/** One tab in the Travel Guide's train list, e.g. "From Chennai". */
+export interface TrainRoute {
+  from: string;
+  trains: Train[]; // up to 3
+}
+
+/** Travel Guide section: destination city, nearby airports, suggested trains. */
+export interface TravelInfo {
+  city: string;
+  cityCode: string; // short label under the city, e.g. "MAA"
+  airports: Airport[]; // up to 3
+  routes: TrainRoute[]; // up to 2
+}
+
+export const EMPTY_TRAVEL: TravelInfo = { city: "", cityCode: "", airports: [], routes: [] };
+
+/** Drawn illustration used as a Places to Explore card's header. */
+export const PLACE_SCENES = ["temple", "palace", "nature", "heritage", "beach"] as const;
+export type PlaceScene = (typeof PLACE_SCENES)[number];
+
+export interface Place {
+  title: string;
+  description: string;
+  distance: string; // e.g. "2 km from venue"
+  scene: PlaceScene;
 }
 
 /** Merges possibly-partial/missing toggles over the all-on default — safe
@@ -65,6 +112,8 @@ export interface InvitationData {
   backgroundMusic: string; // Storage download URL for an optional audio track, "" = none
   sections: SectionToggles;
   faq: FaqItem[]; // up to 4 — "Things to Know" (dress code, parking, etc.)
+  travel: TravelInfo; // Travel Guide — shown by the wedding (royal palace) layout
+  places: Place[]; // up to 6 — Places to Explore, same layout
 }
 
 /** Full document shape at invitations/{slug|draftId}. */

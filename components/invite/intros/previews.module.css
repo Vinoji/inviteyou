@@ -1,0 +1,249 @@
+/* Landing-page intro previews: 3s muted loops, paused until the card is
+ * hovered or focused (always playing on touch screens). */
+
+.preview {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 76px;
+  height: 76px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+.svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.a {
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-play-state: paused;
+  transform-box: fill-box;
+}
+:global(.group):hover .a,
+:global(.group):focus-visible .a {
+  animation-play-state: running;
+}
+@media (hover: none) {
+  .a {
+    animation-play-state: running;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .a {
+    animation: none !important;
+  }
+}
+
+/* door */
+.doorL {
+  transform-origin: 0 50%;
+  animation-name: doorL;
+}
+.doorR {
+  transform-origin: 100% 50%;
+  animation-name: doorR;
+}
+@keyframes doorL {
+  35%,
+  75% {
+    transform: scaleX(0.08);
+  }
+}
+@keyframes doorR {
+  35%,
+  75% {
+    transform: scaleX(0.08);
+  }
+}
+
+/* kolam */
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation-name: draw;
+}
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  55%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+.swing {
+  transform-origin: 50% 0;
+  animation-name: swing;
+}
+@keyframes swing {
+  60% {
+    transform: rotate(0);
+  }
+  70% {
+    transform: rotate(-16deg);
+  }
+  80% {
+    transform: rotate(12deg);
+  }
+  90% {
+    transform: rotate(-6deg);
+  }
+}
+
+/* split */
+.hairline {
+  transform-origin: 0 50%;
+  animation-name: hairline;
+}
+@keyframes hairline {
+  0%,
+  45% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+.halfTop {
+  animation-name: halfTop;
+}
+.halfBottom {
+  animation-name: halfBottom;
+}
+@keyframes halfTop {
+  0%,
+  45% {
+    transform: translateY(0);
+  }
+  70%,
+  90% {
+    transform: translateY(-100%);
+  }
+}
+@keyframes halfBottom {
+  0%,
+  45% {
+    transform: translateY(0);
+  }
+  70%,
+  90% {
+    transform: translateY(100%);
+  }
+}
+
+/* bloom */
+.petal {
+  transform-origin: 50% 100%;
+  animation-name: petal;
+}
+@keyframes petal {
+  0%,
+  15% {
+    transform: scale(0.5) rotate(-20deg);
+  }
+  60%,
+  90% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.sepal {
+  animation-name: sepal;
+}
+@keyframes sepal {
+  0%,
+  20% {
+    opacity: 1;
+  }
+  45%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* giftbox */
+.lid {
+  transform-origin: 50% 0;
+  animation-name: lid;
+}
+@keyframes lid {
+  0%,
+  20% {
+    transform: translateY(0) rotate(0);
+  }
+  50%,
+  90% {
+    transform: translateY(-22px) rotate(-8deg);
+  }
+}
+.card {
+  animation-name: card;
+}
+@keyframes card {
+  0%,
+  35% {
+    transform: translateY(8px);
+    opacity: 0;
+  }
+  65%,
+  90% {
+    transform: translateY(-14px);
+    opacity: 1;
+  }
+}
+
+/* bottle */
+.rock {
+  transform-origin: 50% 80%;
+  animation-name: rock;
+}
+@keyframes rock {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+.wave {
+  animation-name: wave;
+}
+@keyframes wave {
+  0%,
+  45% {
+    transform: translateY(100%);
+  }
+  65%,
+  75% {
+    transform: translateY(-10%);
+  }
+  95%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* envelope */
+.flap {
+  transform-origin: 50% 0;
+  animation-name: flap;
+}
+@keyframes flap {
+  0%,
+  25% {
+    transform: scaleY(1);
+  }
+  55%,
+  90% {
+    transform: scaleY(-1);
+  }
+}

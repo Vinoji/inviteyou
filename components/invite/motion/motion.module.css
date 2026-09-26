@@ -1,0 +1,377 @@
+/* Shared styles for the motion engine (Section, MotionHeading, dividers, thread). */
+
+/* ---- sectionEnter "tier": temple-crest border along the section's top ---- */
+.tier {
+  position: relative;
+}
+.crest {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 12px;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ---- dividers ---- */
+.divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 64px;
+  padding: 0 16px;
+  overflow: hidden;
+}
+.kolamSvg {
+  width: min(240px, 70%);
+  height: 48px;
+  overflow: visible;
+}
+.hairlineDivider {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hairline {
+  flex: 1;
+  height: 1px;
+  background: var(--rp-text, #111);
+  opacity: 0.35;
+  transform-origin: 0 50%;
+}
+.hairlineNum {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-variant-numeric: tabular-nums;
+  color: var(--rp-muted, #6b6b6b);
+}
+.filmDivider {
+  position: relative;
+  width: 100%;
+  height: 34px;
+  overflow: hidden;
+}
+.filmStrip {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 4px;
+  height: 18px;
+  background: #1c1c1f
+    repeating-linear-gradient(90deg, transparent 0 7px, #c9ccd1 7px 15px, transparent 15px 22px)
+    center / 100% 8px no-repeat;
+  border-top: 1px solid #2a2a2e;
+  border-bottom: 1px solid #2a2a2e;
+}
+.filmHairline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #c9ccd1, transparent);
+}
+.waveDivider {
+  position: relative;
+  width: 100%;
+  height: 28px;
+  overflow: hidden;
+}
+.waveDivider svg {
+  position: absolute;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+}
+
+/* ---- scroll-scrubbed entrances ---- */
+.enter {
+  position: relative;
+}
+.waveTop {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 100%;
+  height: 48px;
+  z-index: 3;
+  pointer-events: none;
+}
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 35%, transparent 30%, rgba(0, 0, 0, 0.75) 100%);
+}
+
+/* ---- heading "goldSweep": a bright band crosses the text once ----
+ * The gradient uses currentColor, so text keeps its normal colour and
+ * contrast on light and dark sections alike; only the band is gold. */
+.goldSweep {
+  background-image: linear-gradient(
+    100deg,
+    currentColor 0%,
+    currentColor 42%,
+    var(--rp-gold-light, #e3b45a) 48%,
+    #fff3c4 50%,
+    var(--rp-gold-light, #e3b45a) 52%,
+    currentColor 58%,
+    currentColor 100%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.goldSweepPlay {
+  animation: goldSweep 1.5s cubic-bezier(0.45, 0, 0.3, 1) forwards;
+}
+@keyframes goldSweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
+/* ---- thread: scroll-progress line down the left edge ---- */
+.threadLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+.threadFrame {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+}
+.threadTrack {
+  position: absolute;
+  left: 7px;
+  top: 12%;
+  bottom: 12%;
+  width: 2px;
+}
+.threadLine {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0;
+  border-radius: 2px;
+}
+.threadTip {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 14px;
+  height: 22px;
+  margin: -18px 0 0 -7px;
+}
+
+.vine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 100%;
+  overflow: visible;
+}
+.twinkle {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: twinkle 1.6s ease-in-out infinite;
+}
+@keyframes twinkle {
+  50% {
+    transform: scale(0.6) rotate(20deg);
+    opacity: 0.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .twinkle {
+    animation: none;
+  }
+  .goldSweepPlay {
+    animation: none;
+  }
+}
+
+/* heading "inkType": a thin caret after the typed text */
+.caret {
+  display: inline-block;
+  width: 0.06em;
+  height: 0.9em;
+  margin-left: 0.08em;
+  vertical-align: -0.08em;
+  background: currentColor;
+}
+
+/* ---- moments.pinnedCountdown ---- */
+.pinnedOuter {
+  position: relative;
+  background: var(--rp-ivory, #fafaf7);
+  color: var(--rp-text, #111);
+}
+.pinnedFrame {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 16px;
+  overflow: hidden;
+  text-align: center;
+}
+.pinnedNumber {
+  font-family: var(--rp-heading);
+  font-size: min(42vw, 260px);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+}
+.pinnedLabel {
+  margin-top: 12px;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.pinnedDate {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--rp-muted, #6b6b6b);
+}
+
+/* ---- moments.palms ---- */
+.palms {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.palmLeft,
+.palmRight {
+  position: absolute;
+  top: 12%;
+  opacity: 0.85;
+}
+.palmLeft {
+  left: -46px;
+}
+.palmRight {
+  right: -40px;
+  top: 30%;
+  transform: scaleX(-1);
+}
+.sway {
+  transform-origin: 20% 90%;
+  animation: sway 6s ease-in-out infinite;
+}
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+
+/* ---- moments.sky ---- */
+.sky {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.skyNoon,
+.skyGolden,
+.skyDusk {
+  position: absolute;
+  inset: 0;
+}
+.skyNoon {
+  background: linear-gradient(#8fd3f4, #fff3d6);
+}
+.skyGolden {
+  background: linear-gradient(#f7b267, #f4845f);
+}
+.skyDusk {
+  background: linear-gradient(#355070, #6d597a);
+}
+.sun {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  width: 90px;
+  height: 90px;
+  margin-left: -45px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6d6 0 45%, rgba(255, 214, 140, 0.6) 55%, transparent 70%);
+}
+.skyStars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- moments.grain ---- */
+.grainLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+}
+.grainFrame {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow: hidden;
+}
+.grain {
+  position: absolute;
+  left: -50%;
+  top: -50%;
+  width: 200%;
+  height: 200%;
+  opacity: 0.07;
+  animation: grain 0.8s steps(6) infinite;
+}
+@keyframes grain {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-4%, 3%);
+  }
+  40% {
+    transform: translate(3%, -5%);
+  }
+  60% {
+    transform: translate(-6%, -2%);
+  }
+  80% {
+    transform: translate(5%, 4%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sway,
+  .grain {
+    animation: none;
+  }
+}

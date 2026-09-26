@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Music } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAmbientTone } from "./decor/useAmbientTone";
+import { INTRO_OPENED_EVENT } from "./intros/events";
 
 /**
  * A floating music toggle. If the couple uploaded their own track, this
@@ -13,6 +14,10 @@ import { useAmbientTone } from "./decor/useAmbientTone";
  * autoplay-with-sound, and guests in a quiet room shouldn't have music
  * forced on them. A tap is a real user gesture, so playback always
  * succeeds here.
+ *
+ * The one exception: when a guest opens the intro (INTRO_OPENED_EVENT, fired
+ * from inside their tap), the couple's own uploaded track starts — they
+ * chose that music on purpose. The synthesized fallback never auto-starts.
  */
 export default function AudioToggle({
   src,
@@ -37,6 +42,22 @@ export default function AudioToggle({
       audio?.pause();
     };
   }, []);
+
+  useEffect(() => {
+    if (!usingFile) return;
+    const start = () => {
+      const audio = audioRef.current;
+      if (!audio || !audio.paused) return;
+      audio
+        .play()
+        .then(() => setFilePlaying(true))
+        .catch(() => {
+          // Blocked or missing file — the toggle stays available.
+        });
+    };
+    window.addEventListener(INTRO_OPENED_EVENT, start);
+    return () => window.removeEventListener(INTRO_OPENED_EVENT, start);
+  }, [usingFile]);
 
   function toggle() {
     if (!usingFile) {

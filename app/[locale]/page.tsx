@@ -2,12 +2,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getAllCategoryMeta } from "@/lib/i18n/categories";
 import { getTemplatesByCategory } from "@/lib/i18n/templates";
+import IntroPreview from "@/components/invite/intros/IntroPreview";
 
-export default async function Home({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("landing");
@@ -67,6 +64,7 @@ export default async function Home({
                   <div
                     className={`relative flex h-44 items-end bg-gradient-to-br p-5 ${tpl.cardGradient}`}
                   >
+                    <IntroPreview intro={tpl.intro} />
                     <div className={`${tpl.cardTextClass}`}>
                       <p className="text-xs font-semibold tracking-widest uppercase opacity-80">
                         {tpl.tagline}
@@ -75,7 +73,9 @@ export default async function Home({
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col gap-4 p-5">
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">{tpl.description}</p>
+                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                      {tpl.description}
+                    </p>
                     <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-amber-700 group-hover:underline">
                       {t("useTemplate")}
                       <span aria-hidden>→</span>

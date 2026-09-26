@@ -81,7 +81,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
           >
             {reduceMotion || !mounted ? (
               <span
-                className="absolute inset-0 flex items-center justify-center font-serif text-2xl font-bold tabular-nums sm:text-3xl"
+                className="absolute inset-0 flex items-center justify-center font-[family-name:var(--inv-heading)] text-2xl font-bold tabular-nums sm:text-3xl"
                 suppressHydrationWarning
               >
                 {String(u.value).padStart(2, "0")}
@@ -94,7 +94,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -16, opacity: 0 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="absolute inset-0 flex items-center justify-center font-serif text-2xl font-bold tabular-nums sm:text-3xl"
+                  className="absolute inset-0 flex items-center justify-center font-[family-name:var(--inv-heading)] text-2xl font-bold tabular-nums sm:text-3xl"
                 >
                   {String(u.value).padStart(2, "0")}
                 </motion.span>

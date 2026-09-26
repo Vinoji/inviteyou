@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Monitor, Plus, Smartphone, Tablet, Trash2 } from "lucide-react";
+import { Monitor, Plus, RotateCcw, Smartphone, Tablet, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
 import Script from "next/script";
@@ -11,10 +11,13 @@ import { getTemplateMeta } from "@/lib/i18n/templates";
 import { getCategoryMeta } from "@/lib/i18n/categories";
 import { getDefaultInvitationData } from "@/lib/i18n/defaultContent";
 import { FONT_PAIRINGS } from "@/lib/fontPairings";
-import type { InvitationData } from "@/lib/types";
+import { EMPTY_TRAVEL, type InvitationData } from "@/lib/types";
 import InvitationView from "@/components/invite/InvitationView";
 import { FormSection, Field, inputClass, SectionToggle } from "@/components/editor/FormFields";
 import PhotoSlot from "@/components/editor/PhotoSlot";
+import TravelFields from "@/components/editor/TravelFields";
+import PlacesFields from "@/components/editor/PlacesFields";
+import { REPLAY_INTRO_EVENT } from "@/components/invite/intros/events";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -615,6 +618,30 @@ export default function Editor({
               )}
             </FormSection>
 
+            {/* Only the wedding (royal palace) layout renders these sections. */}
+            {template.category === "wedding" && (
+              <>
+                <FormSection
+                  title={t("travelTitle")}
+                  toggle={{ enabled: data.sections.travel, onChange: (v) => updateSection("travel", v) }}
+                >
+                  <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("travelHint")}</p>
+                  <TravelFields
+                    value={data.travel ?? EMPTY_TRAVEL}
+                    onChange={(v) => update("travel", v)}
+                  />
+                </FormSection>
+
+                <FormSection
+                  title={t("placesTitle")}
+                  toggle={{ enabled: data.sections.places, onChange: (v) => updateSection("places", v) }}
+                >
+                  <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("placesHint")}</p>
+                  <PlacesFields value={data.places ?? []} onChange={(v) => update("places", v)} />
+                </FormSection>
+              </>
+            )}
+
             <FormSection
               title={t("guestRsvpTitle")}
               toggle={{ enabled: data.sections.rsvp, onChange: (v) => updateSection("rsvp", v) }}
@@ -728,9 +755,19 @@ export default function Editor({
         }`}
       >
         <div className="hidden items-center justify-between border-b border-neutral-200 bg-white/90 px-4 py-2 backdrop-blur lg:flex dark:border-neutral-800 dark:bg-neutral-900/90">
-          <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
-            {t("previewLabel")}
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
+              {t("previewLabel")}
+            </p>
+            <button
+              type="button"
+              onClick={() => window.dispatchEvent(new Event(REPLAY_INTRO_EVENT))}
+              className="inline-flex h-8 items-center gap-1.5 rounded-md px-2 text-xs font-semibold text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+            >
+              <RotateCcw size={13} aria-hidden />
+              {t("replayIntro")}
+            </button>
+          </div>
           <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-1 dark:border-neutral-800 dark:bg-neutral-900">
             {[
               { id: "desktop", label: t("desktop"), icon: Monitor },

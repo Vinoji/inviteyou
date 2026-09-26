@@ -1,5 +1,9 @@
 import type { CategoryId } from "./categories";
 
+/** Which opening animation plays before the invitation — see
+ * components/invite/intros/registry.ts. */
+export type IntroId = "door" | "envelope" | "kolam" | "split" | "bloom" | "giftbox" | "bottle";
+
 /**
  * Non-text template config. Display text (name, tagline, description) lives
  * in messages/{locale}.json under `templates.<id>` — see
@@ -13,6 +17,7 @@ export interface TemplateConfig {
   /** Tailwind gradient stops used for the landing page preview card. */
   cardGradient: string;
   cardTextClass: string;
+  intro: IntroId;
 }
 
 export const TEMPLATES: TemplateConfig[] = [
@@ -23,14 +28,16 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "royal-cinzel",
     cardGradient: "from-amber-200 via-yellow-100 to-red-100",
     cardTextClass: "text-amber-900",
+    intro: "kolam",
   },
   {
     id: "minimal-modern",
     category: "wedding",
-    defaultAccent: "#18181b",
+    defaultAccent: "#C2410C",
     defaultFont: "modern-clean",
     cardGradient: "from-neutral-200 via-white to-neutral-100",
     cardTextClass: "text-neutral-900",
+    intro: "split",
   },
   {
     id: "floral-pastel",
@@ -39,6 +46,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "classic-serif",
     cardGradient: "from-rose-100 via-pink-50 to-emerald-50",
     cardTextClass: "text-rose-900",
+    intro: "bloom",
   },
   {
     id: "elegant-bw",
@@ -47,6 +55,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "elegant-script",
     cardGradient: "from-neutral-900 via-neutral-600 to-neutral-200",
     cardTextClass: "text-white",
+    intro: "giftbox",
   },
   {
     id: "beach-boho",
@@ -55,6 +64,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "classic-serif",
     cardGradient: "from-orange-100 via-amber-50 to-teal-50",
     cardTextClass: "text-orange-900",
+    intro: "bottle",
   },
   {
     id: "anniversary-emerald",
@@ -63,6 +73,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "royal-cinzel",
     cardGradient: "from-emerald-200 via-emerald-50 to-yellow-100",
     cardTextClass: "text-emerald-900",
+    intro: "envelope",
   },
   {
     id: "valentine-blush",
@@ -71,6 +82,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "elegant-script",
     cardGradient: "from-rose-300 via-rose-100 to-red-100",
     cardTextClass: "text-rose-900",
+    intro: "envelope",
   },
   {
     id: "proposal-starlit",
@@ -79,6 +91,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "elegant-script",
     cardGradient: "from-indigo-300 via-indigo-100 to-amber-100",
     cardTextClass: "text-indigo-900",
+    intro: "envelope",
   },
   {
     id: "birthday-confetti",
@@ -87,6 +100,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "modern-clean",
     cardGradient: "from-fuchsia-200 via-yellow-100 to-sky-100",
     cardTextClass: "text-fuchsia-900",
+    intro: "envelope",
   },
   {
     id: "housewarming-terracotta",
@@ -95,6 +109,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "classic-serif",
     cardGradient: "from-orange-200 via-amber-100 to-lime-100",
     cardTextClass: "text-orange-900",
+    intro: "envelope",
   },
 ];
 
