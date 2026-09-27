@@ -1,0 +1,165 @@
+/* Lantern Night intro (lantern-night). Fills IntroHost's slot. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  background: linear-gradient(180deg, #060b1f 0%, #0e1733 55%, #2a1f3d 100%);
+  color: #fff8ee;
+  transition: background 1.2s ease;
+}
+.root.on {
+  background: linear-gradient(180deg, #0a1230 0%, #17234a 50%, #5a3320 100%);
+}
+
+.sky {
+  position: absolute;
+  inset: 0;
+}
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.4;
+  animation: twinkle 3.2s ease-in-out infinite;
+}
+@keyframes twinkle {
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Paper sky lanterns: a warm rounded trapezoid with a glowing core. */
+.lanterns {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.lantern {
+  position: absolute;
+  bottom: -60px;
+  width: 26px;
+  height: 36px;
+  border-radius: 40% 40% 30% 30% / 50% 50% 30% 30%;
+  background: radial-gradient(ellipse at 50% 70%, #fff1b8 0%, #ffb347 45%, #d9651a 100%);
+  box-shadow: 0 0 18px 6px rgba(255, 170, 70, 0.45);
+  animation-name: rise;
+  animation-timing-function: ease-in;
+  animation-fill-mode: both;
+  transform: scale(var(--scale));
+}
+@keyframes rise {
+  0% {
+    transform: translate(0, 0) scale(var(--scale));
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--drift), -115cqh) scale(calc(var(--scale) * 0.55));
+    opacity: 0;
+  }
+}
+
+.column {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: min(2.2cqh, 18px);
+  padding: 0 24px;
+  text-align: center;
+}
+.lead {
+  font-size: min(5.5cqw, 22px);
+  font-style: italic;
+  color: #ffd48a;
+  max-width: 16em;
+}
+.names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(clamp(30px, 11cqw, 58px) * var(--name-fit, 1));
+  line-height: 1.1;
+  font-weight: 500;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.amp {
+  font-size: 0.6em;
+  color: #ffd48a;
+}
+.date {
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  color: #ffd48a;
+}
+.lampBtn {
+  width: min(44cqw, 190px);
+  aspect-ratio: 120 / 110;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+}
+.lampBtn:focus-visible {
+  outline: 2px solid #ffd48a;
+  outline-offset: 6px;
+}
+.lamp {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.flicker {
+  animation: flicker 0.9s ease-in-out infinite alternate;
+  transform-origin: 28px -30px;
+  transform-box: view-box;
+}
+@keyframes flicker {
+  0% {
+    transform: scale(1, 1) skewX(0deg);
+  }
+  50% {
+    transform: scale(0.94, 1.06) skewX(2deg);
+  }
+  100% {
+    transform: scale(1.04, 0.96) skewX(-2deg);
+  }
+}
+.hint {
+  font-size: 10.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #ffd48a;
+}
+.viewBtn {
+  border: 1px solid #f2a33a;
+  background: rgba(14, 23, 51, 0.6);
+  color: #fff8ee;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.root:lang(ta) .names {
+  font-size: calc(clamp(26px, 9cqw, 48px) * var(--name-fit, 1));
+  line-height: 1.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star,
+  .flicker {
+    animation: none;
+  }
+}

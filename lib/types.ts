@@ -84,6 +84,44 @@ export interface Place {
   scene: PlaceScene;
 }
 
+/** How a family member relates to the bride/groom — picks the kin wording
+ * ("Daughter of", "Granddaughter of", "In the loving care of", …). */
+export const FAMILY_RELATIONS = [
+  "parents",
+  "father",
+  "mother",
+  "grandparents",
+  "guardian",
+  "siblings",
+  "uncleAunt",
+  "children",
+  "blessings",
+  "other",
+] as const;
+export type FamilyRelation = (typeof FAMILY_RELATIONS)[number];
+
+export interface FamilyMember {
+  relation: FamilyRelation;
+  name: string;
+  /** Free-text relation, used only when relation is "other". */
+  label: string;
+}
+
+export type FamilySide = "bride" | "groom";
+
+export const MAX_FAMILY_MEMBERS = 6;
+
+/** Invitation content language — independent of the editor's UI language. */
+export type ContentLocale = "en" | "ta";
+
+/** Custom initials for the couple's monogram; "" means "derive from the name". */
+export interface MonogramInitials {
+  a: string;
+  b: string;
+}
+
+export const EMPTY_MONOGRAM: MonogramInitials = { a: "", b: "" };
+
 /** Merges possibly-partial/missing toggles over the all-on default — safe
  * for documents published before this field existed (they just show
  * everything, same as their original behavior). */
@@ -114,6 +152,14 @@ export interface InvitationData {
   faq: FaqItem[]; // up to 4 — "Things to Know" (dress code, parking, etc.)
   travel: TravelInfo; // Travel Guide — shown by the wedding (royal palace) layout
   places: Place[]; // up to 6 — Places to Explore, same layout
+  /** Missing on documents saved before this existed — treat as empty. */
+  monogram?: MonogramInitials;
+  /** Structured family lines per side. Missing on older docs, which only
+   * have brideParents/groomParents — read through getFamily() in lib/family.ts. */
+  brideFamily?: FamilyMember[];
+  groomFamily?: FamilyMember[];
+  /** Language the invitation itself renders in; missing on older docs. */
+  contentLocale?: ContentLocale;
 }
 
 /** Full document shape at invitations/{slug|draftId}. */

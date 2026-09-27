@@ -1,0 +1,148 @@
+/* Thoranam & Jasmine intro (thoranam-jasmine). Fills IntroHost's slot. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 55%, #fffdf4 0%, #f1ead2 70%, #e3d6ad 100%);
+  color: #23301e;
+}
+
+/* Banana-leaf strips on both edges. */
+.leafEdge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 18px;
+  background: repeating-linear-gradient(170deg, #3e7a2f 0 10px, #5fa043 10px 14px);
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+.leafEdgeRight {
+  left: auto;
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.thoranam {
+  position: absolute;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(62px, 12cqh, 96px);
+  overflow: visible;
+  transform-origin: 50% 0;
+}
+
+.center {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: min(2cqh, 16px);
+  padding: 0 36px;
+  text-align: center;
+}
+.kolam {
+  position: absolute;
+  inset: 22% 6%;
+  width: 88%;
+  height: 56%;
+  overflow: visible;
+}
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #a8741a;
+}
+.names {
+  position: relative;
+  /* A soft cream halo so the names read cleanly over the jasmine strings. */
+  text-shadow: 0 0 14px #fffdf4, 0 0 28px #fffdf4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(clamp(30px, 10cqw, 54px) * var(--name-fit, 1));
+  line-height: 1.1;
+  font-weight: 500;
+  color: #2a4d30;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.amp {
+  font-size: 0.6em;
+  color: #e0a526;
+}
+.date {
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  color: #a8741a;
+}
+
+/* Jasmine curtain: strings of malli buds hanging at both sides of the
+ * doorway (CSS-drawn so the buds stay small and crisp at any size), leaving
+ * the names clear; they sweep out of the way on open. */
+.strings {
+  position: absolute;
+  top: clamp(40px, 8cqh, 70px);
+  bottom: 0;
+  width: 22%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  z-index: 2;
+  pointer-events: none;
+}
+.stringsLeft {
+  left: 18px;
+  transform-origin: 0 0;
+}
+.stringsRight {
+  right: 18px;
+  transform-origin: 100% 0;
+}
+.string {
+  width: 12px;
+  background:
+    radial-gradient(ellipse 4px 6px at 50% 50%, #ffffff 92%, transparent 100%) 0 0 / 12px 17px repeat-y,
+    linear-gradient(90deg, transparent 5.5px, #b9c9a8 5.5px 6.5px, transparent 6.5px);
+  filter: drop-shadow(0 1px 1px rgba(80, 90, 60, 0.25));
+}
+
+.actions {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 9cqh;
+  display: flex;
+  justify-content: center;
+  z-index: 4;
+}
+.openBtn {
+  border: 1px solid #e0a526;
+  background: #1f3b24;
+  color: #fffdf4;
+  border-radius: 999px;
+  padding: 12px 24px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(31, 59, 36, 0.35);
+}
+.openBtn:disabled {
+  cursor: default;
+}
+
+.root:lang(ta) .names {
+  font-size: calc(clamp(26px, 8.5cqw, 46px) * var(--name-fit, 1));
+  line-height: 1.3;
+}

@@ -88,7 +88,7 @@
   }
 }
 .names {
-  font-size: min(8cqw, 34px);
+  font-size: calc(min(8cqw, 34px) * var(--name-fit, 1));
   color: #b96a7c;
 }
 .hint {

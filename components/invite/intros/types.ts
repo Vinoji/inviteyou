@@ -12,6 +12,8 @@ import type { BurstOptions } from "../particles/ParticleField";
  */
 export interface IntroProps {
   names: { a: string; b?: string };
+  /** Initials for monogram-style intros — the couple's override, else each name's first letter. */
+  monogram: { a: string; b?: string };
   /** ISO yyyy-mm-dd, for intros that format the date themselves. */
   weddingDate: string;
   /** Engraved-style date, e.g. "24 · 01 · 2027", or "" if unset. */

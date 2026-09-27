@@ -1,8 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Monitor, Plus, RotateCcw, Smartphone, Tablet, Trash2 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import {
+  NextIntlClientProvider,
+  createTranslator,
+  useLocale,
+  useTimeZone,
+  useTranslations,
+  type AbstractIntlMessages,
+} from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
 import Script from "next/script";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
@@ -11,12 +18,23 @@ import { getTemplateMeta } from "@/lib/i18n/templates";
 import { getCategoryMeta } from "@/lib/i18n/categories";
 import { getDefaultInvitationData } from "@/lib/i18n/defaultContent";
 import { FONT_PAIRINGS } from "@/lib/fontPairings";
-import { EMPTY_TRAVEL, type InvitationData } from "@/lib/types";
+import {
+  EMPTY_MONOGRAM,
+  EMPTY_TRAVEL,
+  type ContentLocale,
+  type FamilySide,
+  type InvitationData,
+} from "@/lib/types";
+import { getFamily, legacyParentsLine } from "@/lib/family";
+import { STORY_PRESETS } from "@/lib/storyPresets";
+import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
 import InvitationView from "@/components/invite/InvitationView";
 import { FormSection, Field, inputClass, SectionToggle } from "@/components/editor/FormFields";
 import PhotoSlot from "@/components/editor/PhotoSlot";
 import TravelFields from "@/components/editor/TravelFields";
 import PlacesFields from "@/components/editor/PlacesFields";
+import StoryPicker from "@/components/editor/StoryPicker";
+import FamilyFields, { type FamilyUpdate } from "@/components/editor/FamilyFields";
 import { REPLAY_INTRO_EVENT } from "@/components/invite/intros/events";
 
 interface RazorpayResponse {
@@ -55,6 +73,39 @@ const ACCENT_PRESETS = [
   "#15803d",
 ];
 
+/** Translator over the invitation-language messages (not the UI's). */
+function contentT(
+  messages: Record<ContentLocale, AbstractIntlMessages>,
+  locale: ContentLocale,
+  namespace: string
+): ContentT {
+  // Untyped messages make createTranslator infer "no values allowed"; the
+  // lib helpers (getDefaultInvitationData, story presets) take this shape.
+  return createTranslator({ locale, messages: messages[locale], namespace }) as unknown as ContentT;
+}
+type ContentT = {
+  (key: string, values?: Record<string, string | number>): string;
+  raw: (key: string) => unknown;
+};
+
+/** Seed fields that follow the invitation language while untouched: switch
+ * the language and any of these still equal to the old language's seed are
+ * swapped for the new one; anything the couple typed stays as it is. */
+const SEED_KEYS = [
+  "brideName",
+  "groomName",
+  "story",
+  "ceremonyVenue",
+  "receptionVenue",
+  "brideParents",
+  "groomParents",
+  "brideFamily",
+  "groomFamily",
+  "faq",
+  "travel",
+  "places",
+] as const satisfies readonly (keyof InvitationData)[];
+
 function generateDraftId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
@@ -66,23 +117,38 @@ export default function Editor({
   templateId,
   editSlug,
   editToken,
+  contentMessages,
 }: {
   templateId: string;
   editSlug: string | null;
   editToken: string | null;
+  /** Invitation-language messages for both locales (see page.tsx). */
+  contentMessages: Record<ContentLocale, AbstractIntlMessages>;
 }) {
   const router = useRouter();
   const t = useTranslations("editor");
   const tTemplates = useTranslations("templates");
   const tCategories = useTranslations("categories");
-  const tDefaultContent = useTranslations("defaultContent");
+  const uiLocale: ContentLocale = useLocale() === "ta" ? "ta" : "en";
+  const timeZone = useTimeZone();
   const template = getTemplateMeta(templateId, tTemplates);
   const category = getCategoryMeta(template.category, tCategories);
   const isEditMode = Boolean(editSlug && editToken);
 
   const [draftId] = useState(() => generateDraftId());
-  const [data, setData] = useState<InvitationData>(() =>
-    getDefaultInvitationData(templateId, tDefaultContent)
+  const [data, setData] = useState<InvitationData>(() => ({
+    ...getDefaultInvitationData(templateId, contentT(contentMessages, uiLocale, "defaultContent")),
+    contentLocale: uiLocale,
+  }));
+  // Older published docs have no contentLocale; they rendered in the page's language.
+  const contentLocale: ContentLocale = data.contentLocale ?? uiLocale;
+  const tPresets = useMemo(
+    () => contentT(contentMessages, contentLocale, "storyPresets"),
+    [contentMessages, contentLocale]
+  );
+  const tCommon = useMemo(
+    () => contentT(contentMessages, contentLocale, "common"),
+    [contentMessages, contentLocale]
   );
   const [loadingExisting, setLoadingExisting] = useState(isEditMode);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -93,6 +159,17 @@ export default function Editor({
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [razorpayReady, setRazorpayReady] = useState(false);
+  // Which ready-made story (if any) is in the story box, and the seed story a
+  // fresh editor starts with — both count as "not the user's own words", so
+  // replacing them needs no confirmation.
+  const [storyPreset, setStoryPreset] = useState<string | null>(null);
+  const seedStory = useMemo(
+    () =>
+      getDefaultInvitationData(templateId, contentT(contentMessages, contentLocale, "defaultContent"))
+        .story,
+    [templateId, contentMessages, contentLocale]
+  );
+  const storyRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (!isEditMode || !editSlug || !editToken) return;
@@ -121,6 +198,90 @@ export default function Editor({
 
   function update<K extends keyof InvitationData>(key: K, value: InvitationData[K]) {
     setData((d) => ({ ...d, [key]: value }));
+  }
+
+  function fillStoryWith(tp: ContentT, tc: ContentT, id: string, a: string, b: string) {
+    return tp(`${template.category}.${id}.text`, {
+      a: a.trim() || (category.singlePerson ? tc("youFallback") : tc("brideFallback")),
+      b: b.trim() || tc("groomFallback"),
+    });
+  }
+  function fillStory(id: string, a: string, b: string) {
+    return fillStoryWith(tPresets, tCommon, id, a, b);
+  }
+
+  function switchContentLocale(next: ContentLocale) {
+    if (next === contentLocale) return;
+    const oldSeed = getDefaultInvitationData(
+      templateId,
+      contentT(contentMessages, contentLocale, "defaultContent")
+    );
+    const newSeed = getDefaultInvitationData(
+      templateId,
+      contentT(contentMessages, next, "defaultContent")
+    );
+    const nextPresets = contentT(contentMessages, next, "storyPresets");
+    const nextCommon = contentT(contentMessages, next, "common");
+    setData((d) => {
+      const out: InvitationData = { ...d, contentLocale: next };
+      for (const key of SEED_KEYS) {
+        if (JSON.stringify(d[key]) === JSON.stringify(oldSeed[key])) {
+          Object.assign(out, { [key]: newSeed[key] });
+        }
+      }
+      if (storyPreset && d.story === fillStory(storyPreset, d.brideName, d.groomName)) {
+        out.story = fillStoryWith(nextPresets, nextCommon, storyPreset, out.brideName, out.groomName);
+      }
+      return out;
+    });
+  }
+
+  /** A name edit also re-fills an untouched ready-made story, so picking a
+   * story before typing the names still ends up with the right names in it. */
+  function updateName(key: "brideName" | "groomName", value: string) {
+    setData((d) => {
+      const next = { ...d, [key]: value };
+      if (storyPreset && d.story === fillStory(storyPreset, d.brideName, d.groomName)) {
+        next.story = fillStory(storyPreset, next.brideName, next.groomName);
+      }
+      return next;
+    });
+  }
+
+  function storyIsOwnWords() {
+    const current = data.story.trim();
+    if (!current || data.story === seedStory) return false;
+    return !(storyPreset && data.story === fillStory(storyPreset, data.brideName, data.groomName));
+  }
+
+  function chooseStory(id: string) {
+    const title = tPresets(`${template.category}.${id}.title`);
+    if (storyIsOwnWords() && !window.confirm(t("storyReplaceConfirm", { title }))) return;
+    setStoryPreset(id);
+    update("story", fillStory(id, data.brideName, data.groomName));
+  }
+
+  function writeOwnStory() {
+    if (storyIsOwnWords() && !window.confirm(t("storyClearConfirm"))) return;
+    setStoryPreset(null);
+    update("story", "");
+    storyRef.current?.focus();
+  }
+
+  /** Keeps the legacy one-line parents field in step with the structured
+   * list, for anything still reading brideParents/groomParents. */
+  function updateFamily(side: FamilySide, update: FamilyUpdate) {
+    setData((d) => {
+      const prev = (side === "bride" ? d.brideFamily : d.groomFamily) ?? getFamily(d, side);
+      const members = update(prev);
+      return side === "bride"
+        ? { ...d, brideFamily: members, brideParents: legacyParentsLine(members) }
+        : { ...d, groomFamily: members, groomParents: legacyParentsLine(members) };
+    });
+  }
+
+  function updateMonogram(key: "a" | "b", value: string) {
+    setData((d) => ({ ...d, monogram: { ...(d.monogram ?? EMPTY_MONOGRAM), [key]: value } }));
   }
   function updateVenue(
     which: "ceremonyVenue" | "receptionVenue",
@@ -224,6 +385,9 @@ export default function Editor({
       // Best-effort cleanup; safe to ignore.
     }
   }
+
+  const initials = resolveMonogram(data.brideName, data.groomName, data.monogram, false);
+  const monogramText = [initials.a, initials.b].filter(Boolean).join(" & ");
 
   const canSubmit =
     Boolean(data.brideName.trim() && (category.singlePerson || data.groomName.trim())) &&
@@ -372,12 +536,48 @@ export default function Editor({
           <div className="p-6 text-sm text-red-600">{loadError}</div>
         ) : (
           <div className="flex-1 space-y-8 overflow-y-auto px-5 py-6">
+            <div className="space-y-2 rounded-lg border border-neutral-200 p-3 dark:border-neutral-700">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  {t("contentLocaleTitle")}
+                </span>
+                <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-0.5 dark:border-neutral-700 dark:bg-neutral-900">
+                  {(["en", "ta"] as const).map((l) => (
+                    <button
+                      key={l}
+                      type="button"
+                      lang={l}
+                      onClick={() => switchContentLocale(l)}
+                      aria-pressed={contentLocale === l}
+                      className={`rounded-md px-3 py-1 text-xs font-semibold transition ${
+                        contentLocale === l
+                          ? "bg-white text-neutral-900 shadow-sm dark:bg-neutral-700 dark:text-neutral-50"
+                          : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+                      }`}
+                    >
+                      {l === "en" ? "English" : "தமிழ்"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("contentLocaleHint")}</p>
+              {contentLocale === "ta" && !data.fontPairing.startsWith("tamil") && (
+                <button
+                  type="button"
+                  onClick={() => update("fontPairing", "tamil-classic")}
+                  className="text-xs font-semibold text-amber-700 hover:underline dark:text-amber-500"
+                >
+                  {t("useTamilFont")}
+                </button>
+              )}
+            </div>
+
             <FormSection title={category.singlePerson ? t("sectionAboutYou") : t("sectionCouple")}>
               <Field label={category.personALabel}>
                 <input
                   className={inputClass}
                   value={data.brideName}
-                  onChange={(e) => update("brideName", e.target.value)}
+                  onChange={(e) => updateName("brideName", e.target.value)}
                   placeholder={t("namePlaceholderA")}
                 />
               </Field>
@@ -386,10 +586,48 @@ export default function Editor({
                   <input
                     className={inputClass}
                     value={data.groomName}
-                    onChange={(e) => update("groomName", e.target.value)}
+                    onChange={(e) => updateName("groomName", e.target.value)}
                     placeholder={t("namePlaceholderB")}
                   />
                 </Field>
+              )}
+              {template.category === "wedding" && (
+                <div className="space-y-2 rounded-lg border border-dashed border-neutral-200 p-3 dark:border-neutral-700">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                      {t("monogramTitle")}
+                    </span>
+                    <span
+                      className="rounded-md bg-neutral-900 px-2.5 py-1 text-sm text-amber-200 dark:bg-neutral-800"
+                      style={{ fontFamily: FONT_PAIRINGS.find((f) => f.id === data.fontPairing)?.headingVar }}
+                      title={t("monogramPreview")}
+                      lang={scriptLang(monogramText)}
+                    >
+                      {monogramText}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 items-end gap-3">
+                    <Field label={t("monogramFirst")}>
+                      <input
+                        className={inputClass}
+                        value={data.monogram?.a ?? ""}
+                        maxLength={8}
+                        onChange={(e) => updateMonogram("a", e.target.value)}
+                        placeholder={firstGrapheme(data.brideName)}
+                      />
+                    </Field>
+                    <Field label={t("monogramSecond")}>
+                      <input
+                        className={inputClass}
+                        value={data.monogram?.b ?? ""}
+                        maxLength={8}
+                        onChange={(e) => updateMonogram("b", e.target.value)}
+                        placeholder={firstGrapheme(data.groomName)}
+                      />
+                    </Field>
+                  </div>
+                  <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("monogramHint")}</p>
+                </div>
               )}
             </FormSection>
 
@@ -501,9 +739,26 @@ export default function Editor({
               title={category.storyTitle}
               toggle={{ enabled: data.sections.story, onChange: (v) => updateSection("story", v) }}
             >
+              <StoryPicker
+                options={(STORY_PRESETS[template.category] ?? []).map((id) => ({
+                  id,
+                  title: tPresets(`${template.category}.${id}.title`),
+                  tag: tPresets(`${template.category}.${id}.tag`),
+                  preview: fillStory(id, data.brideName, data.groomName),
+                }))}
+                selectedId={
+                  storyPreset && data.story === fillStory(storyPreset, data.brideName, data.groomName)
+                    ? storyPreset
+                    : null
+                }
+                onChoose={chooseStory}
+                onWriteOwn={writeOwnStory}
+              />
               <textarea
+                ref={storyRef}
                 className={inputClass}
-                rows={5}
+                rows={6}
+                lang={scriptLang(data.story)}
                 value={data.story}
                 onChange={(e) => update("story", e.target.value)}
                 placeholder={t("storyPlaceholder")}
@@ -518,23 +773,17 @@ export default function Editor({
                   onChange: (v) => updateSection("family", v),
                 }}
               >
-                <Field label={t("groomParentsLabel")}>
-                  <input
-                    className={inputClass}
-                    value={data.groomParents}
-                    onChange={(e) => update("groomParents", e.target.value)}
-                    placeholder={t("groomParentsPlaceholder")}
-                  />
-                </Field>
-                <Field label={t("brideParentsLabel")}>
-                  <input
-                    className={inputClass}
-                    value={data.brideParents}
-                    onChange={(e) => update("brideParents", e.target.value)}
-                    placeholder={t("brideParentsPlaceholder")}
-                  />
-                </Field>
-                <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("familyHint")}</p>
+                <FamilyFields
+                  brideHeading={t("familySideOf", {
+                    name: data.brideName.trim() || category.personALabel,
+                  })}
+                  groomHeading={t("familySideOf", {
+                    name: data.groomName.trim() || category.personBLabel,
+                  })}
+                  brideMembers={data.brideFamily ?? getFamily(data, "bride")}
+                  groomMembers={data.groomFamily ?? getFamily(data, "groom")}
+                  onChange={updateFamily}
+                />
               </FormSection>
             )}
 
@@ -801,7 +1050,15 @@ export default function Editor({
                   : "max-w-none"
             }`}
           >
-            <InvitationView data={data} slug={editSlug ?? "preview"} mode="preview" />
+            <NextIntlClientProvider
+              locale={contentLocale}
+              messages={contentMessages[contentLocale]}
+              timeZone={timeZone}
+            >
+              <div lang={contentLocale}>
+                <InvitationView data={data} slug={editSlug ?? "preview"} mode="preview" />
+              </div>
+            </NextIntlClientProvider>
           </div>
         </div>
       </div>

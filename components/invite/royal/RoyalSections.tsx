@@ -1,4 +1,7 @@
 import { MapPin } from "lucide-react";
+import FamilyLines from "../FamilyLines";
+import type { FamilyMember } from "@/lib/types";
+import { nameFitScale, scriptLang } from "@/lib/monogram";
 import { useTranslations, useFormatter } from "next-intl";
 import type { VenueInfo } from "@/lib/types";
 import type { RoyalPalette } from "./palettes";
@@ -46,7 +49,11 @@ export function RoyalHero({
         <TempleMandala color={palette.gold} />
         <Toran palette={palette} width={400} height={110} strands={10} className={s.toranHero} />
         <p className={s.lead}>{t("lead")}</p>
-        <h1 className={s.names}>
+        <h1
+          className={s.names}
+          lang={scriptLang(`${brideName} ${groomName}`)}
+          style={{ ["--name-fit" as string]: nameFitScale(brideName, groomName) }}
+        >
           <IntroSweep className={s.name}>{brideName || tCommon("brideFallback")}</IntroSweep>
           <span className={s.weds}>{t("weds")}</span>
           <IntroSweep className={s.name}>{groomName || tCommon("groomFallback")}</IntroSweep>
@@ -75,21 +82,24 @@ export function RoyalFamilies({
   palette,
   brideName,
   groomName,
-  brideParents,
-  groomParents,
+  brideFamily,
+  groomFamily,
 }: {
   palette: RoyalPalette;
   brideName: string;
   groomName: string;
-  brideParents: string;
-  groomParents: string;
+  brideFamily: FamilyMember[];
+  groomFamily: FamilyMember[];
 }) {
   const t = useTranslations("invite.royal.family");
   const tCommon = useTranslations("common");
-  if (!brideParents && !groomParents) return null;
+  if (brideFamily.length === 0 && groomFamily.length === 0) return null;
 
   return (
-    <section className={s.families}>
+    <section
+      className={s.families}
+      style={{ ["--name-fit" as string]: nameFitScale(brideName, groomName) }}
+    >
       <div className={s.archTop}>
         <TemplePaisleys color={palette.goldLight} />
         <div className={s.eyebrow}>{t("eyebrow")}</div>
@@ -100,12 +110,12 @@ export function RoyalFamilies({
           <div className={s.person}>
             <div className={s.role}>{t("bride")}</div>
             <h3>{brideName || tCommon("brideFallback")}</h3>
-            {brideParents && (
-              <>
-                <div className={s.kin}>{t("daughterOf")}</div>
-                <div className={s.parents}>{brideParents}</div>
-              </>
-            )}
+            <FamilyLines
+              members={brideFamily}
+              side="bride"
+              lineClassName={s.kin}
+              nameClassName={s.parents}
+            />
           </div>
         </FamilyBlock>
         <Thali color={palette.goldLight} />
@@ -114,12 +124,12 @@ export function RoyalFamilies({
           <div className={s.person} style={{ marginTop: 8 }}>
             <div className={s.role}>{t("groom")}</div>
             <h3>{groomName || tCommon("groomFallback")}</h3>
-            {groomParents && (
-              <>
-                <div className={s.kin}>{t("sonOf")}</div>
-                <div className={s.parents}>{groomParents}</div>
-              </>
-            )}
+            <FamilyLines
+              members={groomFamily}
+              side="groom"
+              lineClassName={s.kin}
+              nameClassName={s.parents}
+            />
           </div>
         </FamilyBlock>
       </div>

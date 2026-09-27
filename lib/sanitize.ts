@@ -1,6 +1,17 @@
 import "server-only";
-import type { VenueInfo, SectionToggles, FaqItem, TravelInfo, Place, PlaceScene } from "./types";
-import { withDefaultSections, PLACE_SCENES } from "./types";
+import type {
+  VenueInfo,
+  SectionToggles,
+  FaqItem,
+  TravelInfo,
+  Place,
+  PlaceScene,
+  MonogramInitials,
+  FamilyMember,
+  FamilyRelation,
+  ContentLocale,
+} from "./types";
+import { withDefaultSections, PLACE_SCENES, FAMILY_RELATIONS, MAX_FAMILY_MEMBERS } from "./types";
 
 export function sanitizeVenue(v: unknown): VenueInfo {
   if (!v || typeof v !== "object") return { name: "", address: "", mapsLink: "" };
@@ -118,6 +129,13 @@ export function sanitizeTravel(v: unknown): TravelInfo {
   };
 }
 
+/** A few characters each — room for a Tamil letter plus vowel sign, or
+ * something like "Sr" — not a free-text field. */
+export function sanitizeMonogram(v: unknown): MonogramInitials {
+  const obj = v && typeof v === "object" ? (v as Record<string, unknown>) : {};
+  return { a: str(obj.a, 8).trim(), b: str(obj.b, 8).trim() };
+}
+
 export function sanitizePlaces(v: unknown): Place[] {
   return objects(v)
     .map((p) => ({
@@ -130,4 +148,21 @@ export function sanitizePlaces(v: unknown): Place[] {
     }))
     .filter((p) => p.title.trim())
     .slice(0, 6);
+}
+
+export function sanitizeFamily(v: unknown): FamilyMember[] {
+  return objects(v)
+    .map((m) => ({
+      relation: (FAMILY_RELATIONS as readonly string[]).includes(m.relation as string)
+        ? (m.relation as FamilyRelation)
+        : "other",
+      name: str(m.name, 150).trim(),
+      label: str(m.label, 40).trim(),
+    }))
+    .filter((m) => m.name)
+    .slice(0, MAX_FAMILY_MEMBERS);
+}
+
+export function sanitizeContentLocale(v: unknown): ContentLocale | undefined {
+  return v === "en" || v === "ta" ? v : undefined;
 }

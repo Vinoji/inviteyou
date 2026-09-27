@@ -3,7 +3,16 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { TEMPLATE_IDS } from "@/lib/templates";
 import { getTemplateMeta } from "@/lib/i18n/templates";
+import {
+  INVITATION_NAMESPACES,
+  getContentMessages,
+} from "@/lib/i18n/contentMessages";
 import Editor from "./Editor";
+
+/** Everything the editor renders in the *invitation's* language (preview,
+ * story presets, seed content) — for both languages, so switching the
+ * invitation language is instant and doesn't touch the UI language. */
+const EDITOR_CONTENT_NAMESPACES = [...INVITATION_NAMESPACES, "storyPresets", "defaultContent"];
 
 export async function generateMetadata({
   params,
@@ -31,11 +40,17 @@ export default async function CreatePage({
 
   if (!TEMPLATE_IDS.includes(templateId)) notFound();
 
+  const [en, ta] = await Promise.all([
+    getContentMessages("en", EDITOR_CONTENT_NAMESPACES, templateId),
+    getContentMessages("ta", EDITOR_CONTENT_NAMESPACES, templateId),
+  ]);
+
   return (
     <Editor
       templateId={templateId}
       editSlug={edit ?? null}
       editToken={token ?? null}
+      contentMessages={{ en, ta }}
     />
   );
 }

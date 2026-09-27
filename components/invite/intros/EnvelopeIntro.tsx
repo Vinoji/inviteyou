@@ -107,7 +107,7 @@ export default function EnvelopeIntro({
             )}
 
             <p
-              className="mt-3 text-2xl font-bold text-neutral-900 sm:text-3xl"
+              className="mt-3 text-[length:calc(1.5rem*var(--name-fit,1))] font-bold text-neutral-900 [overflow-wrap:anywhere] sm:text-[length:calc(1.875rem*var(--name-fit,1))]"
               style={{ fontFamily: fonts.display }}
             >
               {names.a}
@@ -118,7 +118,7 @@ export default function EnvelopeIntro({
                   &amp;
                 </span>
                 <p
-                  className="text-2xl font-bold text-neutral-900 sm:text-3xl"
+                  className="text-[length:calc(1.5rem*var(--name-fit,1))] font-bold text-neutral-900 [overflow-wrap:anywhere] sm:text-[length:calc(1.875rem*var(--name-fit,1))]"
                   style={{ fontFamily: fonts.display }}
                 >
                   {names.b}

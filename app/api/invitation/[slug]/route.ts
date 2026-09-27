@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
-import { withDefaultSections, EMPTY_TRAVEL } from "@/lib/types";
+import { withDefaultSections, EMPTY_TRAVEL, EMPTY_MONOGRAM } from "@/lib/types";
 import {
   sanitizeAccentColor,
   sanitizeBackgroundMusic,
   sanitizeFaq,
+  sanitizeMonogram,
+  sanitizeFamily,
+  sanitizeContentLocale,
   sanitizeParentsLine,
   sanitizePlaces,
   sanitizePhotos,
@@ -58,6 +61,7 @@ export async function GET(
       faq: data.faq ?? [],
       travel: data.travel ?? EMPTY_TRAVEL,
       places: data.places ?? [],
+      monogram: data.monogram ?? EMPTY_MONOGRAM,
     },
   });
 }
@@ -94,6 +98,10 @@ export async function PUT(
     faq,
     travel,
     places,
+    monogram,
+    brideFamily,
+    groomFamily,
+    contentLocale,
   } = body ?? {};
 
   if (typeof templateId !== "string" || !TEMPLATE_IDS.includes(templateId)) {
@@ -133,6 +141,10 @@ export async function PUT(
       faq: sanitizeFaq(faq),
       travel: sanitizeTravel(travel),
       places: sanitizePlaces(places),
+      monogram: sanitizeMonogram(monogram),
+      ...(Array.isArray(brideFamily) ? { brideFamily: sanitizeFamily(brideFamily) } : {}),
+      ...(Array.isArray(groomFamily) ? { groomFamily: sanitizeFamily(groomFamily) } : {}),
+      ...(sanitizeContentLocale(contentLocale) ? { contentLocale: sanitizeContentLocale(contentLocale) } : {}),
       updatedAt: Date.now(),
     });
 

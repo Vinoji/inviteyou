@@ -2,7 +2,20 @@ import type { CategoryId } from "./categories";
 
 /** Which opening animation plays before the invitation — see
  * components/invite/intros/registry.ts. */
-export type IntroId = "door" | "envelope" | "kolam" | "split" | "bloom" | "giftbox" | "bottle";
+export type IntroId =
+  | "door"
+  | "envelope"
+  | "kolam"
+  | "split"
+  | "bloom"
+  | "giftbox"
+  | "bottle"
+  | "curtain"
+  | "scratch"
+  | "lanterns"
+  | "thoranam"
+  | "kasavu"
+  | "pookalam";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -65,6 +78,60 @@ export const TEMPLATES: TemplateConfig[] = [
     cardGradient: "from-orange-100 via-amber-50 to-teal-50",
     cardTextClass: "text-orange-900",
     intro: "bottle",
+  },
+  {
+    id: "silk-curtain",
+    category: "wedding",
+    defaultAccent: "#c9a54a",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-rose-900 via-red-800 to-amber-700",
+    cardTextClass: "text-amber-100",
+    intro: "curtain",
+  },
+  {
+    id: "scratch-reveal",
+    category: "wedding",
+    defaultAccent: "#a56c7c",
+    defaultFont: "classic-serif",
+    cardGradient: "from-violet-200 via-fuchsia-100 to-rose-100",
+    cardTextClass: "text-violet-900",
+    intro: "scratch",
+  },
+  {
+    id: "lantern-night",
+    category: "wedding",
+    defaultAccent: "#f2a33a",
+    defaultFont: "classic-serif",
+    cardGradient: "from-indigo-950 via-blue-900 to-orange-700",
+    cardTextClass: "text-amber-100",
+    intro: "lanterns",
+  },
+  {
+    id: "thoranam-jasmine",
+    category: "wedding",
+    defaultAccent: "#e0a526",
+    defaultFont: "tamil-classic",
+    cardGradient: "from-green-800 via-lime-100 to-amber-100",
+    cardTextClass: "text-green-950",
+    intro: "thoranam",
+  },
+  {
+    id: "kerala-kasavu",
+    category: "wedding",
+    defaultAccent: "#b8921f",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-amber-50 via-yellow-50 to-amber-200",
+    cardTextClass: "text-amber-900",
+    intro: "kasavu",
+  },
+  {
+    id: "pookalam",
+    category: "wedding",
+    defaultAccent: "#e8862a",
+    defaultFont: "classic-serif",
+    cardGradient: "from-orange-300 via-yellow-200 to-red-300",
+    cardTextClass: "text-red-950",
+    intro: "pookalam",
   },
   {
     id: "anniversary-emerald",

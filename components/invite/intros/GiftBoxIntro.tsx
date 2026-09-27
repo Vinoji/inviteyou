@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { scriptLang } from "@/lib/monogram";
 import { motion, type PanInfo } from "framer-motion";
 import { useTranslations } from "next-intl";
 import useSafeReducedMotion from "../useSafeReducedMotion";
@@ -21,7 +22,7 @@ const PULL = 120;
  * Reduced motion: the box already open with the card showing, and a "View
  * invitation" button.
  */
-export default function GiftBoxIntro({ names, fonts, onOpen, onDone, burst }: IntroProps) {
+export default function GiftBoxIntro({ names, monogram, fonts, onOpen, onDone, burst }: IntroProps) {
   const t = useTranslations("invite.intros.giftbox");
   const reduceMotion = useSafeReducedMotion();
   const [stage, setStage] = useState<0 | 1 | 2 | 3 | 4>(0); // closed, untied, lid up, card up, push
@@ -58,10 +59,7 @@ export default function GiftBoxIntro({ names, fonts, onOpen, onDone, burst }: In
   const s1 = reduceMotion || stage >= 1;
   const s2 = reduceMotion || stage >= 2;
   const s3 = reduceMotion || stage >= 3;
-  const monogram = [names.a, names.b ?? ""]
-    .map((n) => n.trim().charAt(0))
-    .filter(Boolean)
-    .join(" & ");
+  const initials = [monogram.a, monogram.b].filter(Boolean).join(" & ");
   const ease = [0.22, 1, 0.36, 1] as const;
 
   return (
@@ -125,8 +123,8 @@ export default function GiftBoxIntro({ names, fonts, onOpen, onDone, burst }: In
             }
             transition={{ duration: reduceMotion ? 0 : 0.7, ease }}
           >
-            <span className={s.monogram} style={{ fontFamily: fonts.display }}>
-              {monogram}
+            <span className={s.monogram} style={{ fontFamily: fonts.display }} lang={scriptLang(initials)}>
+              {initials}
             </span>
             {/* Ribbon bands, sliding off once untied. */}
             <motion.div

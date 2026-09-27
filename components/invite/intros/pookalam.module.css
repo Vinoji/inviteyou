@@ -1,0 +1,110 @@
+/* Pookalam intro (pookalam). Fills IntroHost's slot. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  /* Red-oxide courtyard floor with a soft centre light. */
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 42%, rgba(255, 211, 92, 0.35), transparent 70%),
+    radial-gradient(circle at 50% 50%, #8a2a1c 0%, #5a1414 70%, #3d0c0c 100%);
+  color: #fff9ec;
+}
+
+.column {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: min(2.2cqh, 18px);
+  padding: 0 24px;
+  text-align: center;
+}
+.lead {
+  font-size: min(5.5cqw, 22px);
+  font-style: italic;
+  color: #ffd35c;
+  max-width: 16em;
+}
+.flowerBox {
+  width: min(70cqw, 320px, 42cqh);
+  aspect-ratio: 1;
+}
+.flowerBtn {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.flowerBtn:focus-visible {
+  outline: 2px solid #ffd35c;
+  outline-offset: 6px;
+}
+.flowerBtn svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.breathe {
+  animation: breathe 3s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+@keyframes breathe {
+  50% {
+    transform: scale(1.04);
+  }
+}
+.names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(clamp(28px, 10cqw, 52px) * var(--name-fit, 1));
+  line-height: 1.1;
+  font-weight: 500;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.amp {
+  font-size: 0.6em;
+  color: #ffd35c;
+}
+.date {
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  color: #ffd35c;
+}
+.hint {
+  font-size: 10.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #ffd35c;
+}
+.viewBtn {
+  border: 1px solid #ffd35c;
+  background: rgba(90, 20, 20, 0.6);
+  color: #fff9ec;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.root:lang(ta) .names {
+  font-size: calc(clamp(24px, 8.5cqw, 44px) * var(--name-fit, 1));
+  line-height: 1.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .breathe {
+    animation: none;
+  }
+}

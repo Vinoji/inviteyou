@@ -144,7 +144,44 @@
     "sceneNature": "Nature",
     "sceneHeritage": "Heritage",
     "sceneBeach": "Beach",
-    "replayIntro": "Replay intro"
+    "replayIntro": "Replay intro",
+    "storyPickerTitle": "Start from a story",
+    "storyPickerHint": "Pick one, then edit it however you like — your names are filled in for you.",
+    "storyWriteOwn": "Write my own",
+    "storyReplaceConfirm": "Replace your current story with “{title}”? Your edits will be lost.",
+    "storyClearConfirm": "Clear your current story and start from a blank page?",
+    "storySelected": "Selected",
+    "monogramTitle": "Monogram initials",
+    "monogramHint": "Shown on the portrait when there’s no photo. Leave blank to use the first letter of each name.",
+    "monogramFirst": "First initial",
+    "monogramSecond": "Second initial",
+    "monogramPreview": "Preview",
+    "familyRelation": {
+      "parents": "Parents",
+      "father": "Father",
+      "mother": "Mother",
+      "grandparents": "Grandparents",
+      "guardian": "Guardian",
+      "siblings": "Brother / sister",
+      "uncleAunt": "Uncle & aunt",
+      "children": "Children",
+      "blessings": "Blessings from",
+      "other": "Other (type your own)"
+    },
+    "familySideOf": "{name}’s family",
+    "familyAdd": "Add family member",
+    "familyRemove": "Remove this family member",
+    "familyRelationLabel": "Relation",
+    "familyNameLabel": "Name(s)",
+    "familyNamePlaceholder": "e.g. Mr. & Mrs. Rajendran Kumar",
+    "familyCustomLabel": "Relation in your words",
+    "familyCustomPlaceholder": "e.g. Godparents",
+    "familyEmpty": "No family listed — only the name will show on this side.",
+    "familyGuide": "Add parents, a single parent, grandparents, a guardian, siblings, or anyone whose blessings you’d like to include. Leave a side empty if there’s no one to list.",
+    "familyLimit": "Up to {max} per side.",
+    "contentLocaleTitle": "Invitation language",
+    "contentLocaleHint": "The language your guests will see — labels, dates and suggested stories. The editor stays in the language you picked at the top.",
+    "useTamilFont": "Use a Tamil font for the best look"
   },
   "invite": {
     "hero": {
@@ -379,7 +416,57 @@
         "tapCork": "Tap the cork",
         "eyebrow": "You are invited",
         "view": "View invitation"
+      },
+      "curtain": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "Together with their families",
+        "pull": "Pull the tassel",
+        "view": "View invitation"
+      },
+      "scratch": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "Save the date",
+        "lead": "Scratch the card to reveal our date",
+        "scratchHere": "Scratch here",
+        "reveal": "Reveal",
+        "soon": "Coming soon"
+      },
+      "lanterns": {
+        "dialogLabel": "Invitation cover",
+        "lead": "Light a lamp for us",
+        "tapLamp": "Tap the lamp",
+        "view": "View invitation"
+      },
+      "thoranam": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "You are warmly welcomed to our wedding",
+        "open": "Open the doorway",
+        "view": "View invitation"
+      },
+      "kasavu": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "With the blessings of our elders",
+        "tapLamp": "Light the lamp",
+        "view": "View invitation"
+      },
+      "pookalam": {
+        "dialogLabel": "Invitation cover",
+        "lead": "A flower carpet for our special day",
+        "tapCentre": "Tap the centre",
+        "view": "View invitation"
       }
+    },
+    "kin": {
+      "parents": "{side, select, bride {Daughter of} groom {Son of} other {Child of}} <n>{name}</n>",
+      "father": "{side, select, bride {Daughter of} groom {Son of} other {Child of}} <n>{name}</n>",
+      "mother": "{side, select, bride {Daughter of} groom {Son of} other {Child of}} <n>{name}</n>",
+      "grandparents": "{side, select, bride {Granddaughter of} groom {Grandson of} other {Grandchild of}} <n>{name}</n>",
+      "guardian": "In the loving care of <n>{name}</n>",
+      "siblings": "{side, select, bride {Sister of} groom {Brother of} other {Sibling of}} <n>{name}</n>",
+      "uncleAunt": "{side, select, bride {Niece of} groom {Nephew of} other {Niece or nephew of}} <n>{name}</n>",
+      "children": "Blessed with <n>{name}</n>",
+      "blessings": "With the blessings of <n>{name}</n>",
+      "other": "{label} <n>{name}</n>"
     }
   },
   "rsvpsPage": {
@@ -528,6 +615,36 @@
       "name": "Terracotta House Warming",
       "tagline": "Warm clay & greenery",
       "description": "Earthy terracotta and greenery for welcoming friends to your new home."
+    },
+    "silk-curtain": {
+      "name": "Silk Curtain",
+      "tagline": "Maroon silk & gold fringe",
+      "description": "Guests pull a gold tassel and silk stage curtains sweep open on your names, with gold dust in the footlights."
+    },
+    "scratch-reveal": {
+      "name": "Scratch & Reveal",
+      "tagline": "Lilac & rose-gold foil",
+      "description": "Guests scratch a rose-gold foil card to uncover your date — confetti bursts the moment it's revealed."
+    },
+    "lantern-night": {
+      "name": "Lantern Night",
+      "tagline": "Midnight blue & diya glow",
+      "description": "Guests light a clay lamp and a wave of glowing lanterns rises into the night sky — a Karthigai Deepam feel."
+    },
+    "thoranam-jasmine": {
+      "name": "Thoranam & Jasmine",
+      "tagline": "Mango leaves, malli & marigold",
+      "description": "A Tamil wedding doorway: a mango-leaf thoranam swings in and strings of jasmine part as kolam dots bloom."
+    },
+    "kerala-kasavu": {
+      "name": "Kasavu & Nilavilakku",
+      "tagline": "Kerala cream & gold zari",
+      "description": "A kasavu cloth unrolls and the brass nilavilakku lights wick by wick — a Kerala temple wedding."
+    },
+    "pookalam": {
+      "name": "Pookalam",
+      "tagline": "Onam flower carpet",
+      "description": "An Onam pookalam is laid ring by ring — marigold, chethi, thumba — then opens onto your invitation."
     }
   },
   "defaultContent": {
@@ -1179,6 +1296,439 @@
           "answer": "Street parking is available — please be mindful of our neighbors."
         }
       ]
+    },
+    "silk-curtain": {
+      "brideName": "Lakshmi",
+      "groomName": "Karthik",
+      "ceremonyVenueName": "Sri Meenakshi Kalyana Mahal",
+      "ceremonyVenueAddress": "North Veli Street, Madurai",
+      "receptionVenueName": "The Gateway Banquet Hall",
+      "receptionVenueAddress": "Pasumalai, Madurai",
+      "groomParents": "Mr. & Mrs. Sundaram Pillai",
+      "brideParents": "Mr. & Mrs. Venkatesan Iyer",
+      "story": "Lakshmi and Karthik first met backstage at a college Bharatanatyam recital — she was the lead dancer, he was the nervous student running the lights. He missed her cue, she laughed it off, and they spent the rest of the evening talking in the wings. Years of music seasons, temple festivals and long evening walks later, the curtain rises on their own grand performance — and they would love for you to have a front-row seat.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Traditional festive wear — silks in rich jewel tones are perfect."
+        },
+        {
+          "question": "Is there parking at the venue?",
+          "answer": "Yes, parking is available inside the mahal campus."
+        }
+      ],
+      "travel": {
+        "city": "Madurai",
+        "cityCode": "IXM",
+        "airports": [
+          {
+            "code": "IXM",
+            "name": "Madurai",
+            "distance": "12 km"
+          },
+          {
+            "code": "TRZ",
+            "name": "Tiruchirappalli",
+            "distance": "140 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "12635",
+                "name": "Vaigai Express",
+                "fromStation": "Chennai Egmore",
+                "departs": "1:40 PM",
+                "toStation": "Madurai Junction",
+                "arrives": "9:15 PM",
+                "frequency": "Daily"
+              },
+              {
+                "number": "12637",
+                "name": "Pandian Express",
+                "fromStation": "Chennai Egmore",
+                "departs": "9:40 PM",
+                "toStation": "Madurai Junction",
+                "arrives": "5:15 AM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Meenakshi Amman Temple",
+          "description": "The great temple at the heart of Madurai, with towering painted gopurams and the Hall of a Thousand Pillars.",
+          "distance": "1 km from venue",
+          "scene": "temple"
+        },
+        {
+          "title": "Thirumalai Nayakkar Mahal",
+          "description": "A 17th-century palace of giant pillars and arches, with a sound-and-light show in the evenings.",
+          "distance": "2 km from venue",
+          "scene": "palace"
+        }
+      ]
+    },
+    "scratch-reveal": {
+      "brideName": "Nila",
+      "groomName": "Aditya",
+      "ceremonyVenueName": "Lavender Lawns",
+      "ceremonyVenueAddress": "Avinashi Road, Coimbatore",
+      "receptionVenueName": "The Residency Ballroom",
+      "receptionVenueAddress": "Race Course, Coimbatore",
+      "groomParents": "Mr. & Mrs. Prakash Menon",
+      "brideParents": "Mr. & Mrs. Ramesh Gounder",
+      "story": "Nila and Aditya's first date was a lucky-draw stall at a college fest — she scratched a card and won a teddy bear, he scratched his and won nothing, and she insisted on sharing the prize. Some luck, it turns out, is worth waiting for. Three years later they have the only prize that matters, and they can't wait to celebrate it with you.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Pastels are very welcome — think lilac, blush and soft gold."
+        },
+        {
+          "question": "Are children welcome?",
+          "answer": "Absolutely — there's a little play corner for the young ones."
+        }
+      ],
+      "travel": {
+        "city": "Coimbatore",
+        "cityCode": "CJB",
+        "airports": [
+          {
+            "code": "CJB",
+            "name": "Coimbatore",
+            "distance": "10 km"
+          },
+          {
+            "code": "COK",
+            "name": "Kochi",
+            "distance": "180 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "12675",
+                "name": "Kovai Express",
+                "fromStation": "Chennai Central",
+                "departs": "6:10 AM",
+                "toStation": "Coimbatore Junction",
+                "arrives": "2:05 PM",
+                "frequency": "Daily"
+              },
+              {
+                "number": "12243",
+                "name": "Shatabdi Express",
+                "fromStation": "Chennai Central",
+                "departs": "7:15 AM",
+                "toStation": "Coimbatore Junction",
+                "arrives": "2:15 PM",
+                "frequency": "Except Tue"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Marudhamalai Temple",
+          "description": "A hilltop Murugan temple with sweeping views over the city and the Western Ghats.",
+          "distance": "14 km from venue",
+          "scene": "temple"
+        },
+        {
+          "title": "Kovai Kutralam Falls",
+          "description": "A forest waterfall in the Siruvani hills — a short trek through the trees and a cool mist at the end.",
+          "distance": "35 km from venue",
+          "scene": "nature"
+        }
+      ]
+    },
+    "lantern-night": {
+      "brideName": "Deepa",
+      "groomName": "Surya",
+      "ceremonyVenueName": "Arunai Kalyana Mandapam",
+      "ceremonyVenueAddress": "Car Street, Tiruvannamalai",
+      "receptionVenueName": "Deepam Gardens",
+      "receptionVenueAddress": "Girivalam Road, Tiruvannamalai",
+      "groomParents": "Mr. & Mrs. Murugesan",
+      "brideParents": "Mr. & Mrs. Annamalai",
+      "story": "Deepa and Surya met on a Karthigai Deepam night, both climbing the steps to watch the great flame light up on the hill. Somewhere between the crowd, the chanting and a shared cup of sukku coffee, a small light began that neither of them could put out. Now, with the blessings of both families, they begin their life together in the town where it all began.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Traditional wear in warm festive colours — saffron, gold and deep red."
+        },
+        {
+          "question": "Why is the ceremony so early?",
+          "answer": "The muhurtham is at dawn; breakfast is served right after the ceremony."
+        }
+      ],
+      "travel": {
+        "city": "Tiruvannamalai",
+        "cityCode": "TNM",
+        "airports": [
+          {
+            "code": "MAA",
+            "name": "Chennai",
+            "distance": "190 km"
+          },
+          {
+            "code": "BLR",
+            "name": "Bengaluru",
+            "distance": "210 km"
+          }
+        ],
+        "routes": []
+      },
+      "places": [
+        {
+          "title": "Arunachaleswarar Temple",
+          "description": "One of the largest temples in India, at the foot of the sacred Arunachala hill.",
+          "distance": "1 km from venue",
+          "scene": "temple"
+        },
+        {
+          "title": "Sri Ramana Ashram",
+          "description": "A peaceful ashram with shaded courtyards, peacocks and paths up the hill.",
+          "distance": "3 km from venue",
+          "scene": "heritage"
+        }
+      ]
+    },
+    "thoranam-jasmine": {
+      "brideName": "Meenakshi",
+      "groomName": "Senthil",
+      "ceremonyVenueName": "Sri Brihadeeswara Kalyana Mandapam",
+      "ceremonyVenueAddress": "South Main Street, Thanjavur",
+      "receptionVenueName": "Cauvery Hall",
+      "receptionVenueAddress": "Medical College Road, Thanjavur",
+      "groomParents": "Thiru. & Thirumathi. Palanivel",
+      "brideParents": "Thiru. & Thirumathi. Chidambaram",
+      "story": "Meenakshi and Senthil grew up two streets apart in Thanjavur, meeting every year at the temple festival without ever really noticing each other. When their families finally introduced them properly, they discovered a shared love of Carnatic music, filter coffee and long walks around the Big Temple. With mango leaves on the doorway and jasmine in the air, they invite you to bless them as they begin their journey together.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Traditional Tamil attire — veshti and silk sarees are warmly encouraged."
+        },
+        {
+          "question": "Will lunch be served?",
+          "answer": "Yes — a traditional feast on banana leaves right after the muhurtham."
+        }
+      ],
+      "travel": {
+        "city": "Thanjavur",
+        "cityCode": "TJ",
+        "airports": [
+          {
+            "code": "TRZ",
+            "name": "Tiruchirappalli",
+            "distance": "60 km"
+          },
+          {
+            "code": "MAA",
+            "name": "Chennai",
+            "distance": "330 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "16865",
+                "name": "Uzhavan Express",
+                "fromStation": "Chennai Egmore",
+                "departs": "10:45 PM",
+                "toStation": "Thanjavur Junction",
+                "arrives": "5:10 AM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Brihadeeswarar Temple",
+          "description": "The Big Temple — a thousand-year-old Chola masterpiece and a UNESCO World Heritage Site.",
+          "distance": "1 km from venue",
+          "scene": "temple"
+        },
+        {
+          "title": "Thanjavur Maratha Palace",
+          "description": "A royal palace complex with an art gallery of Chola bronzes and the Saraswathi Mahal library.",
+          "distance": "2 km from venue",
+          "scene": "palace"
+        }
+      ]
+    },
+    "kerala-kasavu": {
+      "brideName": "Anjali",
+      "groomName": "Arun",
+      "ceremonyVenueName": "Guruvayur Temple Kalyana Mandapam",
+      "ceremonyVenueAddress": "East Nada, Guruvayur, Thrissur",
+      "receptionVenueName": "Kasavu Convention Centre",
+      "receptionVenueAddress": "Punkunnam, Thrissur",
+      "groomParents": "Mr. & Mrs. Krishnan Nair",
+      "brideParents": "Mr. & Mrs. Gopinathan Menon",
+      "story": "Anjali and Arun met at a Kathakali performance during the Thrissur Pooram season — she was explaining the mudras to her cousins, and he quietly admitted he had been following along too. A friendship grew over boat rides, banana chips and long debates about the best sadya. With the blessings of Guruvayurappan and both families, they tie the knot the Kerala way, and your presence would make the day complete.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Kerala traditional — kasavu sarees, set-mundu and mundu are perfect."
+        },
+        {
+          "question": "Is there a sadya after the ceremony?",
+          "answer": "Yes — a full traditional sadya is served at the reception venue."
+        }
+      ],
+      "travel": {
+        "city": "Thrissur",
+        "cityCode": "TCR",
+        "airports": [
+          {
+            "code": "COK",
+            "name": "Kochi",
+            "distance": "55 km"
+          },
+          {
+            "code": "CCJ",
+            "name": "Kozhikode",
+            "distance": "90 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "12623",
+                "name": "Trivandrum Mail",
+                "fromStation": "Chennai Central",
+                "departs": "7:45 PM",
+                "toStation": "Thrissur",
+                "arrives": "6:00 AM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Bengaluru",
+            "trains": [
+              {
+                "number": "12677",
+                "name": "Ernakulam Intercity",
+                "fromStation": "KSR Bengaluru",
+                "departs": "6:10 AM",
+                "toStation": "Thrissur",
+                "arrives": "3:05 PM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Guruvayur Sri Krishna Temple",
+          "description": "One of Kerala's most loved temples, where hundreds of weddings take place on auspicious days.",
+          "distance": "At the venue",
+          "scene": "temple"
+        },
+        {
+          "title": "Athirappilly Falls",
+          "description": "Kerala's grandest waterfall, dropping through dense forest — a beautiful drive from Thrissur.",
+          "distance": "60 km from venue",
+          "scene": "nature"
+        }
+      ]
+    },
+    "pookalam": {
+      "brideName": "Gauri",
+      "groomName": "Vishnu",
+      "ceremonyVenueName": "Sree Poornathrayeesa Kalyana Mandapam",
+      "ceremonyVenueAddress": "Tripunithura, Kochi",
+      "receptionVenueName": "Backwater Pavilion",
+      "receptionVenueAddress": "Marine Drive, Kochi",
+      "groomParents": "Mr. & Mrs. Rajan Pillai",
+      "brideParents": "Mr. & Mrs. Suresh Kumar",
+      "story": "Gauri and Vishnu's families have laid the Onam pookalam side by side in the same courtyard for as long as either of them can remember. Every year they competed to make the brighter one, and every year the neighbours declared a tie. This Onam season they finally stopped competing and started planning — one pookalam, one family, and a wedding they would love to share with you.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Onam colours — cream, gold and a touch of green or red."
+        },
+        {
+          "question": "Will there be an Onam sadya?",
+          "answer": "Of course — a full sadya with payasam, served on banana leaves."
+        }
+      ],
+      "travel": {
+        "city": "Kochi",
+        "cityCode": "COK",
+        "airports": [
+          {
+            "code": "COK",
+            "name": "Kochi",
+            "distance": "30 km"
+          },
+          {
+            "code": "TRV",
+            "name": "Thiruvananthapuram",
+            "distance": "210 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "22639",
+                "name": "Alleppey Express",
+                "fromStation": "Chennai Central",
+                "departs": "8:45 PM",
+                "toStation": "Ernakulam Junction",
+                "arrives": "8:10 AM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Bengaluru",
+            "trains": [
+              {
+                "number": "12677",
+                "name": "Ernakulam Intercity",
+                "fromStation": "KSR Bengaluru",
+                "departs": "6:10 AM",
+                "toStation": "Ernakulam Junction",
+                "arrives": "4:55 PM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Chinese Fishing Nets, Fort Kochi",
+          "description": "The giant cantilevered nets along the Fort Kochi shore — magical at sunset.",
+          "distance": "12 km from venue",
+          "scene": "beach"
+        },
+        {
+          "title": "Mattancherry Palace",
+          "description": "The Dutch Palace, with some of Kerala's finest temple murals of the Ramayana.",
+          "distance": "10 km from venue",
+          "scene": "palace"
+        }
+      ]
     }
   },
   "themeToggle": {
@@ -1191,5 +1741,144 @@
     "body": "An unexpected error occurred. You can try again, or head back home.",
     "retry": "Try again",
     "goHome": "Go home"
+  },
+  "storyPresets": {
+    "wedding": {
+      "collegeSweethearts": {
+        "title": "College sweethearts",
+        "tag": "Romantic",
+        "text": "{a} and {b} first met in a crowded college canteen, arguing over the last samosa. What began as a friendly rivalry turned into late-night study sessions, long walks after exams and a friendship neither of them could do without. Years later, they are ready to turn that campus love story into a lifetime together — and they would love for you to be there as it begins."
+      },
+      "childhoodFriends": {
+        "title": "Childhood friends",
+        "tag": "Heartfelt",
+        "text": "{a} and {b} grew up on the same street, sharing lunch boxes, bicycle rides and every festival in between. Their families always joked that the two were inseparable — no one imagined how right they were. After a lifetime of friendship, they are finally making it official, and they want the people who watched them grow up to be right there with them."
+      },
+      "loveArranged": {
+        "title": "Love-cum-arranged",
+        "tag": "Modern",
+        "text": "When their families first arranged for {a} and {b} to meet, both of them expected a polite cup of coffee and nothing more. Instead, one conversation stretched into hours, and a few meetings became a friendship that felt like it had always been there. With the blessings of both families and two hearts that chose each other, they now begin their journey together."
+      },
+      "matrimony": {
+        "title": "Matched online",
+        "tag": "Modern",
+        "text": "It started with a profile, a hesitant first message and a phone call that lasted far longer than planned. {a} and {b} discovered they laughed at the same jokes, dreamed of the same places and valued the same things. What began on a screen grew into something wonderfully real, and now they are ready to say yes to forever."
+      },
+      "colleagues": {
+        "title": "Met at work",
+        "tag": "Fun",
+        "text": "{a} and {b} met on their first day at the same office, both lost and looking for the right meeting room. Shared deadlines became shared lunches, and shared lunches became the best part of every day. Somewhere between the coffee breaks and the long projects, they found the partner they had been looking for."
+      },
+      "longDistance": {
+        "title": "Long distance",
+        "tag": "Romantic",
+        "text": "For years, {a} and {b} loved each other across cities, time zones and countless video calls. They counted down the days between visits and learned that distance only made their bond stronger. Now the waiting is finally over — they are closing the miles for good and would love to celebrate with you."
+      },
+      "friendsWedding": {
+        "title": "Met at a wedding",
+        "tag": "Fun",
+        "text": "{a} and {b} met at a friend’s wedding, seated at the same table and laughing through every speech. They spent the evening talking instead of dancing and left with each other’s numbers and a feeling they could not shake. Today the guests have become the couple, and it is their turn to invite you to celebrate."
+      },
+      "traditionalBlessing": {
+        "title": "Traditional blessing",
+        "tag": "Traditional",
+        "text": "With the blessings of the Almighty and the grace of our elders, we joyfully announce the wedding of {a} and {b}. Two families come together in love and respect, bound by tradition and the hope of a bright future. Your presence and blessings on this auspicious day will make our celebration complete."
+      }
+    },
+    "anniversary": {
+      "firstYear": {
+        "title": "First anniversary",
+        "tag": "Sweet",
+        "text": "One year ago, {a} and {b} said yes to a lifetime together. It has been a year of new beginnings, small adventures, burnt dinners and endless laughter. Join us as we raise a toast to the first of many years to come."
+      },
+      "silverJubilee": {
+        "title": "25 years together",
+        "tag": "Milestone",
+        "text": "Twenty-five years ago, {a} and {b} began a journey filled with love, patience and countless shared moments. Through a growing family, new homes and every season of life, they have stood by each other. Come celebrate their silver jubilee with the people who have been part of their story."
+      },
+      "goldenJubilee": {
+        "title": "50 golden years",
+        "tag": "Milestone",
+        "text": "Fifty years of love, faith and togetherness — {a} and {b} have built a family and a legacy that inspires everyone around them. Their children and grandchildren invite you to join in honouring this golden milestone. Your presence would mean the world to them."
+      },
+      "renewal": {
+        "title": "Renewing our vows",
+        "tag": "Romantic",
+        "text": "All these years later, {a} and {b} would still choose each other every single time. So they are saying their vows once more, surrounded by the people who have cheered them on along the way. Come witness a promise that has only grown stronger with time."
+      }
+    },
+    "valentine": {
+      "simpleNote": {
+        "title": "A simple note",
+        "tag": "Sweet",
+        "text": "{b}, every day with you feels like a gift I never expected to receive. This Valentine’s Day, I just want a quiet evening with the person who makes my world brighter. Save the date — it’s a plan for two. — {a}"
+      },
+      "everyday": {
+        "title": "Everyday love",
+        "tag": "Heartfelt",
+        "text": "It’s not the grand gestures, {b} — it’s the morning chai, the silly texts and the way you always save me the last bite. Thank you for turning ordinary days into my favourite memories. Let’s celebrate us. With love, {a}"
+      },
+      "adventure": {
+        "title": "Our next adventure",
+        "tag": "Fun",
+        "text": "{b}, you’re my favourite travel partner, my best listener and my partner in every crazy plan. This Valentine’s Day, I’ve planned a little surprise just for you. Bring your smile and meet me there. — {a}"
+      }
+    },
+    "proposal": {
+      "sunset": {
+        "title": "At sunset",
+        "tag": "Romantic",
+        "text": "{b}, from the day we met, every sunset has looked more beautiful with you beside me. I have a special evening planned and one very important question to ask. Please meet me there — I can’t wait. — {a}"
+      },
+      "sinceDayOne": {
+        "title": "Since day one",
+        "tag": "Heartfelt",
+        "text": "{b}, I think I knew from our very first conversation. You make me laugh, you make me braver and you make every day feel like home. I’d love to spend the rest of my life proving that to you. Will you meet me for a moment we’ll remember forever? — {a}"
+      },
+      "withFamily": {
+        "title": "With our families",
+        "tag": "Traditional",
+        "text": "With love and the blessings of both families, {a} has a special question for {b}. Join us for a joyful evening as two hearts take their first step towards a lifetime together."
+      }
+    },
+    "birthday": {
+      "bestFriend": {
+        "title": "For a best friend",
+        "tag": "Fun",
+        "text": "Happy birthday, {a}! You bring the fun, the laughter and the best stories to every gathering. Join us to celebrate the most wonderful person we know with cake, music and a whole lot of love."
+      },
+      "firstBirthday": {
+        "title": "First birthday",
+        "tag": "Sweet",
+        "text": "Our little star {a} is turning one! A year of tiny giggles, first steps and endless joy has flown by. Come celebrate this very special day with us and shower our little one with your blessings."
+      },
+      "manivizha": {
+        "title": "60th birthday (Manivizha)",
+        "tag": "Traditional",
+        "text": "With great joy, we celebrate the 60th birthday of {a} — a lifetime of love, wisdom and kindness. Family and friends are warmly invited to the Manivizha celebration to offer their blessings for many more healthy, happy years."
+      },
+      "milestone": {
+        "title": "Milestone birthday",
+        "tag": "Milestone",
+        "text": "{a} is stepping into a brand new chapter, and there’s no better reason to celebrate! Come join us for an evening of good food, great company and memories in the making."
+      }
+    },
+    "housewarming": {
+      "grihaPravesam": {
+        "title": "Griha Pravesam",
+        "tag": "Traditional",
+        "text": "With the blessings of the Almighty, we warmly invite you to the Griha Pravesam of our new home. Please join us for the pooja and share in our joy as we begin this new chapter with your blessings. — {a}"
+      },
+      "casualParty": {
+        "title": "Housewarming party",
+        "tag": "Fun",
+        "text": "We’ve unpacked (mostly) and we’re ready to celebrate! We would love for you to come and see the new place — good food, good company and a proper house tour included. — {a}"
+      },
+      "firstHome": {
+        "title": "Our first home",
+        "tag": "Heartfelt",
+        "text": "After years of dreaming and planning, we have finally found a place to call home. A home is only complete with the people who fill it with love, so please come and celebrate with us. — {a}"
+      }
+    }
   }
 }

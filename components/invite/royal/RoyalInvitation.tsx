@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import { getFamily } from "@/lib/family";
 import { useTranslations } from "next-intl";
 import {
   EMPTY_TRAVEL,
@@ -69,7 +70,9 @@ export default function RoyalInvitation({
   const travel = data.travel ?? EMPTY_TRAVEL;
   const places = data.places ?? [];
   const names = [data.brideName, data.groomName].filter(Boolean).join(" & ");
-  const familyShown = sections.family && Boolean(data.brideParents || data.groomParents);
+  const brideFamily = getFamily(data, "bride");
+  const groomFamily = getFamily(data, "groom");
+  const familyShown = sections.family && brideFamily.length + groomFamily.length > 0;
 
   const theme = getMotionTheme(data.templateId);
   // Numbers only the sections actually rendered (JSX `cond && …` only calls
@@ -105,6 +108,7 @@ export default function RoyalInvitation({
         singlePerson={false}
         accentColor={data.accentColor}
         fontPairing={data.fontPairing}
+        monogram={data.monogram}
       />
       {mode === "public" && (
         <AudioToggle
@@ -134,6 +138,7 @@ export default function RoyalInvitation({
             coverPhoto={data.photos[0]}
             brideName={data.brideName}
             groomName={data.groomName}
+            monogram={data.monogram}
             mode={mode}
           />
         </Section>
@@ -145,8 +150,8 @@ export default function RoyalInvitation({
             palette={palette}
             brideName={data.brideName}
             groomName={data.groomName}
-            brideParents={data.brideParents}
-            groomParents={data.groomParents}
+            brideFamily={brideFamily}
+            groomFamily={groomFamily}
           />
         </Section>
       )}

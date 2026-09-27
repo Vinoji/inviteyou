@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { nameFitScale, resolveMonogram } from "@/lib/monogram";
+import type { MonogramInitials } from "@/lib/types";
 import { useTranslations } from "next-intl";
 import type { IntroId } from "@/lib/templates";
 import { getFontPairing } from "@/lib/fontPairings";
@@ -37,6 +39,7 @@ export default function IntroHost({
   singlePerson,
   accentColor,
   fontPairing,
+  monogram,
 }: {
   introId: IntroId;
   templateId: string;
@@ -48,6 +51,7 @@ export default function IntroHost({
   singlePerson: boolean;
   accentColor: string;
   fontPairing: string;
+  monogram?: MonogramInitials;
 }) {
   const tCommon = useTranslations("common");
   const [open, setOpen] = useState(false); // guest has acted
@@ -117,6 +121,10 @@ export default function IntroHost({
   const burst = useCallback((opts: BurstOptions) => particlesRef.current?.burst(opts), []);
 
   const Intro = INTROS[introId];
+  const names = {
+    a: brideName || (singlePerson ? tCommon("youFallback") : tCommon("brideFallback")),
+    b: singlePerson ? undefined : groomName || tCommon("groomFallback"),
+  };
   const font = getFontPairing(fontPairing);
   // Always day · month · year (the ISO date reversed), whatever the locale.
   const dateLabel = /^\d{4}-\d{2}-\d{2}$/.test(weddingDate)
@@ -127,13 +135,14 @@ export default function IntroHost({
     <div ref={layerRef} className={preview ? s.paneLayer : s.fixedLayer}>
       <div className={s.frame} style={preview && paneHeight ? { height: paneHeight } : undefined}>
         {!gone && (
-          <div className={s.slot}>
+          <div
+            className={s.slot}
+            style={{ ["--name-fit" as string]: nameFitScale(names.a, names.b) }}
+          >
             <Intro
               key={run}
-              names={{
-                a: brideName || (singlePerson ? tCommon("youFallback") : tCommon("brideFallback")),
-                b: singlePerson ? undefined : groomName || tCommon("groomFallback"),
-              }}
+              names={names}
+              monogram={resolveMonogram(names.a, names.b ?? "", monogram, singlePerson)}
               weddingDate={weddingDate}
               dateLabel={dateLabel}
               fonts={{ display: font.headingVar, script: font.headingVar, caps: font.bodyVar }}

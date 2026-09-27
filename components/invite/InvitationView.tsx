@@ -1,4 +1,11 @@
+"use client";
+
+// A client boundary on purpose: the public page wraps this in its own
+// NextIntlClientProvider set to the invitation's content language, and only
+// client components read that nested provider (server components would use
+// the page's UI language instead).
 import { useTranslations } from "next-intl";
+import { getFamily } from "@/lib/family";
 import {
   withDefaultSections,
   type InvitationData,
@@ -109,6 +116,7 @@ export default function InvitationView({
           singlePerson={category.singlePerson}
           accentColor={data.accentColor}
           fontPairing={data.fontPairing}
+          monogram={data.monogram}
         />
         {mode === "public" && (
           <AudioToggle
@@ -145,8 +153,8 @@ export default function InvitationView({
               <Family
                 groomName={data.groomName}
                 brideName={data.brideName}
-                groomParents={data.groomParents}
-                brideParents={data.brideParents}
+                brideFamily={getFamily(data, "bride")}
+                groomFamily={getFamily(data, "groom")}
                 accentColor={data.accentColor}
                 fontPairing={data.fontPairing}
                 templateId={data.templateId}

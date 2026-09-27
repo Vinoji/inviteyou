@@ -10,6 +10,8 @@ import { useMotionTheme } from "../motion/MotionThemeProvider";
 import { useTraverseProgress } from "../motion/scroll";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { useWarmFilter } from "./GalleryVariants";
+import { resolveMonogram, scriptLang } from "@/lib/monogram";
+import type { MonogramInitials } from "@/lib/types";
 import s from "./royal.module.css";
 
 /** moments.story "wreath": a ring of flower sprigs around the portrait,
@@ -69,7 +71,7 @@ function SplitStory({ story, photo }: { story: string; photo: ReactNode }) {
       whileInView="shown"
       viewport={{ once: true, amount: 0.25 }}
     >
-      <div className={s.splitText}>
+      <div className={s.splitText} lang={scriptLang(story)}>
         {lines.map((line, i) => (
           <span key={i} className={s.splitLineMask}>
             <motion.span
@@ -110,6 +112,7 @@ export default function GratefulNote({
   coverPhoto,
   brideName,
   groomName,
+  monogram,
   mode,
 }: {
   /** Background of the section below, so the scalloped edge blends into it. */
@@ -118,6 +121,7 @@ export default function GratefulNote({
   coverPhoto?: string;
   brideName: string;
   groomName: string;
+  monogram?: MonogramInitials;
   mode: "preview" | "public";
 }) {
   const t = useTranslations("invite.royal.note");
@@ -129,10 +133,8 @@ export default function GratefulNote({
   if (!story) return null;
 
   const names = [brideName, groomName].filter(Boolean).join(" & ");
-  const monogram = [brideName, groomName]
-    .map((n) => n.trim().charAt(0))
-    .filter(Boolean)
-    .join("&");
+  const initials = resolveMonogram(brideName, groomName, monogram, false);
+  const monogramText = [initials.a, initials.b].filter(Boolean).join("&");
   const variant = moments?.story;
 
   const portrait = (
@@ -146,8 +148,8 @@ export default function GratefulNote({
         <img src={coverPhoto} alt={names} />
       ) : (
         <>
-          <div className={s.mono} aria-hidden>
-            {monogram}
+          <div className={s.mono} aria-hidden lang={scriptLang(monogramText)}>
+            {monogramText}
           </div>
           {mode === "preview" && <div className={s.hint}>{t("portraitHint")}</div>}
         </>
@@ -192,7 +194,9 @@ export default function GratefulNote({
         </button>
         <div className={s.noteCard}>
           <span className={s.eyebrow}>{t("to")}</span>
-          <p className={s.msg}>{story}</p>
+          <p className={s.msg} lang={scriptLang(story)}>
+            {story}
+          </p>
           {names && <div className={s.sign}>{t("sign", { names })}</div>}
         </div>
       </div>

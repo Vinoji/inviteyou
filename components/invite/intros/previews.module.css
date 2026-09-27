@@ -247,3 +247,66 @@
     transform: scaleY(-1);
   }
 }
+
+/* scratch: the foil wipes away */
+.foilOff {
+  animation-name: foilOff;
+}
+@keyframes foilOff {
+  30%,
+  80% {
+    opacity: 0;
+  }
+}
+
+/* lanterns: lanterns float up */
+.floatUp {
+  animation-name: floatUp;
+}
+@keyframes floatUp {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-70px);
+    opacity: 0;
+  }
+}
+
+/* lanterns / kasavu: a flame lights */
+.flameOn {
+  transform-origin: 50% 100%;
+  animation-name: flameOn;
+}
+@keyframes flameOn {
+  0%,
+  15% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  35%,
+  90% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* pookalam: rings bloom out */
+.bloomIn {
+  transform-origin: 50% 50%;
+  animation-name: bloomIn;
+}
+@keyframes bloomIn {
+  0%,
+  10% {
+    transform: scale(0) rotate(-40deg);
+  }
+  45%,
+  90% {
+    transform: scale(1) rotate(0deg);
+  }
+}

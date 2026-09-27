@@ -167,6 +167,111 @@ export default function IntroPreview({ intro }: { intro: IntroId }) {
             />
           </>
         )}
+        {intro === "curtain" && (
+          <>
+            <rect width="100" height="100" fill="#2a0a0c" />
+            <text x="50" y="56" textAnchor="middle" fontSize="16" fill="#ebd08a" fontFamily="serif">
+              &amp;
+            </text>
+            <rect className={`${s.a} ${s.doorL}`} x="0" y="0" width="52" height="100" fill="#7a0f1f" />
+            <rect className={`${s.a} ${s.doorR}`} x="48" y="0" width="52" height="100" fill="#6a0c1b" />
+            <rect width="100" height="14" fill="#8c1426" />
+            <rect y="13" width="100" height="2" fill="#c9a54a" />
+          </>
+        )}
+        {intro === "scratch" && (
+          <>
+            <rect width="100" height="100" fill="#f4efff" />
+            <rect x="16" y="22" width="68" height="56" rx="8" fill="#fbf8ff" stroke="#d8a7b1" />
+            <text x="50" y="56" textAnchor="middle" fontSize="11" fill="#3e3358" fontFamily="serif">
+              24·01
+            </text>
+            <rect className={`${s.a} ${s.foilOff}`} x="24" y="42" width="52" height="22" rx="4" fill="#d8a7b1" />
+          </>
+        )}
+        {intro === "lanterns" && (
+          <>
+            <rect width="100" height="100" fill="#0e1733" />
+            {[22, 50, 76].map((x, i) => (
+              <ellipse
+                key={x}
+                className={`${s.a} ${s.floatUp}`}
+                style={{ animationDelay: `${i * 0.4}s` }}
+                cx={x}
+                cy="92"
+                rx="5"
+                ry="7"
+                fill="#ffb347"
+              />
+            ))}
+            <path d="M36 80Q50 92 64 80Z" fill="#c8642a" />
+            <path className={`${s.a} ${s.flameOn}`} d="M58 78C55 74 57 70 58 66C59 70 61 74 58 78Z" fill="#ff9933" />
+          </>
+        )}
+        {intro === "thoranam" && (
+          <>
+            <rect width="100" height="100" fill="#f1ead2" />
+            {[0, 1, 2, 3, 4, 5, 6].map((i) => (
+              <path
+                key={i}
+                d={`M${7 + i * 14} 4C${3 + i * 14} 12 ${4 + i * 14} 20 ${7 + i * 14} 24C${10 + i * 14} 20 ${11 + i * 14} 12 ${7 + i * 14} 4Z`}
+                fill={i % 2 ? "#5fa043" : "#3e7a2f"}
+              />
+            ))}
+            <g className={`${s.a} ${s.doorL}`}>
+              {[10, 22, 34, 46].map((x) => (
+                <line key={x} x1={x} x2={x} y1="20" y2="100" stroke="#fff" strokeWidth="4" strokeDasharray="4 3" />
+              ))}
+            </g>
+            <g className={`${s.a} ${s.doorR}`}>
+              {[54, 66, 78, 90].map((x) => (
+                <line key={x} x1={x} x2={x} y1="20" y2="100" stroke="#fff" strokeWidth="4" strokeDasharray="4 3" />
+              ))}
+            </g>
+          </>
+        )}
+        {intro === "kasavu" && (
+          <>
+            <rect width="100" height="100" fill="#fffbef" />
+            <rect y="8" width="100" height="8" fill="#b8921f" />
+            <rect y="84" width="100" height="8" fill="#b8921f" />
+            <rect x="48" y="44" width="4" height="36" fill="#c9a042" />
+            <path d="M34 44Q50 54 66 44Z" fill="#d4af37" />
+            <ellipse cx="50" cy="80" rx="12" ry="3" fill="#d4af37" />
+            {[38, 44, 50, 56, 62].map((x, i) => (
+              <path
+                key={x}
+                className={`${s.a} ${s.flameOn}`}
+                style={{ animationDelay: `${i * 0.15}s` }}
+                d={`M${x} 44C${x - 3} 40 ${x - 1} 36 ${x} 32C${x + 1} 36 ${x + 3} 40 ${x} 44Z`}
+                fill="#ff9933"
+              />
+            ))}
+          </>
+        )}
+        {intro === "pookalam" && (
+          <>
+            <rect width="100" height="100" fill="#5a1414" />
+            {[
+              { r: 38, c: "#2e7d32" },
+              { r: 31, c: "#ffd35c" },
+              { r: 24, c: "#fffdf4" },
+              { r: 17, c: "#c8102e" },
+              { r: 10, c: "#e8862a" },
+            ].map((ring, i) => (
+              <circle
+                key={ring.r}
+                className={`${s.a} ${s.bloomIn}`}
+                style={{ animationDelay: `${(4 - i) * 0.12}s` }}
+                cx="50"
+                cy="50"
+                r={ring.r}
+                fill={ring.c}
+              />
+            ))}
+            <circle cx="50" cy="50" r="4" fill="#ffd35c" />
+          </>
+        )}
         {intro === "envelope" && (
           <>
             <rect width="100" height="100" fill="#fdfaf3" />

@@ -422,7 +422,7 @@
 .name {
   display: block;
   font-family: var(--rp-heading);
-  font-size: 50px;
+  font-size: calc(50px * var(--name-fit, 1));
   line-height: 1.05;
   overflow-wrap: anywhere;
 }
@@ -773,9 +773,10 @@
 }
 .person h3 {
   font-family: var(--rp-heading);
-  font-size: 30px;
+  font-size: calc(30px * var(--name-fit, 1));
   color: #fff;
   margin: 4px 0;
+  overflow-wrap: anywhere;
 }
 .kin {
   font-family: var(--rp-display);
@@ -1801,4 +1802,46 @@
   .bob {
     animation: none;
   }
+}
+
+/*
+ * Tamil. Tamil glyphs run wider and taller than Latin at the same size, and
+ * letter-spacing (dropped globally for :lang(ta), see globals.css) pulls
+ * vowel signs away from their consonants. :lang(ta) matches both the Tamil
+ * UI (<html lang="ta">) and Tamil text typed in the English UI, which is
+ * tagged via scriptLang().
+ */
+.root:lang(ta) .eyebrow {
+  font-size: 12px;
+}
+.root:lang(ta) .noteCard .eyebrow,
+.root:lang(ta) .hint {
+  font-size: 11px;
+}
+.name:lang(ta) {
+  font-size: calc(clamp(32px, 10.5vw, 46px) * var(--name-fit, 1));
+  line-height: 1.3;
+}
+.mono:lang(ta) {
+  font-size: clamp(52px, 17vw, 76px);
+  line-height: 1.25;
+}
+.msg:lang(ta),
+.splitText:lang(ta) {
+  font-size: 0.95em;
+  line-height: 1.8;
+}
+.root:lang(ta) h2 {
+  line-height: 1.35;
+}
+
+/* Family member lines: the name sits inside the kin phrase (FamilyLines), so
+ * it's stacked on its own line in whichever order the language puts it. */
+.kin + .kin {
+  margin-top: 12px;
+}
+.kin .parents {
+  display: block;
+  font-style: normal;
+  overflow-wrap: anywhere;
 }

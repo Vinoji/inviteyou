@@ -16,10 +16,11 @@
   align-items: center;
   justify-content: center;
   background: #fafaf7;
-  font-size: min(13cqw, 9cqh, 96px);
+  font-size: calc(min(13cqw, 9cqh, 96px) * var(--name-fit, 1));
   line-height: 0.98;
   letter-spacing: -0.02em;
   text-align: center;
+  overflow-wrap: anywhere;
 }
 .amp {
   position: relative;

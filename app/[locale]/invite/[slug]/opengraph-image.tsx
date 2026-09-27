@@ -16,10 +16,11 @@ export default async function Image({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { locale, slug } = await params;
+  const { locale: routeLocale, slug } = await params;
   const db = getAdminDb();
   const snap = await db.collection("invitations").doc(slug).get();
   const data = snap.data();
+  const locale = data?.contentLocale === "en" || data?.contentLocale === "ta" ? data.contentLocale : routeLocale;
 
   const t = await getTranslations({ locale, namespace: "invite.opengraph" });
   const tCommon = await getTranslations({ locale, namespace: "common" });

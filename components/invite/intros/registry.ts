@@ -23,4 +23,10 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   bloom: dynamic(() => import("./BloomIntro")),
   giftbox: dynamic(() => import("./GiftBoxIntro")),
   bottle: dynamic(() => import("./BottleIntro")),
+  curtain: dynamic(() => import("./CurtainIntro")),
+  scratch: dynamic(() => import("./ScratchIntro")),
+  lanterns: dynamic(() => import("./LanternIntro")),
+  thoranam: dynamic(() => import("./ThoranamIntro")),
+  kasavu: dynamic(() => import("./KasavuIntro")),
+  pookalam: dynamic(() => import("./PookalamIntro")),
 };

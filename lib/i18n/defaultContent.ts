@@ -3,6 +3,8 @@ import { DEFAULT_CONTENT_DATES } from "@/lib/defaultContent";
 import {
   DEFAULT_SECTIONS,
   EMPTY_TRAVEL,
+  EMPTY_MONOGRAM,
+  type FamilyMember,
   type InvitationData,
   type FaqItem,
   type VenueInfo,
@@ -48,6 +50,11 @@ export function getDefaultInvitationData(templateId: string, t: TFunc): Invitati
   const travel = isWedding ? (t.raw(`${id}.travel`) as TravelInfo) : EMPTY_TRAVEL;
   const places = isWedding ? (t.raw(`${id}.places`) as Place[]) : [];
 
+  const groomParents = t(`${id}.groomParents`);
+  const brideParents = t(`${id}.brideParents`);
+  const asFamily = (name: string): FamilyMember[] =>
+    name ? [{ relation: "parents", name, label: "" }] : [];
+
   return {
     templateId: id,
     accentColor: template.defaultAccent,
@@ -62,11 +69,14 @@ export function getDefaultInvitationData(templateId: string, t: TFunc): Invitati
     ceremonyVenue: venue(t(`${id}.ceremonyVenueName`), t(`${id}.ceremonyVenueAddress`)),
     receptionTime: dates.receptionTime,
     receptionVenue: venue(t(`${id}.receptionVenueName`), t(`${id}.receptionVenueAddress`)),
-    groomParents: t(`${id}.groomParents`),
-    brideParents: t(`${id}.brideParents`),
+    groomParents,
+    brideParents,
+    brideFamily: asFamily(brideParents),
+    groomFamily: asFamily(groomParents),
     story: t(`${id}.story`),
     faq,
     travel,
     places,
+    monogram: { ...EMPTY_MONOGRAM },
   };
 }

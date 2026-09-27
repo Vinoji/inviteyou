@@ -74,7 +74,7 @@
 }
 /* Silver foil: a bright band sweeps across the letters once. */
 .foil {
-  font-size: min(7cqw, 30px);
+  font-size: calc(min(7cqw, 30px) * var(--name-fit, 1));
   line-height: 1.1;
   background-image: linear-gradient(
     100deg,
@@ -89,6 +89,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  overflow-wrap: anywhere;
 }
 .foil small {
   font-size: 0.55em;

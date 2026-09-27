@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getTranslations, getFormatter, setRequestLocale } from "next-intl/server";
 import { getAdminDb } from "@/lib/firebase-admin";
+import { NextIntlClientProvider } from "next-intl";
 import InvitationView from "@/components/invite/InvitationView";
+import { INVITATION_NAMESPACES, getContentMessages } from "@/lib/i18n/contentMessages";
 import ViewTracker from "@/components/invite/ViewTracker";
 import WelcomeBanner from "@/components/invite/WelcomeBanner";
 import type { InvitationData, RsvpEntry, GuestPhoto } from "@/lib/types";
@@ -58,8 +60,10 @@ export async function generateMetadata({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
-  const { locale, slug } = await params;
+  const { locale: routeLocale, slug } = await params;
   const data = await getInvitation(slug);
+  // Shared-link previews should read in the invitation's own language.
+  const locale = data?.contentLocale ?? routeLocale;
   const tInvitePage = await getTranslations({ locale, namespace: "invitePage" });
   if (!data) return { title: tInvitePage("notFoundTitle") };
 
@@ -100,9 +104,13 @@ export default async function InvitePage({
   const { welcome, editToken, templateId } = await searchParams;
   const data = await getInvitation(slug);
   if (!data) notFound();
-  const [rsvpMessages, guestPhotos] = await Promise.all([
+  // Guests always see the invitation in the couple's chosen language,
+  // whatever language this page (and the owner's banner) is in.
+  const contentLocale = data.contentLocale ?? (locale === "ta" ? "ta" : "en");
+  const [rsvpMessages, guestPhotos, contentMessages] = await Promise.all([
     getBlessings(slug),
     getGuestPhotos(slug),
+    getContentMessages(contentLocale, INVITATION_NAMESPACES),
   ]);
 
   return (
@@ -116,13 +124,17 @@ export default async function InvitePage({
         />
       )}
       <ViewTracker slug={slug} />
-      <InvitationView
-        data={data}
-        slug={slug}
-        mode="public"
-        rsvpMessages={rsvpMessages}
-        guestPhotos={guestPhotos}
-      />
+      <NextIntlClientProvider locale={contentLocale} messages={contentMessages}>
+        <div lang={contentLocale}>
+          <InvitationView
+            data={data}
+            slug={slug}
+            mode="public"
+            rsvpMessages={rsvpMessages}
+            guestPhotos={guestPhotos}
+          />
+        </div>
+      </NextIntlClientProvider>
     </>
   );
 }

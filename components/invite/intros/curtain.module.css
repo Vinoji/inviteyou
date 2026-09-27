@@ -1,0 +1,207 @@
+/* Silk Curtain intro (silk-curtain). Fills IntroHost's slot. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  background: #1a0508;
+  color: #fff6ea;
+}
+
+/* The stage behind the curtains: warm footlight wash and the names. */
+.stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse 70% 55% at 50% 100%, #5a1a12 0%, #2a0a0c 55%, #120304 100%);
+}
+.footlight {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -10%;
+  height: 45%;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255, 214, 140, 0.45), transparent 65%);
+}
+.reveal {
+  position: relative;
+  max-width: min(90cqw, 520px);
+  padding: 0 24px;
+  text-align: center;
+}
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #ebd08a;
+}
+.names {
+  margin: 14px 0 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: calc(clamp(30px, 11cqw, 60px) * var(--name-fit, 1));
+  line-height: 1.1;
+  font-weight: 500;
+  color: #fff6ea;
+  text-shadow: 0 0 24px rgba(235, 208, 138, 0.45);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.amp {
+  font-size: 0.6em;
+  color: #ebd08a;
+}
+.date {
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  color: #ebd08a;
+}
+
+/* Curtains: silk folds are a repeating gradient; the gold fringe sits on
+ * the hem. Each half is a little wider than half so they overlap in the
+ * middle while closed. */
+.curtain {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 53%;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.35) 0,
+      rgba(255, 255, 255, 0.07) 18px,
+      rgba(0, 0, 0, 0.25) 36px,
+      rgba(0, 0, 0, 0.45) 46px
+    ),
+    linear-gradient(180deg, #7a0f1f, #5a0a17 60%, #3b0610);
+  box-shadow: inset 0 -30px 60px rgba(0, 0, 0, 0.4);
+  will-change: transform;
+}
+.left {
+  left: 0;
+}
+.right {
+  right: 0;
+}
+.fringe {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22px;
+  background:
+    repeating-linear-gradient(90deg, #c9a54a 0 3px, transparent 3px 7px),
+    linear-gradient(#ebd08a, #c9a54a);
+  background-size: 100% 16px, 100% 6px;
+  background-position: 0 6px, 0 0;
+  background-repeat: no-repeat;
+}
+.valance {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 13cqh;
+  min-height: 70px;
+  background: linear-gradient(180deg, #8c1426, #5a0a17);
+  -webkit-mask: radial-gradient(38px 26px at 50% 100%, transparent 98%, #000) 0 0 / 76px 100% repeat-x;
+  mask: radial-gradient(38px 26px at 50% 100%, transparent 98%, #000) 0 0 / 76px 100% repeat-x;
+  border-bottom: 3px solid #c9a54a;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* The tassel: a draggable cord, knot and fringed tail. */
+.tasselWrap {
+  position: absolute;
+  left: 50%;
+  top: 13cqh;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+}
+.tassel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: 0;
+  padding: 0 14px;
+  cursor: grab;
+  touch-action: none;
+}
+.tassel:active {
+  cursor: grabbing;
+}
+.tassel:focus-visible {
+  outline: 2px solid #ebd08a;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+.cord {
+  width: 3px;
+  height: 18cqh;
+  min-height: 60px;
+  background: linear-gradient(#ebd08a, #c9a54a);
+}
+.knot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff1c0, #c9a54a 60%, #8c6a22);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.tail {
+  width: 26px;
+  height: 46px;
+  margin-top: -4px;
+  background: repeating-linear-gradient(90deg, #c9a54a 0 2px, #8c6a22 2px 4px);
+  clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
+  animation: sway 2.6s ease-in-out infinite;
+  transform-origin: 50% 0;
+}
+@keyframes sway {
+  50% {
+    transform: rotate(6deg);
+  }
+}
+.hint {
+  font-size: 10.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #ebd08a;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+}
+.viewBtn {
+  position: absolute;
+  left: 50%;
+  bottom: 12cqh;
+  transform: translateX(-50%);
+  border: 1px solid #c9a54a;
+  background: rgba(59, 10, 18, 0.7);
+  color: #fff6ea;
+  border-radius: 999px;
+  padding: 11px 22px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.root:lang(ta) .names {
+  font-size: calc(clamp(26px, 9cqw, 48px) * var(--name-fit, 1));
+  line-height: 1.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tail {
+    animation: none;
+  }
+}

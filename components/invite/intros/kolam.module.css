@@ -128,13 +128,13 @@
   text-shadow: 0 0 18px rgba(227, 180, 90, 0.35);
 }
 .name {
-  font-size: min(9cqw, 5.2cqh, 38px);
+  font-size: calc(min(9cqw, 5.2cqh, 38px) * var(--name-fit, 1));
   overflow-wrap: break-word; /* only breaks a word that can't fit on its own line */
 }
 /* Tamil letters carry combining vowel signs; wide tracking pulls them apart,
  * and long names need a smaller size to stay whole. */
 .root:lang(ta) .name {
-  font-size: min(7cqw, 4.2cqh, 30px);
+  font-size: calc(min(7cqw, 4.2cqh, 30px) * var(--name-fit, 1));
 }
 .root:lang(ta) .eyebrow,
 .root:lang(ta) .hint,

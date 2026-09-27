@@ -163,6 +163,75 @@ const THEMES: Record<string, MotionTheme> = {
       sky: true,
     },
   },
+  // "Silk Curtain": a stage wedding — curtains, footlights, gold dust.
+  "silk-curtain": {
+    sectionEnter: "tier",
+    heading: "goldSweep",
+    divider: "hairline",
+    ambient: "glitter",
+    rsvpBurst: "glitter",
+    pageBg: "#3B0A12",
+    thread: "gold",
+    moments: { family: "doors", events: "spotlight", gallery: "arch", countdown: "flip" },
+  },
+  // "Scratch & Reveal": a keepsake card with rose-gold foil.
+  "scratch-reveal": {
+    sectionEnter: "iris",
+    heading: "maskUp",
+    divider: "hairline",
+    ambient: "glitter",
+    ambientAt: ["hero", "rsvp"],
+    rsvpBurst: "pastelPetals",
+    pageBg: "#FBF8FF",
+    thread: "silver",
+    moments: { gallery: "masonry", story: "pin", countdown: "splitFlap" },
+  },
+  // "Lantern Night": Karthigai Deepam — lamps and rising lanterns.
+  "lantern-night": {
+    sectionEnter: "rise",
+    heading: "goldSweep",
+    divider: "none",
+    ambient: "embers",
+    ambientAt: ["hero", "rsvp", "thanks"],
+    rsvpBurst: "marigold",
+    pageBg: "#0E1733",
+    thread: "gold",
+    moments: { events: "diyas", countdown: "flip" },
+  },
+  // "Thoranam & Jasmine": a Tamil wedding doorway.
+  "thoranam-jasmine": {
+    sectionEnter: "tier",
+    heading: "goldSweep",
+    divider: "kolamLine",
+    ambient: "jasmine",
+    rsvpBurst: "marigold",
+    pageBg: "#1F3B24",
+    thread: "vine",
+    moments: { family: "doors", events: "diyas", gallery: "arch", mandalaLayer: true },
+  },
+  // "Kasavu & Nilavilakku": a Kerala temple wedding.
+  "kerala-kasavu": {
+    sectionEnter: "rise",
+    heading: "goldSweep",
+    divider: "hairline",
+    ambient: "embers",
+    rsvpBurst: "marigold",
+    pageBg: "#3A2A12",
+    thread: "gold",
+    moments: { family: "doors", events: "diyas", countdown: "flip", warmPhotos: true },
+  },
+  // "Pookalam": an Onam flower carpet blooming ring by ring.
+  pookalam: {
+    sectionEnter: "bloom",
+    heading: "maskUp",
+    headingWobble: true,
+    divider: "vine",
+    ambient: "marigold",
+    rsvpBurst: "marigold",
+    pageBg: "#5A1414",
+    thread: "vine",
+    moments: { family: "pressed", gallery: "masonry", story: "wreath", countdown: "bud", mandalaLayer: true },
+  },
 };
 
 export function getMotionTheme(templateId: string): MotionTheme {

@@ -6,6 +6,9 @@ import {
   sanitizeAccentColor,
   sanitizeBackgroundMusic,
   sanitizeFaq,
+  sanitizeMonogram,
+  sanitizeFamily,
+  sanitizeContentLocale,
   sanitizeParentsLine,
   sanitizePlaces,
   sanitizePhotos,
@@ -48,6 +51,10 @@ export async function POST(req: NextRequest) {
     faq,
     travel,
     places,
+    monogram,
+    brideFamily,
+    groomFamily,
+    contentLocale,
   } = body;
 
   if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
@@ -98,6 +105,10 @@ export async function POST(req: NextRequest) {
     faq: sanitizeFaq(faq),
     travel: sanitizeTravel(travel),
     places: sanitizePlaces(places),
+    monogram: sanitizeMonogram(monogram),
+    ...(Array.isArray(brideFamily) ? { brideFamily: sanitizeFamily(brideFamily) } : {}),
+    ...(Array.isArray(groomFamily) ? { groomFamily: sanitizeFamily(groomFamily) } : {}),
+    ...(sanitizeContentLocale(contentLocale) ? { contentLocale: sanitizeContentLocale(contentLocale) } : {}),
     status: "pending_payment",
     slug: null,
     viewCount: existing.exists ? (existing.data()?.viewCount ?? 0) : 0,

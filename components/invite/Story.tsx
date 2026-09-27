@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { getFontPairing } from "@/lib/fontPairings";
+import { scriptLang } from "@/lib/monogram";
 import SectionDivider from "./SectionDivider";
 import RotateReveal from "./RotateReveal";
 import FloralSprig from "./decor/FloralSprig";
@@ -57,6 +58,7 @@ export default function Story({
         <SectionDivider templateId={templateId} accent={accentColor} />
       </div>
       <p
+        lang={scriptLang(story)}
         className="mt-6 text-lg leading-relaxed whitespace-pre-line text-neutral-700 sm:text-xl"
         style={{ fontFamily: font.bodyVar }}
       >
