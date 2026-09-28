@@ -19,6 +19,24 @@ async function loadGoogleFont(family: string, weight: 400 | 600 | 700, text: str
   return res.arrayBuffer();
 }
 
+/** Any set of Google Font families, each subset to `text`, under the
+ * given names. Failures are dropped (Satori falls back to the next name). */
+export async function loadFonts(
+  specs: { name: string; family: string; weight: 400 | 600 | 700 }[],
+  text: string
+): Promise<OgFont[]> {
+  const chars = Array.from(new Set(text)).join("");
+  const settled = await Promise.allSettled(
+    specs.map(async ({ name, family, weight }) => ({
+      name,
+      data: await loadGoogleFont(family, weight, chars),
+      weight,
+      style: "normal" as const,
+    }))
+  );
+  return settled.flatMap((r) => (r.status === "fulfilled" ? [r.value] : []));
+}
+
 /** Serif display + Tamil fonts covering `text`, under the names "Display" and "Tamil". */
 export async function ogFonts(text: string): Promise<OgFont[]> {
   const chars = Array.from(new Set(text)).join("");

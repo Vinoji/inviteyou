@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useOrigin } from "@/lib/useOrigin";
 import festive from "@/components/landing/landing.module.css";
+import ShareCardButton from "@/components/invite/ShareCardButton";
 import { useTranslations } from "next-intl";
-import { Check, Copy, ExternalLink, MessageCircle, Printer } from "lucide-react";
+import { Check, Copy, Download, ExternalLink, MessageCircle, Printer } from "lucide-react";
 import {
   MAX_GUEST_GREETING,
   NAME_TOKEN,
@@ -72,25 +73,42 @@ export default function HostTools({ slug, messages }: { slug: string; messages: 
         {t("toolsTitle")}
       </h2>
 
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <a
-          href={whatsappUrl(fill(messages.share, inviteUrl))}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`${waBtn} flex-1`}
-        >
-          <MessageCircle size={15} aria-hidden />
-          {t("shareInvite")}
-        </a>
-        <a href={`/invite/${slug}/card`} className={`${ghostBtn} flex-1`}>
-          <Printer size={15} aria-hidden />
-          {t("printCard")}
-        </a>
-        <a href={`/invite/${slug}`} className={`${ghostBtn} flex-1`}>
-          <ExternalLink size={15} aria-hidden />
-          {t("openInvite")}
-        </a>
+      {/* The invitation card — shared on WhatsApp as an image with the message. */}
+      <div className={`${card} flex flex-col gap-4 sm:flex-row sm:items-center`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={`/invite/${slug}/card/image?w=600`}
+          alt={t("cardAlt")}
+          className="mx-auto w-40 shrink-0 rounded-md shadow-lg sm:mx-0"
+        />
+        <div className="flex flex-1 flex-col gap-2">
+          <h3 className="font-semibold text-neutral-900 dark:text-neutral-50">{t("cardTitle")}</h3>
+          <p className="text-sm text-neutral-500 dark:text-neutral-400">{t("cardHint")}</p>
+          <ShareCardButton
+            imageUrl={`/invite/${slug}/card/image?w=1200`}
+            fileName={`${slug}-invitation-card.png`}
+            text={fill(messages.share, inviteUrl)}
+            label={t("shareCard")}
+            hint={t("sharedHint")}
+            className={`${waBtn} w-full`}
+          />
+          <div className="flex gap-2">
+            <a href={`/invite/${slug}/card/image?w=1748&download=1`} className={`${ghostBtn} flex-1`}>
+              <Download size={15} aria-hidden />
+              {t("downloadCard")}
+            </a>
+            <a href={`/invite/${slug}/card`} className={`${ghostBtn} flex-1`}>
+              <Printer size={15} aria-hidden />
+              {t("printCard")}
+            </a>
+          </div>
+        </div>
       </div>
+
+      <a href={`/invite/${slug}`} className={`${ghostBtn} w-full`}>
+        <ExternalLink size={15} aria-hidden />
+        {t("openInvite")}
+      </a>
 
       <div className={card}>
         <h3 className="font-semibold text-neutral-900 dark:text-neutral-50">{t("personalTitle")}</h3>

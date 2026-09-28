@@ -661,7 +661,10 @@
       "invited": "You're invited",
       "request": "request the pleasure of your company",
       "scan": "Scan for the invitation, directions & RSVP",
-      "back": "Back to the invitation"
+      "back": "Back to the invitation",
+      "download": "Download card image",
+      "shareWa": "Share card on WhatsApp",
+      "copiedHint": "The message is copied too — paste it in WhatsApp if it only shows the card."
     },
     "reminder": {
       "guestFallback": "there"
@@ -695,7 +698,6 @@
     "friendOfBoth": "Friend of both",
     "backToEdit": "← Back to edit your invitation",
     "toolsTitle": "Share & invite",
-    "shareInvite": "Share on WhatsApp",
     "printCard": "Printable card (PDF)",
     "openInvite": "Open invitation",
     "personalTitle": "Personal invitation links",
@@ -712,7 +714,13 @@
     "reminderPreview": "Reminder message",
     "copyMessage": "Copy message",
     "remind": "Remind",
-    "noPhone": "No number shared"
+    "noPhone": "No number shared",
+    "cardTitle": "Your invitation card",
+    "cardHint": "Share the card as an image with your invitation message. On a computer, the card downloads and WhatsApp opens with the message — attach the card there.",
+    "cardAlt": "Your invitation card",
+    "shareCard": "Share card on WhatsApp",
+    "downloadCard": "Download card",
+    "sharedHint": "The message is copied too — paste it in WhatsApp if it only shows the card."
   },
   "invitePage": {
     "joinUsWithDate": "Join us in celebrating — {title} on {date}.",
