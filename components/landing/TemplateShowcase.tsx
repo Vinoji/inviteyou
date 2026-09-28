@@ -86,7 +86,7 @@ export default function TemplateShowcase(p: ShowcaseProps) {
     <div
       ref={boxRef}
       className={`relative w-full overflow-hidden bg-gradient-to-br ${p.gradient}`}
-      style={{ aspectRatio: `${STAGE_W} / ${STAGE_H}` }}
+      style={{ aspectRatio: `${STAGE_W} / ${STAGE_H}`, containerType: "inline-size" }}
     >
       {live && (
         <div
@@ -128,7 +128,7 @@ export default function TemplateShowcase(p: ShowcaseProps) {
       {phase === "done" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black/25 p-6 text-center text-white backdrop-blur-[2px]">
           <p
-            className="text-3xl leading-tight drop-shadow-md"
+            className="text-[clamp(15px,8cqw,30px)] leading-tight drop-shadow-md"
             style={{ fontFamily: p.fonts.display }}
           >
             {p.names.a}

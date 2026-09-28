@@ -164,6 +164,16 @@ const THEMES: Record<string, MotionTheme> = {
     },
   },
   // "Silk Curtain": a stage wedding — curtains, footlights, gold dust.
+  "grand-reception": {
+    sectionEnter: "iris",
+    heading: "goldSweep",
+    divider: "hairline",
+    ambient: "glitter",
+    rsvpBurst: "glitter",
+    pageBg: "#1C0B1E",
+    thread: "gold",
+    moments: { family: "deco", events: "spotlight", gallery: "strip", countdown: "splitFlap", grain: true },
+  },
   "silk-curtain": {
     sectionEnter: "tier",
     heading: "goldSweep",

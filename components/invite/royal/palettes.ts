@@ -118,6 +118,21 @@ const PALETTES: Record<string, RoyalPalette> = {
     leaf: "#2F5D3A",
     leafLight: "#467E50",
   },
+  // Grand reception: plum velvet stage, marquee gold, a hint of rose.
+  "grand-reception": {
+    deep: "#1C0B1E",
+    mid: "#2E1230",
+    gold: "#E8A33D",
+    goldLight: "#FFD66B",
+    goldDeep: "#9A6418",
+    ivory: "#FFF6EC",
+    ivory2: "#F3DFD0",
+    text: "#2A1424",
+    muted: "#6E5360",
+    flowers: ["#FF6B8B", "#FFD66B", "#FFF6EC"],
+    leaf: "#2F5D3A",
+    leafLight: "#467E50",
+  },
   // Keepsake card: lilac, rose-gold foil, soft lavender.
   "scratch-reveal": {
     deep: "#3E3358",

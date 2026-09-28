@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import useSafeReducedMotion from "./useSafeReducedMotion";
 import { useTranslations } from "next-intl";
 
 function getParts(targetMs: number) {
@@ -36,7 +37,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   const targetMs = new Date(targetDate).getTime();
   const [parts, setParts] = useState(() => getParts(targetMs));
   const [mounted, setMounted] = useState(false);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useSafeReducedMotion();
 
   useEffect(() => {
     const id = setInterval(() => setParts(getParts(targetMs)), 1000);

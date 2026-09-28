@@ -195,13 +195,12 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .twinkle {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .twinkle {
     animation: none;
-  }
-  .goldSweepPlay {
+}
+:global(html[data-motion="reduced"]) .goldSweepPlay {
     animation: none;
-  }
 }
 
 /* heading "inkType": a thin caret after the typed text */
@@ -369,9 +368,8 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .sway,
-  .grain {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .sway,
+:global(html[data-motion="reduced"]) .grain {
     animation: none;
-  }
 }

@@ -134,7 +134,7 @@ export default function EnvelopeIntro({
                   animating hit box) while still inviting a tap. */}
               <span
                 aria-hidden
-                className="motion-reduce:hidden absolute h-[72px] w-[72px] animate-[pulse-ring_2.4s_ease-out_infinite] rounded-full"
+                className="[html[data-motion=reduced]_&]:hidden absolute h-[72px] w-[72px] animate-[pulse-ring_2.4s_ease-out_infinite] rounded-full"
                 style={{ backgroundColor: accentColor }}
               />
               <button

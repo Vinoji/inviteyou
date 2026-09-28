@@ -15,7 +15,11 @@ export type IntroId =
   | "lanterns"
   | "thoranam"
   | "kasavu"
-  | "pookalam";
+  | "pookalam"
+  | "spotlight"
+  | "ringbox"
+  | "cradle"
+  | "ticket";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -134,6 +138,15 @@ export const TEMPLATES: TemplateConfig[] = [
     intro: "pookalam",
   },
   {
+    id: "grand-reception",
+    category: "wedding",
+    defaultAccent: "#e8a33d",
+    defaultFont: "elegant-script",
+    cardGradient: "from-fuchsia-950 via-purple-900 to-amber-700",
+    cardTextClass: "text-amber-100",
+    intro: "spotlight",
+  },
+  {
     id: "anniversary-emerald",
     category: "anniversary",
     defaultAccent: "#0f6e4f",
@@ -177,6 +190,33 @@ export const TEMPLATES: TemplateConfig[] = [
     cardGradient: "from-orange-200 via-amber-100 to-lime-100",
     cardTextClass: "text-orange-900",
     intro: "envelope",
+  },
+  {
+    id: "engagement-ring",
+    category: "engagement",
+    defaultAccent: "#9c3b52",
+    defaultFont: "elegant-script",
+    cardGradient: "from-rose-200 via-pink-100 to-amber-100",
+    cardTextClass: "text-rose-900",
+    intro: "ringbox",
+  },
+  {
+    id: "baby-moon",
+    category: "baby",
+    defaultAccent: "#8a6cc2",
+    defaultFont: "classic-serif",
+    cardGradient: "from-violet-200 via-pink-100 to-amber-100",
+    cardTextClass: "text-violet-900",
+    intro: "cradle",
+  },
+  {
+    id: "corporate-ticket",
+    category: "corporate",
+    defaultAccent: "#2563eb",
+    defaultFont: "modern-clean",
+    cardGradient: "from-slate-900 via-blue-900 to-sky-700",
+    cardTextClass: "text-sky-50",
+    intro: "ticket",
   },
 ];
 

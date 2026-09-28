@@ -18,6 +18,7 @@ export function isSitePage(pathname: string) {
 
 const NAV = [
   { href: "/#templates", key: "templates", match: (p: string) => p === "/" },
+  { href: "/#pricing", key: "pricing", match: () => false },
   { href: "/demo", key: "demos", match: (p: string) => p.startsWith("/demo") },
   { href: "/support", key: "support", match: (p: string) => p.startsWith("/support") },
 ] as const;

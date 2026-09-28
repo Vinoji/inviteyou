@@ -68,6 +68,24 @@ export function getThemeClasses(templateId: string): ThemeClasses {
         heroOverlay:
           "bg-gradient-to-t from-orange-950/80 via-orange-900/30 to-transparent",
       };
+    case "engagement-ring":
+      return {
+        page: "bg-gradient-to-b from-rose-50 via-white to-amber-50",
+        card: "border rounded-3xl",
+        heroOverlay: "bg-gradient-to-t from-rose-950/80 via-rose-900/30 to-transparent",
+      };
+    case "baby-moon":
+      return {
+        page: "bg-gradient-to-b from-violet-50 via-white to-pink-50",
+        card: "border rounded-3xl",
+        heroOverlay: "bg-gradient-to-t from-violet-950/75 via-violet-900/25 to-transparent",
+      };
+    case "corporate-ticket":
+      return {
+        page: "bg-gradient-to-b from-slate-50 via-white to-sky-50",
+        card: "border rounded-xl",
+        heroOverlay: "bg-gradient-to-t from-slate-950/85 via-blue-950/35 to-transparent",
+      };
     case "minimal-modern":
     default:
       return {

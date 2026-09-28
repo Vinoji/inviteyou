@@ -1789,19 +1789,18 @@
   letter-spacing: 0.02em;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .door,
-  .stage,
-  .polaroid,
-  .noteFront {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .door,
+:global(html[data-motion="reduced"]) .stage,
+:global(html[data-motion="reduced"]) .polaroid,
+:global(html[data-motion="reduced"]) .noteFront {
     transition-duration: 0.01s !important;
     transition-delay: 0s !important;
-  }
-  .openBtn,
-  .scrollCue,
-  .bob {
+}
+:global(html[data-motion="reduced"]) .openBtn,
+:global(html[data-motion="reduced"]) .scrollCue,
+:global(html[data-motion="reduced"]) .bob {
     animation: none;
-  }
 }
 
 /*

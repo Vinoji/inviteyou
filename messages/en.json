@@ -17,10 +17,50 @@
     "feature1Body": "See your invitation update as you type — names, dates, photos, colors, all in real time.",
     "feature2Title": "One link, one QR code",
     "feature2Body": "Share a single page with every guest, with directions, RSVPs and a live countdown.",
-    "feature3Title": "₹199, pay once",
+    "feature3Title": "₹{price}, pay once",
     "feature3Body": "Publish for a flat one-time fee. Editing afterwards is always free.",
     "tryIt": "Tap to try it",
-    "replay": "Play again"
+    "replay": "Play again",
+    "allDesigns": "All designs",
+    "categoriesLabel": "Occasions",
+    "useShort": "Use this design",
+    "showAll": "Show all {count} designs",
+    "pricing": {
+      "eyebrow": "Pricing",
+      "title": "Simple, one-time pricing",
+      "subtitle": "Design and preview for free. Pay once when you are ready to share — no subscription, no hidden fees.",
+      "popular": "Most loved",
+      "freeName": "Design & preview",
+      "freeUnit": "free",
+      "freeBlurb": "Try every design before you pay anything.",
+      "free1": "Every template and animated opening",
+      "free2": "Live preview on phone, tablet and desktop",
+      "free3": "English and Tamil invitations",
+      "free4": "Switch designs without losing your content",
+      "free5": "Drafts saved automatically on your device",
+      "freeCta": "Start designing",
+      "paidName": "Publish",
+      "paidUnit": "once per invitation",
+      "paidBlurb": "Your invitation, live with its own link.",
+      "paid1": "Your own invitation link — unlimited guests and views",
+      "paid2": "RSVPs with a private guest list",
+      "paid3": "WhatsApp sharing, personal links and reminders",
+      "paid4": "Add-to-calendar, directions and countdown",
+      "paid5": "QR code and printable card (PDF)",
+      "paid6": "Guest photo wall and blessings",
+      "paid7": "Your own background music",
+      "paid8": "Edit anytime, free",
+      "paidCta": "Choose a design",
+      "teamName": "Planners & bulk",
+      "teamPrice": "Let’s talk",
+      "teamUnit": "",
+      "teamBlurb": "For wedding planners, venues and companies with many events.",
+      "team1": "Several invitations for your clients",
+      "team2": "Help setting up designs and content",
+      "team3": "Priority support",
+      "teamCta": "Contact us",
+      "note": "Payments are processed securely by Razorpay (UPI, cards, net banking)."
+    }
   },
   "notFound": {
     "eyebrow": "404",
@@ -82,7 +122,7 @@
     "saving": "Saving…",
     "saveChanges": "Save changes",
     "processing": "Processing…",
-    "publishCta": "Publish & Get Your Link — ₹199",
+    "publishCta": "Publish & Get Your Link — ₹{price}",
     "previewLabel": "Preview",
     "desktop": "Desktop",
     "tablet": "Tablet",
@@ -314,7 +354,9 @@
     },
     "audio": {
       "pause": "Pause background music",
-      "play": "Play background music"
+      "play": "Play background music",
+      "reduceMotion": "Reduce motion",
+      "playMotion": "Turn animations on"
     },
     "carousel": {
       "previous": "Previous photo",
@@ -482,6 +524,31 @@
         "lead": "A flower carpet for our special day",
         "tapCentre": "Tap the centre",
         "view": "View invitation"
+      },
+      "spotlight": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "Wedding Reception",
+        "hint": "Tap to light up the stage",
+        "view": "View invitation"
+      },
+      "ringbox": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "We're getting engaged",
+        "hint": "Tap to open the ring box",
+        "view": "View invitation"
+      },
+      "cradle": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "A little blessing",
+        "hint": "Tap the moon",
+        "view": "View invitation"
+      },
+      "ticket": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "You're invited",
+        "hint": "Tear off the stub",
+        "view": "View invitation",
+        "admitOne": "Admit one"
       }
     },
     "kin": {
@@ -642,6 +709,42 @@
       "familyTitle": "",
       "personALabel": "Host name(s)",
       "personBLabel": ""
+    },
+    "engagement": {
+      "label": "Engagement",
+      "tagline": "Rings, blessings & a promise",
+      "heroEyebrow": "We're getting engaged",
+      "dateLabel": "Engagement date",
+      "eventALabel": "Ring Ceremony",
+      "eventBLabel": "Dinner",
+      "storyTitle": "Our Story",
+      "familyTitle": "Family & Blessings",
+      "personALabel": "Bride's name",
+      "personBLabel": "Groom's name"
+    },
+    "baby": {
+      "label": "Baby Celebration",
+      "tagline": "Valaikaappu, baby shower & naming",
+      "heroEyebrow": "A little blessing is on the way",
+      "dateLabel": "Celebration date",
+      "eventALabel": "The Celebration",
+      "eventBLabel": "",
+      "storyTitle": "Our Little Story",
+      "familyTitle": "",
+      "personALabel": "Mom-to-be or baby's name",
+      "personBLabel": ""
+    },
+    "corporate": {
+      "label": "Corporate Event",
+      "tagline": "Launches, conferences & celebrations",
+      "heroEyebrow": "You're invited",
+      "dateLabel": "Event date",
+      "eventALabel": "Main Event",
+      "eventBLabel": "Networking Dinner",
+      "storyTitle": "About the Event",
+      "familyTitle": "",
+      "personALabel": "Company or host name",
+      "personBLabel": ""
     }
   },
   "templates": {
@@ -724,6 +827,26 @@
       "name": "Pookalam",
       "tagline": "Onam flower carpet",
       "description": "An Onam pookalam is laid ring by ring — marigold, chethi, thumba — then opens onto your invitation."
+    },
+    "grand-reception": {
+      "name": "Grand Reception",
+      "tagline": "Marquee lights & spotlights",
+      "description": "A cinematic reception opening: spotlights sweep the stage and a marquee of bulbs lights up your names with gold confetti."
+    },
+    "engagement-ring": {
+      "name": "Ring Box",
+      "tagline": "Nichayathartham, rings & blush satin",
+      "description": "A velvet ring box on blush satin — one tap opens the lid, the ring rises in a sparkle and your names appear."
+    },
+    "baby-moon": {
+      "name": "Moon Cradle",
+      "tagline": "Valaikaappu, baby shower & naming",
+      "description": "A crescent-moon cradle and a mobile of stars on a pastel dusk — tap the moon to rock it and send bubbles floating up."
+    },
+    "corporate-ticket": {
+      "name": "Event Pass",
+      "tagline": "Launches, conferences & office events",
+      "description": "A clean event pass on a midnight grid — guests tear off the \"Admit one\" stub to open your invitation, with RSVP built in."
     }
   },
   "defaultContent": {
@@ -1808,6 +1931,116 @@
           "scene": "palace"
         }
       ]
+    },
+    "grand-reception": {
+      "brideName": "Nila",
+      "groomName": "Aadhav",
+      "ceremonyVenueName": "Sri Varalakshmi Mahal",
+      "ceremonyVenueAddress": "T. Nagar, Chennai",
+      "receptionVenueName": "The Grand Orchid Convention Centre",
+      "receptionVenueAddress": "Anna Salai, Chennai",
+      "groomParents": "Mr. & Mrs. Senthil Kumar",
+      "brideParents": "Mr. & Mrs. Raghavan",
+      "story": "Two families, one stage and a night full of music. After the wedding in the morning, we would love for you to join us for our grand reception — lights, dinner and dancing as we begin our life together.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Evening festive wear — sequins and silks are very welcome."
+        },
+        {
+          "question": "Is there valet parking?",
+          "answer": "Yes, valet parking is available at the convention centre."
+        }
+      ],
+      "travel": {
+        "city": "Chennai",
+        "cityCode": "MAA",
+        "airports": [
+          {
+            "code": "MAA",
+            "name": "Chennai International",
+            "distance": "15 km"
+          }
+        ],
+        "routes": []
+      },
+      "places": [
+        {
+          "title": "Marina Beach",
+          "description": "One of the longest urban beaches in the world — perfect for an evening walk and sundal.",
+          "distance": "6 km from venue",
+          "scene": "beach"
+        },
+        {
+          "title": "Kapaleeshwarar Temple",
+          "description": "A Dravidian temple in Mylapore with a colourful gopuram and a peaceful temple tank.",
+          "distance": "5 km from venue",
+          "scene": "temple"
+        }
+      ]
+    },
+    "engagement-ring": {
+      "brideName": "Divya",
+      "groomName": "Karthik",
+      "ceremonyVenueName": "Sri Lakshmi Mahal",
+      "ceremonyVenueAddress": "Race Course Road, Coimbatore",
+      "receptionVenueName": "The Garden Terrace",
+      "receptionVenueAddress": "Race Course Road, Coimbatore",
+      "groomParents": "Mr. & Mrs. Balasubramanian",
+      "brideParents": "Mr. & Mrs. Natarajan",
+      "story": "With the blessings of our elders, Divya and Karthik will exchange rings and promise to walk the next chapter together. Please join us for the ring ceremony and dinner.",
+      "faq": [
+        {
+          "question": "What's the dress code?",
+          "answer": "Traditional or festive wear."
+        },
+        {
+          "question": "Will lunch be served?",
+          "answer": "Yes — lunch after the ceremony, and dinner in the evening."
+        }
+      ]
+    },
+    "baby-moon": {
+      "brideName": "Meera",
+      "groomName": "",
+      "ceremonyVenueName": "Lotus Banquet Hall",
+      "ceremonyVenueAddress": "Adyar, Chennai",
+      "receptionVenueName": "",
+      "receptionVenueAddress": "",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "A little one is on the way, and our hearts are full. Come and celebrate Meera with bangles, blessings, games and good food as we get ready to welcome the newest member of our family.",
+      "faq": [
+        {
+          "question": "Should I bring a gift?",
+          "answer": "Your blessings are the best gift — but if you'd like, the family has a small wish list."
+        },
+        {
+          "question": "Is it okay to bring children?",
+          "answer": "Of course — little ones are very welcome."
+        }
+      ]
+    },
+    "corporate-ticket": {
+      "brideName": "Nova Tech",
+      "groomName": "",
+      "ceremonyVenueName": "Summit Convention Hall",
+      "ceremonyVenueAddress": "Whitefield, Bengaluru",
+      "receptionVenueName": "Skyline Terrace",
+      "receptionVenueAddress": "Whitefield, Bengaluru",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "Join Nova Tech for the launch of our newest platform — a morning of keynotes and live demos, followed by an evening of networking and dinner with our team and partners.",
+      "faq": [
+        {
+          "question": "Is registration required?",
+          "answer": "Yes — please RSVP below so we can prepare your pass."
+        },
+        {
+          "question": "Is there parking?",
+          "answer": "Free parking is available in the convention centre basement."
+        }
+      ]
     }
   },
   "themeToggle": {
@@ -1958,6 +2191,57 @@
         "tag": "Heartfelt",
         "text": "After years of dreaming and planning, we have finally found a place to call home. A home is only complete with the people who fill it with love, so please come and celebrate with us. — {a}"
       }
+    },
+    "engagement": {
+      "familiesMeet": {
+        "title": "When our families met",
+        "tag": "Arranged",
+        "text": "Our families met over filter coffee and a long list of questions — and by the end of the evening, {a} and {b} were the ones who couldn't stop talking. With the blessings of our elders, we exchange rings and begin the journey to our wedding. Please join us."
+      },
+      "loveStory": {
+        "title": "Our love story",
+        "tag": "Love",
+        "text": "What began as a friendship between {a} and {b} slowly became the most important part of our lives. Now, with both our families beside us, we are making it official. Come and celebrate our engagement with us."
+      },
+      "traditional": {
+        "title": "Traditional blessing",
+        "tag": "Traditional",
+        "text": "With the grace of the Almighty and the blessings of our families, the engagement of {a} and {b} will be celebrated with the customary rituals. We request your presence and blessings on this auspicious day."
+      }
+    },
+    "baby": {
+      "valaikaappu": {
+        "title": "Valaikaappu",
+        "tag": "Traditional",
+        "text": "With joy in our hearts, we celebrate the Valaikaappu of {a}. Bangles, blessings and good food await — please come and shower your love on the mother-to-be and the little one on the way."
+      },
+      "babyShower": {
+        "title": "Baby shower",
+        "tag": "Modern",
+        "text": "A little one is on the way! Join us for an afternoon of games, cake and happy tears as we celebrate {a} before the newest member of our family arrives."
+      },
+      "namingCeremony": {
+        "title": "Naming ceremony",
+        "tag": "Traditional",
+        "text": "Our little star has arrived, and it is time to give our baby a name. Please join us for the naming ceremony of {a} and bless our child with your love."
+      }
+    },
+    "corporate": {
+      "productLaunch": {
+        "title": "Product launch",
+        "tag": "Launch",
+        "text": "{a} invites you to the launch of our newest product — an evening of first looks, live demos and conversations with the team that built it. We would love to have you there."
+      },
+      "annualDay": {
+        "title": "Annual day",
+        "tag": "Celebration",
+        "text": "Another year of hard work, big wins and great people. {a} invites you to our Annual Day — awards, performances and dinner together as we celebrate the year gone by."
+      },
+      "conference": {
+        "title": "Conference",
+        "tag": "Conference",
+        "text": "{a} welcomes you to a day of talks, workshops and networking with leaders across the industry. Reserve your seat and RSVP below."
+      }
     }
   },
   "site": {
@@ -1970,7 +2254,8 @@
       "templates": "Templates",
       "demos": "Demos",
       "support": "Support",
-      "create": "Create invitation"
+      "create": "Create invitation",
+      "pricing": "Pricing"
     },
     "footer": {
       "tagline": "Beautiful animated invitations for weddings and every celebration — in English and Tamil, shared with one link.",

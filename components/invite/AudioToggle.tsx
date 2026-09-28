@@ -5,6 +5,7 @@ import { Music } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useAmbientTone } from "./decor/useAmbientTone";
 import { INTRO_OPENED_EVENT } from "./intros/events";
+import MotionToggle from "./MotionToggle";
 
 /**
  * A floating music toggle. If the couple uploaded their own track, this
@@ -83,6 +84,7 @@ export default function AudioToggle({
   return (
     <>
       {usingFile && <audio ref={audioRef} src={src} loop preload="none" />}
+      <MotionToggle accentColor={accentColor} />
       <button
         onClick={toggle}
         aria-pressed={playing}

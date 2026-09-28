@@ -231,10 +231,9 @@
   letter-spacing: 0.02em;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .drift,
-  .rock,
-  .cork {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .drift,
+:global(html[data-motion="reduced"]) .rock,
+:global(html[data-motion="reduced"]) .cork {
     animation: none;
-  }
 }

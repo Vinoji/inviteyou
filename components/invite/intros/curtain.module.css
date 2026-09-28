@@ -200,8 +200,7 @@
   line-height: 1.3;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .tail {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .tail {
     animation: none;
-  }
 }

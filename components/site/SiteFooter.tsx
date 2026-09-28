@@ -18,6 +18,7 @@ export default async function SiteFooter() {
       title: t("footer.product"),
       links: [
         { href: "/#templates", label: t("nav.templates") },
+        { href: "/#pricing", label: t("nav.pricing") },
         { href: "/demo", label: t("footer.demoVideos") },
         { href: "/#templates", label: t("nav.create") },
       ],

@@ -263,8 +263,7 @@
   letter-spacing: 0.02em;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .foilPlay {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .foilPlay {
     animation: none;
-  }
 }

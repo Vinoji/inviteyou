@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { getAdminDb } from "@/lib/firebase-admin";
+import { PRICE_PAISE } from "@/lib/pricing"; // ₹199 flat, one-time
 
-const PRICE_PAISE = 19900; // ₹199 flat, one-time
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);

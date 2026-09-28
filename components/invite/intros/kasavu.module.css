@@ -156,9 +156,8 @@
   line-height: 1.3;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .flicker,
-  .shimmer::after {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .flicker,
+:global(html[data-motion="reduced"]) .shimmer::after {
     animation: none;
-  }
 }

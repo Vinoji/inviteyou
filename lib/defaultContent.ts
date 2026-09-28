@@ -27,4 +27,8 @@ export const DEFAULT_CONTENT_DATES: Record<
   "proposal-starlit": { weddingDate: "2026-12-20", ceremonyTime: "6:30 PM", receptionTime: "" },
   "birthday-confetti": { weddingDate: "2026-10-18", ceremonyTime: "6:00 PM", receptionTime: "" },
   "housewarming-terracotta": { weddingDate: "2026-11-08", ceremonyTime: "4:00 PM", receptionTime: "" },
+  "grand-reception": { weddingDate: "2027-02-21", ceremonyTime: "9:30 AM", receptionTime: "7:30 PM" },
+  "engagement-ring": { weddingDate: "2027-01-10", ceremonyTime: "10:30 AM", receptionTime: "7:00 PM" },
+  "baby-moon": { weddingDate: "2027-03-14", ceremonyTime: "10:00 AM", receptionTime: "" },
+  "corporate-ticket": { weddingDate: "2027-02-05", ceremonyTime: "10:00 AM", receptionTime: "6:30 PM" },
 };

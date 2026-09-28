@@ -207,10 +207,9 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .bellSway,
-  .halo,
-  .flicker {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .bellSway,
+:global(html[data-motion="reduced"]) .halo,
+:global(html[data-motion="reduced"]) .flicker {
     animation: none;
-  }
 }

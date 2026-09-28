@@ -73,7 +73,7 @@ export default function Particles({
   return (
     <div
       aria-hidden
-      className="motion-reduce:hidden pointer-events-none absolute inset-0 overflow-hidden"
+      className="[html[data-motion=reduced]_&]:hidden pointer-events-none absolute inset-0 overflow-hidden"
     >
       {particles.map((p) => (
         <span

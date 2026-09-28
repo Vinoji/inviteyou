@@ -134,17 +134,16 @@ a:hover .petals {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .petals,
-  .core,
-  .wordmark,
-  .footerEdge {
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .petals,
+:global(html[data-motion="reduced"]) .core,
+:global(html[data-motion="reduced"]) .wordmark,
+:global(html[data-motion="reduced"]) .footerEdge {
     animation: none;
-  }
-  .header,
-  .bar,
-  .cta,
-  .cta::after {
+}
+:global(html[data-motion="reduced"]) .header,
+:global(html[data-motion="reduced"]) .bar,
+:global(html[data-motion="reduced"]) .cta,
+:global(html[data-motion="reduced"]) .cta::after {
     transition: none;
-  }
 }

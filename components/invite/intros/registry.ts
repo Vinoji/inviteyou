@@ -29,4 +29,8 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   thoranam: dynamic(() => import("./ThoranamIntro")),
   kasavu: dynamic(() => import("./KasavuIntro")),
   pookalam: dynamic(() => import("./PookalamIntro")),
+  spotlight: dynamic(() => import("./SpotlightIntro")),
+  ringbox: dynamic(() => import("./RingBoxIntro")),
+  cradle: dynamic(() => import("./CradleIntro")),
+  ticket: dynamic(() => import("./TicketIntro")),
 };

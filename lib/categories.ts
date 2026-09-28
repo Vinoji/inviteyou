@@ -4,7 +4,10 @@ export type CategoryId =
   | "valentine"
   | "proposal"
   | "birthday"
-  | "housewarming";
+  | "housewarming"
+  | "engagement"
+  | "baby"
+  | "corporate";
 
 /**
  * Category-driven config. The underlying Firestore/InvitationData schema
@@ -36,11 +39,14 @@ export interface CategoryConfig {
 
 export const CATEGORIES: CategoryConfig[] = [
   { id: "wedding", singlePerson: false, showCountdown: true },
+  { id: "engagement", singlePerson: false, showCountdown: true },
   { id: "anniversary", singlePerson: false, showCountdown: true },
   { id: "valentine", singlePerson: false, showCountdown: true },
   { id: "proposal", singlePerson: false, showCountdown: false },
   { id: "birthday", singlePerson: true, showCountdown: true },
   { id: "housewarming", singlePerson: true, showCountdown: true },
+  { id: "baby", singlePerson: true, showCountdown: true },
+  { id: "corporate", singlePerson: true, showCountdown: true },
 ];
 
 export function getCategoryConfig(id: string): CategoryConfig {
