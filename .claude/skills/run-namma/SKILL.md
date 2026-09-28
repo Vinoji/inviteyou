@@ -1,6 +1,6 @@
 ---
 name: run-namma
-description: Build, run, and drive the Namma Vivaham wedding-invitation Next.js app. Use when asked to start namma, run the dev server, build it, screenshot its pages (landing, editor, published invite), or check a UI change actually renders.
+description: Build, run, and drive the InviteYou wedding-invitation Next.js app. Use when asked to start namma, run the dev server, build it, screenshot its pages (landing, editor, published invite), or check a UI change actually renders.
 ---
 
 This is a Next.js 16 (App Router) app on a native Windows dev machine —

@@ -6,9 +6,11 @@ import { NextIntlClientProvider } from "next-intl";
 import InvitationView from "@/components/invite/InvitationView";
 import { INVITATION_NAMESPACES, getContentMessages } from "@/lib/i18n/contentMessages";
 import ViewTracker from "@/components/invite/ViewTracker";
-import WelcomeBanner from "@/components/invite/WelcomeBanner";
+import OwnerAccess from "@/components/invite/OwnerAccess";
 import { cleanGreeting } from "@/lib/share";
-import type { InvitationData, RsvpEntry, GuestPhoto } from "@/lib/types";
+import type { InvitationDoc, RsvpEntry, GuestPhoto } from "@/lib/types";
+import { expiresAt, isExpired } from "@/lib/expiry";
+import ExpiredInvite from "@/components/invite/ExpiredInvite";
 import { getTemplateConfig } from "@/lib/templates";
 import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
 
@@ -18,7 +20,7 @@ async function getInvitation(slug: string) {
   if (!snap.exists) return null;
   const data = snap.data()!;
   if (data.status !== "published") return null;
-  return data as InvitationData;
+  return data as InvitationDoc;
 }
 
 /**
@@ -72,6 +74,10 @@ export async function generateMetadata({
   const tCommon = await getTranslations({ locale, namespace: "common" });
   const category = getCategoryMeta(getTemplateConfig(data.templateId).category, tCategories);
   const title = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
+  // Ended invitations drop out of search results.
+  if (isExpired(data)) {
+    return { title: tInvitePage("expiredTitle"), robots: { index: false, follow: false } };
+  }
 
   const format = await getFormatter({ locale });
   const description = data.weddingDate
@@ -98,16 +104,41 @@ export default async function InvitePage({
   searchParams,
 }: {
   params: Promise<{ locale: string; slug: string }>;
-  searchParams: Promise<{ welcome?: string; editToken?: string; templateId?: string; to?: string }>;
+  searchParams: Promise<{
+    welcome?: string;
+    editToken?: string;
+    templateId?: string;
+    to?: string;
+    sent?: string;
+  }>;
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const { welcome, editToken, templateId, to } = await searchParams;
+  const { welcome, editToken, templateId, to, sent } = await searchParams;
   const data = await getInvitation(slug);
   if (!data) notFound();
   // Guests always see the invitation in the couple's chosen language,
   // whatever language this page (and the owner's banner) is in.
   const contentLocale = data.contentLocale ?? (locale === "ta" ? "ta" : "en");
+
+  if (isExpired(data)) {
+    const tCategories = await getTranslations({ locale: contentLocale, namespace: "categories" });
+    const tCommon = await getTranslations({ locale: contentLocale, namespace: "common" });
+    const category = getCategoryMeta(getTemplateConfig(data.templateId).category, tCategories);
+    const expiredMessages = await getContentMessages(contentLocale, ["invitePage"]);
+    return (
+      <NextIntlClientProvider locale={contentLocale} messages={expiredMessages}>
+        <div lang={contentLocale}>
+          <ExpiredInvite
+            title={formatOccasionTitle(category, data.brideName, data.groomName, tCommon)}
+            // Non-null: an invitation can only be expired if it has an expiry.
+            endedAt={expiresAt(data) ?? 0}
+            accentColor={data.accentColor}
+          />
+        </div>
+      </NextIntlClientProvider>
+    );
+  }
   const [rsvpMessages, guestPhotos, contentMessages] = await Promise.all([
     getBlessings(slug),
     getGuestPhotos(slug),
@@ -116,14 +147,14 @@ export default async function InvitePage({
 
   return (
     <>
-      {welcome === "1" && editToken && templateId && (
-        <WelcomeBanner
-          slug={slug}
-          templateId={templateId}
-          editToken={editToken}
-          accentColor={data.accentColor}
-        />
-      )}
+      <OwnerAccess
+        slug={slug}
+        accentColor={data.accentColor}
+        editToken={editToken}
+        templateId={templateId}
+        welcome={welcome === "1"}
+        sent={sent === "whatsapp" || sent === "sms" ? sent : null}
+      />
       <ViewTracker slug={slug} />
       <NextIntlClientProvider locale={contentLocale} messages={contentMessages}>
         <div lang={contentLocale}>

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAdminDb } from "@/lib/firebase-admin";
+import { requireEditToken } from "@/lib/ownerAuth";
+import { expiresAt, isExpired } from "@/lib/expiry";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
 import { withDefaultSections, EMPTY_TRAVEL, EMPTY_MONOGRAM } from "@/lib/types";
@@ -17,23 +18,6 @@ import {
   sanitizeTravel,
   sanitizeVenue,
 } from "@/lib/sanitize";
-
-async function requireEditToken(slug: string, token: unknown) {
-  if (typeof token !== "string" || !token) {
-    return { ok: false as const, status: 403, error: "Missing edit token." };
-  }
-  const db = getAdminDb();
-  const metaSnap = await db
-    .collection("invitations")
-    .doc(slug)
-    .collection("private")
-    .doc("meta")
-    .get();
-  if (!metaSnap.exists || metaSnap.data()?.editToken !== token) {
-    return { ok: false as const, status: 403, error: "Invalid edit link." };
-  }
-  return { ok: true as const, db };
-}
 
 /** Fetches a published invitation's data for the edit form, gated by token. */
 export async function GET(
@@ -63,6 +47,8 @@ export async function GET(
       places: data.places ?? [],
       monogram: data.monogram ?? EMPTY_MONOGRAM,
     },
+    // For the editor's "expired — restore for ₹50" banner.
+    expiry: { expiresAt: expiresAt(data), expired: isExpired(data) },
   });
 }
 

@@ -1,26 +1,58 @@
-# Namma Vivaham: template motion prompts
+# InviteYou: template motion prompts
 
-> **Notes for this repo (read before running a prompt)**
+> **Status in this repo: all prompts (0–6) are done.** Read this before changing anything; the prompts below are kept as the original design brief.
 >
-> - **Prompt 0 is done.** The shared engine lives in:
->   - `components/invite/intros/`: `IntroHost`, `registry.ts`, `types.ts`, `events.ts`, and the `DoorIntro` and `EnvelopeIntro` intros.
->   - `components/invite/particles/`: `ParticleField` and `presets.ts`.
->   - `components/invite/motion/`: `MotionThemeProvider`, `Section`, `MotionHeading`, `Ambient`.
->   - `lib/motionThemes.ts`.
-> - **Prompt 1 is done.** traditional-gold uses the `"kolam"` intro (`intros/KolamIntro.tsx`, with its path generated in `intros/kolamGeometry.ts`), a granite-and-gold palette, and the "Kolam & Temple Bell" theme in `lib/motionThemes.ts`:
->   - Tier section entrances, gold-sweep headings, kolam dividers and ambient embers.
->   - A gold progress thread with a lamp-flame tip.
->   - The section moments (`motion/moments.tsx`). Each is switched on by a flag in `MotionTheme.moments`, so later templates can reuse them.
-> - **Scroll-linked effects share one hook set** (`motion/scroll.ts`). Use it instead of Framer's `useScroll`, because it finds the right scroll container on the published page and in the editor's preview pane.
-> - **There is no `royal-palace-door` template.** The palace door is the `"door"` intro, and all 5 wedding templates use it (each in its own palette, `components/invite/royal/palettes.ts`). Prompts 1–5 each switch one template to its new intro by adding the intro to `registry.ts`, extending `IntroId` in `lib/templates.ts`, and changing that template's `intro`. Everything in this doc that mentions `royal-palace-door` refers to the `"door"` intro.
-> - **Some files the prompts mention don't exist here.** `DoorIntro` is `components/invite/intros/DoorIntro.tsx`. There is no `cinematic/` folder and no `PetalShower`: the door's petals are the `"marigold"` preset. `WHATS_BUILT.md` is `FEATURES.md`.
-> - **Differences from Prompt 0 as written:**
->   - The registry keeps SSR on instead of `ssr: false`. Each intro is still its own chunk, but the closed intro is in the server HTML, so the invitation never flashes before it.
->   - Intros read their own labels with `useTranslations`, so `IntroProps` has no `labels` field. Instead it adds `weddingDate`, `templateId` and `burst()`. `burst()` fires particles on the host's canvas, which outlives the intro.
->   - `Section` "rise" uses scroll-into-view (`whileInView`), not a scroll-scrubbed MotionValue. Scroll-scrubbed effects need a `container` ref to work inside the editor's preview pane, because `useScroll` tracks the window by default.
->   - The old layout's `decor/Particles` (a CSS-only effect) is unchanged. Only the door's petals moved to `ParticleField`.
+> **Where things live**
+> - Intros: `components/invite/intros/`. `IntroHost` plays the intro named by each template's `intro` in `lib/templates.ts`, looked up in `registry.ts`. The contract is `types.ts`, the window events are in `events.ts`, and `audio.ts` handles sound effects.
+> - Particles: `components/invite/particles/` (`ParticleField` and `presets.ts`).
+> - Motion themes: `lib/motionThemes.ts`, with the implementations in `components/invite/motion/`:
+>   - `Section` (entrances and dividers), `MotionHeading`, `ScrollThread`, `Ambient`, `RsvpBurst` and `IntroSweep`.
+>   - `moments.tsx` and `scenery.tsx` for the template-specific touches.
+>   - `scroll.ts`, the scroll-progress hooks.
+> - Wedding layout and palettes: `components/invite/royal/`.
+>
+> **Distinctness check (Prompt 6)**
+>
+> | Template | Intro | Burst particles | Section entrance | Heading | Divider | Thread |
+> |---|---|---|---|---|---|---|
+> | traditional-gold | kolam (tap the bell) | embers + jasmine | tier | goldSweep | kolamLine | gold |
+> | minimal-modern | split (tap anywhere) | inkDots | wipe | inkType | hairline | ink |
+> | floral-pastel | bloom (tap the bud) | butterflies + pastelPetals | bloom | handwrite | vine (thread) | vine |
+> | elegant-bw | giftbox (pull the ribbon) | glitter | iris | maskUp | filmStrip | silver |
+> | beach-boho | bottle (tap the cork) | bubbles + sunGlints | wave | maskUp + wobble | wave | rope |
+>
+> The `door` intro (palace doors, marigold petals) stays registered but no template uses it. There is no `royal-palace-door` template in this repo.
+>
+> **Rules learned along the way**
+> - **Use the hooks in `motion/scroll.ts` for anything scroll-linked**, not Framer's `useScroll`. Framer only tracks the window, but the editor preview scrolls inside a pane.
+> - **Never make a clipped or masked element its own in-view trigger.** An element that starts fully hidden by its own clip or mask never counts as visible, so its animation never fires. Put the trigger on the unclipped parent and pass the state down, as `MotionHeading` and `GratefulNote`'s split story do.
+> - **Round trigonometry results in rendered SVG** (`toFixed`). The server and the browser print long floats differently, which causes a hydration mismatch.
+> - **Intro sounds go through `playSound`.** Creating an `AudioContext` inside a tap was a 90–160ms long task at 4× CPU slowdown.
+> - **In a 3D (`preserve-3d`) scene, depth decides what receives the pointer, not z-index.** Keep decorative layers `pointer-events: none`.
+>
+> **QA results (Prompt 6)**
+> - **Tested for every wedding template and one envelope template:**
+>   - Screenshots at 390×844 and 360×780, with no console errors and no horizontal overflow.
+>   - Reduced motion: an open or "View invitation" button, nothing left hidden, no particle canvas.
+>   - Tamil: labels translated, no errors.
+>   - The editor preview plays inside the pane, and "Replay intro" works.
+> - **Long tasks at 4× CPU slowdown, on a production build: none** during the intro or a fast scroll.
+> - **The screenshots** are in `.claude/skills/run-namma/screenshots/motion/<template>/`, which is git-ignored. Prompt 6 asked for `/screenshots/motion/`.
+>
+> **Where this repo departs from the prompts**
+> - **Intros are server-rendered** rather than `ssr: false`, so the invitation never flashes before the intro. Each intro still loads as its own chunk.
+> - **`IntroProps` has no `labels` field,** because intros load their own translations. It adds `weddingDate`, `templateId` and `burst()`.
+> - **The kolam is two interlaced loops,** because one continuous line can't weave an even-sized dot ring. Its white-to-gold change is a crossfade.
+> - **Some entrances play when a section scrolls into view** instead of following the scroll position: "rise", "tier", the headings and the moments. "wipe", "bloom", "iris" and "wave" do follow the scroll position.
+> - **Approximations:**
+>   - "bloom" uses a soft oval clip rather than a turbulence-edged blob. Filters never run on moving layers.
+>   - "handwrite" uses the prompt's fallback, a left-to-right reveal.
+>   - The gift box's tracking-tighten on headings is omitted, because letter-spacing is a layout property.
+>   - The bottle's tilt parallax is skipped on iOS, which needs a permission prompt. Those devices get the idle drift.
+> - **Background music:** a guest opening the intro starts the couple's uploaded track. The generated fallback tone only plays when a guest taps the music button.
+> - **Not run:** Lighthouse, and a real published `/invite/<slug>`. Both need Firebase.
 
-Paste these prompts into Claude Code inside the Namma Vivaham repo. Each wedding template gets its own **opening moment**, its own **particles** and its own **scroll language**, so no two invitations feel alike.
+Paste these prompts into Claude Code inside the InviteYou repo. Each wedding template gets its own **opening moment**, its own **particles** and its own **scroll language**, so no two invitations feel alike.
 
 ## How to use
 
@@ -49,7 +81,7 @@ Keep all six openings short: under 4 seconds from tap to readable names.
 ## Prompt 0: shared motion engine (run once)
 
 ```
-You are working in the Namma Vivaham repo (Next.js 16 App Router, React 19, TypeScript,
+You are working in the InviteYou repo (Next.js 16 App Router, React 19, TypeScript,
 Tailwind v4, framer-motion, Firebase). Read WHATS_BUILT.md, components/invite/, lib/templates*,
 lib/categories.ts and lib/fontPairings.ts before changing anything.
 

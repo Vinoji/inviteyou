@@ -156,7 +156,7 @@ export function buildIcs(events: CalendarEvent[], uidBase: string): string | nul
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Namma Vivaham//Invitation//EN",
+    "PRODID:-//InviteYou//Invitation//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     ...blocks,

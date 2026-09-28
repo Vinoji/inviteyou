@@ -169,11 +169,18 @@ export interface InvitationDoc extends InvitationData {
   viewCount: number;
   createdAt: number;
   updatedAt: number;
+  /** Set by a paid ₹50 restore: live until at least this (epoch ms). See lib/expiry.ts. */
+  restoredUntil?: number;
 }
 
 /** Never exposed to public reads — invitations/{slug}/private/meta */
 export interface InvitationPrivateMeta {
   editToken: string;
+  /** The buyer's number (E.164) and UI language, for sending their links. */
+  ownerPhone?: string;
+  ownerLocale?: "en" | "ta";
+  /** Paid restores, so the same payment can't be applied twice. */
+  restorePayments?: { paymentId: string; orderId: string; at: number }[];
   razorpayPaymentId?: string;
   razorpayOrderId?: string;
 }

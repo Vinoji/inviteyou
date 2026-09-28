@@ -9,7 +9,7 @@
     "friendFallback": "Friend"
   },
   "landing": {
-    "eyebrow": "Namma Vivaham",
+    "eyebrow": "InviteYou",
     "heading": "A beautiful invitation, live in minutes",
     "subheading": "Weddings, anniversaries, proposals, birthdays, house warmings — pick a template, add your story and photos, and share one link with every guest, with RSVPs, a countdown, directions, and a QR code built in.",
     "useTemplate": "Use this template",
@@ -203,7 +203,19 @@
     "zoom": "Zoom",
     "cropDrag": "Drag the photo to position it.",
     "cropApply": "Use photo",
-    "cropCancel": "Cancel"
+    "cropCancel": "Cancel",
+    "ownerPhoneLabel": "Your mobile number",
+    "ownerPhonePlaceholder": "98765 43210",
+    "ownerPhoneHint": "We'll send your private edit link here on WhatsApp or SMS after you pay. Not shown to guests.",
+    "ownerPhoneInvalid": "Please enter a valid mobile number, e.g. 98765 43210 or +44 7700 900123.",
+    "expiredBannerTitle": "This invitation has expired",
+    "expiredBannerBody": "Guests now see “This invitation has ended”. Restore it to make it live again for 30 more days. You can still edit it either way.",
+    "restoreCta": "Restore for ₹50 (30 days)",
+    "restoreCheckoutDescription": "Restore invitation for 30 days",
+    "liveUntil": "Live for guests until {date}.",
+    "ownerPhoneRequired": "Enter your mobile number to continue — your edit link is sent here.",
+    "errNamesRequired": "Please fill in the name(s) first.",
+    "errPaymentLoading": "The payment page is still loading — please try again in a moment."
   },
   "invite": {
     "hero": {
@@ -301,11 +313,21 @@
       "heading": "Things to Know"
     },
     "welcomeBanner": {
-      "message": "Your invitation is live! Save your private edit link — it's the only way to make changes later.",
       "viewRsvps": "View RSVPs",
       "copied": "Copied!",
       "copyEditLink": "Copy edit link",
-      "dismiss": "Dismiss"
+      "dismiss": "Dismiss",
+      "title": "Your invitation is live!",
+      "body": "This is your private edit link — the only way to change your invitation or see RSVPs later. Keep it safe and don’t share it with guests.",
+      "editLinkLabel": "Your private edit link",
+      "sentWhatsapp": "We’ve also sent this link to your WhatsApp.",
+      "sentSms": "We’ve also sent this link to your phone by SMS.",
+      "notSent": "Save it now — copy it, or send it to yourself:",
+      "sendWhatsapp": "Send to my WhatsApp",
+      "sendSms": "Send by SMS",
+      "selfMessage": "My private edit link for our invitation (don’t share): {editUrl}",
+      "expiryNote": "Your invitation stays live until 10 days after the event. After that you can restore it for ₹50 for 30 more days.",
+      "done": "Done"
     },
     "envelope": {
       "open": "Open the invitation",
@@ -324,7 +346,7 @@
       "navAria": "{prefix} navigation"
     },
     "view": {
-      "madeWith": "Made with love for {couple} · via Namma Vivaham",
+      "madeWith": "Made with love for {couple} · via InviteYou",
       "defaultReception": "Reception"
     },
     "opengraph": {
@@ -527,6 +549,12 @@
       "reminderIntro": "The big day is almost here — we cannot wait to celebrate with you!",
       "open": "✨ Open your invitation for directions, RSVP and more:",
       "thanks": "Your presence and blessings mean the world to us. Thank you! 🙏"
+    },
+    "ownerBar": {
+      "label": "Host tools",
+      "edit": "Edit",
+      "rsvps": "RSVPs",
+      "editLink": "Edit link"
     }
   },
   "rsvpsPage": {
@@ -564,7 +592,11 @@
   "invitePage": {
     "joinUsWithDate": "Join us in celebrating — {title} on {date}.",
     "joinUs": "Join us in celebrating — {title}.",
-    "notFoundTitle": "Invitation not found"
+    "notFoundTitle": "Invitation not found",
+    "expiredTitle": "This invitation has ended",
+    "expiredBody": "It was live until {date}.",
+    "expiredHostHint": "Are you the host? Open your private edit link to restore it for another 30 days.",
+    "expiredCta": "Create your own invitation"
   },
   "languageSwitcher": {
     "en": "English",
@@ -1961,8 +1993,8 @@
     }
   },
   "site": {
-    "brand": "Namma Vivaham",
-    "home": "Namma Vivaham home",
+    "brand": "InviteYou",
+    "home": "InviteYou home",
     "mainNav": "Main",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
@@ -2051,7 +2083,7 @@
       "eyebrow": "Legal",
       "title": "Privacy policy",
       "updated": "Last updated: 28 September 2026",
-      "intro": "Namma Vivaham helps you create and share invitations. This policy explains, in plain language, what information we handle, why, and the choices you have.",
+      "intro": "InviteYou helps you create and share invitations. This policy explains, in plain language, what information we handle, why, and the choices you have.",
       "contents": "Contents",
       "collect": {
         "title": "What we collect",
@@ -2116,5 +2148,9 @@
       "contactTitle": "Questions?",
       "contactBody": "Contact us about privacy at"
     }
+  },
+  "notify": {
+    "published": "Your invitation for {title} is live! 🎉\n\nShare with guests: {inviteUrl}\n\nYour private edit link (keep it safe, don’t share): {editUrl}",
+    "restored": "Your invitation for {title} is live again until {date}: {inviteUrl}"
   }
 }

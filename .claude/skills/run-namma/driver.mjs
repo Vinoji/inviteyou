@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Drives the Namma Vivaham Next.js app in headless Chromium via Playwright.
+ * Drives the InviteYou Next.js app in headless Chromium via Playwright.
  *
  * This is the project's stand-in for `chromium-cli`, which isn't available
  * on this Windows dev machine (it's a container-only tool). `playwright` is

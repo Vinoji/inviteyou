@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { getTranslations } from "next-intl/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { generateUniqueSlug } from "@/lib/slug";
+import { verifyPaymentSignature } from "@/lib/razorpay";
+import { sendToOwner } from "@/lib/notify";
+import { ownerLinks } from "@/lib/ownerLinks";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -13,9 +17,7 @@ export async function POST(req: NextRequest) {
   if (!draftId || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
     return NextResponse.json({ error: "Missing payment details." }, { status: 400 });
   }
-
-  const secret = process.env.RAZORPAY_KEY_SECRET;
-  if (!secret) {
+  if (!process.env.RAZORPAY_KEY_SECRET) {
     return NextResponse.json(
       { error: "Payments are not configured on the server." },
       { status: 500 }
@@ -23,22 +25,16 @@ export async function POST(req: NextRequest) {
   }
 
   // Never trust a client-reported "payment succeeded" — recompute the
-  // signature server-side from order|payment ids and the secret, and only
-  // proceed on an exact match.
-  const expected = crypto
-    .createHmac("sha256", secret)
-    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
-    .digest("hex");
-
-  if (expected !== razorpay_signature) {
-    // Leave the draft as pending_payment so the user can retry — do not
-    // publish anything on a signature mismatch.
+  // signature server-side and only proceed on an exact match. On a
+  // mismatch the draft stays pending_payment so the user can retry.
+  if (!verifyPaymentSignature(razorpay_order_id, razorpay_payment_id, razorpay_signature)) {
     return NextResponse.json({ error: "Payment verification failed." }, { status: 400 });
   }
 
   const db = getAdminDb();
   const draftRef = db.collection("invitations").doc(draftId);
-  const draftSnap = await draftRef.get();
+  const ownerRef = draftRef.collection("private").doc("owner");
+  const [draftSnap, ownerSnap] = await Promise.all([draftRef.get(), ownerRef.get()]);
   if (!draftSnap.exists) {
     return NextResponse.json(
       { error: "Draft not found or already published." },
@@ -46,6 +42,7 @@ export async function POST(req: NextRequest) {
     );
   }
   const draft = draftSnap.data()!;
+  const owner = ownerSnap.exists ? ownerSnap.data()! : {};
 
   const slug = await generateUniqueSlug(draft.groomName ?? "", draft.brideName ?? "");
   const editToken = crypto.randomBytes(16).toString("hex");
@@ -65,9 +62,27 @@ export async function POST(req: NextRequest) {
     editToken,
     razorpayPaymentId: razorpay_payment_id,
     razorpayOrderId: razorpay_order_id,
+    ...(owner.phone ? { ownerPhone: owner.phone, ownerLocale: owner.locale ?? "en" } : {}),
   });
+  batch.delete(ownerRef);
   batch.delete(draftRef);
   await batch.commit();
 
-  return NextResponse.json({ slug, editToken });
+  // Send the owner their links. Published is published: a failed message
+  // only means the popup offers the manual send buttons instead.
+  let sent: string | null = null;
+  if (owner.phone) {
+    const locale = owner.locale === "ta" ? "ta" : "en";
+    const t = await getTranslations({ locale, namespace: "notify" });
+    const links = ownerLinks(req, { slug, templateId: draft.templateId, editToken, locale });
+    const title = [draft.brideName, draft.groomName].filter(Boolean).join(" & ");
+    const result = await sendToOwner(
+      owner.phone,
+      t("published", { title, inviteUrl: links.invite, editUrl: links.edit }),
+      { sid: process.env.TWILIO_WHATSAPP_CONTENT_SID, vars: [title, links.edit] }
+    );
+    sent = result.sent;
+  }
+
+  return NextResponse.json({ slug, editToken, sent });
 }

@@ -8,11 +8,11 @@
  */
 
 export const SITE = {
-  name: "Namma Vivaham",
+  name: "InviteYou",
   /** Year the service started, for the copyright range. */
   since: 2026,
   contact: {
-    email: "support@nammavivaham.example",
+    email: "support@inviteyou.example",
     /** International format, digits only — used for wa.me and tel: links. */
     whatsapp: "",
     phone: "",
