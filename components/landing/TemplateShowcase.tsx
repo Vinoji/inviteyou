@@ -30,6 +30,8 @@ export interface ShowcaseProps {
   nameFit: number;
   /** Tailwind gradient classes for the resting card, e.g. "from-amber-200 to-red-100". */
   gradient: string;
+  /** Where the "Tap to try it" chip sits — bottom inside a phone mock-up, clear of the notch. */
+  hintAt?: "top" | "bottom";
 }
 
 /**
@@ -151,7 +153,7 @@ export default function TemplateShowcase(p: ShowcaseProps) {
       )}
 
       {phase === "closed" && live && (
-        <span className="pointer-events-none absolute top-3 left-3 z-20 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
+        <span className={`pointer-events-none absolute ${p.hintAt === "bottom" ? "bottom-3 left-1/2 -translate-x-1/2" : "top-3 left-3"} z-20 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap text-white backdrop-blur`}>
           <Hand size={12} aria-hidden />
           {t("tryIt")}
         </span>

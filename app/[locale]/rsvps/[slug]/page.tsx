@@ -11,6 +11,8 @@ import { parseIsoDate } from "@/lib/calendar";
 import HostTools, { RemindButton } from "@/components/host/HostTools";
 import { NAME_TOKEN, URL_TOKEN } from "@/lib/share";
 import { buildWhatsAppMessage } from "@/lib/inviteMessage";
+import festive from "@/components/landing/landing.module.css";
+import { Thoranam } from "@/components/site/festive";
 
 // Token-gated, not linked from anywhere public — keep it out of search
 // results as defense in depth on top of the token check itself.
@@ -101,7 +103,7 @@ function StatCard({
   icon: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-neutral-200 p-4 dark:border-neutral-800">
+    <div className={`p-4 ${festive.festiveCard}`}>
       <div className="flex items-center gap-2" style={{ color: accentColor }}>
         {icon}
         <span className="text-xs font-semibold tracking-widest uppercase">{label}</span>
@@ -145,7 +147,9 @@ export default async function RsvpsPage({
   };
 
   return (
-    <main className="mx-auto min-h-screen max-w-3xl px-6 py-12">
+    <main className={`min-h-screen ${festive.paper}`}>
+      <Thoranam compact />
+      <div className="mx-auto max-w-3xl px-6 pt-4 pb-12">
       <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
         {t("private")}
       </p>
@@ -184,7 +188,7 @@ export default async function RsvpsPage({
           </p>
         ) : (
           rsvps.map((r, i) => (
-            <div key={i} className="rounded-xl border border-neutral-200 p-4 dark:border-neutral-800">
+            <div key={i} className={`p-4 ${festive.festiveCard}`}>
               <div className="flex items-center justify-between gap-3">
                 <p className="font-semibold text-neutral-900 dark:text-neutral-50">{r.guestName}</p>
                 <span
@@ -247,6 +251,7 @@ export default async function RsvpsPage({
       >
         {t("backToEdit")}
       </Link>
+      </div>
     </main>
   );
 }

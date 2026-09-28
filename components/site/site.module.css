@@ -4,25 +4,112 @@
   position: sticky;
   top: 0;
   z-index: 40;
-  border-bottom: 1px solid transparent;
+  padding: 0;
+  transition: padding 0.35s ease;
+}
+.headerFloating {
+  padding: 10px 12px 0;
+}
+/* The bar itself: transparent over a dusk banner; a floating glass capsule
+ * (warm plum-to-rose tint, gold hairline, soft glow) everywhere else. */
+.capsule {
+  position: relative;
+  max-width: 72rem;
+  margin: 0 auto;
+  border-radius: 999px;
+  border: 1px solid transparent;
   transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    border-radius 0.25s ease;
+}
+.capsuleSolid {
+  background: linear-gradient(100deg, rgba(46, 16, 52, 0.8), rgba(92, 28, 60, 0.78) 55%, rgba(120, 42, 52, 0.76));
+  backdrop-filter: blur(16px) saturate(1.5);
+  -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  border-color: rgba(255, 217, 138, 0.32);
+  box-shadow:
+    0 14px 40px -14px rgba(40, 8, 36, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+.capsuleOpen {
+  border-radius: 26px;
 }
 .bar {
   height: 72px;
   transition: height 0.3s ease;
 }
-.scrolled {
-  background: color-mix(in srgb, var(--background, #fff) 88%, transparent);
-  backdrop-filter: saturate(1.4) blur(14px);
-  -webkit-backdrop-filter: saturate(1.4) blur(14px);
-  border-bottom-color: color-mix(in srgb, currentColor 10%, transparent);
-  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.18);
+.capsuleSolid .bar {
+  height: 58px;
 }
-.scrolled .bar {
-  height: 60px;
+
+/* A few marigold tassels dangling from the capsule's ends. */
+.tassels {
+  position: absolute;
+  top: 100%;
+  display: flex;
+  gap: 10px;
+  pointer-events: none;
+}
+.tasselsL {
+  left: 9%;
+}
+.tasselsR {
+  right: 9%;
+}
+.tassel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0;
+  animation: tassel 3.2s ease-in-out infinite alternate;
+}
+.tassel::before {
+  content: "";
+  width: 1px;
+  height: var(--len, 10px);
+  background: rgba(232, 176, 74, 0.8);
+}
+.tassel i {
+  width: 9px;
+  height: 9px;
+  margin-top: -1px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd166 0 2px, #ff9f1c 2.5px);
+  box-shadow: 0 0 6px rgba(255, 159, 28, 0.6);
+}
+.tassel i + i {
+  margin-top: 2px;
+  width: 7px;
+  height: 7px;
+  background: #fff4dc;
+  box-shadow: none;
+}
+@keyframes tassel {
+  from {
+    transform: rotate(-7deg);
+  }
+  to {
+    transform: rotate(7deg);
+  }
+}
+
+/* Nav: soft glow on hover; the current page gets a glowing marigold dot. */
+.navLink:hover {
+  background: rgba(255, 233, 184, 0.1);
+}
+.navActive::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 1px;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd166 0 1.5px, #ff9f1c 2px);
+  box-shadow: 0 0 8px 1px rgba(255, 180, 60, 0.8);
 }
 
 /* Marigold mark: petals turn slowly, and a little faster on hover. */
@@ -66,6 +153,7 @@ a:hover .petals {
   color: transparent;
   animation: shimmer 6s ease-in-out infinite;
 }
+.wordmarkLight,
 :global(.dark) .wordmark {
   background-image: linear-gradient(
     100deg,
@@ -146,4 +234,108 @@ a:hover .petals {
 :global(html[data-motion="reduced"]) .cta,
 :global(html[data-motion="reduced"]) .cta::after {
     transition: none;
+}
+
+.navPill {
+  background: rgba(255, 233, 184, 0.12);
+}
+
+/* ============ FESTIVAL-NIGHT FOOTER ============ */
+.footer {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: auto;
+  padding-top: 90px;
+  color: #f6e7d0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(232, 176, 74, 0.18), transparent 70%),
+    linear-gradient(180deg, #2c0f2a 0%, #1c0a1d 60%, #120612 100%);
+}
+/* The page's paper curving into the footer. */
+.footerHills {
+  position: absolute;
+  z-index: 1;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 70px;
+  pointer-events: none;
+}
+.footerHills svg {
+  width: 100%;
+  height: 100%;
+}
+/* Same colours as the page "paper" in landing.module.css. */
+.footerHills {
+  --footer-paper: #fffaf2;
+}
+:global(.dark) .footerHills {
+  --footer-paper: #140d18;
+}
+@media (prefers-color-scheme: dark) {
+  :global(html:not(.light)) .footerHills {
+    --footer-paper: #140d18;
+  }
+}
+.diyaRow {
+  position: absolute;
+  z-index: 2;
+  top: 54px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-around;
+  pointer-events: none;
+}
+.diyaRow > svg {
+  position: static;
+  width: 40px;
+}
+.footerKolam {
+  position: absolute !important;
+  z-index: -1;
+  left: 50% !important;
+  right: auto !important;
+  top: 40px !important;
+  bottom: auto !important;
+  width: min(680px, 120vw) !important;
+  translate: -50% 0;
+  opacity: 0.09 !important;
+}
+.footerHeading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #e8b04a;
+}
+.footerHeading::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd166 35%, #ff9f1c 40%);
+  box-shadow: 0 0 8px rgba(255, 159, 28, 0.7);
+}
+.footerHeading:lang(ta) {
+  letter-spacing: normal;
+  text-transform: none;
+}
+.footerLink {
+  color: rgba(246, 231, 208, 0.78);
+  transition:
+    color 0.2s ease,
+    padding 0.2s ease;
+}
+.footerLink:hover {
+  color: #ffd166;
+  padding-left: 4px;
+}
+.footerBottom {
+  border-top: 1px solid rgba(232, 176, 74, 0.25);
+  background: rgba(0, 0, 0, 0.25);
 }

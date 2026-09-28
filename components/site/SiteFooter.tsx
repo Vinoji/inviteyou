@@ -5,9 +5,14 @@ import { SITE } from "@/lib/site";
 import SocialIcons from "./SocialIcons";
 import FooterGate from "./FooterGate";
 import { LogoMark } from "./SiteHeader";
+import { Diya, Kolam } from "./festive";
 import s from "./site.module.css";
 
-/** Site footer for the marketing pages (FooterGate hides it elsewhere). */
+/**
+ * Festival-night footer for the marketing pages (FooterGate hides it
+ * elsewhere): the page's paper curves into a plum night, a row of brass
+ * lamps flickers along the top, a kolam glows faintly behind gold headings.
+ */
 export default async function SiteFooter() {
   const t = await getTranslations("site");
   const year = new Date().getFullYear();
@@ -43,20 +48,31 @@ export default async function SiteFooter() {
 
   return (
     <FooterGate>
-      <footer className="mt-auto border-t border-neutral-100 bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900/60">
-        <div className={s.footerEdge} aria-hidden />
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+      <footer className={s.footer}>
+        <div className={s.footerHills} aria-hidden>
+          <svg viewBox="0 0 1440 70" preserveAspectRatio="none">
+            <path d="M0 0 H1440 V34 C1250 62 1060 18 860 40 S420 66 220 38 S40 30 0 44 Z" fill="var(--footer-paper)" />
+          </svg>
+        </div>
+        <div className={s.diyaRow} aria-hidden>
+          {Array.from({ length: 7 }, (_, i) => (
+            <Diya key={i} className="" />
+          ))}
+        </div>
+        <Kolam className={s.footerKolam} />
+
+        <div className="relative z-10 mx-auto grid max-w-6xl gap-10 px-6 pt-16 pb-12 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div className="space-y-4">
             <Link href="/" className="group inline-flex items-center gap-2.5">
               <LogoMark />
-              <span className={`font-serif text-xl font-bold ${s.wordmark}`}>{t("brand")}</span>
+              <span className={`font-serif text-xl font-bold ${s.wordmark} ${s.wordmarkLight}`}>{t("brand")}</span>
             </Link>
-            <p className="max-w-xs text-sm text-neutral-600 dark:text-neutral-400">{t("footer.tagline")}</p>
-            <ul className="space-y-2 text-sm text-neutral-600 dark:text-neutral-400">
+            <p className="max-w-xs text-sm text-[#f6e7d0]/75">{t("footer.tagline")}</p>
+            <ul className="space-y-2 text-sm">
               {SITE.contact.email && (
                 <li>
-                  <a href={`mailto:${SITE.contact.email}`} className="inline-flex items-center gap-2 hover:text-amber-700 dark:hover:text-amber-400">
-                    <Mail size={15} aria-hidden /> {SITE.contact.email}
+                  <a href={`mailto:${SITE.contact.email}`} className={`inline-flex items-center gap-2 ${s.footerLink}`}>
+                    <Mail size={15} className="text-[#e8b04a]" aria-hidden /> {SITE.contact.email}
                   </a>
                 </li>
               )}
@@ -66,16 +82,16 @@ export default async function SiteFooter() {
                     href={`https://wa.me/${SITE.contact.whatsapp}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 hover:text-amber-700 dark:hover:text-amber-400"
+                    className={`inline-flex items-center gap-2 ${s.footerLink}`}
                   >
-                    <MessageCircle size={15} aria-hidden /> {t("footer.whatsappUs")}
+                    <MessageCircle size={15} className="text-[#e8b04a]" aria-hidden /> {t("footer.whatsappUs")}
                   </a>
                 </li>
               )}
               {SITE.contact.phone && (
                 <li>
-                  <a href={`tel:+${SITE.contact.phone}`} className="inline-flex items-center gap-2 hover:text-amber-700 dark:hover:text-amber-400">
-                    <Phone size={15} aria-hidden /> +{SITE.contact.phone}
+                  <a href={`tel:+${SITE.contact.phone}`} className={`inline-flex items-center gap-2 ${s.footerLink}`}>
+                    <Phone size={15} className="text-[#e8b04a]" aria-hidden /> +{SITE.contact.phone}
                   </a>
                 </li>
               )}
@@ -84,16 +100,11 @@ export default async function SiteFooter() {
 
           {columns.map((col) => (
             <div key={col.title}>
-              <h2 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
-                {col.title}
-              </h2>
+              <h2 className={s.footerHeading}>{col.title}</h2>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
-                    <Link
-                      href={l.href}
-                      className="text-sm text-neutral-700 transition hover:text-amber-700 dark:text-neutral-300 dark:hover:text-amber-400"
-                    >
+                    <Link href={l.href} className={`text-sm ${s.footerLink}`}>
                       {l.label}
                     </Link>
                   </li>
@@ -103,16 +114,16 @@ export default async function SiteFooter() {
           ))}
         </div>
 
-        <div className="border-t border-neutral-200 dark:border-neutral-800">
+        <div className={`relative z-10 ${s.footerBottom}`}>
           <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row">
-            <p className="text-center text-xs text-neutral-500 sm:text-left dark:text-neutral-400">
+            <p className="text-center text-xs text-[#f6e7d0]/65 sm:text-left">
               {t("footer.copyright", { years, brand: t("brand") })}
-              <span className="mx-2 opacity-40">·</span>
+              <span className="mx-2 text-[#e8b04a]">✿</span>
               {t("footer.madeWith")}
             </p>
             <div className="flex items-center gap-3">
-              <span className="text-xs text-neutral-500 dark:text-neutral-400">{t("footer.follow")}</span>
-              <SocialIcons />
+              <span className="text-xs text-[#f6e7d0]/65">{t("footer.follow")}</span>
+              <SocialIcons variant="gold" />
             </div>
           </div>
         </div>

@@ -13,12 +13,6 @@
     "heading": "A beautiful invitation, live in minutes",
     "subheading": "Weddings, anniversaries, proposals, birthdays, house warmings — pick a template, add your story and photos, and share one link with every guest, with RSVPs, a countdown, directions, and a QR code built in.",
     "useTemplate": "Use this template",
-    "feature1Title": "Live preview",
-    "feature1Body": "See your invitation update as you type — names, dates, photos, colors, all in real time.",
-    "feature2Title": "One link, one QR code",
-    "feature2Body": "Share a single page with every guest, with directions, RSVPs and a live countdown.",
-    "feature3Title": "₹{price}, pay once",
-    "feature3Body": "Publish for a flat one-time fee. Editing afterwards is always free.",
     "tryIt": "Tap to try it",
     "replay": "Play again",
     "allDesigns": "All designs",
@@ -59,7 +53,70 @@
       "team2": "Help setting up designs and content",
       "team3": "Priority support",
       "teamCta": "Contact us",
-      "note": "Payments are processed securely by Razorpay (UPI, cards, net banking)."
+      "note": "Payments are processed securely by Razorpay (UPI, cards, net banking).",
+      "trustNoSub": "No subscription",
+      "trustNoHidden": "No hidden fees",
+      "trustSecure": "Secure Razorpay payments"
+    },
+    "hero": {
+      "chip": "Animated invitations · Tamil & English",
+      "title": "Invitations that open like a <hl>celebration</hl>",
+      "subtitle": "Pick a design with a real opening animation — a bell that rings, curtains that part, a lamp you light. Add your names, story and photos, and share one beautiful link on WhatsApp.",
+      "ctaPrimary": "Create your invitation",
+      "ctaSecondary": "Watch the openings",
+      "trust1": "Free to design",
+      "trust2": "₹199 once to publish",
+      "trust3": "RSVP & reminders built in",
+      "showDesign": "Show design {n}",
+      "rsvpTitle": "128 attending",
+      "rsvpBody": "RSVPs roll in live",
+      "waTitle": "💌 You're invited!",
+      "waBody": "Priya & Arjun's wedding",
+      "calMonth": "JAN",
+      "calTitle": "Muhurtham · 9 AM",
+      "calBody": "Added to calendar"
+    },
+    "gallery": {
+      "eyebrow": "Designs",
+      "title": "Every design has its own opening",
+      "sub": "Tap any card to try it — exactly what your guests will see."
+    },
+    "how": {
+      "eyebrow": "How it works",
+      "title": "Three steps. One beautiful link.",
+      "s1Title": "Pick a design",
+      "s1Body": "Weddings, engagements, Valaikaappu, birthdays, launches — each with its own animated opening.",
+      "s2Title": "Make it yours",
+      "s2Body": "Type your names, story and venues, add photos and colours — the preview updates as you type.",
+      "s3Title": "Share on WhatsApp",
+      "s3Body": "Publish once and send the link. Guests open it, RSVP and get directions in a tap.",
+      "typed": "Priya & Arjun",
+      "bubble1": "💌 You're invited!",
+      "bubble2": "Priya & Arjun's Wedding",
+      "bubble3": "Coming with family! 🎉"
+    },
+    "bento": {
+      "eyebrow": "Everything included",
+      "title": "More than a card — a whole celebration page",
+      "sub": "The things guests actually need, built into every invitation.",
+      "rsvpTitle": "Live RSVPs & guest list",
+      "rsvpBody": "See who's coming, how many, and every blessing — in one private list.",
+      "remindTitle": "WhatsApp reminders",
+      "remindBody": "One tap to remind each guest as the day gets closer.",
+      "langTitle": "Tamil & English",
+      "langBody": "Edit in one language, invite in the other.",
+      "calTitle": "Add to calendar",
+      "calBody": "Google, Apple and Outlook — with a reminder the day before.",
+      "calMonth": "JAN",
+      "qrTitle": "QR code & printable card",
+      "qrBody": "A PDF card that scans straight to your invitation.",
+      "photosTitle": "Guest photo wall",
+      "photosBody": "Guests add their photos from the day — every memory in one place."
+    },
+    "finale": {
+      "title": "Your celebration deserves a grand opening",
+      "body": "Design for free, preview on any phone, and publish when it feels just right.",
+      "button": "Start designing — it's free"
     }
   },
   "notFound": {
@@ -2433,6 +2490,10 @@
       },
       "contactTitle": "Questions?",
       "contactBody": "Contact us about privacy at"
+    },
+    "gate": {
+      "welcome": "Welcome",
+      "skip": "Skip"
     }
   },
   "notify": {

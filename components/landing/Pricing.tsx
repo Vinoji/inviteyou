@@ -1,16 +1,20 @@
 import { getTranslations } from "next-intl/server";
-import { Check, Sparkles } from "lucide-react";
+import { BadgeIndianRupee, Crown, Palette, Repeat, ShieldCheck, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { PRICE_INR } from "@/lib/pricing";
+import { Garland, Petals, Stars, Thoranam } from "../site/festive";
+import f from "./landing.module.css";
 
 const FREE_ITEMS = ["free1", "free2", "free3", "free4", "free5"] as const;
 const PAID_ITEMS = ["paid1", "paid2", "paid3", "paid4", "paid5", "paid6", "paid7", "paid8"] as const;
 const TEAM_ITEMS = ["team1", "team2", "team3"] as const;
 
 /**
- * Home-page pricing: the real offer — design and preview free, one flat
- * price to publish (lib/pricing.ts, the same constant the payment route
- * charges), and a contact option for planners.
+ * Home-page pricing, set like a function hall: a dusk stage with a
+ * thoranam, each plan a temple-arch card with its price in a scalloped
+ * seal (the featured one in red wax, under a "Most loved" ribbon and a
+ * garland). The price is lib/pricing.ts — the same constant the payment
+ * route charges.
  */
 export default async function Pricing() {
   const t = await getTranslations("landing.pricing");
@@ -18,6 +22,7 @@ export default async function Pricing() {
   const plans = [
     {
       key: "free",
+      icon: Palette,
       name: t("freeName"),
       price: "₹0",
       unit: t("freeUnit"),
@@ -28,6 +33,7 @@ export default async function Pricing() {
     },
     {
       key: "paid",
+      icon: Crown,
       name: t("paidName"),
       price: `₹${PRICE_INR}`,
       unit: t("paidUnit"),
@@ -38,6 +44,7 @@ export default async function Pricing() {
     },
     {
       key: "team",
+      icon: Users,
       name: t("teamName"),
       price: t("teamPrice"),
       unit: t("teamUnit"),
@@ -49,61 +56,71 @@ export default async function Pricing() {
   ];
 
   return (
-    <section id="pricing" className="scroll-mt-24 border-t border-neutral-100 dark:border-neutral-800">
-      <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    <section id="pricing" className={`scroll-mt-20 ${f.pricingStage}`}>
+      <Stars />
+      <Thoranam />
+      <Petals />
+      <div className="relative z-10 mx-auto max-w-6xl px-5 pt-28 pb-20 sm:px-6">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm font-semibold tracking-[0.2em] text-amber-700 uppercase">{t("eyebrow")}</p>
-          <h2 className="mt-3 font-serif text-3xl font-bold text-neutral-900 sm:text-4xl dark:text-neutral-50">
-            {t("title")}
-          </h2>
-          <p className="mt-3 text-neutral-600 dark:text-neutral-400">{t("subtitle")}</p>
+          <p className={f.eyebrow}>{t("eyebrow")}</p>
+          <h2 className={f.h2}>{t("title")}</h2>
+          <p className="mt-3 text-[#fff6e6]/80">{t("subtitle")}</p>
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-3 md:items-stretch">
-          {plans.map((plan) => (
-            <div
-              key={plan.key}
-              className={`relative flex flex-col rounded-3xl border p-6 sm:p-7 ${
-                plan.featured
-                  ? "border-amber-500 bg-gradient-to-b from-amber-50 to-white shadow-xl shadow-amber-600/10 md:-my-3 dark:from-amber-500/10 dark:to-neutral-900"
-                  : "border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
-              }`}
-            >
-              {plan.featured && (
-                <span className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1 rounded-full bg-amber-600 px-3 py-1 text-xs font-semibold text-white shadow">
-                  <Sparkles size={12} aria-hidden />
-                  {t("popular")}
+        <div className={`mt-16 ${f.pricingGrid}`}>
+          {plans.map((plan) => {
+            const Icon = plan.icon;
+            return (
+              <div key={plan.key} className={`${f.archCard} ${plan.featured ? f.archFeatured : ""}`}>
+                <span className={f.medallion} aria-hidden>
+                  <Icon size={22} />
                 </span>
-              )}
-              <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">{plan.name}</h3>
-              <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{plan.blurb}</p>
-              <p className="mt-5 flex items-baseline gap-1.5">
-                <span className="font-serif text-4xl font-bold text-neutral-900 dark:text-neutral-50">{plan.price}</span>
-                <span className="text-sm text-neutral-500 dark:text-neutral-400">{plan.unit}</span>
-              </p>
-              <ul className="mt-6 flex-1 space-y-2.5">
-                {plan.items.map((item) => (
-                  <li key={item} className="flex gap-2 text-sm text-neutral-700 dark:text-neutral-300">
-                    <Check size={16} className="mt-0.5 shrink-0 text-amber-600" aria-hidden />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={plan.cta.href}
-                className={`mt-7 inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition ${
-                  plan.featured
-                    ? "bg-gradient-to-r from-amber-700 to-orange-500 text-white shadow hover:brightness-105"
-                    : "border border-neutral-300 text-neutral-800 hover:border-amber-500 hover:text-amber-700 dark:border-neutral-700 dark:text-neutral-200"
-                }`}
-              >
-                {plan.cta.label}
-              </Link>
-            </div>
-          ))}
+                {plan.featured && (
+                  <>
+                    <div className={f.archGarland} aria-hidden>
+                      <Garland id="pricing-garland" />
+                    </div>
+                    <span className={f.ribbon}>{t("popular")}</span>
+                  </>
+                )}
+                <h3 className={f.planName}>{plan.name}</h3>
+                <p className={f.planBlurb}>{plan.blurb}</p>
+                <div className={`${f.seal} ${plan.featured ? f.sealWax : ""}`}>
+                  <div className={f.sealInner}>
+                    <div>
+                      <div className={f.sealPrice}>{plan.price}</div>
+                      {plan.unit && <div className={f.sealUnit}>{plan.unit}</div>}
+                    </div>
+                  </div>
+                </div>
+                <ul className={f.planItems}>
+                  {plan.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <Link href={plan.cta.href} className={plan.featured ? `${f.ctaPrimary} mt-6 justify-center` : f.planCtaGhost}>
+                  {plan.cta.label}
+                </Link>
+              </div>
+            );
+          })}
         </div>
 
-        <p className="mt-8 text-center text-sm text-neutral-500 dark:text-neutral-400">{t("note")}</p>
+        <div className={f.trustRow}>
+          <span className={f.trustChip}>
+            <Repeat size={15} aria-hidden />
+            {t("trustNoSub")}
+          </span>
+          <span className={f.trustChip}>
+            <BadgeIndianRupee size={15} aria-hidden />
+            {t("trustNoHidden")}
+          </span>
+          <span className={f.trustChip}>
+            <ShieldCheck size={15} aria-hidden />
+            {t("trustSecure")}
+          </span>
+        </div>
+        <p className="mt-4 text-center text-xs text-[#fff6e6]/60">{t("note")}</p>
       </div>
     </section>
   );

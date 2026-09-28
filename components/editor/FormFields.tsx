@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { Flower2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 /** A small on/off switch for toggling a section's visibility on the public page. */
@@ -51,7 +52,8 @@ export function FormSection({
   return (
     <section>
       <div className="mb-3 flex items-center justify-between gap-3">
-        <h2 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
+        <h2 className="flex items-center gap-1.5 text-xs font-semibold tracking-widest text-neutral-500 uppercase dark:text-neutral-400">
+          <Flower2 size={13} className="shrink-0 text-amber-500" aria-hidden />
           {title}
         </h2>
         {toggle && <SectionToggle enabled={toggle.enabled} onChange={toggle.onChange} />}

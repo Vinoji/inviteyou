@@ -1,0 +1,1783 @@
+/*
+ * Home page — "festival paper-cut": layered flat 2D shapes (dusk sky,
+ * thoranam, kolam, paper hills) that move gently. Every loop stops when the
+ * guest chose "Reduce motion" (html[data-motion="reduced"], see the end).
+ */
+
+/* ============ HERO ============ */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Sits under the transparent sticky header (72px). */
+  margin-top: -72px;
+  color: #fff6e6;
+  background: linear-gradient(180deg, #160c2b 0%, #3a1440 42%, #8a2f3c 78%, #c9563a 100%);
+  --mx: 0;
+  --my: 0;
+}
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.18;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.9'/></svg>");
+}
+.stars {
+  position: absolute;
+  inset: 0 0 45%;
+  z-index: -1;
+}
+.star {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  opacity: 0.35;
+  animation: twinkle 3.4s ease-in-out infinite;
+}
+@keyframes twinkle {
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+/* Kolam drawing itself behind everything. */
+.kolam {
+  position: absolute;
+  z-index: -1;
+  right: -8%;
+  top: 8%;
+  width: min(760px, 90vw);
+  opacity: 0.12;
+  transform: translate(calc(var(--mx) * -10px), calc(var(--my) * -10px));
+}
+.kolam path,
+.kolam circle.loop {
+  fill: none;
+  stroke: #ffd98a;
+  stroke-width: 1.6;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 9s ease-in-out infinite alternate;
+}
+.kolam .dot {
+  fill: #ffe9b8;
+}
+@media (max-width: 1023px) {
+  /* Stacked layout: keep the kolam behind the phone, not the paragraph. */
+  .kolam {
+    top: auto;
+    bottom: 6%;
+    right: -20%;
+  }
+}
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 1;
+  }
+  55%,
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Thoranam: a string of mango leaves and marigolds across the top. */
+.thoranam {
+  position: absolute;
+  z-index: 2;
+  top: -6px;
+  left: -2%;
+  right: -2%;
+  height: 110px;
+  pointer-events: none;
+}
+.thoranam svg {
+  width: 100%;
+  height: 100%;
+}
+.leaf {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  animation: swing 3.2s ease-in-out infinite alternate;
+}
+@keyframes swing {
+  from {
+    transform: rotate(-6deg);
+  }
+  to {
+    transform: rotate(6deg);
+  }
+}
+
+/* Marigold petals drifting down through the scene. */
+.petals {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+}
+.petal {
+  position: absolute;
+  top: -20px;
+  width: 12px;
+  height: 9px;
+  border-radius: 60% 60% 60% 10%;
+  background: var(--c, #ffb627);
+  opacity: 0.9;
+  animation: fall var(--d, 11s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes fall {
+  0% {
+    transform: translate(0, -20px) rotate(0);
+  }
+  50% {
+    transform: translate(40px, 50vh) rotate(200deg);
+  }
+  100% {
+    transform: translate(-20px, 110vh) rotate(420deg);
+    opacity: 0.4;
+  }
+}
+
+.heroInner {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  gap: 40px;
+  align-items: center;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 120px 20px 150px;
+}
+@media (min-width: 1024px) {
+  .heroInner {
+    grid-template-columns: 1.05fr 0.95fr;
+    padding: 140px 24px 190px;
+  }
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 217, 138, 0.35);
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(6px);
+  font-size: 13px;
+  color: #ffd98a;
+}
+.title {
+  margin-top: 20px;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(38px, 6.2vw, 72px);
+  line-height: 1.04;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.title:lang(ta) {
+  font-family: var(--font-catamaran), serif;
+  letter-spacing: normal;
+  line-height: 1.25;
+  font-size: clamp(32px, 5vw, 56px);
+}
+/* Highlighted word: marigold gradient with a hand-drawn underline. */
+.hl {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(100deg, #ffd166, #ff9f1c 45%, #ff6b3d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hl svg {
+  position: absolute;
+  left: -2%;
+  bottom: -0.16em;
+  width: 104%;
+  height: 0.32em;
+  overflow: visible;
+}
+.hl path {
+  fill: none;
+  stroke: #ffb627;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: underline 1.2s 0.6s ease-out forwards;
+}
+@keyframes underline {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.subtitle {
+  margin-top: 22px;
+  max-width: 34rem;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.65;
+  color: rgba(255, 246, 230, 0.82);
+}
+.ctas {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.ctaPrimary,
+.ctaGhost {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.ctaPrimary {
+  color: #2a1203;
+  background: linear-gradient(135deg, #ffd166, #ff9f1c);
+  box-shadow: 0 10px 30px -8px rgba(255, 159, 28, 0.7);
+}
+.ctaPrimary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.6) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: shine 3.6s ease-in-out infinite;
+}
+@keyframes shine {
+  0%,
+  60% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+.ctaPrimary:hover,
+.ctaGhost:hover {
+  transform: translateY(-2px);
+}
+.ctaGhost {
+  color: #fff6e6;
+  border: 1px solid rgba(255, 246, 230, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+}
+.trust {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  font-size: 13px;
+  color: rgba(255, 246, 230, 0.78);
+}
+.trust li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.trust svg {
+  color: #7ee2a8;
+}
+
+/* Stage: a paper-cut temple arch with the phone inside. */
+.stage {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 440px);
+  aspect-ratio: 0.82;
+  display: grid;
+  place-items: center;
+}
+.arch {
+  position: absolute;
+  inset: 4% 6% 8%;
+  border-radius: 999px 999px 28px 28px;
+  background: linear-gradient(180deg, rgba(255, 190, 110, 0.28), rgba(255, 140, 70, 0.08));
+  box-shadow:
+    inset 0 0 0 10px rgba(255, 217, 138, 0.1),
+    inset 0 0 0 11px rgba(255, 217, 138, 0.35);
+  transform: translate(calc(var(--mx) * 8px), calc(var(--my) * 8px));
+}
+.archGlow {
+  position: absolute;
+  inset: 18% 20%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 196, 92, 0.55), transparent 70%);
+  filter: blur(18px);
+  animation: breathe 5s ease-in-out infinite;
+}
+@keyframes breathe {
+  50% {
+    opacity: 0.6;
+    transform: scale(1.08);
+  }
+}
+.phone {
+  position: relative;
+  z-index: 2;
+  width: 58%;
+  padding: 9px;
+  border-radius: 38px;
+  background: linear-gradient(145deg, #2b1d33, #0f0914);
+  box-shadow:
+    0 30px 60px -18px rgba(0, 0, 0, 0.7),
+    inset 0 0 0 1.5px rgba(255, 255, 255, 0.12);
+  transform: translate(calc(var(--mx) * -6px), calc(var(--my) * -6px)) rotate(-2deg);
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  50% {
+    translate: 0 -10px;
+  }
+}
+.screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 30px;
+  background: #111;
+}
+.notch {
+  position: absolute;
+  z-index: 30;
+  top: 7px;
+  left: 50%;
+  width: 34%;
+  height: 16px;
+  margin-left: -17%;
+  border-radius: 999px;
+  background: #0b060e;
+}
+.fadeIn {
+  animation: fadeIn 0.7s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}
+.dots {
+  position: absolute;
+  z-index: 3;
+  bottom: -30px;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  gap: 6px;
+}
+.dots button {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 246, 230, 0.35);
+  transition:
+    width 0.3s ease,
+    background 0.3s ease;
+}
+.dots button[aria-pressed="true"] {
+  width: 22px;
+  background: #ffd166;
+}
+
+/* Floating "sticker" cards around the phone. */
+.sticker {
+  position: absolute;
+  z-index: 4; /* above the lamps */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: #fffaf0;
+  color: #2a1a12;
+  font-size: 12.5px;
+  line-height: 1.3;
+  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.55);
+  animation: bob 5s ease-in-out infinite;
+  max-width: 210px;
+}
+@keyframes bob {
+  50% {
+    translate: 0 -8px;
+  }
+}
+.sticker b {
+  display: block;
+  font-size: 13.5px;
+}
+/* Each line stays on one line: the sticker simply sizes to its text. */
+.sticker {
+  width: max-content;
+  max-width: none;
+}
+.sticker b,
+.sticker > span:last-child > * {
+  white-space: nowrap;
+}
+.sticker > span:last-child {
+  white-space: nowrap;
+}
+.sticker:lang(ta) {
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+.sticker:lang(ta) b {
+  font-size: 12.5px;
+}
+.stickerRsvp {
+  left: -6%;
+  top: 16%;
+  transform: translate(calc(var(--mx) * 16px), calc(var(--my) * 12px)) rotate(-4deg);
+}
+.stickerWa {
+  right: -8%;
+  top: 38%;
+  background: #dcf8c6;
+  animation-delay: -1.6s;
+  transform: translate(calc(var(--mx) * 20px), calc(var(--my) * 14px)) rotate(3deg);
+}
+.stickerCal {
+  left: 0;
+  bottom: 12%;
+  animation-delay: -3.2s;
+  transform: translate(calc(var(--mx) * 12px), calc(var(--my) * 18px)) rotate(2deg);
+}
+.avatars {
+  display: flex;
+}
+.avatars span {
+  width: 24px;
+  height: 24px;
+  margin-left: -8px;
+  border-radius: 50%;
+  border: 2px solid #fffaf0;
+}
+.avatars span:first-child {
+  margin-left: 0;
+}
+.calIcon {
+  display: grid;
+  width: 36px;
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+.calIcon span:first-child {
+  background: #e24a3b;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 1px 0;
+}
+.calIcon span:last-child {
+  font-size: 15px;
+  font-weight: 800;
+  padding: 2px 0;
+}
+@media (max-width: 640px) {
+  /* Bigger phone, smaller stickers pushed to the edges so the opening shows. */
+  .phone {
+    width: 66%;
+  }
+  .sticker {
+    font-size: 10.5px;
+    padding: 7px 9px;
+    gap: 7px;
+  }
+  .sticker b {
+    font-size: 12px;
+  }
+  .sticker:lang(ta) {
+    font-size: 10px;
+  }
+  .sticker:lang(ta) b {
+    font-size: 11px;
+  }
+  .stickerRsvp {
+    left: -4%;
+    top: 4%;
+  }
+  .stickerWa {
+    right: -5%;
+    top: 50%;
+  }
+  .stickerCal {
+    left: -4%;
+    bottom: 3%;
+  }
+}
+
+/* Brass lamps at the foot of the arch. */
+.diya {
+  position: absolute;
+  z-index: 3;
+  bottom: 4%;
+  width: 54px;
+}
+.diyaL {
+  left: 8%;
+}
+.diyaR {
+  right: 8%;
+}
+.flame {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flicker 0.9s ease-in-out infinite alternate;
+}
+@keyframes flicker {
+  from {
+    transform: scale(1, 1) skewX(-3deg);
+  }
+  to {
+    transform: scale(0.9, 1.1) skewX(3deg);
+  }
+}
+
+/* Paper hills: the hero's bottom edge, fading into the page. */
+.hills {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 140px;
+  pointer-events: none;
+}
+.hills svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ============ OCCASION MARQUEE ============ */
+.marquee {
+  overflow: hidden;
+  padding: 18px 0;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.track {
+  display: flex;
+  gap: 12px;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+.trackReverse {
+  animation-direction: reverse;
+  margin-top: 12px;
+}
+.marquee:hover .track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ============ SECTION HEADINGS ============ */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #d97706;
+}
+/* A marigold with a mango leaf on either side of section eyebrows. */
+.eyebrow::before,
+.eyebrow::after {
+  content: "";
+  width: 22px;
+  height: 12px;
+  background:
+    radial-gradient(circle at 72% 50%, #ffd166 0 2px, #ff9f1c 2.5px 5px, transparent 5.5px),
+    radial-gradient(ellipse 7px 3.5px at 32% 50%, #3f9a4a 98%, transparent);
+}
+.eyebrow::after {
+  transform: scaleX(-1);
+}
+.eyebrow:lang(ta) {
+  letter-spacing: normal;
+  text-transform: none;
+}
+.h2 {
+  margin-top: 10px;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.h2:lang(ta) {
+  font-family: var(--font-catamaran), serif;
+  letter-spacing: normal;
+  line-height: 1.3;
+}
+
+/* ============ HOW IT WORKS ============ */
+.stepArt {
+  position: relative;
+  height: 150px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+/* 1 — cards fanning out */
+.fanCard {
+  position: absolute;
+  width: 62px;
+  height: 92px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.4);
+  transform-origin: 50% 120%;
+  animation: fan 4.5s ease-in-out infinite;
+}
+.fanCard:nth-child(1) {
+  --r: -18deg;
+}
+.fanCard:nth-child(2) {
+  --r: 0deg;
+  z-index: 2;
+}
+.fanCard:nth-child(3) {
+  --r: 18deg;
+}
+@keyframes fan {
+  0%,
+  15% {
+    transform: rotate(0);
+  }
+  45%,
+  85% {
+    transform: rotate(var(--r));
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+/* 2 — names typing */
+.typeCard {
+  width: 70%;
+  padding: 16px;
+  border-radius: 14px;
+  background: #fff;
+  color: #3b2412;
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+.typed {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #d97706;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  width: 0;
+  animation:
+    typing 4.5s steps(14) infinite,
+    caret 0.7s step-end infinite;
+}
+@keyframes typing {
+  0% {
+    width: 0;
+  }
+  45%,
+  85% {
+    width: 14ch;
+  }
+  100% {
+    width: 0;
+  }
+}
+@keyframes caret {
+  50% {
+    border-color: transparent;
+  }
+}
+.swatches {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+.swatches span {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  animation: pop 4.5s ease-in-out infinite;
+}
+.swatches span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.swatches span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes pop {
+  50% {
+    transform: scale(1.35);
+  }
+}
+/* 3 — WhatsApp bubbles */
+.chat {
+  width: 74%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.bubble {
+  align-self: flex-end;
+  max-width: 85%;
+  padding: 7px 10px;
+  border-radius: 12px 12px 2px 12px;
+  background: #dcf8c6;
+  color: #1f2d1b;
+  font-size: 11.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  animation: bubble 4.5s ease-out infinite;
+}
+.bubble:nth-child(2) {
+  animation-delay: 0.5s;
+}
+.bubble:nth-child(3) {
+  align-self: flex-start;
+  border-radius: 12px 12px 12px 2px;
+  background: #fff;
+  animation-delay: 1.1s;
+}
+@keyframes bubble {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.9);
+  }
+  18%,
+  88% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ============ FEATURE BENTO ============ */
+.tile {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 22px;
+  min-height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.35);
+}
+.tileArt {
+  position: absolute;
+  inset: 16px 16px auto auto;
+  width: 120px;
+  height: 100px;
+  display: grid;
+  place-items: center;
+}
+/* RSVP bars */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 80px;
+}
+.bars span {
+  width: 14px;
+  border-radius: 6px 6px 2px 2px;
+  background: #16a34a;
+  animation: grow 3.6s ease-in-out infinite;
+  transform-origin: bottom;
+}
+.bars span:nth-child(2) {
+  animation-delay: 0.2s;
+  background: #22c55e;
+}
+.bars span:nth-child(3) {
+  animation-delay: 0.4s;
+  background: #86efac;
+}
+.bars span:nth-child(4) {
+  animation-delay: 0.6s;
+  background: #fbbf24;
+}
+@keyframes grow {
+  0% {
+    transform: scaleY(0.2);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(0.2);
+  }
+}
+/* Bell */
+.bell {
+  transform-origin: 50% 10%;
+  animation: ring 2.8s ease-in-out infinite;
+}
+@keyframes ring {
+  0%,
+  55%,
+  100% {
+    transform: rotate(0);
+  }
+  60% {
+    transform: rotate(14deg);
+  }
+  68% {
+    transform: rotate(-12deg);
+  }
+  76% {
+    transform: rotate(8deg);
+  }
+  84% {
+    transform: rotate(-4deg);
+  }
+}
+.badge {
+  position: absolute;
+  top: 12px;
+  right: 22px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  animation: badge 2.8s ease-in-out infinite;
+}
+@keyframes badge {
+  0%,
+  55% {
+    transform: scale(0);
+  }
+  65%,
+  100% {
+    transform: scale(1);
+  }
+}
+/* அ ↔ A */
+.letters {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 64px;
+  font-weight: 700;
+}
+.letters span {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  animation: swap 4s ease-in-out infinite;
+}
+.letters span:last-child {
+  font-family: var(--font-catamaran), serif;
+  animation-delay: -2s;
+}
+@keyframes swap {
+  0%,
+  40% {
+    opacity: 1;
+    transform: none;
+  }
+  50%,
+  90% {
+    opacity: 0;
+    transform: translateY(-14px) rotate(-8deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* Calendar page flip */
+.cal {
+  width: 76px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  perspective: 300px;
+}
+.cal > span:first-child {
+  display: block;
+  background: #e24a3b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 0;
+}
+.calPage {
+  display: block;
+  font-size: 30px;
+  font-weight: 800;
+  color: #1f2937;
+  padding: 6px 0 8px;
+  transform-origin: top;
+  animation: flip 3.2s ease-in-out infinite;
+}
+@keyframes flip {
+  0%,
+  70% {
+    transform: rotateX(0);
+  }
+  85% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+/* QR scan */
+.qr {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  padding: 6px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 10px 20px -8px rgba(0, 0, 0, 0.3);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.qr i {
+  border-radius: 2px;
+  background: #111827;
+}
+.qr i:nth-child(3n),
+.qr i:nth-child(5n + 1) {
+  background: transparent;
+}
+.scan {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  height: 3px;
+  border-radius: 3px;
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+  animation: scan 2.4s ease-in-out infinite alternate;
+}
+@keyframes scan {
+  from {
+    top: 6px;
+  }
+  to {
+    top: 76px;
+  }
+}
+/* Polaroids */
+.polaroid {
+  position: absolute;
+  width: 58px;
+  height: 66px;
+  padding: 5px 5px 14px;
+  background: #fff;
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.35);
+  animation: drop 5s ease-in-out infinite;
+}
+.polaroid i {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.polaroid:nth-child(1) {
+  --r: -10deg;
+  translate: -26px 4px;
+}
+.polaroid:nth-child(2) {
+  --r: 6deg;
+  animation-delay: 0.35s;
+}
+.polaroid:nth-child(3) {
+  --r: 14deg;
+  translate: 26px 6px;
+  animation-delay: 0.7s;
+}
+@keyframes drop {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translateY(-40px) rotate(0);
+  }
+  22%,
+  86% {
+    opacity: 1;
+    transform: rotate(var(--r));
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--r));
+  }
+}
+
+/* ============ FINAL CTA ============ */
+.finale {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 32px;
+  padding: 64px 24px;
+  text-align: center;
+  color: #fff6e6;
+  background: radial-gradient(ellipse 80% 70% at 50% 110%, #c9563a 0%, #6b1f3a 45%, #1b0f2e 100%);
+}
+.finale .petals {
+  z-index: -1;
+}
+
+/* Guest chose "Reduce motion" (lib/motionPref). */
+:global(html[data-motion="reduced"]) .star,
+:global(html[data-motion="reduced"]) .kolam path,
+:global(html[data-motion="reduced"]) .kolam circle.loop,
+:global(html[data-motion="reduced"]) .leaf,
+:global(html[data-motion="reduced"]) .petal,
+:global(html[data-motion="reduced"]) .ctaPrimary::after,
+:global(html[data-motion="reduced"]) .archGlow,
+:global(html[data-motion="reduced"]) .phone,
+:global(html[data-motion="reduced"]) .sticker,
+:global(html[data-motion="reduced"]) .flame,
+:global(html[data-motion="reduced"]) .track,
+:global(html[data-motion="reduced"]) .fanCard,
+:global(html[data-motion="reduced"]) .typed,
+:global(html[data-motion="reduced"]) .swatches span,
+:global(html[data-motion="reduced"]) .bubble,
+:global(html[data-motion="reduced"]) .bars span,
+:global(html[data-motion="reduced"]) .bell,
+:global(html[data-motion="reduced"]) .badge,
+:global(html[data-motion="reduced"]) .letters span,
+:global(html[data-motion="reduced"]) .calPage,
+:global(html[data-motion="reduced"]) .scan,
+:global(html[data-motion="reduced"]) .polaroid {
+  animation: none;
+}
+:global(html[data-motion="reduced"]) .kolam path,
+:global(html[data-motion="reduced"]) .kolam circle.loop,
+:global(html[data-motion="reduced"]) .hl path {
+  stroke-dashoffset: 0;
+}
+:global(html[data-motion="reduced"]) .typed {
+  width: 14ch;
+}
+:global(html[data-motion="reduced"]) .bubble,
+:global(html[data-motion="reduced"]) .polaroid {
+  opacity: 1;
+}
+:global(html[data-motion="reduced"]) .petal {
+  display: none;
+}
+
+/* ============ SITE-WIDE FESTIVE SURFACES ============ */
+
+/* Warm paper with faint kolam dots — the page every site section sits on.
+ * --page-bg is what the banners' paper hills blend into. */
+.paper {
+  --page-bg: #fffaf2;
+  background-color: var(--page-bg);
+  background-image: radial-gradient(circle, rgba(217, 119, 6, 0.13) 1.2px, transparent 1.6px);
+  background-size: 26px 26px;
+}
+:global(.dark) .paper {
+  --page-bg: #140d18;
+  background-image: radial-gradient(circle, rgba(255, 200, 120, 0.07) 1.2px, transparent 1.6px);
+}
+@media (prefers-color-scheme: dark) {
+  :global(html:not(.light)) .paper {
+    --page-bg: #140d18;
+    background-image: radial-gradient(circle, rgba(255, 200, 120, 0.07) 1.2px, transparent 1.6px);
+  }
+}
+
+/* Page banner: the hero's dusk stage, shorter, centred text. */
+.banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-top: -72px; /* under the transparent header */
+  color: #fff6e6;
+  background: linear-gradient(180deg, #160c2b 0%, #3a1440 50%, #8a2f3c 88%, #b24a36 100%);
+}
+.bannerInner {
+  position: relative;
+  z-index: 4;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 136px 20px 128px;
+  text-align: center;
+}
+.bannerTitle {
+  margin-top: 16px;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(34px, 5.4vw, 58px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.bannerTitle:lang(ta) {
+  font-family: var(--font-catamaran), serif;
+  letter-spacing: normal;
+  line-height: 1.3;
+  font-size: clamp(28px, 4.4vw, 46px);
+}
+.bannerIntro {
+  margin: 16px auto 0;
+  max-width: 38rem;
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.65;
+  color: rgba(255, 246, 230, 0.82);
+}
+.bannerDiya {
+  bottom: 70px;
+  width: 46px;
+}
+@media (max-width: 640px) {
+  .bannerDiya {
+    display: none;
+  }
+}
+
+/* A small, static-height thoranam strip (editor, dashboards). */
+.thoranamStrip {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58px;
+  margin: 0;
+  overflow: hidden;
+}
+
+/* ============ ENTRANCE GATE ============ */
+/* First visit of a session: carved temple doors swing open onto the site.
+ * Runs on CSS alone, so it always ends even before scripts load. */
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  perspective: 1400px;
+  /* No backdrop: the doors themselves cover the page, and open onto it. */
+  animation: gateOut 0.45s ease 1.95s forwards;
+  cursor: pointer;
+}
+@keyframes gateOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+.gateGone {
+  animation: gateOut 0.2s ease forwards;
+}
+.door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  background:
+    radial-gradient(circle, #e8b04a 2.2px, transparent 2.8px) 0 0 / 34px 34px,
+    linear-gradient(90deg, #4a2410, #6b3514 45%, #4a2410);
+  box-shadow: inset 0 0 0 14px #3a1a0a, inset 0 0 0 16px #c98f3a;
+  animation: doorOpen 1.2s cubic-bezier(0.55, 0, 0.3, 1) 0.85s forwards;
+}
+.door::before {
+  /* carved panels */
+  content: "";
+  position: absolute;
+  inset: 12% 16%;
+  border-radius: 999px 999px 12px 12px;
+  border: 3px solid #c98f3a;
+  box-shadow: inset 0 0 0 10px rgba(58, 26, 10, 0.55), inset 0 0 0 12px rgba(232, 176, 74, 0.6);
+}
+.door::after {
+  /* brass ring handle */
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  margin-top: -17px;
+  border-radius: 50%;
+  border: 5px solid #e8b04a;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.doorL {
+  left: 0;
+  transform-origin: left center;
+  --swing: -105deg;
+}
+.doorL::after {
+  right: 18px;
+}
+.doorR {
+  right: 0;
+  transform-origin: right center;
+  --swing: 105deg;
+}
+.doorR::after {
+  left: 18px;
+}
+@keyframes doorOpen {
+  to {
+    transform: rotateY(var(--swing));
+  }
+}
+.gateWelcome {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  text-align: center;
+  color: #ffe9b8;
+  font-family: var(--font-playfair), Georgia, serif;
+  /* A gold plaque across the seam of the doors. */
+  padding: 14px 30px 12px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(58, 26, 10, 0.92), rgba(40, 16, 6, 0.92));
+  border: 2px solid #e8b04a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 4px rgba(232, 176, 74, 0.25);
+  animation:
+    welcomeIn 0.4s ease both,
+    welcomeOut 0.4s ease 0.75s forwards;
+  pointer-events: none;
+}
+@keyframes welcomeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+.gateWelcome b {
+  display: block;
+  font-size: clamp(30px, 6vw, 54px);
+}
+.gateWelcome span {
+  font-family: var(--font-catamaran), serif;
+  font-size: clamp(18px, 3vw, 26px);
+}
+@keyframes welcomeOut {
+  to {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+.gateSkip {
+  position: absolute;
+  z-index: 3;
+  right: 16px;
+  bottom: 16px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffe9b8;
+  font-size: 12px;
+}
+
+/* ============ EDITOR TOUCHES ============ */
+/* The preview sits on a dusk stage instead of flat grey. */
+.previewStage {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 255, 255, 0.5) 0 1px, transparent 1.5px) 0 0 / 120px 120px,
+    radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.35) 0 1px, transparent 1.5px) 0 0 / 90px 90px,
+    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(201, 86, 58, 0.55), transparent 70%),
+    linear-gradient(180deg, #160c2b, #2c1238);
+}
+.formPaper {
+  background: #fffaf2;
+}
+:global(.dark) .formPaper {
+  background: #140d18;
+}
+@media (prefers-color-scheme: dark) {
+  :global(html:not(.light)) .formPaper {
+    background: #140d18;
+  }
+}
+/* Shimmer across the publish button. */
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  animation: shine 4s ease-in-out infinite;
+}
+
+/* Guest chose "Reduce motion": no gate, no shimmer. */
+:global(html[data-motion="reduced"]) .gate {
+  display: none;
+}
+:global(html[data-motion="reduced"]) .shine::after {
+  animation: none;
+}
+
+/* Garland hanging under a bar (header / toolbars), swaying slightly. */
+.garland {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 30px;
+  pointer-events: none;
+  overflow: hidden;
+}
+.garland svg {
+  display: block;
+  transform-origin: 50% 0;
+  animation: garlandSway 4.5s ease-in-out infinite alternate;
+}
+@keyframes garlandSway {
+  from {
+    transform: translateX(-3px) skewX(-2deg);
+  }
+  to {
+    transform: translateX(3px) skewX(2deg);
+  }
+}
+:global(html[data-motion="reduced"]) .garland svg {
+  animation: none;
+}
+
+/* ============ ORNAMENTS ============ */
+
+/* "Invitation card" surface: cream, a gold double border, marigold corners. */
+.festiveCard {
+  position: relative;
+  border-radius: 22px;
+  background: #fffdf8;
+  border: 1px solid rgba(201, 143, 58, 0.5);
+  box-shadow:
+    0 0 0 4px #fffdf8,
+    0 0 0 5px rgba(201, 143, 58, 0.28),
+    0 14px 34px -20px rgba(120, 60, 10, 0.45);
+}
+.festiveCard::before,
+.festiveCard::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd166 0 3px, #ff9f1c 3.5px 6px, #e8862a 6.5px 7.5px, transparent 8px);
+  pointer-events: none;
+}
+.festiveCard::before {
+  top: -7px;
+  left: -7px;
+}
+.festiveCard::after {
+  bottom: -7px;
+  right: -7px;
+}
+:global(.dark) .festiveCard {
+  background: #1d1320;
+  border-color: rgba(232, 176, 74, 0.35);
+  box-shadow:
+    0 0 0 4px #1d1320,
+    0 0 0 5px rgba(232, 176, 74, 0.18),
+    0 14px 34px -20px rgba(0, 0, 0, 0.7);
+}
+@media (prefers-color-scheme: dark) {
+  :global(html:not(.light)) .festiveCard {
+    background: #1d1320;
+    border-color: rgba(232, 176, 74, 0.35);
+    box-shadow:
+      0 0 0 4px #1d1320,
+      0 0 0 5px rgba(232, 176, 74, 0.18),
+      0 14px 34px -20px rgba(0, 0, 0, 0.7);
+  }
+}
+
+/* Kolam divider between sections, with a lamp in the middle. */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  max-width: 34rem;
+  margin: 0 auto;
+  padding: 8px 20px;
+  color: #c98f3a;
+}
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 10px;
+  background: radial-gradient(circle, currentColor 1.6px, transparent 2px) 0 50% / 14px 10px repeat-x;
+  opacity: 0.7;
+}
+.divider svg {
+  width: 120px;
+  height: 44px;
+  overflow: visible;
+}
+
+/* Marigold strings hanging down the sides of a section (wide screens). */
+.sideGarlands {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0;
+  pointer-events: none;
+  display: none;
+}
+@media (min-width: 1280px) {
+  .sideGarlands {
+    display: block;
+  }
+}
+.string {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0;
+  animation: swing 3.8s ease-in-out infinite alternate;
+}
+.string::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1.5px;
+  background: #c98f3a;
+}
+.string i {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd166 0 3px, var(--f, #ff9f1c) 3.5px);
+}
+.string i:nth-child(3n) {
+  --f: #ffb627;
+}
+.string i:nth-child(4n) {
+  width: 11px;
+  height: 11px;
+  background: #fffaf0;
+  box-shadow: 0 0 0 1px rgba(201, 143, 58, 0.4);
+}
+
+:global(html[data-motion="reduced"]) .string {
+  animation: none;
+}
+
+/* ============ PRICING — "function hall" ============ */
+.pricingStage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: #fff6e6;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 100%, rgba(201, 86, 58, 0.55), transparent 70%),
+    linear-gradient(180deg, #160c2b 0%, #2c1238 45%, #4a1734 100%);
+}
+.pricingStage .h2 {
+  color: #fff6e6;
+}
+.pricingGrid {
+  display: grid;
+  gap: 30px;
+  align-items: end;
+}
+@media (min-width: 900px) {
+  .pricingGrid {
+    grid-template-columns: 1fr 1.08fr 1fr;
+    gap: 22px;
+  }
+}
+
+/* Temple-arch card: cream paper, gold double border, arched top. */
+.archCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 58px 26px 28px;
+  border-radius: 190px 190px 26px 26px;
+  background: linear-gradient(180deg, #fffaf0, #fff3e0);
+  color: #2a1a12;
+  border: 1.5px solid #c98f3a;
+  box-shadow:
+    0 0 0 5px rgba(255, 250, 240, 0.08),
+    0 0 0 6px rgba(232, 176, 74, 0.45),
+    0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s ease;
+}
+.archCard:hover {
+  transform: translateY(-6px);
+}
+.archCard::before {
+  /* inner arch line */
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 180px 180px 18px 18px;
+  border: 1px dashed rgba(201, 143, 58, 0.45);
+  pointer-events: none;
+}
+.archFeatured {
+  padding-top: 70px;
+  background: linear-gradient(180deg, #fff7e3, #ffe9c2);
+  box-shadow:
+    0 0 0 5px rgba(255, 214, 102, 0.12),
+    0 0 0 7px #e8b04a,
+    0 0 60px 10px rgba(255, 180, 60, 0.35),
+    0 34px 70px -30px rgba(0, 0, 0, 0.8);
+}
+@media (min-width: 900px) {
+  .archFeatured {
+    transform: translateY(-18px);
+  }
+  .archFeatured:hover {
+    transform: translateY(-24px);
+  }
+}
+.archGarland {
+  position: absolute;
+  top: 16px;
+  left: 18%;
+  right: 18%;
+  height: 30px;
+  overflow: hidden;
+  border-radius: 0 0 40px 40px;
+}
+.archGarland > div {
+  position: static;
+}
+.medallion {
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  translate: -50% 0;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #7a3b0c;
+  background: radial-gradient(circle at 35% 30%, #fff1c0, #e8b04a 60%, #a86a1d);
+  box-shadow:
+    0 0 0 3px #fffaf0,
+    0 0 0 4px #c98f3a,
+    0 8px 18px -6px rgba(0, 0, 0, 0.5);
+}
+/* "Most loved" ribbon draped over the arch. */
+.ribbon {
+  position: absolute;
+  top: 34px;
+  left: 50%;
+  translate: -50% 0;
+  z-index: 2;
+  padding: 5px 22px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff6e6;
+  background: linear-gradient(180deg, #c7372f, #8f1d1d);
+  clip-path: polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%, 6% 50%);
+  box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.6);
+}
+.ribbon:lang(ta) {
+  letter-spacing: normal;
+  text-transform: none;
+}
+.planName {
+  text-align: center;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+}
+.planName:lang(ta) {
+  font-family: var(--font-catamaran), serif;
+}
+.planBlurb {
+  margin-top: 4px;
+  text-align: center;
+  font-size: 13.5px;
+  color: #6b5446;
+}
+/* The price as a round wax seal with a scalloped (toothed) edge: a round
+ * seal on top of a slightly larger ring of teeth. */
+.seal {
+  --teeth: #c98f3a;
+  position: relative;
+  isolation: isolate;
+  width: 104px;
+  height: 104px;
+  margin: 26px auto 12px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  border-radius: 50%;
+  color: #6b3a0a;
+  background: radial-gradient(circle at 38% 32%, #fff6d8, #f2c76a 55%, #c98f3a);
+  box-shadow: 0 8px 16px -6px rgba(120, 60, 10, 0.45);
+}
+.seal::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -8px;
+  border-radius: 50%;
+  background: repeating-conic-gradient(var(--teeth) 0 7deg, transparent 7deg 15deg);
+  -webkit-mask: radial-gradient(circle, transparent 50%, #000 51%);
+  mask: radial-gradient(circle, transparent 50%, #000 51%);
+}
+.sealWax {
+  --teeth: #9c2019;
+  color: #ffe6b0;
+  background: radial-gradient(circle at 38% 32%, #e0574a, #b3261e 55%, #7c1414);
+}
+.sealInner {
+  display: grid;
+  place-items: center;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  border: 1.5px dashed currentColor;
+  opacity: 0.95;
+}
+.sealPrice {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+}
+.sealPrice:lang(ta) {
+  font-family: var(--font-catamaran), serif;
+  font-size: 22px;
+}
+.sealUnit {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  max-width: 76px;
+}
+.planItems {
+  margin-top: 16px;
+  flex: 1;
+  display: grid;
+  gap: 9px;
+  font-size: 13.5px;
+  color: #3d2a1f;
+}
+.planItems li {
+  display: flex;
+  gap: 10px;
+}
+.planItems li::before {
+  content: "";
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffd166 0 2.5px, #ff9f1c 3px);
+  box-shadow: 0 0 0 2px rgba(255, 159, 28, 0.18);
+}
+.planCtaGhost {
+  display: inline-flex;
+  justify-content: center;
+  margin-top: 24px;
+  padding: 12px 20px;
+  border-radius: 999px;
+  border: 1.5px solid #c98f3a;
+  color: #7a3b0c;
+  font-size: 14px;
+  font-weight: 700;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+.planCtaGhost:hover {
+  background: #c98f3a;
+  color: #fffaf0;
+}
+.trustRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+}
+.trustChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 217, 138, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  color: #ffe9b8;
+}

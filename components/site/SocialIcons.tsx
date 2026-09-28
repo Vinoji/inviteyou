@@ -25,7 +25,14 @@ const LABELS: Record<SocialId, string> = {
 };
 
 /** Every configured social profile as an icon link; unset ones are skipped. */
-export default function SocialIcons({ className = "" }: { className?: string }) {
+export default function SocialIcons({
+  className = "",
+  variant = "plain",
+}: {
+  className?: string;
+  /** "gold": gold medallions for the dark festive footer. */
+  variant?: "plain" | "gold";
+}) {
   const entries = (Object.keys(PATHS) as SocialId[]).filter((id) => SITE.social[id]);
   if (!entries.length) return null;
   return (
@@ -38,7 +45,11 @@ export default function SocialIcons({ className = "" }: { className?: string }) 
             rel="noopener noreferrer"
             aria-label={LABELS[id]}
             title={LABELS[id]}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 text-neutral-600 transition hover:-translate-y-0.5 hover:border-amber-500 hover:bg-amber-500 hover:text-white dark:border-neutral-700 dark:text-neutral-300"
+            className={`flex h-9 w-9 items-center justify-center rounded-full border transition hover:-translate-y-0.5 ${
+              variant === "gold"
+                ? "border-[#e8b04a]/70 bg-[#e8b04a]/10 text-[#ffd166] hover:bg-[#e8b04a] hover:text-[#2c0f2a]"
+                : "border-neutral-300 text-neutral-600 hover:border-amber-500 hover:bg-amber-500 hover:text-white dark:border-neutral-700 dark:text-neutral-300"
+            }`}
           >
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden>
               <path d={PATHS[id]} />

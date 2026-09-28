@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import TemplateShowcase, { type ShowcaseProps } from "./TemplateShowcase";
+import f from "./landing.module.css";
 
 export interface GalleryTemplate {
   id: string;
@@ -102,8 +103,10 @@ export default function TemplateGallery({
                     : ""
             }
           >
-            <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-neutral-800 dark:bg-neutral-900">
-              <TemplateShowcase {...tpl.showcase} />
+            <article className={`${f.festiveCard} group flex h-full flex-col transition duration-300 hover:-translate-y-1`}>
+              <div className="overflow-hidden rounded-t-[21px]">
+                <TemplateShowcase {...tpl.showcase} />
+              </div>
               <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
                 <h3 className="truncate font-serif text-base font-bold text-neutral-900 sm:text-lg dark:text-neutral-50">
                   {tpl.name}

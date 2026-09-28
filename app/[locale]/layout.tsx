@@ -19,6 +19,7 @@ import { cookies } from "next/headers";
 import { routing } from "@/i18n/routing";
 import SiteHeader from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
+import EntranceGate from "@/components/site/EntranceGate";
 import { MotionPrefSync } from "@/components/invite/MotionToggle";
 import "../globals.css";
 
@@ -146,6 +147,7 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
         <NextIntlClientProvider>
           <MotionPrefSync />
+          <EntranceGate />
           <SiteHeader />
           {children}
           <SiteFooter />

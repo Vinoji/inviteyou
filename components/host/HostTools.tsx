@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useOrigin } from "@/lib/useOrigin";
+import festive from "@/components/landing/landing.module.css";
 import { useTranslations } from "next-intl";
 import { Check, Copy, ExternalLink, MessageCircle, Printer } from "lucide-react";
 import {
@@ -45,7 +46,7 @@ function useCopy() {
   return { copied, copy };
 }
 
-const card = "rounded-xl border border-neutral-200 p-4 dark:border-neutral-800";
+const card = `p-4 ${festive.festiveCard}`;
 const input =
   "w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 focus:border-neutral-500 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-50";
 const ghostBtn =

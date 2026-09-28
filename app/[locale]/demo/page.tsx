@@ -6,6 +6,8 @@ import { getTemplatesByCategory } from "@/lib/i18n/templates";
 import { showcaseProps } from "@/lib/i18n/showcase";
 import TemplateShowcase from "@/components/landing/TemplateShowcase";
 import { SITE } from "@/lib/site";
+import FestiveBanner from "@/components/site/FestiveBanner";
+import paper from "@/components/landing/landing.module.css";
 
 export async function generateMetadata({
   params,
@@ -34,21 +36,15 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
   const steps = ["step1", "step2", "step3"] as const;
 
   return (
-    <main className="flex-1">
-      <section className="mx-auto max-w-4xl px-6 pt-14 pb-10 text-center">
-        <p className="text-sm font-semibold tracking-[0.2em] text-amber-700 uppercase">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-serif text-4xl font-bold text-neutral-900 sm:text-5xl dark:text-neutral-50">
-          {t("title")}
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-neutral-600 dark:text-neutral-400">{t("intro")}</p>
-      </section>
+    <main className={`flex-1 ${paper.paper}`}>
+      <FestiveBanner eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
 
-      <section className="mx-auto max-w-5xl px-6 pb-14">
+      <section className="mx-auto max-w-5xl px-6 pt-4 pb-14">
         <ol className="grid gap-4 sm:grid-cols-3">
           {steps.map((step, i) => (
             <li
               key={step}
-              className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-neutral-800 dark:bg-neutral-900"
+              className={`${paper.festiveCard} p-5`}
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 font-serif text-lg font-bold text-amber-800 dark:bg-amber-500/15 dark:text-amber-400">
                 {i + 1}
@@ -108,8 +104,10 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
               </h3>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                 {templates.map((tpl) => (
-                  <figure key={tpl.id} className="overflow-hidden rounded-2xl border border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-900">
-                    <TemplateShowcase {...showcaseProps(tpl, category.singlePerson, tDefaults, tCommon)} />
+                  <figure key={tpl.id} className={paper.festiveCard}>
+                    <div className="overflow-hidden rounded-t-[21px]">
+                      <TemplateShowcase {...showcaseProps(tpl, category.singlePerson, tDefaults, tCommon)} />
+                    </div>
                     <figcaption className="flex items-center justify-between gap-2 p-3">
                       <span className="truncate text-sm font-semibold text-neutral-900 dark:text-neutral-50">{tpl.name}</span>
                       <Link

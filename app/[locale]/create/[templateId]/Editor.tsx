@@ -43,6 +43,8 @@ import PlacesFields from "@/components/editor/PlacesFields";
 import StoryPicker from "@/components/editor/StoryPicker";
 import FamilyFields, { type FamilyUpdate } from "@/components/editor/FamilyFields";
 import { REPLAY_INTRO_EVENT } from "@/components/invite/intros/events";
+import { Thoranam } from "@/components/site/festive";
+import festive from "@/components/landing/landing.module.css";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -734,11 +736,12 @@ export default function Editor({
 
       {/* Form panel */}
       <div
-        className={`flex-1 flex-col overflow-hidden lg:flex lg:w-[440px] lg:flex-none lg:border-r lg:border-neutral-200 dark:lg:border-neutral-800 ${
+        className={`flex-1 flex-col overflow-hidden lg:flex lg:w-[440px] lg:flex-none lg:border-r lg:border-neutral-200 dark:lg:border-neutral-800 ${festive.formPaper} ${
           mobileView === "preview" ? "hidden lg:flex" : "flex"
         }`}
       >
-        <header className="flex items-center justify-between border-b border-neutral-200 px-5 py-4 dark:border-neutral-800">
+        <Thoranam compact />
+        <header className="-mt-3 flex items-center justify-between border-b border-neutral-200 px-5 pt-1 pb-4 dark:border-neutral-800">
           <div>
             <p className="text-xs font-semibold tracking-widest text-amber-700 uppercase">
               {template.name}
@@ -1349,7 +1352,7 @@ export default function Editor({
               onClick={handleSaveEdit}
               disabled={!canSubmit}
               style={{ backgroundColor: data.accentColor }}
-              className="w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50"
+              className={`w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50 ${festive.shine}`}
             >
               {publishing ? t("saving") : t("saveChanges")}
             </button>
@@ -1358,7 +1361,7 @@ export default function Editor({
               onClick={tryPublish}
               disabled={publishing}
               style={{ backgroundColor: data.accentColor }}
-              className="w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50"
+              className={`w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50 ${festive.shine}`}
             >
               {publishing ? t("processing") : t("publishCta", { price: PRICE_INR })}
             </button>
@@ -1368,7 +1371,7 @@ export default function Editor({
 
       {/* Live preview panel */}
       <div
-        className={`flex-1 flex-col overflow-hidden bg-neutral-100 dark:bg-neutral-950 ${
+        className={`flex-1 flex-col overflow-hidden ${festive.previewStage} ${
           mobileView === "edit" ? "hidden lg:flex" : "flex"
         }`}
       >

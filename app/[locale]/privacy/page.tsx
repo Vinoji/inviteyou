@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SITE } from "@/lib/site";
+import FestiveBanner from "@/components/site/FestiveBanner";
+import paper from "@/components/landing/landing.module.css";
 
 export async function generateMetadata({
   params,
@@ -35,14 +37,12 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
   const t = await getTranslations("site.privacy");
 
   return (
-    <main className="flex-1">
-      <article className="mx-auto max-w-3xl px-6 pt-14 pb-20">
-        <p className="text-sm font-semibold tracking-[0.2em] text-amber-700 uppercase">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-serif text-4xl font-bold text-neutral-900 dark:text-neutral-50">{t("title")}</h1>
-        <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{t("updated")}</p>
-        <p className="mt-6 leading-relaxed text-neutral-700 dark:text-neutral-300">{t("intro")}</p>
+    <main className={`flex-1 ${paper.paper}`}>
+      <FestiveBanner eyebrow={t("eyebrow")} title={t("title")} intro={t("updated")} />
+      <article className="mx-auto max-w-3xl px-6 pt-4 pb-20">
+        <p className="leading-relaxed text-neutral-700 dark:text-neutral-300">{t("intro")}</p>
 
-        <nav aria-label={t("contents")} className="mt-8 rounded-2xl border border-neutral-200 p-5 dark:border-neutral-800">
+        <nav aria-label={t("contents")} className={`mt-8 p-5 ${paper.festiveCard}`}>
           <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase">{t("contents")}</p>
           <ol className="mt-3 grid gap-1.5 text-sm sm:grid-cols-2">
             {SECTIONS.map((sec, i) => (

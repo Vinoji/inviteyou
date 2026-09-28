@@ -4,6 +4,9 @@ import { ChevronDown, CreditCard, Languages, Mail, MessageCircle, Pencil, Phone,
 import { Link } from "@/i18n/navigation";
 import { SITE } from "@/lib/site";
 import SocialIcons from "@/components/site/SocialIcons";
+import FestiveBanner from "@/components/site/FestiveBanner";
+import paper from "@/components/landing/landing.module.css";
+import { KolamDivider } from "@/components/site/festive";
 
 export async function generateMetadata({
   params,
@@ -31,18 +34,12 @@ export default async function SupportPage({ params }: { params: Promise<{ locale
   const { email, whatsapp, phone } = SITE.contact;
 
   return (
-    <main className="flex-1">
-      <section className="mx-auto max-w-4xl px-6 pt-14 pb-10 text-center">
-        <p className="text-sm font-semibold tracking-[0.2em] text-amber-700 uppercase">{t("eyebrow")}</p>
-        <h1 className="mt-3 font-serif text-4xl font-bold text-neutral-900 sm:text-5xl dark:text-neutral-50">
-          {t("title")}
-        </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-neutral-600 dark:text-neutral-400">{t("intro")}</p>
-      </section>
+    <main className={`flex-1 ${paper.paper}`}>
+      <FestiveBanner eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
 
       <section className="mx-auto grid max-w-5xl gap-4 px-6 pb-14 sm:grid-cols-2 lg:grid-cols-4">
         {TOPICS.map(({ key, icon: Icon }) => (
-          <div key={key} className="rounded-2xl border border-neutral-200 bg-white p-5 dark:border-neutral-800 dark:bg-neutral-900">
+          <div key={key} className={`${paper.festiveCard} p-5`}>
             <Icon size={20} className="text-amber-600" aria-hidden />
             <h2 className="mt-3 font-semibold text-neutral-900 dark:text-neutral-50">{t(`topics.${key}Title`)}</h2>
             <p className="mt-1 text-sm text-neutral-600 dark:text-neutral-400">{t(`topics.${key}Body`)}</p>
@@ -50,11 +47,12 @@ export default async function SupportPage({ params }: { params: Promise<{ locale
         ))}
       </section>
 
-      <section id="faq" className="mx-auto max-w-3xl scroll-mt-24 px-6 pb-16">
+      <KolamDivider />
+      <section id="faq" className="relative mx-auto max-w-3xl scroll-mt-24 px-6 pt-6 pb-16">
         <h2 className="mb-6 text-center font-serif text-3xl font-bold text-neutral-900 dark:text-neutral-50">
           {t("faqTitle")}
         </h2>
-        <div className="divide-y divide-neutral-200 rounded-2xl border border-neutral-200 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900">
+        <div className={`divide-y divide-amber-200/60 dark:divide-amber-500/15 ${paper.festiveCard}`}>
           {FAQ.map((q) => (
             <details key={q} className="group px-5 py-4">
               <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-neutral-900 dark:text-neutral-50 [&::-webkit-details-marker]:hidden">
