@@ -11,6 +11,7 @@ export interface CategoryMeta {
   tagline: string;
   singlePerson: boolean;
   showCountdown: boolean;
+  allowPastDate: boolean;
   heroEyebrow: string;
   dateLabel: string;
   eventALabel: string;
@@ -29,6 +30,7 @@ export function getCategoryMeta(id: string, t: TFunc): CategoryMeta {
     id: config.id,
     singlePerson: config.singlePerson,
     showCountdown: config.showCountdown,
+    allowPastDate: config.allowPastDate,
     label: t(`${config.id}.label`),
     tagline: t(`${config.id}.tagline`),
     heroEyebrow: t(`${config.id}.heroEyebrow`),

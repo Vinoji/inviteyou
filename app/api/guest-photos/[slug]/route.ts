@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isExpired } from "@/lib/expiry";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
 import { sanitizeUploaderName, sanitizeGuestPhotoUrl } from "@/lib/sanitize";
@@ -48,6 +49,10 @@ export async function POST(
   const invSnap = await invRef.get();
   if (!invSnap.exists || invSnap.data()?.status !== "published") {
     return NextResponse.json({ error: "Invitation not found." }, { status: 404 });
+  }
+  // Expired invitations are read-only until the owner restores them.
+  if (isExpired(invSnap.data()!)) {
+    return NextResponse.json({ error: "This invitation has ended." }, { status: 410 });
   }
 
   const existing = await invRef.collection("guestPhotos").get();

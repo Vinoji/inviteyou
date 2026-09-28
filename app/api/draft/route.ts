@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
+import { waPhone } from "@/lib/share";
+import { earliestAllowedOnServer, isDateAllowed } from "@/lib/dates";
 import {
   sanitizeAccentColor,
   sanitizeBackgroundMusic,
@@ -55,6 +57,8 @@ export async function POST(req: NextRequest) {
     brideFamily,
     groomFamily,
     contentLocale,
+    ownerPhone,
+    ownerLocale,
   } = body;
 
   if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
@@ -62,6 +66,14 @@ export async function POST(req: NextRequest) {
   }
   if (typeof templateId !== "string" || !TEMPLATE_IDS.includes(templateId)) {
     return NextResponse.json({ error: "Invalid template." }, { status: 400 });
+  }
+  // The buyer's own number, for sending them their edit link after payment.
+  const phoneDigits = waPhone(typeof ownerPhone === "string" ? ownerPhone : "");
+  if (!phoneDigits) {
+    return NextResponse.json(
+      { error: "Please enter a valid mobile number for your edit link." },
+      { status: 400 }
+    );
   }
   const category = getCategoryConfig(getTemplateConfig(templateId).category);
   if (
@@ -72,6 +84,15 @@ export async function POST(req: NextRequest) {
       { error: "Please fill in the name field(s)." },
       { status: 400 }
     );
+  }
+
+  if (
+    !isDateAllowed(String(weddingDate ?? ""), {
+      allowPast: category.allowPastDate,
+      earliest: earliestAllowedOnServer(),
+    })
+  ) {
+    return NextResponse.json({ error: "Please choose today or a future date." }, { status: 400 });
   }
 
   const db = getAdminDb();
@@ -115,6 +136,13 @@ export async function POST(req: NextRequest) {
     createdAt: existing.exists ? (existing.data()?.createdAt ?? now) : now,
     updatedAt: now,
   });
+  // Kept in the private subcollection (never client-readable), not on the
+  // draft itself — the draft's fields are copied onto the public
+  // invitation when it's published.
+  await ref
+    .collection("private")
+    .doc("owner")
+    .set({ phone: `+${phoneDigits}`, locale: ownerLocale === "ta" ? "ta" : "en" });
 
   return NextResponse.json({ ok: true, draftId });
 }

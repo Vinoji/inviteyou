@@ -19,6 +19,10 @@ import { TEMPLATE_STYLE_KEYS, changedFields, clearDraft, loadDraft, saveDraft } 
 import { getCategoryMeta } from "@/lib/i18n/categories";
 import { getDefaultInvitationData } from "@/lib/i18n/defaultContent";
 import { FONT_PAIRINGS } from "@/lib/fontPairings";
+import { SITE } from "@/lib/site";
+import { waPhone } from "@/lib/share";
+import { isDateAllowed, todayIso } from "@/lib/dates";
+import { OWNER_PHONE_KEY } from "@/components/invite/WelcomeBanner";
 import {
   EMPTY_MONOGRAM,
   EMPTY_TRAVEL,
@@ -188,6 +192,20 @@ export default function Editor({
     { kind: "restored" } | { kind: "carried"; from: string } | null
   >(null);
   const [cropFile, setCropFile] = useState<File | null>(null);
+  // The buyer's own number: their edit link is sent there after payment.
+  const [ownerPhone, setOwnerPhone] = useState("");
+  const ownerPhoneOk = Boolean(waPhone(ownerPhone));
+  const [phoneTouched, setPhoneTouched] = useState(false);
+  // No past event dates (lib/dates.ts). "Today" is read after mount, from
+  // the visitor's clock, so server and client render the same HTML.
+  const [today, setToday] = useState("");
+  const [savedDate, setSavedDate] = useState<string | undefined>(undefined);
+  const dateRef = useRef<HTMLInputElement>(null);
+  const phoneRef = useRef<HTMLInputElement>(null);
+  const showPhoneError = (phoneTouched || Boolean(ownerPhone)) && !ownerPhoneOk;
+  // Edit mode: whether the invitation has expired (lib/expiry.ts).
+  const [expiry, setExpiry] = useState<{ expiresAt: number | null; expired: boolean } | null>(null);
+  const [restoring, setRestoring] = useState(false);
   const sameCategoryTemplates = getTemplatesByCategory(template.category, tTemplates);
   const storyRef = useRef<HTMLTextAreaElement>(null);
 
@@ -203,6 +221,8 @@ export default function Editor({
         const json = await res.json();
         if (cancelled) return;
         const loaded = json.invitation as InvitationData;
+        setSavedDate(loaded.weddingDate);
+        setExpiry(json.expiry ?? null);
         if (loaded.templateId !== templateId) {
           // Opened through the design switcher: keep the content, take the
           // new template's colours and fonts.
@@ -225,6 +245,11 @@ export default function Editor({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditMode, editSlug, editToken]);
+
+  useEffect(() => {
+    const id = setTimeout(() => setToday(todayIso()), 0);
+    return () => clearTimeout(id);
+  }, []);
 
   // New invitations: read back this device's draft for the category, from
   // this template or (after a design switch) another one.
@@ -492,12 +517,25 @@ export default function Editor({
   const initials = resolveMonogram(data.brideName, data.groomName, data.monogram, false);
   const monogramText = [initials.a, initials.b].filter(Boolean).join(" & ");
 
+  const dateOk =
+    !today ||
+    isDateAllowed(data.weddingDate, {
+      allowPast: category.allowPastDate,
+      earliest: today,
+      saved: savedDate,
+    });
+
   const canSubmit =
     Boolean(data.brideName.trim() && (category.singlePerson || data.groomName.trim())) &&
     !publishing;
 
   async function handleSaveEdit() {
     if (!editSlug || !editToken) return;
+    if (!dateOk) {
+      // The message is already shown under the date field; take them there.
+      dateRef.current?.focus();
+      return;
+    }
     setPublishing(true);
     setPublishError(null);
     try {
@@ -517,6 +555,88 @@ export default function Editor({
     }
   }
 
+  /** Pays ₹50 to bring an expired invitation back for 30 more days. */
+  async function handleRestore() {
+    if (!editSlug || !editToken) return;
+    setRestoring(true);
+    setPublishError(null);
+    try {
+      const orderRes = await fetch("/api/restore-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: editSlug, token: editToken }),
+      });
+      if (!orderRes.ok) {
+        const j = await orderRes.json().catch(() => ({}));
+        throw new Error(j.error ?? t("errPaymentStart"));
+      }
+      const order = await orderRes.json();
+      if (!window.Razorpay) throw new Error(t("errPaymentLibrary"));
+      const rz = new window.Razorpay({
+        key: order.keyId,
+        amount: order.amount,
+        currency: order.currency,
+        order_id: order.orderId,
+        name: SITE.name,
+        description: t("restoreCheckoutDescription"),
+        theme: { color: data.accentColor },
+        handler: async (response) => {
+          try {
+            const res = await fetch("/api/verify-restore", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ slug: editSlug, token: editToken, ...response }),
+            });
+            if (!res.ok) {
+              const j = await res.json().catch(() => ({}));
+              throw new Error(j.error ?? t("errPaymentVerifyFailed"));
+            }
+            const { expiresAt } = await res.json();
+            setExpiry({ expiresAt, expired: false });
+          } catch (err) {
+            setPublishError(err instanceof Error ? err.message : t("errPaymentVerifyFailed"));
+          } finally {
+            setRestoring(false);
+          }
+        },
+        modal: { ondismiss: () => setRestoring(false) },
+      });
+      rz.on("payment.failed", () => {
+        setPublishError(t("errPaymentFailed"));
+        setRestoring(false);
+      });
+      rz.open();
+    } catch (err) {
+      setPublishError(err instanceof Error ? err.message : t("errGeneric"));
+      setRestoring(false);
+    }
+  }
+
+  /** Checks what Publish needs and says what's missing, instead of a
+   * silently disabled button. */
+  function tryPublish() {
+    setPublishError(null);
+    if (!data.brideName.trim() || (!category.singlePerson && !data.groomName.trim())) {
+      setPublishError(t("errNamesRequired"));
+      return;
+    }
+    if (!dateOk) {
+      // The message is already shown under the date field; take them there.
+      dateRef.current?.focus();
+      return;
+    }
+    if (!ownerPhoneOk) {
+      setPhoneTouched(true);
+      phoneRef.current?.focus();
+      return;
+    }
+    if (!razorpayReady || !window.Razorpay) {
+      setPublishError(t("errPaymentLoading"));
+      return;
+    }
+    handlePublish();
+  }
+
   async function handlePublish() {
     setPublishing(true);
     setPublishError(null);
@@ -524,7 +644,7 @@ export default function Editor({
       const draftRes = await fetch("/api/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ draftId, ...data }),
+        body: JSON.stringify({ draftId, ...data, ownerPhone, ownerLocale: uiLocale }),
       });
       if (!draftRes.ok) {
         const j = await draftRes.json().catch(() => ({}));
@@ -551,7 +671,7 @@ export default function Editor({
         amount: order.amount,
         currency: order.currency,
         order_id: order.orderId,
-        name: "Namma Vivaham",
+        name: SITE.name,
         description: category.singlePerson
           ? `${data.brideName} — ${template.name}`
           : `${data.brideName} & ${data.groomName} — ${template.name}`,
@@ -567,10 +687,16 @@ export default function Editor({
               const j = await verifyRes.json().catch(() => ({}));
               throw new Error(j.error ?? t("errPaymentVerifyFailed"));
             }
-            const { slug, editToken: newToken } = await verifyRes.json();
+            const { slug, editToken: newToken, sent } = await verifyRes.json();
             clearDraft(template.category);
+            try {
+              // For the popup's "send to myself" buttons; never put in the URL.
+              sessionStorage.setItem(OWNER_PHONE_KEY, ownerPhone);
+            } catch {
+              // Not critical — the buttons just open without a number.
+            }
             router.push(
-              `/invite/${slug}?welcome=1&editToken=${encodeURIComponent(newToken)}&templateId=${encodeURIComponent(templateId)}`
+              `/invite/${slug}?welcome=1&editToken=${encodeURIComponent(newToken)}&templateId=${encodeURIComponent(templateId)}${sent ? `&sent=${sent}` : ""}`
             );
           } catch (err) {
             setPublishError(err instanceof Error ? err.message : t("errPaymentVerifyFailed"));
@@ -600,7 +726,10 @@ export default function Editor({
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="afterInteractive"
-        onLoad={() => setRazorpayReady(true)}
+        // onReady, not onLoad: onLoad fires only the first time the script
+        // loads, so coming back to the editor (client-side navigation) left
+        // the Pay button waiting forever. onReady also runs on every mount.
+        onReady={() => setRazorpayReady(true)}
       />
 
       {/* Form panel */}
@@ -793,12 +922,22 @@ export default function Editor({
             <FormSection title={category.dateLabel}>
               <Field label={t("dateFieldLabel")}>
                 <input
+                  ref={dateRef}
                   type="date"
-                  className={inputClass}
+                  className={`${inputClass} ${dateOk ? "" : "border-red-400 dark:border-red-500"}`}
                   value={data.weddingDate}
+                  // The picker won't offer past days (a proposal's date may be past).
+                  min={category.allowPastDate || !today ? undefined : today}
                   onChange={(e) => update("weddingDate", e.target.value)}
+                  aria-invalid={!dateOk}
+                  aria-describedby={dateOk ? undefined : "date-error"}
                 />
               </Field>
+              {!dateOk && (
+                <p id="date-error" className="text-xs text-red-600 dark:text-red-400">
+                  {t("errDatePast")}
+                </p>
+              )}
             </FormSection>
 
             <div>
@@ -1146,6 +1285,64 @@ export default function Editor({
         )}
 
         <div className="border-t border-neutral-200 p-4 dark:border-neutral-800">
+          {isEditMode && expiry?.expired && (
+            <div className="mb-3 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+              <p className="font-semibold">{t("expiredBannerTitle")}</p>
+              <p className="mt-1 text-xs">{t("expiredBannerBody")}</p>
+              <button
+                type="button"
+                onClick={handleRestore}
+                disabled={restoring || !razorpayReady}
+                className="mt-2 w-full rounded-lg bg-amber-600 py-2 text-sm font-semibold text-white transition disabled:opacity-50"
+              >
+                {restoring ? t("processing") : t("restoreCta")}
+              </button>
+            </div>
+          )}
+          {isEditMode && expiry && !expiry.expired && expiry.expiresAt && (
+            <p className="mb-2 text-xs text-neutral-500 dark:text-neutral-400">
+              {t("liveUntil", {
+                date: new Intl.DateTimeFormat(uiLocale === "ta" ? "ta-IN" : "en-IN", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                  timeZone: "Asia/Kolkata",
+                }).format(expiry.expiresAt),
+              })}
+            </p>
+          )}
+          {!isEditMode && (
+            <label className="mb-3 block">
+              <span className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                {t("ownerPhoneLabel")}
+              </span>
+              <input
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                ref={phoneRef}
+                className={`${inputClass} ${showPhoneError ? "border-red-400 dark:border-red-500" : ""}`}
+                value={ownerPhone}
+                onChange={(e) => setOwnerPhone(e.target.value)}
+                onBlur={() => ownerPhone && setPhoneTouched(true)}
+                placeholder={t("ownerPhonePlaceholder")}
+                aria-invalid={showPhoneError}
+                aria-describedby="owner-phone-hint"
+              />
+              <span
+                id="owner-phone-hint"
+                className={`mt-1 block text-xs ${
+                  showPhoneError ? "text-red-600 dark:text-red-400" : "text-neutral-400 dark:text-neutral-500"
+                }`}
+              >
+                {showPhoneError
+                  ? ownerPhone
+                    ? t("ownerPhoneInvalid")
+                    : t("ownerPhoneRequired")
+                  : t("ownerPhoneHint")}
+              </span>
+            </label>
+          )}
           {publishError && <p className="mb-2 text-sm text-red-600">{publishError}</p>}
           {isEditMode ? (
             <button
@@ -1158,8 +1355,8 @@ export default function Editor({
             </button>
           ) : (
             <button
-              onClick={handlePublish}
-              disabled={!canSubmit || !razorpayReady}
+              onClick={tryPublish}
+              disabled={publishing}
               style={{ backgroundColor: data.accentColor }}
               className="w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50"
             >

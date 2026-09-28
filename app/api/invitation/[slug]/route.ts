@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAdminDb } from "@/lib/firebase-admin";
+import { requireEditToken } from "@/lib/ownerAuth";
+import { expiresAt, isExpired } from "@/lib/expiry";
+import { earliestAllowedOnServer, isDateAllowed } from "@/lib/dates";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
 import { withDefaultSections, EMPTY_TRAVEL, EMPTY_MONOGRAM } from "@/lib/types";
@@ -17,23 +19,6 @@ import {
   sanitizeTravel,
   sanitizeVenue,
 } from "@/lib/sanitize";
-
-async function requireEditToken(slug: string, token: unknown) {
-  if (typeof token !== "string" || !token) {
-    return { ok: false as const, status: 403, error: "Missing edit token." };
-  }
-  const db = getAdminDb();
-  const metaSnap = await db
-    .collection("invitations")
-    .doc(slug)
-    .collection("private")
-    .doc("meta")
-    .get();
-  if (!metaSnap.exists || metaSnap.data()?.editToken !== token) {
-    return { ok: false as const, status: 403, error: "Invalid edit link." };
-  }
-  return { ok: true as const, db };
-}
 
 /** Fetches a published invitation's data for the edit form, gated by token. */
 export async function GET(
@@ -63,6 +48,8 @@ export async function GET(
       places: data.places ?? [],
       monogram: data.monogram ?? EMPTY_MONOGRAM,
     },
+    // For the editor's "expired — restore for ₹50" banner.
+    expiry: { expiresAt: expiresAt(data), expired: isExpired(data) },
   });
 }
 
@@ -116,6 +103,19 @@ export async function PUT(
       { error: "Please fill in the name field(s)." },
       { status: 400 }
     );
+  }
+
+  // A date can't be moved into the past, but an invitation whose (past)
+  // date is left unchanged can still be edited after the event.
+  const current = await check.db.collection("invitations").doc(slug).get();
+  if (
+    !isDateAllowed(String(weddingDate ?? ""), {
+      allowPast: category.allowPastDate,
+      earliest: earliestAllowedOnServer(),
+      saved: current.data()?.weddingDate,
+    })
+  ) {
+    return NextResponse.json({ error: "Please choose today or a future date." }, { status: 400 });
   }
 
   await check.db

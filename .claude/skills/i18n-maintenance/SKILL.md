@@ -5,7 +5,7 @@ description: Keep messages/en.json and messages/ta.json in sync whenever UI text
 
 # Keeping translations current
 
-This app (Namma Vivaham) ships English + Tamil via `next-intl`. There is
+This app (InviteYou) ships English + Tamil via `next-intl`. There is
 **no English fallback at runtime** — a key missing from `messages/ta.json`
 throws in Tamil, and a key missing from `messages/en.json` throws in
 English. Every UI change that touches text is an i18n change, not a

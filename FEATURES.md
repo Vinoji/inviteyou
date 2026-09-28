@@ -1,4 +1,4 @@
-# Namma Vivaham — What's Already Built
+# InviteYou — What's Already Built
 
 A snapshot of the features in this codebase today. For setup, see [README.md](README.md).
 
@@ -38,17 +38,17 @@ Six occasion categories ([lib/categories.ts](lib/categories.ts)) relabel the sam
 | Birthday | `birthday-confetti` | Single person |
 | House warming | `housewarming-terracotta` | Single person |
 
-**Wedding templates share one layout.** All 5 wedding templates use the royal-palace layout ([components/invite/royal/](components/invite/royal/)): palace doors that open with a petal shower, a toran-framed hero with a mandapam, a sealed "With Grateful Hearts" note, families, events, a polaroid memory stack, Travel Guide, Places to Explore, RSVP and a Thank You section. Each template only changes the colour palette ([palettes.ts](components/invite/royal/palettes.ts)):
+**Wedding templates share one layout, each with its own motion.** All 5 wedding templates use the same layout ([components/invite/royal/](components/invite/royal/)): intro, hero, story, families, events, memories, Travel Guide, Places to Explore, RSVP and Thank You. Each template has its own palette ([palettes.ts](components/invite/royal/palettes.ts)), its own opening intro, and its own scroll motion (see Motion engine):
 
-| Template | Palette |
-|---|---|
-| `traditional-gold` | Temple gold on granite, marigold toran. Has its own "Kolam & Temple Bell" intro and motion (see Motion engine) |
-| `minimal-modern` | Champagne on charcoal, jasmine toran |
-| `floral-pastel` | Blush on deep rose, rose toran |
-| `elegant-bw` | Silver on black, white-flower toran |
-| `beach-boho` | Sand on teal, coral toran |
+| Template | Palette | Opening | Motion |
+|---|---|---|---|
+| `traditional-gold` | Temple gold on granite | A kolam draws itself, lamps light, the temple bell rings | Gopuram-tier sections, gold-sweep headings, kolam dividers, flip-tile countdown |
+| `minimal-modern` | Ink on paper, one accent colour, no ornaments | A hairline splits the screen and the names settle in | Wipes, typed headings, numbered hairlines, pinned countdown, pinned photo strip |
+| `floral-pastel` | Peony, blush and sage on cream | A peony bud blooms and butterflies fly out | Paint-bloom sections, a vine growing down the margin, wreath, masonry photos, bud countdown |
+| `elegant-bw` | Silver on onyx, monochrome | Pull a ribbon to open a black gift box with a silver card inside | Iris reveals, film-strip dividers, film grain, split-flap countdown, photos warming into colour |
+| `beach-boho` | Sand, sea and sunset | A message in a bottle and a wave | Wave-edged sections, noon-to-dusk sky, palms, footprints, postcards, driftwood-tag countdown |
 
-The other occasions keep the original section layout.
+The other occasions keep the original section layout with the envelope intro.
 
 **Font pairings** ([lib/fontPairings.ts](lib/fontPairings.ts)): `classic-serif`, `modern-clean`, `elegant-script`, `royal-cinzel`, `tamil-calligraphy`, `tamil-classic`.
 
@@ -85,28 +85,37 @@ Components are in [components/invite/](components/invite/):
 
 ## Motion engine
 
-Each template chooses its own intro, particles and scroll motion. The prompts for giving each wedding template its own motion are in [docs/template-motion-prompts.md](docs/template-motion-prompts.md).
+Each template chooses its own intro, particles and scroll motion. The design brief is [docs/template-motion-prompts.md](docs/template-motion-prompts.md), whose status section records what's built and where it differs from the brief.
 
-- **Intros** ([components/invite/intros/](components/invite/intros/)): each template's `intro` (in [lib/templates.ts](lib/templates.ts)) picks an intro from [registry.ts](components/invite/intros/registry.ts).
-  - Today there are three: `door` (palace doors; minimal-modern, floral-pastel, elegant-bw, beach-boho), `kolam` (traditional-gold: a kolam draws itself on granite, lamps light, and the temple bell rings) and `envelope` (wax-seal card, used by the other occasions).
+- **Intros** ([components/invite/intros/](components/invite/intros/)): each template's `intro` in [lib/templates.ts](lib/templates.ts) picks one from [registry.ts](components/invite/intros/registry.ts).
+  - The intros are `kolam`, `split`, `bloom`, `giftbox`, `bottle`, `envelope` (the non-wedding occasions) and `door` (currently unused).
   - `IntroHost` runs every intro. On the public page it covers the window, locks scroll until the guest opens it, and skips it for the rest of that browser session. In the editor it plays inside the preview pane.
-  - Opening the intro starts the couple's uploaded music track. The editor has a "Replay intro" button.
-- **Particles** ([components/invite/particles/](components/invite/particles/)): `ParticleField` draws everything on one canvas, in either burst or ambient mode.
+  - Opening an intro starts the couple's uploaded music. The editor has a "Replay intro" button.
+  - The landing page shows a short CSS/SVG loop of each template's intro on its card.
+- **Particles** ([components/invite/particles/](components/invite/particles/)): `ParticleField` draws everything on one canvas, in burst or ambient mode.
   - Presets: marigold, jasmine, embers, inkDots, pastelPetals, butterflies, glitter, bubbles, sunGlints.
   - Performance limits: device pixel ratio capped at 2, at most 120 burst and 40 ambient particles, halved on low-end devices. The loop pauses when the canvas is off-screen or the tab is hidden.
   - With reduced motion, nothing is drawn.
-- **Motion themes** ([lib/motionThemes.ts](lib/motionThemes.ts)): each template sets how sections enter, how headings animate, the dividers, ambient particles and background colour.
-  - `Section`, `MotionHeading` and `Ambient` ([components/invite/motion/](components/invite/motion/)) read the theme.
-  - Built so far: section entrances "rise" and "tier", headings "maskUp" and "goldSweep", dividers "none" and "kolamLine", and the "gold" progress thread. Other options fall back to rise, maskUp and no divider.
-  - Section moments (families sliding in like temple doors, diyas on event rows, brass arch photo frames, flip-tile countdown, a slowly turning mandala) are switched on per template in `moments`. Only traditional-gold uses them so far.
+- **Motion themes** ([lib/motionThemes.ts](lib/motionThemes.ts)): per template, how sections enter (rise, tier, wipe, bloom, iris, wave), heading style, dividers, the scroll-progress thread, ambient and RSVP particles, a "plain" no-ornament mode, and `moments`.
+  - `moments` are the template-specific touches in the families, events, gallery, story and countdown sections, plus the pinned countdown, palms, sky and film grain.
+  - Implemented in [components/invite/motion/](components/invite/motion/).
+- **Tested:** every template has a reduced-motion path. At 4× CPU slowdown on a production build, there were no long tasks during the intro or a fast scroll.
 
 ## Publish and payment flow (₹199)
 
-1. `POST /api/draft` saves a `pending_payment` doc (Admin SDK only)
-2. `POST /api/create-order` creates a Razorpay order
-3. Razorpay Checkout runs in the browser
-4. `POST /api/verify-payment` recomputes the HMAC-SHA256 signature on the server, then creates the slug and `editToken` and publishes to `invitations/{slug}`
-5. A one-time banner shows the edit link
+1. The buyer enters their **mobile number** (required) along with the invitation.
+2. `POST /api/draft` saves a `pending_payment` doc (Admin SDK only). The number goes to a private sub-document (`private/owner`), never onto the invitation itself.
+3. `POST /api/create-order` creates a Razorpay order, and Razorpay Checkout runs in the browser.
+4. `POST /api/verify-payment` recomputes the HMAC-SHA256 signature on the server (constant-time compare), then creates the slug and `editToken` and publishes to `invitations/{slug}`. The buyer's number moves to `private/meta`.
+5. **The server sends the buyer their links** (the guest link plus the private edit link) by WhatsApp, falling back to SMS, via Twilio ([lib/notify.ts](lib/notify.ts)). This is optional: with no Twilio settings, nothing is sent. A failed message never fails the purchase.
+6. **A popup** shows the edit link with Copy, says whether it was sent and how, and offers "Send to my WhatsApp" and "Send by SMS" buttons as a backup.
+
+## Expiry and restore (₹50)
+
+- **An invitation expires at the end of the 10th day after its date,** India time ([lib/expiry.ts](lib/expiry.ts)). Invitations without a date never expire. The rule is computed from the date each time, so changing the date moves the expiry, and invitations published before this rule follow it too.
+- **After expiry,** guests see "This invitation has ended" (not indexed by search engines), and new RSVPs and guest photos are refused (410).
+- **Restoring is owner-only,** from the edit link: the editor shows an "expired" banner with **Restore for ₹50**, which adds 30 days and can be repeated.
+- **The server checks the restore payment's signature, and also confirms with Razorpay** that the order is a ₹50 restore for that same invitation. Each payment can only be applied once. The owner also gets a "restored until …" message.
 
 ## API routes
 
@@ -119,6 +128,8 @@ Each template chooses its own intro, particles and scroll motion. The prompts fo
 | `POST /api/rsvp/[slug]` | Submit an RSVP | Rate limit: 8/hour per IP |
 | `POST /api/guest-photos/[slug]` | Register a guest photo | Rate limit: 8/hour per IP, 40-photo cap |
 | `POST /api/view/[slug]` | Increment view count | Rate limit: 1 per 30 min per IP |
+| `POST /api/restore-order` | Start a ₹50 restore payment | `editToken`; only when expired |
+| `POST /api/verify-restore` | Verify it and add 30 days | `editToken` + HMAC + order check (amount, purpose, slug); once per payment |
 
 ## Security
 
