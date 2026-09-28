@@ -1,5 +1,6 @@
 import { getTemplateConfig } from "@/lib/templates";
 import { DEFAULT_CONTENT_DATES } from "@/lib/defaultContent";
+import { todayIso } from "@/lib/dates";
 import {
   DEFAULT_SECTIONS,
   EMPTY_TRAVEL,
@@ -39,6 +40,19 @@ function venue(name: string, address: string): VenueInfo {
  * `useTranslations("defaultContent")` / `getTranslations("defaultContent")`.
  * Real, tasteful starter copy per template, translated in full — not lorem
  * ipsum, not empty fields with a placeholder hint. */
+/** The example date moved forward by whole years until it's today or later,
+ * so a fresh editor never opens on a past date (which it wouldn't accept —
+ * see lib/dates.ts). 29 February becomes 28 February in common years. */
+function rollForward(iso: string): string {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return iso;
+  const today = todayIso();
+  let year = +m[1];
+  const md = `${m[2]}-${m[3] === "29" && m[2] === "02" ? "28" : m[3]}`;
+  while (`${year}-${md}` < today) year++;
+  return `${year}-${md}`;
+}
+
 export function getDefaultInvitationData(templateId: string, t: TFunc): InvitationData {
   const template = getTemplateConfig(templateId);
   const id = template.id;
@@ -64,7 +78,7 @@ export function getDefaultInvitationData(templateId: string, t: TFunc): Invitati
     sections: { ...DEFAULT_SECTIONS },
     brideName: t(`${id}.brideName`),
     groomName: t(`${id}.groomName`),
-    weddingDate: dates.weddingDate,
+    weddingDate: rollForward(dates.weddingDate),
     ceremonyTime: dates.ceremonyTime,
     ceremonyVenue: venue(t(`${id}.ceremonyVenueName`), t(`${id}.ceremonyVenueAddress`)),
     receptionTime: dates.receptionTime,

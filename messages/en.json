@@ -215,7 +215,8 @@
     "liveUntil": "Live for guests until {date}.",
     "ownerPhoneRequired": "Enter your mobile number to continue — your edit link is sent here.",
     "errNamesRequired": "Please fill in the name(s) first.",
-    "errPaymentLoading": "The payment page is still loading — please try again in a moment."
+    "errPaymentLoading": "The payment page is still loading — please try again in a moment.",
+    "errDatePast": "Please choose today or a future date."
   },
   "invite": {
     "hero": {

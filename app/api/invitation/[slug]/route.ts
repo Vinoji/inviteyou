@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireEditToken } from "@/lib/ownerAuth";
 import { expiresAt, isExpired } from "@/lib/expiry";
+import { earliestAllowedOnServer, isDateAllowed } from "@/lib/dates";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
 import { withDefaultSections, EMPTY_TRAVEL, EMPTY_MONOGRAM } from "@/lib/types";
@@ -102,6 +103,19 @@ export async function PUT(
       { error: "Please fill in the name field(s)." },
       { status: 400 }
     );
+  }
+
+  // A date can't be moved into the past, but an invitation whose (past)
+  // date is left unchanged can still be edited after the event.
+  const current = await check.db.collection("invitations").doc(slug).get();
+  if (
+    !isDateAllowed(String(weddingDate ?? ""), {
+      allowPast: category.allowPastDate,
+      earliest: earliestAllowedOnServer(),
+      saved: current.data()?.weddingDate,
+    })
+  ) {
+    return NextResponse.json({ error: "Please choose today or a future date." }, { status: 400 });
   }
 
   await check.db

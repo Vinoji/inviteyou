@@ -3,6 +3,7 @@ import { getAdminDb } from "@/lib/firebase-admin";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
 import { waPhone } from "@/lib/share";
+import { earliestAllowedOnServer, isDateAllowed } from "@/lib/dates";
 import {
   sanitizeAccentColor,
   sanitizeBackgroundMusic,
@@ -83,6 +84,15 @@ export async function POST(req: NextRequest) {
       { error: "Please fill in the name field(s)." },
       { status: 400 }
     );
+  }
+
+  if (
+    !isDateAllowed(String(weddingDate ?? ""), {
+      allowPast: category.allowPastDate,
+      earliest: earliestAllowedOnServer(),
+    })
+  ) {
+    return NextResponse.json({ error: "Please choose today or a future date." }, { status: 400 });
   }
 
   const db = getAdminDb();

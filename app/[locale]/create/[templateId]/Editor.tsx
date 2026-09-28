@@ -21,6 +21,7 @@ import { getDefaultInvitationData } from "@/lib/i18n/defaultContent";
 import { FONT_PAIRINGS } from "@/lib/fontPairings";
 import { SITE } from "@/lib/site";
 import { waPhone } from "@/lib/share";
+import { isDateAllowed, todayIso } from "@/lib/dates";
 import { OWNER_PHONE_KEY } from "@/components/invite/WelcomeBanner";
 import {
   EMPTY_MONOGRAM,
@@ -194,6 +195,11 @@ export default function Editor({
   const [ownerPhone, setOwnerPhone] = useState("");
   const ownerPhoneOk = Boolean(waPhone(ownerPhone));
   const [phoneTouched, setPhoneTouched] = useState(false);
+  // No past event dates (lib/dates.ts). "Today" is read after mount, from
+  // the visitor's clock, so server and client render the same HTML.
+  const [today, setToday] = useState("");
+  const [savedDate, setSavedDate] = useState<string | undefined>(undefined);
+  const dateRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const showPhoneError = (phoneTouched || Boolean(ownerPhone)) && !ownerPhoneOk;
   // Edit mode: whether the invitation has expired (lib/expiry.ts).
@@ -214,6 +220,7 @@ export default function Editor({
         const json = await res.json();
         if (cancelled) return;
         const loaded = json.invitation as InvitationData;
+        setSavedDate(loaded.weddingDate);
         setExpiry(json.expiry ?? null);
         if (loaded.templateId !== templateId) {
           // Opened through the design switcher: keep the content, take the
@@ -237,6 +244,11 @@ export default function Editor({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditMode, editSlug, editToken]);
+
+  useEffect(() => {
+    const id = setTimeout(() => setToday(todayIso()), 0);
+    return () => clearTimeout(id);
+  }, []);
 
   // New invitations: read back this device's draft for the category, from
   // this template or (after a design switch) another one.
@@ -504,12 +516,25 @@ export default function Editor({
   const initials = resolveMonogram(data.brideName, data.groomName, data.monogram, false);
   const monogramText = [initials.a, initials.b].filter(Boolean).join(" & ");
 
+  const dateOk =
+    !today ||
+    isDateAllowed(data.weddingDate, {
+      allowPast: category.allowPastDate,
+      earliest: today,
+      saved: savedDate,
+    });
+
   const canSubmit =
     Boolean(data.brideName.trim() && (category.singlePerson || data.groomName.trim())) &&
     !publishing;
 
   async function handleSaveEdit() {
     if (!editSlug || !editToken) return;
+    if (!dateOk) {
+      // The message is already shown under the date field; take them there.
+      dateRef.current?.focus();
+      return;
+    }
     setPublishing(true);
     setPublishError(null);
     try {
@@ -592,6 +617,11 @@ export default function Editor({
     setPublishError(null);
     if (!data.brideName.trim() || (!category.singlePerson && !data.groomName.trim())) {
       setPublishError(t("errNamesRequired"));
+      return;
+    }
+    if (!dateOk) {
+      // The message is already shown under the date field; take them there.
+      dateRef.current?.focus();
       return;
     }
     if (!ownerPhoneOk) {
@@ -891,12 +921,22 @@ export default function Editor({
             <FormSection title={category.dateLabel}>
               <Field label={t("dateFieldLabel")}>
                 <input
+                  ref={dateRef}
                   type="date"
-                  className={inputClass}
+                  className={`${inputClass} ${dateOk ? "" : "border-red-400 dark:border-red-500"}`}
                   value={data.weddingDate}
+                  // The picker won't offer past days (a proposal's date may be past).
+                  min={category.allowPastDate || !today ? undefined : today}
                   onChange={(e) => update("weddingDate", e.target.value)}
+                  aria-invalid={!dateOk}
+                  aria-describedby={dateOk ? undefined : "date-error"}
                 />
               </Field>
+              {!dateOk && (
+                <p id="date-error" className="text-xs text-red-600 dark:text-red-400">
+                  {t("errDatePast")}
+                </p>
+              )}
             </FormSection>
 
             <div>

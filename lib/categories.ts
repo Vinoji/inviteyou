@@ -32,15 +32,19 @@ export interface CategoryConfig {
    * already happened) — a countdown to a date in the past reads oddly, even
    * though the "celebration has begun" fallback it resolves to is graceful. */
   showCountdown: boolean;
+  /** True only where the date is naturally in the past (a proposal that
+   * already happened); every other occasion needs today or later. See
+   * lib/dates.ts. */
+  allowPastDate: boolean;
 }
 
 export const CATEGORIES: CategoryConfig[] = [
-  { id: "wedding", singlePerson: false, showCountdown: true },
-  { id: "anniversary", singlePerson: false, showCountdown: true },
-  { id: "valentine", singlePerson: false, showCountdown: true },
-  { id: "proposal", singlePerson: false, showCountdown: false },
-  { id: "birthday", singlePerson: true, showCountdown: true },
-  { id: "housewarming", singlePerson: true, showCountdown: true },
+  { id: "wedding", singlePerson: false, showCountdown: true, allowPastDate: false },
+  { id: "anniversary", singlePerson: false, showCountdown: true, allowPastDate: false },
+  { id: "valentine", singlePerson: false, showCountdown: true, allowPastDate: false },
+  { id: "proposal", singlePerson: false, showCountdown: false, allowPastDate: true },
+  { id: "birthday", singlePerson: true, showCountdown: true, allowPastDate: false },
+  { id: "housewarming", singlePerson: true, showCountdown: true, allowPastDate: false },
 ];
 
 export function getCategoryConfig(id: string): CategoryConfig {
