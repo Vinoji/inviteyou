@@ -15,6 +15,7 @@ import ThingsToKnow from "../ThingsToKnow";
 import RsvpForm from "../RsvpForm";
 import BlessingsWall from "../BlessingsWall";
 import ShareBox from "../ShareBox";
+import AddToCalendar from "../AddToCalendar";
 import AudioToggle from "../AudioToggle";
 import IntroHost from "../intros/IntroHost";
 import Section from "../motion/Section";
@@ -52,6 +53,7 @@ export default function RoyalInvitation({
   coupleLabel,
   rsvpMessages,
   guestPhotos,
+  guestGreeting,
 }: {
   data: InvitationData;
   slug: string;
@@ -61,6 +63,7 @@ export default function RoyalInvitation({
   coupleLabel: string;
   rsvpMessages: RsvpEntry[];
   guestPhotos: GuestPhoto[];
+  guestGreeting: string;
 }) {
   const tView = useTranslations("invite.view");
   const palette = getRoyalPalette(data.templateId);
@@ -109,6 +112,7 @@ export default function RoyalInvitation({
         accentColor={data.accentColor}
         fontPairing={data.fontPairing}
         monogram={data.monogram}
+        greeting={guestGreeting}
       />
       {mode === "public" && (
         <AudioToggle
@@ -167,7 +171,22 @@ export default function RoyalInvitation({
             receptionVenue={data.receptionVenue}
             eventALabel={category.eventALabel}
             eventBLabel={category.eventBLabel || tView("defaultReception")}
-          />
+          >
+            <AddToCalendar
+              slug={slug}
+              title={occasionTitle}
+              date={data.weddingDate}
+              variant="royal"
+              events={[
+                { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue },
+                {
+                  label: category.eventBLabel || tView("defaultReception"),
+                  time: data.receptionTime,
+                  venue: data.receptionVenue,
+                },
+              ]}
+            />
+          </RoyalEvents>
         </Section>
       )}
 
@@ -230,6 +249,7 @@ export default function RoyalInvitation({
               brideName={data.brideName}
               groomName={data.groomName}
               mode={mode}
+              initialName={guestGreeting}
               variant="royal"
               header={<RsvpHeader key="rsvp-header" />}
             />
@@ -252,7 +272,21 @@ export default function RoyalInvitation({
 
       {mode === "public" && (
         <div className={s.light}>
-          <ShareBox slug={slug} occasionTitle={occasionTitle} accentColor={data.accentColor} />
+          <ShareBox
+                slug={slug}
+                occasionTitle={occasionTitle}
+                accentColor={data.accentColor}
+                weddingDate={data.weddingDate}
+                hosts={coupleLabel}
+                events={[
+                  { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue },
+                  {
+                    label: category.eventBLabel || tView("defaultReception"),
+                    time: data.receptionTime,
+                    venue: data.receptionVenue,
+                  },
+                ]}
+              />
         </div>
       )}
 

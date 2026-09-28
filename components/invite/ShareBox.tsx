@@ -1,26 +1,51 @@
 "use client";
 
 import { useState } from "react";
-import { useTranslations } from "next-intl";
-import { Check, Copy, Share2 } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
+import { Check, Copy, MessageCircle, Printer, Share2 } from "lucide-react";
+import { whatsappUrl } from "@/lib/share";
+import { parseIsoDate } from "@/lib/calendar";
+import { useOrigin } from "@/lib/useOrigin";
+import { buildWhatsAppMessage } from "@/lib/inviteMessage";
+import type { VenueInfo } from "@/lib/types";
 import QRCodeBox from "./QRCodeBox";
 
 export default function ShareBox({
   slug,
   occasionTitle,
   accentColor,
+  weddingDate,
+  events,
+  hosts,
 }: {
   slug: string;
   /** Fully formatted, e.g. "Priya & Arjun's Wedding" or "Zara's Birthday". */
   occasionTitle: string;
   accentColor: string;
+  weddingDate: string;
+  /** Shown in the WhatsApp message: each event's time and venue. */
+  events: { label: string; time: string; venue: VenueInfo }[];
+  /** Who's inviting, e.g. "Ananya & Kabir". */
+  hosts: string;
 }) {
   const t = useTranslations("invite.share");
+  const tWhatsApp = useTranslations("invite.whatsapp");
+  const format = useFormatter();
   const [copied, setCopied] = useState(false);
-  const url =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/invite/${slug}`
-      : `/invite/${slug}`;
+  const url = `${useOrigin()}/invite/${slug}`;
+
+  const day = parseIsoDate(weddingDate);
+  const date = day
+    ? format.dateTime(day, { weekday: "long", day: "numeric", month: "long", year: "numeric" })
+    : "";
+  const whatsappText = buildWhatsAppMessage(tWhatsApp, {
+    kind: "invite",
+    title: occasionTitle,
+    date,
+    events: events.map((e) => ({ label: e.label, time: e.time, venue: e.venue?.name ?? "" })),
+    url,
+    hosts,
+  });
 
   async function copyLink() {
     try {
@@ -74,13 +99,31 @@ export default function ShareBox({
           </button>
         </div>
 
-        <button
-          onClick={shareLink}
-          className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-800 sm:hidden"
-        >
-          <Share2 size={15} />
-          {t("shareVia")}
-        </button>
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+          <a
+            href={whatsappUrl(whatsappText)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#25d366] px-4 py-2 text-sm font-semibold text-[#08331a]"
+          >
+            <MessageCircle size={15} aria-hidden />
+            {t("whatsapp")}
+          </a>
+          <button
+            onClick={shareLink}
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-800 sm:hidden"
+          >
+            <Share2 size={15} aria-hidden />
+            {t("shareVia")}
+          </button>
+          <a
+            href={`/invite/${slug}/card`}
+            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-800"
+          >
+            <Printer size={15} aria-hidden />
+            {t("printCard")}
+          </a>
+        </div>
 
         <div className="mt-6 flex justify-center">
           <QRCodeBox url={url} fileName={`${slug}-qr.png`} accentColor={accentColor} />

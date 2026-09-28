@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Monitor, Plus, RotateCcw, Smartphone, Tablet, Trash2 } from "lucide-react";
+import { Check, ChevronDown, Monitor, Plus, RotateCcw, Smartphone, Tablet, Trash2 } from "lucide-react";
 import {
   NextIntlClientProvider,
   createTranslator,
@@ -12,9 +12,10 @@ import {
 } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
 import Script from "next/script";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebase";
-import { getTemplateMeta } from "@/lib/i18n/templates";
+import { getTemplateMeta, getTemplatesByCategory } from "@/lib/i18n/templates";
+import { TEMPLATE_STYLE_KEYS, changedFields, clearDraft, loadDraft, saveDraft } from "@/lib/draftStore";
 import { getCategoryMeta } from "@/lib/i18n/categories";
 import { getDefaultInvitationData } from "@/lib/i18n/defaultContent";
 import { FONT_PAIRINGS } from "@/lib/fontPairings";
@@ -30,7 +31,8 @@ import { STORY_PRESETS } from "@/lib/storyPresets";
 import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
 import InvitationView from "@/components/invite/InvitationView";
 import { FormSection, Field, inputClass, SectionToggle } from "@/components/editor/FormFields";
-import PhotoSlot from "@/components/editor/PhotoSlot";
+import { AddPhotoTile, PhotoTile } from "@/components/editor/PhotoSlot";
+import PhotoCropper from "@/components/editor/PhotoCropper";
 import TravelFields from "@/components/editor/TravelFields";
 import PlacesFields from "@/components/editor/PlacesFields";
 import StoryPicker from "@/components/editor/StoryPicker";
@@ -106,6 +108,11 @@ const SEED_KEYS = [
   "places",
 ] as const satisfies readonly (keyof InvitationData)[];
 
+/** "<time>-<random>" in lowercase base36 — the shape storage.rules expects. */
+function uniqueSuffix() {
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8) || "0"}`;
+}
+
 function generateDraftId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
     return crypto.randomUUID();
@@ -135,7 +142,7 @@ export default function Editor({
   const category = getCategoryMeta(template.category, tCategories);
   const isEditMode = Boolean(editSlug && editToken);
 
-  const [draftId] = useState(() => generateDraftId());
+  const [draftId, setDraftId] = useState(() => generateDraftId());
   const [data, setData] = useState<InvitationData>(() => ({
     ...getDefaultInvitationData(templateId, contentT(contentMessages, uiLocale, "defaultContent")),
     contentLocale: uiLocale,
@@ -163,12 +170,24 @@ export default function Editor({
   // fresh editor starts with — both count as "not the user's own words", so
   // replacing them needs no confirmation.
   const [storyPreset, setStoryPreset] = useState<string | null>(null);
-  const seedStory = useMemo(
-    () =>
-      getDefaultInvitationData(templateId, contentT(contentMessages, contentLocale, "defaultContent"))
-        .story,
+  // The template's sample content in the invitation language — what the
+  // autosave diffs against, and what "Start fresh" goes back to.
+  const seed = useMemo(
+    () => ({
+      ...getDefaultInvitationData(templateId, contentT(contentMessages, contentLocale, "defaultContent")),
+      contentLocale,
+    }),
     [templateId, contentMessages, contentLocale]
   );
+  const seedStory = seed.story;
+  // Autosave only starts once any saved draft has been read back in, so an
+  // untouched first render can't overwrite it.
+  const [draftReady, setDraftReady] = useState(false);
+  const [draftNotice, setDraftNotice] = useState<
+    { kind: "restored" } | { kind: "carried"; from: string } | null
+  >(null);
+  const [cropFile, setCropFile] = useState<File | null>(null);
+  const sameCategoryTemplates = getTemplatesByCategory(template.category, tTemplates);
   const storyRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -181,7 +200,17 @@ export default function Editor({
         );
         if (!res.ok) throw new Error(t("errEditLinkInvalid"));
         const json = await res.json();
-        if (!cancelled) setData(json.invitation);
+        if (cancelled) return;
+        const loaded = json.invitation as InvitationData;
+        if (loaded.templateId !== templateId) {
+          // Opened through the design switcher: keep the content, take the
+          // new template's colours and fonts.
+          const next = getTemplateMeta(templateId, tTemplates);
+          setDraftNotice({ kind: "carried", from: getTemplateMeta(loaded.templateId, tTemplates).name });
+          setData({ ...loaded, templateId, accentColor: next.defaultAccent, fontPairing: next.defaultFont });
+        } else {
+          setData(loaded);
+        }
       } catch (err) {
         if (!cancelled) {
           setLoadError(err instanceof Error ? err.message : t("errLoadFailed"));
@@ -195,6 +224,72 @@ export default function Editor({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditMode, editSlug, editToken]);
+
+  // New invitations: read back this device's draft for the category, from
+  // this template or (after a design switch) another one.
+  useEffect(() => {
+    if (isEditMode) return;
+    const id = setTimeout(() => {
+      const draft = loadDraft(template.category);
+      if (draft && sameCategoryTemplates.some((tpl) => tpl.id === draft.templateId)) {
+        const base = {
+          ...getDefaultInvitationData(templateId, contentT(contentMessages, draft.contentLocale, "defaultContent")),
+          contentLocale: draft.contentLocale,
+        };
+        const fields = { ...draft.fields };
+        if (draft.templateId !== templateId) {
+          for (const k of TEMPLATE_STYLE_KEYS) delete fields[k];
+        }
+        setData({ ...base, ...fields, templateId });
+        setDraftId(draft.draftId);
+        setStoryPreset(draft.storyPreset);
+        setDraftNotice(
+          draft.templateId === templateId
+            ? { kind: "restored" }
+            : { kind: "carried", from: getTemplateMeta(draft.templateId, tTemplates).name }
+        );
+      }
+      setDraftReady(true);
+    }, 0);
+    return () => clearTimeout(id);
+    // Once per editor load.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function persistDraft() {
+    if (isEditMode || !draftReady) return;
+    saveDraft(template.category, {
+      templateId,
+      draftId,
+      contentLocale,
+      storyPreset,
+      fields: changedFields(data, seed),
+    });
+  }
+  const persistRef = useRef(persistDraft);
+  useEffect(() => {
+    persistRef.current = persistDraft;
+  });
+  useEffect(() => {
+    if (isEditMode || !draftReady) return;
+    const id = setTimeout(() => persistRef.current(), 500);
+    return () => clearTimeout(id);
+  }, [data, storyPreset, draftReady, isEditMode]);
+  // Don't lose the last half-second of typing when the tab closes.
+  useEffect(() => {
+    const flush = () => persistRef.current();
+    window.addEventListener("pagehide", flush);
+    return () => window.removeEventListener("pagehide", flush);
+  }, []);
+
+  function startFresh() {
+    if (!window.confirm(t("startFreshConfirm"))) return;
+    clearDraft(template.category);
+    setData({ ...seed, contentLocale: uiLocale });
+    setStoryPreset(null);
+    setDraftId(generateDraftId());
+    setDraftNotice(null);
+  }
 
   function update<K extends keyof InvitationData>(key: K, value: InvitationData[K]) {
     setData((d) => ({ ...d, [key]: value }));
@@ -309,27 +404,35 @@ export default function Editor({
     setData((d) => ({ ...d, faq: d.faq.filter((_, i) => i !== index) }));
   }
 
-  async function handlePhotoChange(index: number, file: File | null) {
+  /** A picked photo goes through the cropper first (see uploadPhoto). */
+  function pickPhoto(file: File | null) {
     if (!file) return;
     if (!file.type.startsWith("image/")) {
       alert(t("errImageFile"));
       return;
     }
-    if (file.size > 8 * 1024 * 1024) {
+    setCropFile(file);
+  }
+
+  async function uploadPhoto(blob: Blob) {
+    setCropFile(null);
+    // Cropped output is a small JPEG; only an undecodable original (sent
+    // as-is) can still be over the storage limit.
+    if (blob.size > 8 * 1024 * 1024) {
       alert(t("errImageSize"));
       return;
     }
+    const index = data.photos.length;
     setUploadingIndex(index);
     try {
-      const path = `invitations/${draftId}/photo-${index}.jpg`;
-      const storageRef = ref(storage, path);
-      await uploadBytes(storageRef, file, { contentType: file.type });
+      // A unique name per upload: slots move around when photos are
+      // reordered or removed, so an index-based name could overwrite a
+      // photo that's still in use.
+      const name = `photo-${uniqueSuffix()}.jpg`;
+      const storageRef = ref(storage, `invitations/${draftId}/${name}`);
+      await uploadBytes(storageRef, blob, { contentType: blob.type || "image/jpeg" });
       const url = await getDownloadURL(storageRef);
-      setData((d) => {
-        const photos = [...d.photos];
-        photos[index] = url;
-        return { ...d, photos };
-      });
+      setData((d) => (d.photos.length >= 6 ? d : { ...d, photos: [...d.photos.filter(Boolean), url] }));
     } catch (err) {
       console.error(err);
       alert(t("errPhotoUpload"));
@@ -338,18 +441,20 @@ export default function Editor({
     }
   }
 
-  async function removePhoto(index: number) {
+  // Files stay in Storage (the rules don't allow client deletes); the
+  // photo just leaves the invitation.
+  function removePhoto(index: number) {
+    setData((d) => ({ ...d, photos: d.photos.filter((_, i) => i !== index) }));
+  }
+
+  function movePhoto(index: number, by: -1 | 1) {
     setData((d) => {
+      const to = index + by;
+      if (to < 0 || to >= d.photos.length) return d;
       const photos = [...d.photos];
-      photos.splice(index, 1);
+      [photos[index], photos[to]] = [photos[to], photos[index]];
       return { ...d, photos };
     });
-    try {
-      const path = `invitations/${draftId}/photo-${index}.jpg`;
-      await deleteObject(ref(storage, path));
-    } catch {
-      // Best-effort cleanup; safe to ignore (e.g. slot was never uploaded).
-    }
   }
 
   async function handleMusicChange(file: File | null) {
@@ -364,8 +469,8 @@ export default function Editor({
     }
     setUploadingMusic(true);
     try {
-      const path = `invitations/${draftId}/background-music`;
-      const storageRef = ref(storage, path);
+      // Unique per upload, like photos: storage rules only allow creating files.
+      const storageRef = ref(storage, `invitations/${draftId}/music-${uniqueSuffix()}`);
       await uploadBytes(storageRef, file, { contentType: file.type });
       const url = await getDownloadURL(storageRef);
       update("backgroundMusic", url);
@@ -377,13 +482,10 @@ export default function Editor({
     }
   }
 
-  async function removeMusic() {
+  // The file stays in Storage (clients can't delete); the invitation just
+  // stops using it.
+  function removeMusic() {
     update("backgroundMusic", "");
-    try {
-      await deleteObject(ref(storage, `invitations/${draftId}/background-music`));
-    } catch {
-      // Best-effort cleanup; safe to ignore.
-    }
   }
 
   const initials = resolveMonogram(data.brideName, data.groomName, data.monogram, false);
@@ -465,6 +567,7 @@ export default function Editor({
               throw new Error(j.error ?? t("errPaymentVerifyFailed"));
             }
             const { slug, editToken: newToken } = await verifyRes.json();
+            clearDraft(template.category);
             router.push(
               `/invite/${slug}?welcome=1&editToken=${encodeURIComponent(newToken)}&templateId=${encodeURIComponent(templateId)}`
             );
@@ -524,9 +627,50 @@ export default function Editor({
                 {t("viewRsvps")}
               </Link>
             )}
-            <Link href="/" className="text-xs text-neutral-400 hover:text-neutral-700 dark:text-neutral-500 dark:hover:text-neutral-300">
-              {t("changeTemplate")}
-            </Link>
+            <details className="group relative">
+              <summary className="flex cursor-pointer list-none items-center gap-1 text-xs text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200 [&::-webkit-details-marker]:hidden">
+                {t("switchTemplate")}
+                <ChevronDown size={13} className="transition group-open:rotate-180" aria-hidden />
+              </summary>
+              <div className="absolute right-0 z-30 mt-2 w-64 rounded-xl border border-neutral-200 bg-white p-2 shadow-lg dark:border-neutral-700 dark:bg-neutral-900">
+                <p className="px-2 pt-1 pb-2 text-xs text-neutral-500 dark:text-neutral-400">
+                  {t("switchTemplateHint")}
+                </p>
+                <ul className="max-h-72 overflow-y-auto">
+                  {sameCategoryTemplates.map((tpl) => (
+                    <li key={tpl.id}>
+                      {tpl.id === templateId ? (
+                        <span className="flex items-center justify-between rounded-lg bg-neutral-100 px-2 py-1.5 text-sm font-semibold text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50">
+                          {tpl.name}
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-neutral-500 uppercase">
+                            <Check size={12} aria-hidden />
+                            {t("currentTemplate")}
+                          </span>
+                        </span>
+                      ) : (
+                        <Link
+                          href={
+                            isEditMode
+                              ? `/create/${tpl.id}?edit=${editSlug}&token=${editToken}`
+                              : `/create/${tpl.id}`
+                          }
+                          onClick={() => persistDraft()}
+                          className="block rounded-lg px-2 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                        >
+                          {tpl.name}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href="/"
+                  className="mt-1 block border-t border-neutral-100 px-2 pt-2 text-xs text-neutral-400 hover:text-neutral-700 dark:border-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-300"
+                >
+                  {t("changeTemplate")}
+                </Link>
+              </div>
+            </details>
           </div>
         </header>
 
@@ -536,6 +680,20 @@ export default function Editor({
           <div className="p-6 text-sm text-red-600">{loadError}</div>
         ) : (
           <div className="flex-1 space-y-8 overflow-y-auto px-5 py-6">
+            {draftNotice && (
+              <div className="flex items-start justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
+                <p>
+                  {draftNotice.kind === "restored"
+                    ? t("draftRestored")
+                    : t("draftCarried", { template: draftNotice.from })}
+                </p>
+                {!isEditMode && (
+                  <button type="button" onClick={startFresh} className="shrink-0 font-semibold underline">
+                    {t("startFresh")}
+                  </button>
+                )}
+              </div>
+            )}
             <div className="space-y-2 rounded-lg border border-neutral-200 p-3 dark:border-neutral-700">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
@@ -795,18 +953,31 @@ export default function Editor({
               }}
             >
               <div className="grid grid-cols-3 gap-3">
-                {[0, 1, 2, 3, 4, 5].map((i) => (
-                  <PhotoSlot
-                    key={i}
+                {data.photos.filter(Boolean).map((url, i, all) => (
+                  <PhotoTile
+                    key={url}
                     index={i}
-                    url={data.photos[i]}
-                    uploading={uploadingIndex === i}
-                    onChange={handlePhotoChange}
+                    count={all.length}
+                    url={url}
                     onRemove={removePhoto}
+                    onMove={movePhoto}
                   />
                 ))}
+                {data.photos.filter(Boolean).length < 6 && (
+                  <AddPhotoTile
+                    index={data.photos.filter(Boolean).length}
+                    uploading={uploadingIndex !== null}
+                    onPick={pickPhoto}
+                  />
+                )}
               </div>
               <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("photoGalleryHint")}</p>
+              {data.photos.filter(Boolean).length > 1 && (
+                <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("photoOrderHint")}</p>
+              )}
+              {cropFile && (
+                <PhotoCropper file={cropFile} onCancel={() => setCropFile(null)} onApply={uploadPhoto} />
+              )}
             </FormSection>
 
             <FormSection

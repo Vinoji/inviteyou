@@ -22,14 +22,21 @@ export function useRevealHole(
   });
 
   function open(duration: number, ease: [number, number, number, number] = [0.45, 0, 0.3, 1]) {
-    const root = rootRef.current?.getBoundingClientRect();
+    const rootEl = rootRef.current;
+    const root = rootEl?.getBoundingClientRect();
     const from = fromRef.current?.getBoundingClientRect();
-    if (!root || !from) return;
-    const cx = from.left - root.left + from.width / 2;
-    const cy = from.top - root.top + from.height / 2;
-    geom.current = { w: root.width, h: root.height, cx, cy };
+    if (!rootEl || !root || !from) return;
+    // Bounding rects are on-screen (post-transform) pixels, but the clip
+    // path is in the element's own pixels — they differ when an ancestor
+    // is scaled (the landing page's shrunk previews).
+    const w = rootEl.offsetWidth || root.width;
+    const h = rootEl.offsetHeight || root.height;
+    const k = root.width ? w / root.width : 1;
+    const cx = (from.left - root.left + from.width / 2) * k;
+    const cy = (from.top - root.top + from.height / 2) * k;
+    geom.current = { w, h, cx, cy };
     // Just past the farthest corner, so the whole sweep is visible.
-    const max = Math.hypot(Math.max(cx, root.width - cx), Math.max(cy, root.height - cy)) * 1.04;
+    const max = Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy)) * 1.04;
     animate(radius, max, { duration, ease });
   }
 

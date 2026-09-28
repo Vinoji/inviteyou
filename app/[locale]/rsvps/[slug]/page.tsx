@@ -6,7 +6,11 @@ import { Link } from "@/i18n/navigation";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { getTemplateConfig } from "@/lib/templates";
 import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
-import type { InvitationData, RsvpEntry } from "@/lib/types";
+import type { InvitationData, RsvpContact, RsvpEntry } from "@/lib/types";
+import { parseIsoDate } from "@/lib/calendar";
+import HostTools, { RemindButton } from "@/components/host/HostTools";
+import { NAME_TOKEN, URL_TOKEN } from "@/lib/share";
+import { buildWhatsAppMessage } from "@/lib/inviteMessage";
 
 // Token-gated, not linked from anywhere public — keep it out of search
 // results as defense in depth on top of the token check itself.
@@ -33,16 +37,55 @@ async function getGuestList(slug: string, token: string | undefined) {
   const invSnap = await db.collection("invitations").doc(slug).get();
   if (!invSnap.exists) return null;
 
-  const rsvpsSnap = await db
-    .collection("invitations")
-    .doc(slug)
-    .collection("rsvps")
-    .orderBy("createdAt", "desc")
-    .get();
+  const [rsvpsSnap, contactsSnap] = await Promise.all([
+    db.collection("invitations").doc(slug).collection("rsvps").orderBy("createdAt", "desc").get(),
+    db.collection("invitations").doc(slug).collection("rsvpContacts").get(),
+  ]);
+  const phones = new Map(
+    contactsSnap.docs.map((d) => [d.id, (d.data() as RsvpContact).phone] as const)
+  );
 
   return {
     data: invSnap.data() as InvitationData,
-    rsvps: rsvpsSnap.docs.map((d) => d.data() as RsvpEntry),
+    rsvps: rsvpsSnap.docs.map((d) => ({ ...(d.data() as RsvpEntry), phone: phones.get(d.id) ?? "" })),
+  };
+}
+
+/**
+ * Share / personal-invite / reminder texts, worded in the invitation's own
+ * language (that's what guests read), with URL and name tokens left for
+ * HostTools to fill in the browser.
+ */
+async function buildHostMessages(data: InvitationData, templateCategory: string) {
+  const locale = data.contentLocale ?? "en";
+  const [t, tReminder, tCategories, tCommon, format] = await Promise.all([
+    getTranslations({ locale, namespace: "invite.whatsapp" }),
+    getTranslations({ locale, namespace: "invite.reminder" }),
+    getTranslations({ locale, namespace: "categories" }),
+    getTranslations({ locale, namespace: "common" }),
+    getFormatter({ locale }),
+  ]);
+  const category = getCategoryMeta(templateCategory, tCategories);
+  const title = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
+  const day = parseIsoDate(data.weddingDate);
+  const date = day
+    ? format.dateTime(day, { weekday: "long", day: "numeric", month: "long", year: "numeric" })
+    : "";
+  const events = [
+    { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue?.name ?? "" },
+    ...(category.eventBLabel
+      ? [{ label: category.eventBLabel, time: data.receptionTime, venue: data.receptionVenue?.name ?? "" }]
+      : []),
+  ];
+  const hosts = category.singlePerson
+    ? data.brideName
+    : [data.brideName, data.groomName].filter(Boolean).join(" & ");
+  const base = { title, date, events, url: URL_TOKEN, hosts };
+  return {
+    share: buildWhatsAppMessage(t, { ...base, kind: "invite" }),
+    personal: buildWhatsAppMessage(t, { ...base, kind: "invite", guest: NAME_TOKEN }),
+    reminder: buildWhatsAppMessage(t, { ...base, kind: "reminder", guest: NAME_TOKEN }),
+    guestFallback: tReminder("guestFallback"),
   };
 }
 
@@ -89,6 +132,7 @@ export default async function RsvpsPage({
   const template = getTemplateConfig(data.templateId);
   const category = getCategoryMeta(template.category, tCategories);
   const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
+  const hostMessages = await buildHostMessages(data, template.category);
 
   const attending = rsvps.filter((r) => r.attending);
   const declined = rsvps.filter((r) => !r.attending);
@@ -131,6 +175,8 @@ export default async function RsvpsPage({
         />
       </div>
 
+      <HostTools slug={slug} messages={hostMessages} />
+
       <div className="mt-10 space-y-3">
         {rsvps.length === 0 ? (
           <p className="rounded-xl border border-dashed border-neutral-200 p-10 text-center text-sm text-neutral-400 dark:border-neutral-800 dark:text-neutral-500">
@@ -161,6 +207,28 @@ export default async function RsvpsPage({
                   year: "numeric",
                 })}
               </p>
+              {r.attending && (
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+                  {r.phone ? (
+                    <>
+                      <a
+                        href={`tel:${r.phone.replace(/\s/g, "")}`}
+                        className="text-neutral-600 hover:underline dark:text-neutral-300"
+                      >
+                        {r.phone}
+                      </a>
+                      <RemindButton
+                        slug={slug}
+                        name={r.guestName}
+                        phone={r.phone}
+                        template={hostMessages.reminder}
+                      />
+                    </>
+                  ) : (
+                    <span className="text-xs text-neutral-400 dark:text-neutral-500">{t("noPhone")}</span>
+                  )}
+                </div>
+              )}
               {r.message && (
                 <p className="mt-2 flex items-start gap-1.5 text-sm text-neutral-700 dark:text-neutral-300">
                   <MessageSquare size={14} className="mt-0.5 shrink-0 opacity-40" aria-hidden />

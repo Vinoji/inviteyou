@@ -18,7 +18,9 @@
     "feature2Title": "One link, one QR code",
     "feature2Body": "Share a single page with every guest, with directions, RSVPs and a live countdown.",
     "feature3Title": "₹199, pay once",
-    "feature3Body": "Publish for a flat one-time fee. Editing afterwards is always free."
+    "feature3Body": "Publish for a flat one-time fee. Editing afterwards is always free.",
+    "tryIt": "Tap to try it",
+    "replay": "Play again"
   },
   "notFound": {
     "eyebrow": "404",
@@ -181,7 +183,27 @@
     "familyLimit": "Up to {max} per side.",
     "contentLocaleTitle": "Invitation language",
     "contentLocaleHint": "The language your guests will see — labels, dates and suggested stories. The editor stays in the language you picked at the top.",
-    "useTamilFont": "Use a Tamil font for the best look"
+    "useTamilFont": "Use a Tamil font for the best look",
+    "draftRestored": "Picked up where you left off — your draft is saved on this device.",
+    "draftCarried": "Your details were carried over from {template}.",
+    "startFresh": "Start fresh",
+    "startFreshConfirm": "Clear everything you've entered and start again from the sample content?",
+    "switchTemplate": "Switch design",
+    "switchTemplateHint": "Your names, dates, story and photos stay — only the design changes.",
+    "currentTemplate": "Current",
+    "photoOrderHint": "Use the arrows to change the order.",
+    "moveEarlier": "Move photo {n} earlier",
+    "moveLater": "Move photo {n} later",
+    "coverBadge": "Cover",
+    "cropTitle": "Crop photo",
+    "aspectOriginal": "Original",
+    "aspectSquare": "Square",
+    "aspectPortrait": "Portrait",
+    "aspectLandscape": "Landscape",
+    "zoom": "Zoom",
+    "cropDrag": "Drag the photo to position it.",
+    "cropApply": "Use photo",
+    "cropCancel": "Cancel"
   },
   "invite": {
     "hero": {
@@ -251,7 +273,10 @@
       "errGeneric": "Something went wrong. Please try again.",
       "sending": "Sending...",
       "send": "Send RSVP",
-      "disabledPreview": "This form is disabled in the live preview."
+      "disabledPreview": "This form is disabled in the live preview.",
+      "phoneLabel": "WhatsApp number (optional)",
+      "phoneHint": "Only the couple sees this — for event reminders.",
+      "errPhone": "Please enter a valid phone number, or leave it empty."
     },
     "schedule": {
       "heading": "Event Schedule",
@@ -265,7 +290,9 @@
       "copied": "Copied!",
       "copy": "Copy",
       "shareVia": "Share via...",
-      "shareText": "You're invited! {title}:"
+      "shareText": "You're invited! {title}:",
+      "whatsapp": "Share on WhatsApp",
+      "printCard": "Printable card (PDF)"
     },
     "story": {
       "defaultTitle": "Our Story"
@@ -301,7 +328,8 @@
       "defaultReception": "Reception"
     },
     "opengraph": {
-      "youreInvited": "You're Invited"
+      "youreInvited": "You're Invited",
+      "tapToOpen": "Tap to open your invitation"
     },
     "royal": {
       "intro": {
@@ -467,6 +495,38 @@
       "children": "Blessed with <n>{name}</n>",
       "blessings": "With the blessings of <n>{name}</n>",
       "other": "{label} <n>{name}</n>"
+    },
+    "calendar": {
+      "button": "Add to calendar",
+      "google": "Google Calendar",
+      "ics": "Apple / Outlook / phone",
+      "hint": "Includes a reminder the day before.",
+      "details": "{title}\nInvitation, directions & RSVP: {url}"
+    },
+    "greeting": {
+      "dear": "Dear {name},",
+      "sub": "you are warmly invited"
+    },
+    "card": {
+      "metaTitle": "Printable card · {title}",
+      "print": "Save as PDF / Print",
+      "hint": "In the print window, choose “Save as PDF” as the printer.",
+      "invited": "You're invited",
+      "request": "request the pleasure of your company",
+      "scan": "Scan for the invitation, directions & RSVP",
+      "back": "Back to the invitation"
+    },
+    "reminder": {
+      "guestFallback": "there"
+    },
+    "whatsapp": {
+      "heading": "💌 *You are invited!*",
+      "reminderHeading": "🔔 *A gentle reminder*",
+      "dear": "Dear {name},",
+      "intro": "With joyful hearts, we invite you and your family to celebrate this special day with us.",
+      "reminderIntro": "The big day is almost here — we cannot wait to celebrate with you!",
+      "open": "✨ Open your invitation for directions, RSVP and more:",
+      "thanks": "Your presence and blessings mean the world to us. Thank you! 🙏"
     }
   },
   "rsvpsPage": {
@@ -480,7 +540,26 @@
     "noRsvpsYet": "No RSVPs yet — once you share your invitation link, responses will show up here.",
     "sideOf": "{name}'s side",
     "friendOfBoth": "Friend of both",
-    "backToEdit": "← Back to edit your invitation"
+    "backToEdit": "← Back to edit your invitation",
+    "toolsTitle": "Share & invite",
+    "shareInvite": "Share on WhatsApp",
+    "printCard": "Printable card (PDF)",
+    "openInvite": "Open invitation",
+    "personalTitle": "Personal invitation links",
+    "personalHint": "Type a guest's name and they'll be greeted with “Dear Ravi & family” when they open it.",
+    "guestNameLabel": "Guest name",
+    "guestNamePlaceholder": "Ravi & family",
+    "phoneLabel": "WhatsApp number (optional)",
+    "phonePlaceholder": "98765 43210",
+    "sendWhatsapp": "Send on WhatsApp",
+    "copyLink": "Copy link",
+    "copied": "Copied!",
+    "remindersTitle": "Reminders",
+    "remindersHint": "Guests who shared a WhatsApp number get a one-tap reminder. For everyone else, copy the message into a group or broadcast list.",
+    "reminderPreview": "Reminder message",
+    "copyMessage": "Copy message",
+    "remind": "Remind",
+    "noPhone": "No number shared"
   },
   "invitePage": {
     "joinUsWithDate": "Join us in celebrating — {title} on {date}.",
@@ -1879,6 +1958,163 @@
         "tag": "Heartfelt",
         "text": "After years of dreaming and planning, we have finally found a place to call home. A home is only complete with the people who fill it with love, so please come and celebrate with us. — {a}"
       }
+    }
+  },
+  "site": {
+    "brand": "Namma Vivaham",
+    "home": "Namma Vivaham home",
+    "mainNav": "Main",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "nav": {
+      "templates": "Templates",
+      "demos": "Demos",
+      "support": "Support",
+      "create": "Create invitation"
+    },
+    "footer": {
+      "tagline": "Beautiful animated invitations for weddings and every celebration — in English and Tamil, shared with one link.",
+      "product": "Product",
+      "help": "Help",
+      "legal": "Legal",
+      "demoVideos": "Demo videos",
+      "supportCenter": "Support centre",
+      "faq": "FAQs",
+      "contact": "Contact us",
+      "privacy": "Privacy policy",
+      "payments": "Payments & refunds",
+      "yourData": "Your data",
+      "whatsappUs": "Chat on WhatsApp",
+      "follow": "Follow us",
+      "copyright": "© {years} {brand}. All rights reserved.",
+      "madeWith": "Made with love in Tamil Nadu"
+    },
+    "demo": {
+      "metaTitle": "Demos",
+      "eyebrow": "See it in action",
+      "title": "Every opening, live",
+      "intro": "Watch how an invitation comes together, then try each design's opening animation right here — tap, pull or scratch, just like your guests will.",
+      "step1Title": "Pick a design",
+      "step1Body": "Choose from wedding, anniversary, birthday and more — each with its own animated opening.",
+      "step2Title": "Make it yours",
+      "step2Body": "Add names, dates, venues, your story, family and photos. The preview updates as you type.",
+      "step3Title": "Share one link",
+      "step3Body": "Publish and send it on WhatsApp. Guests RSVP, get directions and add it to their calendar.",
+      "videosTitle": "Walkthrough videos",
+      "liveTitle": "Try every design",
+      "liveBody": "These are the real openings your guests see — each one plays on its own and can be tried by hand.",
+      "youtube": "More videos on our YouTube channel",
+      "use": "Use"
+    },
+    "support": {
+      "metaTitle": "Support",
+      "eyebrow": "Support",
+      "title": "How can we help?",
+      "intro": "Answers to the most common questions, and a real person to talk to when you need one.",
+      "topics": {
+        "editingTitle": "Editing after publishing",
+        "editingBody": "Use the private edit link from your publish confirmation. Keep it safe — it is the key to your invitation.",
+        "guestsTitle": "Guests & RSVPs",
+        "guestsBody": "Guests reply on the invitation. You see every response, send personal links and WhatsApp reminders from your guest list.",
+        "languageTitle": "English & Tamil",
+        "languageBody": "Edit in one language and set the invitation to another — guests always see the language you choose.",
+        "paymentsTitle": "Payments",
+        "paymentsBody": "Payments are processed securely by Razorpay. We never see or store your card or UPI details."
+      },
+      "faqTitle": "Frequently asked questions",
+      "faq": {
+        "editLinkQ": "How do I make changes after publishing?",
+        "editLinkA": "Right after payment we show your private edit link. Open it any time to change text, photos or the design, then press Save changes — the live invitation updates immediately.",
+        "lostLinkQ": "I lost my edit link. What now?",
+        "lostLinkA": "Contact us with your invitation link and your Razorpay payment ID. Once we confirm it is yours, we will send the edit link again.",
+        "changeDesignQ": "Can I switch to a different design later?",
+        "changeDesignA": "Yes. Use Switch design in the editor — your names, dates, story, family and photos stay; only the look changes.",
+        "rsvpQ": "Where do I see who is coming?",
+        "rsvpA": "Open your guest list (View RSVPs) from the editor or your edit link. It shows every response, guest counts and messages, and lets you send reminders.",
+        "whatsappQ": "How do I send the invitation on WhatsApp?",
+        "whatsappA": "Use Share on WhatsApp on the invitation or in your guest list. You can also create personal links that greet each guest by name.",
+        "tamilQ": "Can the invitation be in Tamil?",
+        "tamilA": "Yes. Choose தமிழ் under Invitation language in the editor. Labels, dates and suggested stories switch to Tamil, and guests see it in Tamil.",
+        "photosQ": "What photos work best?",
+        "photosA": "Clear, well-lit photos. You can crop each one before uploading and reorder them with the arrows — the first photo becomes the cover.",
+        "paymentQ": "Is my payment safe?",
+        "paymentA": "Payments go through Razorpay, a PCI-DSS compliant payment gateway. Card and UPI details are entered on Razorpay's secure form and never reach our servers."
+      },
+      "contactTitle": "Still need help?",
+      "contactBody": "Write to us with your invitation link and a short description of the problem, and we will get back to you.",
+      "whatsapp": "Chat on WhatsApp",
+      "responseTime": "We usually reply within one working day.",
+      "privacyNote": "Please don't send passwords or card details. Read how we handle your data in our <link>privacy policy</link>."
+    },
+    "privacy": {
+      "metaTitle": "Privacy policy",
+      "eyebrow": "Legal",
+      "title": "Privacy policy",
+      "updated": "Last updated: 28 September 2026",
+      "intro": "Namma Vivaham helps you create and share invitations. This policy explains, in plain language, what information we handle, why, and the choices you have.",
+      "contents": "Contents",
+      "collect": {
+        "title": "What we collect",
+        "body": [
+          "Invitation content you enter: names, dates, times, venues, your story, family names, FAQs, travel details, and the photos and music you upload.",
+          "We do not ask you to create an account. Instead, each published invitation has a private edit link that only you receive.",
+          "Basic usage information: how many times an invitation was opened (a simple count, not who opened it)."
+        ]
+      },
+      "guests": {
+        "title": "Information from your guests",
+        "body": [
+          "When guests RSVP they may give their name, number of guests, whether they are coming, which side they are from, a message, and optionally a WhatsApp number for reminders.",
+          "Guest phone numbers are visible only to the invitation owner through the private guest list. They are never shown on the public invitation.",
+          "Messages from guests who accept may appear on the invitation's blessings wall. Photos guests upload appear in the shared guest gallery."
+        ]
+      },
+      "use": {
+        "title": "How we use information",
+        "body": [
+          "To show your invitation to the people you share it with, record RSVPs, and let you manage your guest list.",
+          "To prevent abuse — for example, limiting repeated RSVP or photo submissions from the same device. For this, IP addresses are kept briefly in memory and not stored.",
+          "We do not sell your information, and we do not use it for advertising."
+        ]
+      },
+      "payments": {
+        "title": "Payments & refunds",
+        "body": [
+          "Payments are processed by Razorpay. Your card, UPI or bank details are entered on Razorpay's secure checkout and never reach our servers.",
+          "We keep only the payment and order IDs needed to confirm your purchase and help with any issue. For refund requests, contact us with your payment ID."
+        ]
+      },
+      "storage": {
+        "title": "Where data is stored",
+        "body": [
+          "Invitations, RSVPs and uploaded files are stored with Google Firebase (Cloud Firestore and Cloud Storage). The website is hosted on Vercel.",
+          "Published invitations and their photos can be seen by anyone who has the link — please share it only with the people you invite.",
+          "Access rules prevent anyone else from changing your invitation or replacing its photos."
+        ]
+      },
+      "device": {
+        "title": "Cookies & storage on your device",
+        "body": [
+          "We use a small number of functional cookies and browser storage: your language and theme preference, an unsaved draft of the invitation you are creating (kept only on your device), and a note that you have already opened an invitation so its opening does not replay every visit.",
+          "We do not use advertising or tracking cookies."
+        ]
+      },
+      "yourData": {
+        "title": "Your choices & your data",
+        "body": [
+          "You can change or remove invitation content at any time with your edit link.",
+          "To delete a published invitation with its RSVPs and photos, or to ask what information we hold, contact us from the email linked below with your invitation link.",
+          "Guests who want their RSVP, message or phone number removed can contact the couple, or write to us directly."
+        ]
+      },
+      "changes": {
+        "title": "Changes to this policy",
+        "body": [
+          "If we change how we handle information, we will update this page and the date at the top."
+        ]
+      },
+      "contactTitle": "Questions?",
+      "contactBody": "Contact us about privacy at"
     }
   }
 }

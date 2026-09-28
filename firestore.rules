@@ -1,42 +1,15 @@
 rules_version = '2';
 
+// Every read and write in this app goes through the Admin SDK in server
+// route handlers and server components, which bypass these rules. No
+// browser code reads Firestore directly, so clients get no access at all:
+// published invitations are served as rendered pages, and guest names,
+// RSVP messages, phone numbers and edit tokens are never listable through
+// the public Firestore API.
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    match /invitations/{invitationId} {
-      // Public read only once published. Pending-payment drafts are never
-      // readable by clients.
-      allow get: if resource.data.status == 'published';
-      allow list: if false;
-
-      // All writes (drafts, publish, edits) go through the Admin SDK in
-      // server route handlers, which bypass these rules entirely. Direct
-      // client writes are always denied.
-      allow create, update, delete: if false;
-
-      match /rsvps/{rsvpId} {
-        // RSVPs are readable alongside a published invitation (e.g. for a
-        // guest list view) but only ever written via the Admin SDK so we can
-        // rate-limit and validate server-side.
-        allow get, list: if get(/databases/$(database)/documents/invitations/$(invitationId)).data.status == 'published';
-        allow create, update, delete: if false;
-      }
-
-      match /guestPhotos/{photoId} {
-        // Same pattern as rsvps: the actual image bytes go straight to
-        // Storage from the client (storage.rules validates content-type/
-        // size), but registering that upload in Firestore — where it can
-        // be rate-limited and count-capped — always goes through the
-        // Admin SDK.
-        allow get, list: if get(/databases/$(database)/documents/invitations/$(invitationId)).data.status == 'published';
-        allow create, update, delete: if false;
-      }
-
-      // editToken / Razorpay payment ids — never exposed to clients, even
-      // for a published invitation. Admin SDK only.
-      match /private/{docId} {
-        allow read, write: if false;
-      }
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

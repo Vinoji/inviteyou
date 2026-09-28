@@ -43,3 +43,55 @@
   height: 100%;
   pointer-events: none;
 }
+
+/* "Dear Ravi & family," from a personal invite link — a small card over
+ * the top of any intro; never takes clicks from the scene under it. */
+.greeting {
+  position: absolute;
+  top: max(14px, env(safe-area-inset-top));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: max-content;
+  max-width: min(88%, 420px);
+  padding: 8px 18px 9px;
+  border-radius: 14px;
+  background: rgba(20, 14, 8, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(235, 208, 138, 0.45);
+  color: #fff8ea;
+  text-align: center;
+  pointer-events: none;
+  animation: greetIn 0.9s ease-out both 0.3s;
+}
+.greetingName {
+  display: block;
+  font-size: 17px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.greetingSub {
+  display: block;
+  margin-top: 2px;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #ebd08a;
+}
+:lang(ta) .greetingSub {
+  letter-spacing: normal;
+  text-transform: none;
+  font-size: 12px;
+}
+@keyframes greetIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .greeting {
+    animation: none;
+  }
+}

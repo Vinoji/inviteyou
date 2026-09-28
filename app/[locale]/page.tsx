@@ -2,7 +2,9 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { getAllCategoryMeta } from "@/lib/i18n/categories";
 import { getTemplatesByCategory } from "@/lib/i18n/templates";
-import IntroPreview from "@/components/invite/intros/IntroPreview";
+import { showcaseProps } from "@/lib/i18n/showcase";
+import TemplateShowcase from "@/components/landing/TemplateShowcase";
+import type { TemplateMeta } from "@/lib/i18n/templates";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -10,6 +12,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const t = await getTranslations("landing");
   const tCategories = await getTranslations("categories");
   const tTemplates = await getTranslations("templates");
+  const tDefaults = await getTranslations("defaultContent");
+  const tCommon = await getTranslations("common");
+
+  const showcase = (tpl: TemplateMeta, singlePerson: boolean) =>
+    showcaseProps(tpl, singlePerson, tDefaults, tCommon);
   const categories = getAllCategoryMeta(tCategories);
 
   return (
@@ -27,7 +34,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       {/* Quick jump to each category */}
-      <nav className="mx-auto flex max-w-5xl flex-wrap justify-center gap-2 px-6 pb-10">
+      <nav id="templates" className="mx-auto flex max-w-5xl scroll-mt-24 flex-wrap justify-center gap-2 px-6 pb-10">
         {categories.map((c) => (
           <a
             key={c.id}
@@ -46,7 +53,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <section
             key={category.id}
             id={category.id}
-            className="mx-auto max-w-6xl scroll-mt-20 px-6 pb-16"
+            className="mx-auto max-w-6xl scroll-mt-24 px-6 pb-16"
           >
             <div className="mb-6 flex items-baseline justify-between border-b border-neutral-100 pb-3 dark:border-neutral-800">
               <h2 className="font-serif text-2xl font-bold text-neutral-900 dark:text-neutral-50">
@@ -54,34 +61,34 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
               </h2>
               <p className="text-sm text-neutral-500 dark:text-neutral-400">{category.tagline}</p>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {templates.map((tpl) => (
-                <Link
+                <article
                   key={tpl.id}
-                  href={`/create/${tpl.id}`}
-                  className="group relative flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-neutral-800 dark:bg-neutral-900"
+                  className="group flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-neutral-800 dark:bg-neutral-900"
                 >
-                  <div
-                    className={`relative flex h-44 items-end bg-gradient-to-br p-5 ${tpl.cardGradient}`}
-                  >
-                    <IntroPreview intro={tpl.intro} />
-                    <div className={`${tpl.cardTextClass}`}>
-                      <p className="text-xs font-semibold tracking-widest uppercase opacity-80">
-                        {tpl.tagline}
-                      </p>
-                      <p className="mt-1 font-serif text-2xl font-bold">{tpl.name}</p>
+                  <div className={`bg-gradient-to-br p-3 ${tpl.cardGradient}`}>
+                    <div className="overflow-hidden rounded-[22px] shadow-lg ring-1 ring-black/10">
+                      <TemplateShowcase {...showcase(tpl, category.singlePerson)} />
                     </div>
                   </div>
-                  <div className="flex flex-1 flex-col gap-4 p-5">
-                    <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                      {tpl.description}
+                  <div className="flex flex-1 flex-col gap-2 p-5">
+                    <p className="text-xs font-semibold tracking-widest text-amber-700 uppercase dark:text-amber-500">
+                      {tpl.tagline}
                     </p>
-                    <span className="mt-auto inline-flex items-center gap-1 text-sm font-semibold text-amber-700 group-hover:underline">
+                    <h3 className="font-serif text-2xl font-bold text-neutral-900 dark:text-neutral-50">
+                      {tpl.name}
+                    </h3>
+                    <p className="mb-3 text-sm text-neutral-600 dark:text-neutral-400">{tpl.description}</p>
+                    <Link
+                      href={`/create/${tpl.id}`}
+                      className="mt-auto inline-flex items-center justify-center gap-1.5 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-semibold text-white transition group-hover:bg-amber-700 dark:bg-neutral-100 dark:text-neutral-900 dark:group-hover:bg-amber-500"
+                    >
                       {t("useTemplate")}
                       <span aria-hidden>→</span>
-                    </span>
+                    </Link>
                   </div>
-                </Link>
+                </article>
               ))}
             </div>
           </section>

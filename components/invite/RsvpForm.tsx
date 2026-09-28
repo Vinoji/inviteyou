@@ -7,6 +7,7 @@ import { getCategoryMeta } from "@/lib/i18n/categories";
 import { getTemplateConfig } from "@/lib/templates";
 import SectionDivider from "./SectionDivider";
 import { RSVP_SENT_EVENT } from "./intros/events";
+import { waPhone } from "@/lib/share";
 
 const DEFAULT_CLASSES = {
   section: "mx-auto max-w-lg px-6 py-14 sm:py-20",
@@ -48,6 +49,7 @@ export default function RsvpForm({
   mode = "public",
   variant = "default",
   header,
+  initialName = "",
 }: {
   slug: string;
   accentColor: string;
@@ -58,6 +60,8 @@ export default function RsvpForm({
   variant?: "default" | "royal";
   /** Replaces the default "RSVP" heading + divider. */
   header?: ReactNode;
+  /** Prefill from a personal invite link's greeting. */
+  initialName?: string;
 }) {
   const c = variant === "royal" ? ROYAL_CLASSES : DEFAULT_CLASSES;
   const t = useTranslations("invite.rsvp");
@@ -67,7 +71,8 @@ export default function RsvpForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
-    guestName: "",
+    guestName: initialName,
+    phone: "",
     guestCount: 1,
     attending: "yes",
     side: "",
@@ -82,6 +87,10 @@ export default function RsvpForm({
       setError(t("errName"));
       return;
     }
+    if (form.phone.trim() && !waPhone(form.phone)) {
+      setError(t("errPhone"));
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch(`/api/rsvp/${slug}`, {
@@ -92,6 +101,7 @@ export default function RsvpForm({
           guestCount: Number(form.guestCount) || 1,
           attending: form.attending === "yes",
           side: form.side || undefined,
+          phone: form.phone.trim() || undefined,
           message: form.message.trim(),
         }),
       });
@@ -185,6 +195,24 @@ export default function RsvpForm({
                 <option value="no">{t("optionNo")}</option>
               </select>
             </div>
+          </div>
+          <div>
+            <label className={c.label} htmlFor="rsvp-phone">
+              {t("phoneLabel")}
+            </label>
+            <input
+              id="rsvp-phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              maxLength={24}
+              value={form.phone}
+              onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+              className={c.input}
+              placeholder="98765 43210"
+              disabled={mode === "preview"}
+            />
+            <p className={`mt-1 ${c.note} text-left`}>{t("phoneHint")}</p>
           </div>
           {!category.singlePerson && (
             <div>

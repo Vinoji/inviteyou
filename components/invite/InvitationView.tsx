@@ -25,6 +25,7 @@ import GuestGallery from "./GuestGallery";
 import RsvpForm from "./RsvpForm";
 import BlessingsWall from "./BlessingsWall";
 import ShareBox from "./ShareBox";
+import AddToCalendar from "./AddToCalendar";
 import IntroHost from "./intros/IntroHost";
 import AudioToggle from "./AudioToggle";
 import ThingsToKnow from "./ThingsToKnow";
@@ -50,6 +51,7 @@ export default function InvitationView({
   mode,
   rsvpMessages = [],
   guestPhotos = [],
+  guestGreeting = "",
 }: {
   data: InvitationData;
   slug: string;
@@ -58,6 +60,8 @@ export default function InvitationView({
   rsvpMessages?: RsvpEntry[];
   /** Guest-uploaded photos, newest first — public mode only. */
   guestPhotos?: GuestPhoto[];
+  /** From a personal link (?to=Ravi & family) — greets that guest. */
+  guestGreeting?: string;
 }) {
   const t = useTranslations("invite.view");
   const tCommon = useTranslations("common");
@@ -88,6 +92,7 @@ export default function InvitationView({
           coupleLabel={coupleLabel}
           rsvpMessages={rsvpMessages}
           guestPhotos={guestPhotos}
+          guestGreeting={guestGreeting}
         />
       </MotionThemeProvider>
     );
@@ -117,6 +122,7 @@ export default function InvitationView({
           accentColor={data.accentColor}
           fontPairing={data.fontPairing}
           monogram={data.monogram}
+          greeting={guestGreeting}
         />
         {mode === "public" && (
           <AudioToggle
@@ -176,7 +182,19 @@ export default function InvitationView({
                 templateId={data.templateId}
                 eventALabel={category.eventALabel}
                 eventBLabel={category.eventBLabel || t("defaultReception")}
-              />
+              >
+                <AddToCalendar
+                  slug={slug}
+                  title={occasionTitle}
+                  date={data.weddingDate}
+                  events={[
+                    { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue },
+                    ...(category.eventBLabel
+                      ? [{ label: category.eventBLabel, time: data.receptionTime, venue: data.receptionVenue }]
+                      : []),
+                  ]}
+                />
+              </Schedule>
             </Section>
           </ScrollScene>
         )}
@@ -232,6 +250,7 @@ export default function InvitationView({
                 brideName={data.brideName}
                 groomName={data.groomName}
                 mode={mode}
+                initialName={guestGreeting}
               />
             </Section>
           </ScrollScene>
@@ -251,7 +270,19 @@ export default function InvitationView({
         {mode === "public" && (
           <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="share">
             <Section delay={0.04}>
-              <ShareBox slug={slug} occasionTitle={occasionTitle} accentColor={data.accentColor} />
+              <ShareBox
+                slug={slug}
+                occasionTitle={occasionTitle}
+                accentColor={data.accentColor}
+                weddingDate={data.weddingDate}
+                hosts={coupleLabel}
+                events={[
+                  { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue },
+                  ...(category.eventBLabel
+                    ? [{ label: category.eventBLabel, time: data.receptionTime, venue: data.receptionVenue }]
+                    : []),
+                ]}
+              />
             </Section>
           </ScrollScene>
         )}

@@ -1,0 +1,150 @@
+/* Site header / footer chrome for the marketing pages. */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.bar {
+  height: 72px;
+  transition: height 0.3s ease;
+}
+.scrolled {
+  background: color-mix(in srgb, var(--background, #fff) 88%, transparent);
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom-color: color-mix(in srgb, currentColor 10%, transparent);
+  box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.18);
+}
+.scrolled .bar {
+  height: 60px;
+}
+
+/* Marigold mark: petals turn slowly, and a little faster on hover. */
+.petals {
+  transform-origin: 20px 20px;
+  animation: spin 18s linear infinite;
+}
+a:hover .petals {
+  animation-duration: 3s;
+}
+.core {
+  animation: glow 2.6s ease-in-out infinite;
+  transform-origin: 20px 20px;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes glow {
+  50% {
+    transform: scale(1.14);
+  }
+}
+
+/* Wordmark: a slow gold shimmer across the letters. */
+.wordmark {
+  background: linear-gradient(
+    100deg,
+    #9a3412 0%,
+    #b45309 30%,
+    #f59e0b 45%,
+    #fde68a 50%,
+    #f59e0b 55%,
+    #b45309 70%,
+    #9a3412 100%
+  );
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s ease-in-out infinite;
+}
+:global(.dark) .wordmark {
+  background-image: linear-gradient(
+    100deg,
+    #fbbf24 0%,
+    #f59e0b 30%,
+    #fff7d6 50%,
+    #f59e0b 70%,
+    #fbbf24 100%
+  );
+}
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 100% 0;
+  }
+  50% {
+    background-position: 0 0;
+  }
+}
+
+/* Primary call to action with a light sweep on hover. */
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  padding: 9px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #b45309, #e8862a);
+  box-shadow: 0 6px 18px -6px rgba(180, 83, 9, 0.6);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+.cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -8px rgba(180, 83, 9, 0.7);
+}
+.cta:hover::after {
+  transform: translateX(120%);
+}
+
+/* Footer: a thin animated kolam-dot border along its top edge. */
+.footerEdge {
+  height: 6px;
+  background-image: radial-gradient(circle, #e8862a 1.6px, transparent 2px);
+  background-size: 16px 6px;
+  animation: drift 20s linear infinite;
+  opacity: 0.7;
+}
+@keyframes drift {
+  to {
+    background-position: 160px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petals,
+  .core,
+  .wordmark,
+  .footerEdge {
+    animation: none;
+  }
+  .header,
+  .bar,
+  .cta,
+  .cta::after {
+    transition: none;
+  }
+}

@@ -162,6 +162,7 @@ export function RoyalEvents({
   receptionVenue,
   eventALabel,
   eventBLabel,
+  children,
 }: {
   weddingDate: string;
   city: string;
@@ -171,6 +172,8 @@ export function RoyalEvents({
   receptionVenue: VenueInfo;
   eventALabel: string;
   eventBLabel: string;
+  /** Rendered after the venue cards (the add-to-calendar buttons). */
+  children?: React.ReactNode;
 }) {
   const t = useTranslations("invite.royal.events");
   const format = useFormatter();
@@ -223,6 +226,7 @@ export function RoyalEvents({
           label={venues.length > 1 ? `${t("venue")} · ${v.label}` : t("venue")}
         />
       ))}
+      {children}
     </section>
   );
 }

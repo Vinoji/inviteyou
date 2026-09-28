@@ -40,6 +40,7 @@ export default function IntroHost({
   accentColor,
   fontPairing,
   monogram,
+  greeting = "",
 }: {
   introId: IntroId;
   templateId: string;
@@ -52,8 +53,11 @@ export default function IntroHost({
   accentColor: string;
   fontPairing: string;
   monogram?: MonogramInitials;
+  /** Guest name from a personal link, shown over the intro. */
+  greeting?: string;
 }) {
   const tCommon = useTranslations("common");
+  const tGreeting = useTranslations("invite.greeting");
   const [open, setOpen] = useState(false); // guest has acted
   const [gone, setGone] = useState(false); // intro finished and removed
   const [run, setRun] = useState(0); // bumps on replay to remount the intro
@@ -153,6 +157,12 @@ export default function IntroHost({
               burst={burst}
               preview={preview}
             />
+            {greeting && (
+              <p className={s.greeting} style={{ fontFamily: font.headingVar }}>
+                <span className={s.greetingName}>{tGreeting("dear", { name: greeting })}</span>
+                <span className={s.greetingSub}>{tGreeting("sub")}</span>
+              </p>
+            )}
           </div>
         )}
         <ParticleField ref={particlesRef} preset="marigold" mode="burst" className={s.particles} />

@@ -2,33 +2,39 @@ rules_version = '2';
 
 service firebase.storage {
   match /b/{bucket}/o {
-    // Photos and an optional background-music track live under
-    // invitations/{draftId}/*. The draftId is a random UUID generated
-    // client-side, so the path itself isn't guessable. There's no auth
-    // system in this app, so — like the rest of the product — access
-    // control here relies on the id being unguessable plus basic
-    // content-type/size validation rather than an owner check.
+    function isImage() {
+      return request.resource.contentType.matches('image/.*')
+          && request.resource.size < 8 * 1024 * 1024;
+    }
+    function isAudio() {
+      return request.resource.contentType.matches('audio/.*')
+          && request.resource.size < 15 * 1024 * 1024;
+    }
+
+    // The couple's photos and optional music, under invitations/{draftId}/.
+    // There's no sign-in in this app, and the draftId appears in published
+    // photo URLs, so the protection is: files are created once under a
+    // unique name and can never be overwritten or deleted by a client —
+    // nobody can replace a published invitation's photos.
     match /invitations/{invitationId}/{fileName} {
       allow read: if true;
-      allow write: if (request.resource.contentType.matches('image/.*')
-                        && request.resource.size < 8 * 1024 * 1024)
-                   || (request.resource.contentType.matches('audio/.*')
-                        && request.resource.size < 15 * 1024 * 1024);
+      allow create: if (fileName.matches('photo-[a-z0-9]+-[a-z0-9]+[.]jpg') && isImage())
+                    || (fileName.matches('music-[a-z0-9]+-[a-z0-9]+') && isAudio());
+      // LEGACY — the fixed names the currently deployed site (main) still
+      // uses; it replaces a slot by overwriting. Remove this rule once the
+      // unique-name uploads are live everywhere.
+      allow create, update: if (fileName.matches('photo-[0-5][.]jpg') && isImage())
+                            || (fileName == 'background-music' && isAudio());
       allow delete: if false;
     }
 
-    // Guest-submitted photos, uploaded straight from the public invite
-    // page. Unlike the path above, this folder is reachable by anyone with
-    // the (intentionally public) invite link — that's the point, guests
-    // are meant to add photos here. The per-invitation photo count cap and
-    // rate limiting live in the Admin SDK route that registers each
-    // upload in Firestore (POST /api/guest-photos/[slug]), not here —
-    // Storage rules alone can't count existing files or rate-limit.
+    // Photos guests add from the public invite page — reachable by anyone
+    // with the (intentionally public) link. Create-only, one UUID name per
+    // photo; the count cap and rate limit live in POST /api/guest-photos.
     match /invitations/{invitationId}/guest-photos/{fileName} {
       allow read: if true;
-      allow write: if request.resource.contentType.matches('image/.*')
-                   && request.resource.size < 8 * 1024 * 1024;
-      allow delete: if false;
+      allow create: if fileName.matches('[A-Za-z0-9-]+[.]jpg') && isImage();
+      allow update, delete: if false;
     }
 
     match /{allPaths=**} {

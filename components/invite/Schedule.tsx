@@ -79,6 +79,7 @@ export default function Schedule({
   templateId,
   eventALabel,
   eventBLabel,
+  children,
 }: {
   ceremonyTime: string;
   ceremonyVenue: VenueInfo;
@@ -89,6 +90,8 @@ export default function Schedule({
   templateId: string;
   eventALabel?: string;
   eventBLabel?: string;
+  /** Rendered under the event cards (the add-to-calendar buttons). */
+  children?: React.ReactNode;
 }) {
   const t = useTranslations("invite.schedule");
   const hasAny =
@@ -126,6 +129,7 @@ export default function Schedule({
           templateId={templateId}
         />
       </div>
+      {children}
     </section>
   );
 }

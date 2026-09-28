@@ -42,3 +42,4 @@ next-env.d.ts
 
 # run-namma skill's screenshot output (generated, not source)
 /.claude/skills/run-namma/screenshots/
+!.env.example

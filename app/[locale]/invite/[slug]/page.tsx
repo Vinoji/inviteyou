@@ -7,6 +7,7 @@ import InvitationView from "@/components/invite/InvitationView";
 import { INVITATION_NAMESPACES, getContentMessages } from "@/lib/i18n/contentMessages";
 import ViewTracker from "@/components/invite/ViewTracker";
 import WelcomeBanner from "@/components/invite/WelcomeBanner";
+import { cleanGreeting } from "@/lib/share";
 import type { InvitationData, RsvpEntry, GuestPhoto } from "@/lib/types";
 import { getTemplateConfig } from "@/lib/templates";
 import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
@@ -97,11 +98,11 @@ export default async function InvitePage({
   searchParams,
 }: {
   params: Promise<{ locale: string; slug: string }>;
-  searchParams: Promise<{ welcome?: string; editToken?: string; templateId?: string }>;
+  searchParams: Promise<{ welcome?: string; editToken?: string; templateId?: string; to?: string }>;
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const { welcome, editToken, templateId } = await searchParams;
+  const { welcome, editToken, templateId, to } = await searchParams;
   const data = await getInvitation(slug);
   if (!data) notFound();
   // Guests always see the invitation in the couple's chosen language,
@@ -132,6 +133,7 @@ export default async function InvitePage({
             mode="public"
             rsvpMessages={rsvpMessages}
             guestPhotos={guestPhotos}
+            guestGreeting={cleanGreeting(to)}
           />
         </div>
       </NextIntlClientProvider>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { rateLimit, getClientIp } from "@/lib/rateLimit";
 import { sanitizeAttendingSide } from "@/lib/sanitize";
+import { sanitizePhone } from "@/lib/share";
 
 export async function POST(
   req: NextRequest,
@@ -29,6 +30,8 @@ export async function POST(
   const message =
     typeof body?.message === "string" ? body.message.trim().slice(0, 500) : "";
   const side = sanitizeAttendingSide(body?.side);
+  // Optional, for the couple's WhatsApp reminders; never shown publicly.
+  const phone = sanitizePhone(body?.phone);
 
   if (!guestName) {
     return NextResponse.json({ error: "Name is required." }, { status: 400 });
@@ -63,14 +66,18 @@ export async function POST(
     return NextResponse.json({ ok: true, deduped: true });
   }
 
-  await invRef.collection("rsvps").add({
+  const createdAt = Date.now();
+  const rsvpRef = await invRef.collection("rsvps").add({
     guestName,
     guestCount,
     attending,
     side: side ?? null, // Firestore rejects `undefined`; null = not specified
     message,
-    createdAt: Date.now(),
+    createdAt,
   });
+  if (phone) {
+    await invRef.collection("rsvpContacts").doc(rsvpRef.id).set({ phone, createdAt });
+  }
 
   return NextResponse.json({ ok: true });
 }

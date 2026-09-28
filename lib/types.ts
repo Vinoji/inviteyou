@@ -189,6 +189,15 @@ export interface RsvpEntry {
   createdAt: number;
 }
 
+/** invitations/{slug}/rsvpContacts/{rsvpId} — the optional WhatsApp number
+ * a guest left for reminders. Kept out of the rsvps doc because clients
+ * may read rsvps; no client rule matches this collection, so only the
+ * Admin SDK (the owner's token-gated guest list) ever reads it. */
+export interface RsvpContact {
+  phone: string;
+  createdAt: number;
+}
+
 /** invitations/{slug}/guestPhotos/{autoId} — photos guests upload themselves. */
 export interface GuestPhoto {
   uploaderName: string;
