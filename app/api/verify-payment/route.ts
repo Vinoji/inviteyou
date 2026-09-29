@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
-import { getTranslations } from "next-intl/server";
-import { getAdminDb } from "@/lib/firebase-admin";
-import { generateUniqueSlug } from "@/lib/slug";
 import { verifyPaymentSignature } from "@/lib/razorpay";
-import { sendToOwner } from "@/lib/notify";
-import { ownerLinks } from "@/lib/ownerLinks";
+import { fetchOrder, isPublishOrder, publishPaidDraft } from "@/lib/payments";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -31,58 +26,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Payment verification failed." }, { status: 400 });
   }
 
-  const db = getAdminDb();
-  const draftRef = db.collection("invitations").doc(draftId);
-  const ownerRef = draftRef.collection("private").doc("owner");
-  const [draftSnap, ownerSnap] = await Promise.all([draftRef.get(), ownerRef.get()]);
-  if (!draftSnap.exists) {
-    return NextResponse.json(
-      { error: "Draft not found or already published." },
-      { status: 404 }
-    );
-  }
-  const draft = draftSnap.data()!;
-  const owner = ownerSnap.exists ? ownerSnap.data()! : {};
-
-  const slug = await generateUniqueSlug(draft.groomName ?? "", draft.brideName ?? "");
-  const editToken = crypto.randomBytes(16).toString("hex");
-  const now = Date.now();
-
-  const publishedRef = db.collection("invitations").doc(slug);
-  const batch = db.batch();
-  batch.set(publishedRef, {
-    ...draft,
-    slug,
-    status: "published",
-    viewCount: 0,
-    createdAt: draft.createdAt ?? now,
-    updatedAt: now,
-  });
-  batch.set(publishedRef.collection("private").doc("meta"), {
-    editToken,
-    razorpayPaymentId: razorpay_payment_id,
-    razorpayOrderId: razorpay_order_id,
-    ...(owner.phone ? { ownerPhone: owner.phone, ownerLocale: owner.locale ?? "en" } : {}),
-  });
-  batch.delete(ownerRef);
-  batch.delete(draftRef);
-  await batch.commit();
-
-  // Send the owner their links. Published is published: a failed message
-  // only means the popup offers the manual send buttons instead.
-  let sent: string | null = null;
-  if (owner.phone) {
-    const locale = owner.locale === "ta" ? "ta" : "en";
-    const t = await getTranslations({ locale, namespace: "notify" });
-    const links = ownerLinks(req, { slug, templateId: draft.templateId, editToken, locale });
-    const title = [draft.brideName, draft.groomName].filter(Boolean).join(" & ");
-    const result = await sendToOwner(
-      owner.phone,
-      t("published", { title, inviteUrl: links.invite, editUrl: links.edit }),
-      { sid: process.env.TWILIO_WHATSAPP_CONTENT_SID, vars: [title, links.edit] }
-    );
-    sent = result.sent;
+  // The signature proves a payment, not what it was for: confirm with
+  // Razorpay that this order is the ₹199 publish for *this* draft (so a ₹50
+  // restore payment can't publish one).
+  const order = await fetchOrder(razorpay_order_id);
+  if (!isPublishOrder(order, draftId)) {
+    return NextResponse.json({ error: "This payment isn't for this invitation." }, { status: 400 });
   }
 
-  return NextResponse.json({ slug, editToken, sent });
+  // The Razorpay webhook may already have published it; either way the
+  // same slug and edit token come back.
+  const result = await publishPaidDraft(req, draftId, razorpay_order_id, razorpay_payment_id);
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
+  }
+  return NextResponse.json({ slug: result.slug, editToken: result.editToken, sent: result.sent });
 }
