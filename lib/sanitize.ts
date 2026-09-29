@@ -20,7 +20,20 @@ export function sanitizeVenue(v: unknown): VenueInfo {
     name: typeof obj.name === "string" ? obj.name.slice(0, 150) : "",
     address: typeof obj.address === "string" ? obj.address.slice(0, 300) : "",
     mapsLink: typeof obj.mapsLink === "string" ? obj.mapsLink.slice(0, 500) : "",
+    ...coords(obj.lat, obj.lng),
   };
+}
+
+/** A map pin only when both halves are real coordinates. */
+function coords(lat: unknown, lng: unknown): { lat?: number; lng?: number } {
+  return typeof lat === "number" &&
+    typeof lng === "number" &&
+    Number.isFinite(lat) &&
+    Number.isFinite(lng) &&
+    Math.abs(lat) <= 90 &&
+    Math.abs(lng) <= 180
+    ? { lat, lng }
+    : {};
 }
 
 export function sanitizeAccentColor(c: unknown): string {
@@ -108,6 +121,10 @@ export function sanitizeTravel(v: unknown): TravelInfo {
       .map((a) => ({ code: str(a.code, 8), name: str(a.name, 80), distance: str(a.distance, 40) }))
       .filter((a) => a.code.trim() || a.name.trim())
       .slice(0, 3),
+    stations: objects(obj.stations)
+      .map((st) => ({ name: str(st.name, 80), code: str(st.code, 8), distance: str(st.distance, 40) }))
+      .filter((st) => st.name.trim() || st.code.trim())
+      .slice(0, 2),
     routes: objects(obj.routes)
       .map((r) => ({
         from: str(r.from, 60),

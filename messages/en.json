@@ -313,7 +313,81 @@
     "ownerPhoneRequired": "Enter your mobile number to continue — your edit link is sent here.",
     "errNamesRequired": "Please fill in the name(s) first.",
     "errPaymentLoading": "The payment page is still loading — please try again in a moment.",
-    "errDatePast": "Please choose today or a future date."
+    "errDatePast": "Please choose today or a future date.",
+    "steps": {
+      "design": {
+        "label": "Design",
+        "title": "Look & feel",
+        "hint": "Pick a design, colour, font and the language guests will read."
+      },
+      "names": {
+        "label": "Names",
+        "title": "Names & date",
+        "hint": "Who's celebrating, and when."
+      },
+      "events": {
+        "label": "Venues",
+        "title": "When & where",
+        "hint": "Time, venue and map link for each event."
+      },
+      "story": {
+        "label": "Story",
+        "title": "Story & family",
+        "hint": "A few words about you, and the family inviting your guests."
+      },
+      "photos": {
+        "label": "Photos",
+        "title": "Photos & more",
+        "hint": "Your photos, music and the extra sections guests will see."
+      }
+    },
+    "stepCount": "Step {n} of {total}",
+    "nextStep": "Next: {step}",
+    "back": "Back",
+    "readyHint": "All set — check the preview and publish below.",
+    "designPickTitle": "Design",
+    "useDesign": "Use this",
+    "colorDefault": "The design's own colour",
+    "colorCustom": "Pick any colour",
+    "fontSample": "Together with our families",
+    "extrasTitle": "Extra sections",
+    "extrasHint": "Switch on what guests should see — tap a card to fill it in.",
+    "musicAdded": "Track added — plays when guests open the invitation",
+    "questionCount": "{count, plural, =0 {No questions yet} one {# question} other {# questions}}",
+    "venueFind": "Find this venue on the map",
+    "venuePinned": "Pinned on the map",
+    "venueSeePin": "See pin",
+    "venueChangePin": "Change",
+    "venueUnpin": "Remove map pin",
+    "venueSearchPlaceholder": "Venue name and area, e.g. Sri Kalyana Mandapam Mylapore",
+    "venueSearch": "Search",
+    "venueSearchError": "The map search is busy — try again in a moment.",
+    "venueNoResults": "Nothing found — try the hall's name with the area or town.",
+    "venueSearchHint": "Pick your venue to fill its address and pin. Guests get directions from wherever they are.",
+    "stationsLabel": "Nearest railway stations",
+    "stationCode": "Code",
+    "stationName": "Station",
+    "addStation": "Add station",
+    "nearbyFillTravel": "Fill in from the venue's location",
+    "nearbyFillPlaces": "Suggest places near the venue",
+    "nearbyLoading": "Looking around the venue…",
+    "nearbyNeedsPin": "Find your venue on the map first.",
+    "nearbyFindVenue": "Go to venues",
+    "nearbyError": "Couldn't find suggestions right now — try again, or fill it in yourself.",
+    "nearbyDone": "Filled in — check and edit anything below.",
+    "nearbyHint": "Airports, stations and sights near your venue, from OpenStreetMap and Wikipedia. Train timings stay yours to add.",
+    "nearbyReplaceConfirm": "Replace what you've entered here with suggestions for your venue?",
+    "publishing": {
+      "saving": "Saving your invitation",
+      "checkout": "Secure payment",
+      "verifying": "Confirming payment & publishing",
+      "opening": "Opening your invitation",
+      "savingTitle": "Saving your invitation…",
+      "checkoutTitle": "Waiting for payment…",
+      "verifyingTitle": "Payment received — publishing…",
+      "openingTitle": "Almost there!",
+      "dontClose": "Please don't close or refresh this page — it only takes a few seconds."
+    }
   },
   "invite": {
     "hero": {
@@ -401,8 +475,20 @@
       "copy": "Copy",
       "shareVia": "Share via...",
       "shareText": "You're invited! {title}:",
-      "whatsapp": "Share on WhatsApp",
-      "printCard": "Printable card (PDF)"
+      "printCard": "Printable card (PDF)",
+      "formatLabel": "What to send",
+      "withCard": "Card + message",
+      "textOnly": "Message only",
+      "previewLabel": "What your guests get",
+      "cardAlt": "Invitation card",
+      "readMore": "Read more",
+      "showLess": "Show less",
+      "sendWithCard": "Send card on WhatsApp",
+      "sendText": "Send on WhatsApp",
+      "preparingCard": "Preparing card…",
+      "sharedHint": "The message is copied too — paste it in WhatsApp if only the card arrives.",
+      "cardHint": "On a phone, pick WhatsApp and the chat. On a computer the card downloads — attach it in the chat that opens.",
+      "cardHintPhone": "On a phone, pick WhatsApp, then this guest's chat. On a computer the card downloads and their chat opens — attach it there."
     },
     "story": {
       "defaultTitle": "Our Story"
@@ -511,13 +597,16 @@
         "byTrain": "Via train",
         "trains": "Recommended Trains",
         "from": "From {city}",
-        "note": "Timings can change — please confirm with the railways before booking."
+        "note": "Timings can change — please confirm with the railways before booking.",
+        "stations": "Nearest Railway Stations",
+        "km": "{km} km"
       },
       "places": {
         "eyebrow": "While you are here",
         "heading": "Places to Explore",
         "sub": "Hand-picked spots that capture the soul of {city}",
-        "subNoCity": "Hand-picked spots worth a visit"
+        "subNoCity": "Hand-picked spots worth a visit",
+        "kmFromVenue": "{km} km from venue"
       },
       "rsvp": {
         "eyebrow": "R · S · V · P",

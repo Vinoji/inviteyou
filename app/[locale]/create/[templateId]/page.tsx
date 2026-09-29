@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { TEMPLATE_IDS } from "@/lib/templates";
-import { getTemplateMeta } from "@/lib/i18n/templates";
+import { getTemplateMeta, getTemplatesByCategory } from "@/lib/i18n/templates";
+import { getCategoryMeta } from "@/lib/i18n/categories";
+import { showcaseProps } from "@/lib/i18n/showcase";
 import {
   INVITATION_NAMESPACES,
   getContentMessages,
@@ -40,10 +42,25 @@ export default async function CreatePage({
 
   if (!TEMPLATE_IDS.includes(templateId)) notFound();
 
-  const [en, ta] = await Promise.all([
+  const [en, ta, tTemplates, tCategories, tDefaults, tCommon] = await Promise.all([
     getContentMessages("en", EDITOR_CONTENT_NAMESPACES, templateId),
     getContentMessages("ta", EDITOR_CONTENT_NAMESPACES, templateId),
+    getTranslations({ locale, namespace: "templates" }),
+    getTranslations({ locale, namespace: "categories" }),
+    getTranslations({ locale, namespace: "defaultContent" }),
+    getTranslations({ locale, namespace: "common" }),
   ]);
+
+  // The design picker's cards: each design in this occasion, playing its
+  // real opening with its sample names (as on the home page).
+  const current = getTemplateMeta(templateId, tTemplates);
+  const singlePerson = getCategoryMeta(current.category, tCategories).singlePerson;
+  const designs = getTemplatesByCategory(current.category, tTemplates).map((tpl) => ({
+    id: tpl.id,
+    name: tpl.name,
+    tagline: tpl.tagline,
+    showcase: showcaseProps(tpl, singlePerson, tDefaults, tCommon),
+  }));
 
   return (
     <Editor
@@ -51,6 +68,7 @@ export default async function CreatePage({
       editSlug={edit ?? null}
       editToken={token ?? null}
       contentMessages={{ en, ta }}
+      designs={designs}
     />
   );
 }

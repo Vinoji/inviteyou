@@ -2,10 +2,11 @@
 
 import { Plus, Trash2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import type { Train, TravelInfo } from "@/lib/types";
+import type { Station, Train, TravelInfo } from "@/lib/types";
 import { Field, inputClass } from "./FormFields";
 
 const MAX_AIRPORTS = 3;
+const MAX_STATIONS = 2;
 const MAX_ROUTES = 2;
 const MAX_TRAINS = 3;
 
@@ -35,6 +36,9 @@ export default function TravelFields({
 }) {
   const t = useTranslations("editor");
   const set = (patch: Partial<TravelInfo>) => onChange({ ...value, ...patch });
+  const stations = value.stations ?? [];
+  const setStation = (i: number, patch: Partial<Station>) =>
+    set({ stations: stations.map((x, j) => (j === i ? { ...x, ...patch } : x)) });
 
   const updateRoute = (ri: number, patch: Partial<TravelInfo["routes"][number]>) =>
     set({ routes: value.routes.map((r, i) => (i === ri ? { ...r, ...patch } : r)) });
@@ -111,6 +115,55 @@ export default function TravelFields({
           >
             <Plus size={14} />
             {t("addAirport", { count: value.airports.length })}
+          </button>
+        )}
+      </div>
+
+      <div>
+        <p className="mb-1 text-sm font-medium text-neutral-700 dark:text-neutral-300">{t("stationsLabel")}</p>
+        <div className="space-y-2">
+          {stations.map((st, i) => (
+            <div key={i} className="grid grid-cols-[4rem_1fr_5rem_auto] items-center gap-2">
+              <input
+                className={smallInput}
+                aria-label={t("stationCode")}
+                placeholder={t("stationCode")}
+                value={st.code}
+                onChange={(e) => setStation(i, { code: e.target.value })}
+              />
+              <input
+                className={smallInput}
+                aria-label={t("stationName")}
+                placeholder={t("stationName")}
+                value={st.name}
+                onChange={(e) => setStation(i, { name: e.target.value })}
+              />
+              <input
+                className={smallInput}
+                aria-label={t("airportDistance")}
+                placeholder={t("airportDistance")}
+                value={st.distance}
+                onChange={(e) => setStation(i, { distance: e.target.value })}
+              />
+              <button
+                type="button"
+                className={removeButton}
+                aria-label={t("removeItem")}
+                onClick={() => set({ stations: stations.filter((_, j) => j !== i) })}
+              >
+                <Trash2 size={14} />
+              </button>
+            </div>
+          ))}
+        </div>
+        {stations.length < MAX_STATIONS && (
+          <button
+            type="button"
+            className={`${addButton} mt-2`}
+            onClick={() => set({ stations: [...stations, { code: "", name: "", distance: "" }] })}
+          >
+            <Plus size={14} />
+            {t("addStation")}
           </button>
         )}
       </div>

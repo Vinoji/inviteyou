@@ -4,6 +4,11 @@ export interface VenueInfo {
   name: string;
   address: string;
   mapsLink?: string;
+  /** Map pin, set when the venue was found on the map in the editor —
+   * used for "Directions" from the guest's location and for suggesting
+   * travel and places nearby. */
+  lat?: number;
+  lng?: number;
 }
 
 /**
@@ -63,15 +68,24 @@ export interface TrainRoute {
   trains: Train[]; // up to 3
 }
 
-/** Travel Guide section: destination city, nearby airports, suggested trains. */
+export interface Station {
+  name: string;
+  code: string; // Indian Railways station code, e.g. "MAS"
+  distance: string; // free text, e.g. "6 km"
+}
+
+/** Travel Guide section: destination city, nearby airports and railway
+ * stations, suggested trains. */
 export interface TravelInfo {
   city: string;
   cityCode: string; // short label under the city, e.g. "MAA"
   airports: Airport[]; // up to 3
+  /** Missing on invitations made before stations were added. */
+  stations?: Station[]; // up to 2
   routes: TrainRoute[]; // up to 2
 }
 
-export const EMPTY_TRAVEL: TravelInfo = { city: "", cityCode: "", airports: [], routes: [] };
+export const EMPTY_TRAVEL: TravelInfo = { city: "", cityCode: "", airports: [], stations: [], routes: [] };
 
 /** Drawn illustration used as a Places to Explore card's header. */
 export const PLACE_SCENES = ["temple", "palace", "nature", "heritage", "beach"] as const;

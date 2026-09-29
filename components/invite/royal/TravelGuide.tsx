@@ -6,13 +6,15 @@ import type { TravelInfo } from "@/lib/types";
 import MotionHeading from "../motion/MotionHeading";
 import s from "./royal.module.css";
 
-/** "Travel Guide": destination badge, nearest airports, and train
- * suggestions tabbed by departure city. Each block hides when empty. */
+/** "Travel Guide": destination badge, nearest airports and railway
+ * stations, and train suggestions tabbed by departure city. Each block
+ * hides when empty. */
 export default function TravelGuide({ travel }: { travel: TravelInfo }) {
   const t = useTranslations("invite.royal.travel");
   const [tab, setTab] = useState(0);
   const routes = travel.routes.filter((r) => r.trains.length > 0);
-  if (!travel.city && travel.airports.length === 0 && routes.length === 0) return null;
+  const stations = travel.stations ?? [];
+  if (!travel.city && travel.airports.length === 0 && stations.length === 0 && routes.length === 0) return null;
   const active = routes[Math.min(tab, routes.length - 1)];
 
   return (
@@ -39,6 +41,21 @@ export default function TravelGuide({ travel }: { travel: TravelInfo }) {
                 <b>{a.code}</b>
                 <span>{a.name}</span>
                 <i>{a.distance}</i>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      {stations.length > 0 && (
+        <div className={s.card}>
+          <span className={s.eyebrow}>{t("byTrain")}</span>
+          <h4>{t("stations")}</h4>
+          <div className={s.airports}>
+            {stations.map((st, i) => (
+              <div key={i}>
+                {st.code && <b>{st.code}</b>}
+                <span>{st.name}</span>
+                <i>{st.distance}</i>
               </div>
             ))}
           </div>
