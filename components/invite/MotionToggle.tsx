@@ -7,7 +7,8 @@ import {
   applyMotionAttribute,
   setReducedMotionPref,
   useDeviceAsksLessMotion,
-  useReducedMotionPref,
+  useMotionForced,
+  useSavedReducedMotion,
 } from "@/lib/motionPref";
 
 /** Puts the saved motion choice on <html> for CSS; mounted once in the layout. */
@@ -19,25 +20,27 @@ export function MotionPrefSync() {
 /**
  * "Reduce motion" switch, floating above the music button. Shown only to
  * guests whose device asks for less motion (or who already chose it), so
- * everyone else just sees the invitation.
+ * everyone else just sees the invitation. Labelled, not a bare icon: the
+ * choice is remembered across the site, so it shouldn't be tapped by
+ * accident, and it should be obvious how to undo. Not shown in the
+ * editor, which always plays in full.
  */
 export default function MotionToggle({ accentColor }: { accentColor: string }) {
   const t = useTranslations("invite.audio");
-  const reduced = useReducedMotionPref();
+  const reduced = useSavedReducedMotion();
   const deviceAsks = useDeviceAsksLessMotion();
-  if (!deviceAsks && !reduced) return null;
+  const forced = useMotionForced();
+  if (forced || (!deviceAsks && !reduced)) return null;
 
   return (
     <button
       type="button"
       onClick={() => setReducedMotionPref(!reduced)}
-      aria-pressed={reduced}
-      title={reduced ? t("playMotion") : t("reduceMotion")}
-      aria-label={reduced ? t("playMotion") : t("reduceMotion")}
       style={{ color: accentColor }}
-      className="fixed right-6 bottom-20 z-[70] flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur transition-transform active:scale-90 dark:bg-neutral-900/90"
+      className="fixed right-6 bottom-20 z-[70] flex h-10 items-center gap-1.5 rounded-full bg-white/90 px-3.5 text-xs font-semibold shadow-lg backdrop-blur transition-transform active:scale-95 dark:bg-neutral-900/90"
     >
-      {reduced ? <Sparkles size={17} aria-hidden /> : <Waves size={17} aria-hidden />}
+      {reduced ? <Sparkles size={15} aria-hidden /> : <Waves size={15} aria-hidden />}
+      {reduced ? t("playMotion") : t("reduceMotion")}
     </button>
   );
 }

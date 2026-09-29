@@ -69,6 +69,7 @@ import VenueSearch, { type VenueHit } from "@/components/editor/VenueSearch";
 import NearbyFill, { type NearbyState } from "@/components/editor/NearbyFill";
 import PublishOverlay, { type PublishPhase } from "@/components/editor/PublishOverlay";
 import { pinUrl } from "@/lib/maps";
+import { forceFullMotion, primeFullMotion, useSavedReducedMotion } from "@/lib/motionPref";
 import { AddPhotoTile, PhotoTile } from "@/components/editor/PhotoSlot";
 import PhotoCropper from "@/components/editor/PhotoCropper";
 import TravelFields from "@/components/editor/TravelFields";
@@ -172,6 +173,17 @@ export default function Editor({
 }) {
   const router = useRouter();
   const t = useTranslations("editor");
+  // The preview and design cards always play in full here (lib/motionPref).
+  // Switched on during the first render, before the preview reads it, so
+  // it never starts out frozen.
+  useState(() => {
+    if (typeof window !== "undefined") primeFullMotion();
+  });
+  useEffect(() => {
+    forceFullMotion(true);
+    return () => forceFullMotion(false);
+  }, []);
+  const motionReducedElsewhere = useSavedReducedMotion();
   const tTemplates = useTranslations("templates");
   const tCategories = useTranslations("categories");
   const uiLocale: ContentLocale = useLocale() === "ta" ? "ta" : "en";
@@ -1438,6 +1450,14 @@ export default function Editor({
               <RotateCcw size={13} aria-hidden />
               {t("replayIntro")}
             </button>
+            {motionReducedElsewhere && (
+              <span
+                className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-medium text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
+                title={t("motionForcedHint")}
+              >
+                {t("motionForced")}
+              </span>
+            )}
           </div>
           <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-1 dark:border-neutral-800 dark:bg-neutral-900">
             {[

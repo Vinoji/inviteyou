@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { Check, ChevronDown, Globe2, MonitorSmartphone, Moon, Sun } from "lucide-react";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { readThemeCookie, setThemePref, type ThemePref } from "@/lib/themePref";
-import { setReducedMotionPref, useReducedMotionPref } from "@/lib/motionPref";
+import { setReducedMotionPref, useSavedReducedMotion } from "@/lib/motionPref";
 
 const LANGS = [
   { id: "en", glyph: "Aa", short: "EN" },
@@ -81,7 +81,7 @@ function SettingsPanel({ onPicked }: { onPicked?: () => void }) {
   const locale = useLocale();
   const pathname = usePathname();
   const router = useRouter();
-  const reduced = useReducedMotionPref();
+  const reduced = useSavedReducedMotion();
   const [theme, setTheme] = useState<ThemePref>("system");
 
   useEffect(() => {

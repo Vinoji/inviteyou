@@ -387,7 +387,9 @@
       "verifyingTitle": "Payment received — publishing…",
       "openingTitle": "Almost there!",
       "dontClose": "Please don't close or refresh this page — it only takes a few seconds."
-    }
+    },
+    "motionForced": "Full animations shown here",
+    "motionForcedHint": "You chose Reduce motion for browsing; the preview still plays in full so you can see your design."
   },
   "invite": {
     "hero": {
