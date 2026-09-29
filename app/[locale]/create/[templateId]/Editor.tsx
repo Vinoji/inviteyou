@@ -1,7 +1,24 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, ChevronDown, Monitor, Plus, RotateCcw, Smartphone, Tablet, Trash2 } from "lucide-react";
+import {
+  BookHeart,
+  CalendarCheck,
+  Camera,
+  HelpCircle,
+  Images,
+  Landmark,
+  MapPin,
+  Monitor,
+  Music,
+  Palette,
+  Plane,
+  RotateCcw,
+  Smartphone,
+  Sparkles,
+  Tablet,
+  UsersRound,
+} from "lucide-react";
 import {
   NextIntlClientProvider,
   createTranslator,
@@ -11,6 +28,7 @@ import {
   type AbstractIntlMessages,
 } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebase";
@@ -18,7 +36,6 @@ import { getTemplateMeta, getTemplatesByCategory } from "@/lib/i18n/templates";
 import { TEMPLATE_STYLE_KEYS, changedFields, clearDraft, loadDraft, saveDraft } from "@/lib/draftStore";
 import { getCategoryMeta } from "@/lib/i18n/categories";
 import { getDefaultInvitationData } from "@/lib/i18n/defaultContent";
-import { FONT_PAIRINGS } from "@/lib/fontPairings";
 import { SITE } from "@/lib/site";
 import { waPhone } from "@/lib/share";
 import { isDateAllowed, todayIso } from "@/lib/dates";
@@ -30,12 +47,29 @@ import {
   type FamilySide,
   type InvitationData,
 } from "@/lib/types";
+import type { NearbySuggestion as NearbyResult } from "@/lib/geo";
 import { getFamily, legacyParentsLine } from "@/lib/family";
 import { STORY_PRESETS } from "@/lib/storyPresets";
 import { PRICE_INR } from "@/lib/pricing";
 import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
 import InvitationView from "@/components/invite/InvitationView";
 import { FormSection, Field, inputClass, SectionToggle } from "@/components/editor/FormFields";
+import { StepNav, StepHeader, StepFooter, type EditorStep } from "@/components/editor/StepNav";
+import {
+  ColorPicker,
+  FontPicker,
+  LanguagePicker,
+  TemplatePicker,
+  type DesignOption,
+} from "@/components/editor/DesignPickers";
+import ExtraCard from "@/components/editor/ExtraCard";
+import EventFields from "@/components/editor/EventFields";
+import FaqFields from "@/components/editor/FaqFields";
+import VenueSearch, { type VenueHit } from "@/components/editor/VenueSearch";
+import NearbyFill, { type NearbyState } from "@/components/editor/NearbyFill";
+import PublishOverlay, { type PublishPhase } from "@/components/editor/PublishOverlay";
+import { pinUrl } from "@/lib/maps";
+import { forceFullMotion, primeFullMotion, useSavedReducedMotion } from "@/lib/motionPref";
 import { AddPhotoTile, PhotoTile } from "@/components/editor/PhotoSlot";
 import PhotoCropper from "@/components/editor/PhotoCropper";
 import TravelFields from "@/components/editor/TravelFields";
@@ -72,16 +106,6 @@ declare global {
   }
 }
 
-const ACCENT_PRESETS = [
-  "#b8860b",
-  "#18181b",
-  "#d9738a",
-  "#111111",
-  "#c2703d",
-  "#2563eb",
-  "#15803d",
-];
-
 /** Translator over the invitation-language messages (not the UI's). */
 function contentT(
   messages: Record<ContentLocale, AbstractIntlMessages>,
@@ -115,6 +139,11 @@ const SEED_KEYS = [
   "places",
 ] as const satisfies readonly (keyof InvitationData)[];
 
+/** Progress steps for saving edits and for renewing an expired invitation
+ * (publishing uses PublishOverlay's full list). */
+const SAVE_STEPS: PublishPhase[] = ["saving", "opening"];
+const RESTORE_STEPS: PublishPhase[] = ["checkout", "verifying"];
+
 /** "<time>-<random>" in lowercase base36 — the shape storage.rules expects. */
 function uniqueSuffix() {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8) || "0"}`;
@@ -132,15 +161,29 @@ export default function Editor({
   editSlug,
   editToken,
   contentMessages,
+  designs,
 }: {
   templateId: string;
   editSlug: string | null;
   editToken: string | null;
   /** Invitation-language messages for both locales (see page.tsx). */
   contentMessages: Record<ContentLocale, AbstractIntlMessages>;
+  /** This occasion's designs, for the design picker. */
+  designs: DesignOption[];
 }) {
   const router = useRouter();
   const t = useTranslations("editor");
+  // The preview and design cards always play in full here (lib/motionPref).
+  // Switched on during the first render, before the preview reads it, so
+  // it never starts out frozen.
+  useState(() => {
+    if (typeof window !== "undefined") primeFullMotion();
+  });
+  useEffect(() => {
+    forceFullMotion(true);
+    return () => forceFullMotion(false);
+  }, []);
+  const motionReducedElsewhere = useSavedReducedMotion();
   const tTemplates = useTranslations("templates");
   const tCategories = useTranslations("categories");
   const uiLocale: ContentLocale = useLocale() === "ta" ? "ta" : "en";
@@ -169,6 +212,9 @@ export default function Editor({
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
   const [uploadingMusic, setUploadingMusic] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  // The full-screen progress for publish / save / restore (PublishOverlay).
+  const [progress, setProgress] = useState<{ phase: PublishPhase; steps?: PublishPhase[] } | null>(null);
+  const showProgress = (phase: PublishPhase, steps?: PublishPhase[]) => setProgress({ phase, steps });
   const [publishError, setPublishError] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
@@ -210,6 +256,15 @@ export default function Editor({
   const [restoring, setRestoring] = useState(false);
   const sameCategoryTemplates = getTemplatesByCategory(template.category, tTemplates);
   const storyRef = useRef<HTMLTextAreaElement>(null);
+  // Which part of the form is open. A design switch comes back to the
+  // design step (?step=design); otherwise start with the names.
+  const searchParams = useSearchParams();
+  const [step, setStep] = useState(() => (searchParams.get("step") === "design" ? "design" : "names"));
+  const formScrollRef = useRef<HTMLDivElement>(null);
+  function goTo(id: string) {
+    setStep(id);
+    formScrollRef.current?.scrollTo({ top: 0 });
+  }
 
   useEffect(() => {
     if (!isEditMode || !editSlug || !editToken) return;
@@ -413,6 +468,102 @@ export default function Editor({
   ) {
     setData((d) => ({ ...d, [which]: { ...d[which], [field]: value } }));
   }
+  /** A venue picked on the map: its name, address and pin. */
+  function pinVenue(which: "ceremonyVenue" | "receptionVenue", hit: VenueHit) {
+    setData((d) => ({
+      ...d,
+      [which]: { name: hit.name, address: hit.address, mapsLink: pinUrl(hit.lat, hit.lng), lat: hit.lat, lng: hit.lng },
+    }));
+  }
+  function unpinVenue(which: "ceremonyVenue" | "receptionVenue") {
+    setData((d) => {
+      // The map link came from the pin, so it goes with it.
+      const { lat, lng, ...rest } = d[which];
+      const fromPin = lat !== undefined && lng !== undefined && rest.mapsLink === pinUrl(lat, lng);
+      return { ...d, [which]: { ...rest, mapsLink: fromPin ? "" : rest.mapsLink } };
+    });
+  }
+  function mapSearchFor(which: "ceremonyVenue" | "receptionVenue") {
+    const v = data[which];
+    return (
+      <VenueSearch
+        key={`${which}-${v.lat ?? "none"}`}
+        // "Venue, Town" — the last part of the address is usually the town.
+        initialQuery={[v.name, v.address.split(",").at(-1)?.trim()].filter(Boolean).join(", ")}
+        locale={contentLocale}
+        pinned={typeof v.lat === "number" && typeof v.lng === "number" ? { lat: v.lat, lng: v.lng } : null}
+        onPick={(hit) => pinVenue(which, hit)}
+        onUnpin={() => unpinVenue(which)}
+      />
+    );
+  }
+
+  // Travel / Places suggestions from the venue's pin (app/api/geo/nearby).
+  const [nearbyState, setNearbyState] = useState<Record<"travel" | "places", NearbyState>>({
+    travel: "idle",
+    places: "idle",
+  });
+  const nearbyCache = useRef<{ key: string; value: NearbyResult } | null>(null);
+  async function fillFromVenue(what: "travel" | "places") {
+    const pinned = [data.ceremonyVenue, data.receptionVenue].find(
+      (v) => typeof v.lat === "number" && typeof v.lng === "number"
+    );
+    const set = (state: NearbyState) => setNearbyState((s) => ({ ...s, [what]: state }));
+    if (!pinned) return set("nopin");
+    // Replacing the sample content needs no asking; replacing theirs does.
+    const current = what === "travel" ? data.travel : data.places;
+    const own = JSON.stringify(current) !== JSON.stringify(seed[what]) &&
+      (what === "travel" ? Boolean(data.travel?.city || data.travel?.airports.length) : Boolean(data.places?.length));
+    if (own && !window.confirm(t("nearbyReplaceConfirm"))) return;
+    set("loading");
+    try {
+      const key = `${pinned.lat},${pinned.lng},${contentLocale}`;
+      let result = nearbyCache.current?.key === key ? nearbyCache.current.value : null;
+      if (!result) {
+        const res = await fetch(
+          `/api/geo/nearby?${new URLSearchParams({ lat: String(pinned.lat), lng: String(pinned.lng), locale: contentLocale })}`
+        );
+        if (!res.ok) throw new Error();
+        result = (await res.json()) as NearbyResult;
+        nearbyCache.current = { key, value: result };
+      }
+      const tRoyal = contentT(contentMessages, contentLocale, "invite.royal");
+      const km = (n: number) => tRoyal("travel.km", { km: n });
+      if (what === "travel") {
+        setData((d) => ({
+          ...d,
+          travel: {
+            ...(d.travel ?? EMPTY_TRAVEL),
+            city: result.city || d.travel?.city || "",
+            cityCode: result.cityCode,
+            airports: result.airports.map((a) => ({ code: a.code, name: a.name, distance: km(a.km) })),
+            stations: result.stations.map((st) => ({ code: st.code, name: st.name, distance: km(st.km) })),
+            // The template's example trains are for its sample city; keep
+            // only trains the couple added themselves.
+            routes:
+              JSON.stringify(d.travel?.routes) === JSON.stringify(seed.travel?.routes) ? [] : (d.travel?.routes ?? []),
+          },
+          sections: { ...d.sections, travel: true },
+        }));
+      } else {
+        if (result.places.length === 0) return set("error");
+        setData((d) => ({
+          ...d,
+          places: result.places.map((pl) => ({
+            title: pl.title,
+            description: pl.description,
+            distance: tRoyal("places.kmFromVenue", { km: pl.km }),
+            scene: pl.scene,
+          })),
+          sections: { ...d.sections, places: true },
+        }));
+      }
+      set("done");
+    } catch {
+      set("error");
+    }
+  }
+
   function updateSection(key: keyof InvitationData["sections"], value: boolean) {
     setData((d) => ({ ...d, sections: { ...d.sections, [key]: value } }));
   }
@@ -518,6 +669,10 @@ export default function Editor({
 
   const initials = resolveMonogram(data.brideName, data.groomName, data.monogram, false);
   const monogramText = [initials.a, initials.b].filter(Boolean).join(" & ");
+  const photos = data.photos.filter(Boolean);
+  const fontSample = category.singlePerson
+    ? data.brideName.trim() || template.name
+    : [data.brideName.trim(), data.groomName.trim()].filter(Boolean).join(" & ") || template.name;
 
   const dateOk =
     !today ||
@@ -527,6 +682,42 @@ export default function Editor({
       saved: savedDate,
     });
 
+  const steps: EditorStep[] = [
+    { id: "design", icon: Palette, done: true, ...stepText("design") },
+    {
+      id: "names",
+      icon: UsersRound,
+      done: Boolean(data.brideName.trim() && (category.singlePerson || data.groomName.trim()) && data.weddingDate && dateOk),
+      ...stepText("names"),
+    },
+    {
+      id: "events",
+      icon: MapPin,
+      done: Boolean(data.ceremonyTime.trim() || data.ceremonyVenue.name.trim()),
+      ...stepText("events"),
+    },
+    {
+      id: "story",
+      icon: BookHeart,
+      done: Boolean(data.story.trim()),
+      ...stepText("story"),
+      ...(category.familyTitle ? {} : { title: category.storyTitle }),
+    },
+    { id: "photos", icon: Images, done: photos.length > 0, ...stepText("photos") },
+  ];
+  function stepText(id: string) {
+    return { label: t(`steps.${id}.label`), title: t(`steps.${id}.title`), hint: t(`steps.${id}.hint`) };
+  }
+  const stepIndex = Math.max(0, steps.findIndex((s) => s.id === step));
+  const currentStep = steps[stepIndex];
+
+  /** Opens the names step and focuses a field there once it has rendered. */
+  function showNamesField(el: () => HTMLElement | null) {
+    goTo("names");
+    setMobileView("edit");
+    setTimeout(() => el()?.focus(), 50);
+  }
+
   const canSubmit =
     Boolean(data.brideName.trim() && (category.singlePerson || data.groomName.trim())) &&
     !publishing;
@@ -535,11 +726,12 @@ export default function Editor({
     if (!editSlug || !editToken) return;
     if (!dateOk) {
       // The message is already shown under the date field; take them there.
-      dateRef.current?.focus();
+      showNamesField(() => dateRef.current);
       return;
     }
     setPublishing(true);
     setPublishError(null);
+    showProgress("saving", SAVE_STEPS);
     try {
       const res = await fetch(`/api/invitation/${editSlug}`, {
         method: "PUT",
@@ -550,10 +742,12 @@ export default function Editor({
         const j = await res.json().catch(() => ({}));
         throw new Error(j.error ?? t("errSaveFailed"));
       }
+      showProgress("opening", SAVE_STEPS);
       router.push(`/invite/${editSlug}`);
     } catch (err) {
       setPublishError(err instanceof Error ? err.message : t("errSaveFailed"));
       setPublishing(false);
+      setProgress(null);
     }
   }
 
@@ -583,6 +777,7 @@ export default function Editor({
         description: t("restoreCheckoutDescription"),
         theme: { color: data.accentColor },
         handler: async (response) => {
+          showProgress("verifying", RESTORE_STEPS);
           try {
             const res = await fetch("/api/verify-restore", {
               method: "POST",
@@ -599,6 +794,7 @@ export default function Editor({
             setPublishError(err instanceof Error ? err.message : t("errPaymentVerifyFailed"));
           } finally {
             setRestoring(false);
+            setProgress(null);
           }
         },
         modal: { ondismiss: () => setRestoring(false) },
@@ -620,16 +816,18 @@ export default function Editor({
     setPublishError(null);
     if (!data.brideName.trim() || (!category.singlePerson && !data.groomName.trim())) {
       setPublishError(t("errNamesRequired"));
+      goTo("names");
       return;
     }
     if (!dateOk) {
       // The message is already shown under the date field; take them there.
-      dateRef.current?.focus();
+      showNamesField(() => dateRef.current);
       return;
     }
     if (!ownerPhoneOk) {
       setPhoneTouched(true);
-      phoneRef.current?.focus();
+      setMobileView("edit");
+      setTimeout(() => phoneRef.current?.focus(), 50);
       return;
     }
     if (!razorpayReady || !window.Razorpay) {
@@ -642,6 +840,12 @@ export default function Editor({
   async function handlePublish() {
     setPublishing(true);
     setPublishError(null);
+    showProgress("saving");
+    const stop = (message: string) => {
+      setPublishError(message);
+      setPublishing(false);
+      setProgress(null);
+    };
     try {
       const draftRes = await fetch("/api/draft", {
         method: "POST",
@@ -679,6 +883,9 @@ export default function Editor({
           : `${data.brideName} & ${data.groomName} — ${template.name}`,
         theme: { color: data.accentColor },
         handler: async (response) => {
+          // Paid: confirming it also publishes and sends the edit link,
+          // which can take a few seconds.
+          showProgress("verifying");
           try {
             const verifyRes = await fetch("/api/verify-payment", {
               method: "POST",
@@ -697,34 +904,37 @@ export default function Editor({
             } catch {
               // Not critical — the buttons just open without a number.
             }
+            // Stays up until the invitation page replaces the editor.
+            showProgress("opening");
             router.push(
               `/invite/${slug}?welcome=1&editToken=${encodeURIComponent(newToken)}&templateId=${encodeURIComponent(templateId)}${sent ? `&sent=${sent}` : ""}`
             );
           } catch (err) {
-            setPublishError(err instanceof Error ? err.message : t("errPaymentVerifyFailed"));
-            setPublishing(false);
+            stop(err instanceof Error ? err.message : t("errPaymentVerifyFailed"));
           }
         },
         modal: {
           ondismiss: () => {
             // User closed the checkout without paying — stay on the editor.
             setPublishing(false);
+            setProgress(null);
           },
         },
       });
-      rz.on("payment.failed", () => {
-        setPublishError(t("errPaymentFailed"));
-        setPublishing(false);
-      });
+      rz.on("payment.failed", () => stop(t("errPaymentFailed")));
+      // Razorpay's own window takes over the screen from here.
+      showProgress("checkout");
       rz.open();
     } catch (err) {
-      setPublishError(err instanceof Error ? err.message : t("errGeneric"));
-      setPublishing(false);
+      stop(err instanceof Error ? err.message : t("errGeneric"));
     }
   }
 
   return (
-    <div className="flex h-dvh flex-col lg:flex-row">
+    // The screen below the 44px (h-11) app toolbar, so the publish bar and
+    // the phone's Edit / Preview tabs stay in view.
+    <div className="flex h-[calc(100dvh-2.75rem)] flex-col lg:flex-row">
+      <PublishOverlay phase={progress?.phase ?? null} steps={progress?.steps} accent={data.accentColor} />
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="afterInteractive"
@@ -741,12 +951,12 @@ export default function Editor({
         }`}
       >
         <Thoranam compact />
-        <header className="-mt-3 flex items-center justify-between border-b border-neutral-200 px-5 pt-1 pb-4 dark:border-neutral-800">
-          <div>
-            <p className="text-xs font-semibold tracking-widest text-amber-700 uppercase">
+        <header className="-mt-3 flex items-center justify-between gap-3 px-5 pt-1 pb-2">
+          <div className="min-w-0">
+            <p className="truncate text-xs font-semibold tracking-widest text-amber-700 uppercase">
               {template.name}
             </p>
-            <h1 className="font-serif text-lg font-bold text-neutral-900 dark:text-neutral-50">
+            <h1 className="font-serif text-base leading-tight font-bold sm:text-lg text-neutral-900 dark:text-neutral-50">
               {isEditMode ? t("editHeading") : t("createHeading")}
             </h1>
           </div>
@@ -760,61 +970,29 @@ export default function Editor({
                 {t("viewRsvps")}
               </Link>
             )}
-            <details className="group relative">
-              <summary className="flex cursor-pointer list-none items-center gap-1 text-xs text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200 [&::-webkit-details-marker]:hidden">
+            {step !== "design" && (
+              <button
+                type="button"
+                onClick={() => goTo("design")}
+                className="inline-flex items-center gap-1 rounded-full border border-amber-300 px-2.5 py-1 text-xs font-semibold text-amber-800 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950"
+              >
+                <Palette size={13} aria-hidden />
                 {t("switchTemplate")}
-                <ChevronDown size={13} className="transition group-open:rotate-180" aria-hidden />
-              </summary>
-              <div className="absolute right-0 z-30 mt-2 w-64 rounded-xl border border-neutral-200 bg-white p-2 shadow-lg dark:border-neutral-700 dark:bg-neutral-900">
-                <p className="px-2 pt-1 pb-2 text-xs text-neutral-500 dark:text-neutral-400">
-                  {t("switchTemplateHint")}
-                </p>
-                <ul className="max-h-72 overflow-y-auto">
-                  {sameCategoryTemplates.map((tpl) => (
-                    <li key={tpl.id}>
-                      {tpl.id === templateId ? (
-                        <span className="flex items-center justify-between rounded-lg bg-neutral-100 px-2 py-1.5 text-sm font-semibold text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50">
-                          {tpl.name}
-                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-neutral-500 uppercase">
-                            <Check size={12} aria-hidden />
-                            {t("currentTemplate")}
-                          </span>
-                        </span>
-                      ) : (
-                        <Link
-                          href={
-                            isEditMode
-                              ? `/create/${tpl.id}?edit=${editSlug}&token=${editToken}`
-                              : `/create/${tpl.id}`
-                          }
-                          onClick={() => persistDraft()}
-                          className="block rounded-lg px-2 py-1.5 text-sm text-neutral-700 hover:bg-neutral-50 dark:text-neutral-200 dark:hover:bg-neutral-800"
-                        >
-                          {tpl.name}
-                        </Link>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/"
-                  className="mt-1 block border-t border-neutral-100 px-2 pt-2 text-xs text-neutral-400 hover:text-neutral-700 dark:border-neutral-800 dark:text-neutral-500 dark:hover:text-neutral-300"
-                >
-                  {t("changeTemplate")}
-                </Link>
-              </div>
-            </details>
+              </button>
+            )}
           </div>
         </header>
+
+        {!loadingExisting && !loadError && <StepNav steps={steps} current={step} onSelect={goTo} />}
 
         {loadingExisting ? (
           <div className="p-6 text-sm text-neutral-500">{t("loading")}</div>
         ) : loadError ? (
           <div className="p-6 text-sm text-red-600">{loadError}</div>
         ) : (
-          <div className="flex-1 space-y-8 overflow-y-auto px-5 py-6">
+          <div ref={formScrollRef} className="flex-1 overflow-y-auto px-5 py-5">
             {draftNotice && (
-              <div className="flex items-start justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
+              <div className="mb-5 flex items-start justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
                 <p>
                   {draftNotice.kind === "restored"
                     ? t("draftRestored")
@@ -827,463 +1005,345 @@ export default function Editor({
                 )}
               </div>
             )}
-            <div className="space-y-2 rounded-lg border border-neutral-200 p-3 dark:border-neutral-700">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                  {t("contentLocaleTitle")}
-                </span>
-                <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-0.5 dark:border-neutral-700 dark:bg-neutral-900">
-                  {(["en", "ta"] as const).map((l) => (
-                    <button
-                      key={l}
-                      type="button"
-                      lang={l}
-                      onClick={() => switchContentLocale(l)}
-                      aria-pressed={contentLocale === l}
-                      className={`rounded-md px-3 py-1 text-xs font-semibold transition ${
-                        contentLocale === l
-                          ? "bg-white text-neutral-900 shadow-sm dark:bg-neutral-700 dark:text-neutral-50"
-                          : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
-                      }`}
-                    >
-                      {l === "en" ? "English" : "தமிழ்"}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("contentLocaleHint")}</p>
-              {contentLocale === "ta" && !data.fontPairing.startsWith("tamil") && (
-                <button
-                  type="button"
-                  onClick={() => update("fontPairing", "tamil-classic")}
-                  className="text-xs font-semibold text-amber-700 hover:underline dark:text-amber-500"
-                >
-                  {t("useTamilFont")}
-                </button>
-              )}
-            </div>
 
-            <FormSection title={category.singlePerson ? t("sectionAboutYou") : t("sectionCouple")}>
-              <Field label={category.personALabel}>
-                <input
-                  className={inputClass}
-                  value={data.brideName}
-                  onChange={(e) => updateName("brideName", e.target.value)}
-                  placeholder={t("namePlaceholderA")}
+            <StepHeader step={currentStep} n={stepIndex + 1} total={steps.length} />
+
+            {step === "design" && (
+              <div className="space-y-7">
+                <TemplatePicker
+                  designs={designs}
+                  currentId={templateId}
+                  hrefFor={(id) =>
+                    isEditMode
+                      ? `/create/${id}?edit=${editSlug}&token=${editToken}&step=design`
+                      : `/create/${id}?step=design`
+                  }
+                  onLeave={persistDraft}
                 />
-              </Field>
-              {!category.singlePerson && (
-                <Field label={category.personBLabel}>
+                <ColorPicker
+                  value={data.accentColor}
+                  designColor={template.defaultAccent}
+                  onChange={(c) => update("accentColor", c)}
+                />
+                <FontPicker
+                  value={data.fontPairing}
+                  sample={fontSample}
+                  accent={data.accentColor}
+                  onChange={(id) => update("fontPairing", id)}
+                />
+                <LanguagePicker
+                  value={contentLocale}
+                  onChange={switchContentLocale}
+                  showTamilFontTip={contentLocale === "ta" && !data.fontPairing.startsWith("tamil")}
+                  onUseTamilFont={() => update("fontPairing", "tamil-classic")}
+                />
+              </div>
+            )}
+
+            {step === "names" && (
+              <div className="space-y-6">
+                <div className={category.singlePerson ? "" : "grid gap-3 sm:grid-cols-2"}>
+                  <Field label={category.personALabel}>
+                    <input
+                      className={inputClass}
+                      value={data.brideName}
+                      onChange={(e) => updateName("brideName", e.target.value)}
+                      placeholder={t("namePlaceholderA")}
+                    />
+                  </Field>
+                  {!category.singlePerson && (
+                    <Field label={category.personBLabel}>
+                      <input
+                        className={inputClass}
+                        value={data.groomName}
+                        onChange={(e) => updateName("groomName", e.target.value)}
+                        placeholder={t("namePlaceholderB")}
+                      />
+                    </Field>
+                  )}
+                </div>
+
+                <Field label={category.dateLabel}>
                   <input
-                    className={inputClass}
-                    value={data.groomName}
-                    onChange={(e) => updateName("groomName", e.target.value)}
-                    placeholder={t("namePlaceholderB")}
+                    ref={dateRef}
+                    type="date"
+                    className={`${inputClass} ${dateOk ? "" : "border-red-400 dark:border-red-500"}`}
+                    value={data.weddingDate}
+                    // The picker won't offer past days (a proposal's date may be past).
+                    min={category.allowPastDate || !today ? undefined : today}
+                    onChange={(e) => update("weddingDate", e.target.value)}
+                    aria-invalid={!dateOk}
+                    aria-describedby={dateOk ? undefined : "date-error"}
                   />
                 </Field>
-              )}
-              {template.category === "wedding" && (
-                <div className="space-y-2 rounded-lg border border-dashed border-neutral-200 p-3 dark:border-neutral-700">
-                  <div className="flex items-center justify-between gap-3">
-                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                      {t("monogramTitle")}
-                    </span>
-                    <span
-                      className="rounded-md bg-neutral-900 px-2.5 py-1 text-sm text-amber-200 dark:bg-neutral-800"
-                      style={{ fontFamily: FONT_PAIRINGS.find((f) => f.id === data.fontPairing)?.headingVar }}
-                      title={t("monogramPreview")}
-                      lang={scriptLang(monogramText)}
-                    >
-                      {monogramText}
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-2 items-end gap-3">
-                    <Field label={t("monogramFirst")}>
-                      <input
-                        className={inputClass}
-                        value={data.monogram?.a ?? ""}
-                        maxLength={8}
-                        onChange={(e) => updateMonogram("a", e.target.value)}
-                        placeholder={firstGrapheme(data.brideName)}
-                      />
-                    </Field>
-                    <Field label={t("monogramSecond")}>
-                      <input
-                        className={inputClass}
-                        value={data.monogram?.b ?? ""}
-                        maxLength={8}
-                        onChange={(e) => updateMonogram("b", e.target.value)}
-                        placeholder={firstGrapheme(data.groomName)}
-                      />
-                    </Field>
-                  </div>
-                  <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("monogramHint")}</p>
-                </div>
-              )}
-            </FormSection>
+                {!dateOk && (
+                  <p id="date-error" className="-mt-4 text-xs text-red-600 dark:text-red-400">
+                    {t("errDatePast")}
+                  </p>
+                )}
 
-            <FormSection title={category.dateLabel}>
-              <Field label={t("dateFieldLabel")}>
-                <input
-                  ref={dateRef}
-                  type="date"
-                  className={`${inputClass} ${dateOk ? "" : "border-red-400 dark:border-red-500"}`}
-                  value={data.weddingDate}
-                  // The picker won't offer past days (a proposal's date may be past).
-                  min={category.allowPastDate || !today ? undefined : today}
-                  onChange={(e) => update("weddingDate", e.target.value)}
-                  aria-invalid={!dateOk}
-                  aria-describedby={dateOk ? undefined : "date-error"}
-                />
-              </Field>
-              {!dateOk && (
-                <p id="date-error" className="text-xs text-red-600 dark:text-red-400">
-                  {t("errDatePast")}
-                </p>
-              )}
-            </FormSection>
-
-            <div>
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <h2 className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
-                  {t("eventSchedule")}
-                </h2>
-                <SectionToggle
-                  enabled={data.sections.schedule}
-                  onChange={(v) => updateSection("schedule", v)}
-                />
+                {template.category === "wedding" && (
+                  <ExtraCard icon={Sparkles} title={t("monogramTitle")} summary={monogramText}>
+                    <div className="grid grid-cols-2 items-end gap-3">
+                      <Field label={t("monogramFirst")}>
+                        <input
+                          className={inputClass}
+                          value={data.monogram?.a ?? ""}
+                          maxLength={8}
+                          onChange={(e) => updateMonogram("a", e.target.value)}
+                          placeholder={firstGrapheme(data.brideName)}
+                        />
+                      </Field>
+                      <Field label={t("monogramSecond")}>
+                        <input
+                          className={inputClass}
+                          value={data.monogram?.b ?? ""}
+                          maxLength={8}
+                          onChange={(e) => updateMonogram("b", e.target.value)}
+                          placeholder={firstGrapheme(data.groomName)}
+                        />
+                      </Field>
+                    </div>
+                    <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("monogramHint")}</p>
+                  </ExtraCard>
+                )}
               </div>
-              <div
-                className={`space-y-8 transition-opacity ${!data.sections.schedule ? "opacity-45" : ""}`}
-              >
-                <FormSection title={category.eventALabel}>
-                  <Field label={t("timeLabel")}>
-                    <input
-                      className={inputClass}
-                      value={data.ceremonyTime}
-                      onChange={(e) => update("ceremonyTime", e.target.value)}
-                      placeholder={t("ceremonyPlaceholderTime")}
+            )}
+
+            {step === "events" && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between gap-3 rounded-xl bg-amber-50/70 px-3 py-2 dark:bg-amber-950/30">
+                  <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">{t("eventSchedule")}</span>
+                  <SectionToggle enabled={data.sections.schedule} onChange={(v) => updateSection("schedule", v)} />
+                </div>
+                <div className={`space-y-4 transition-opacity ${!data.sections.schedule ? "opacity-45" : ""}`}>
+                  <EventFields
+                    title={category.eventALabel}
+                    time={data.ceremonyTime}
+                    venue={data.ceremonyVenue}
+                    placeholders={{
+                      time: t("ceremonyPlaceholderTime"),
+                      venue: t("ceremonyPlaceholderVenue"),
+                      address: t("ceremonyPlaceholderAddress"),
+                    }}
+                    onTime={(v) => update("ceremonyTime", v)}
+                    onVenue={(f, v) => updateVenue("ceremonyVenue", f, v)}
+                    mapSearch={mapSearchFor("ceremonyVenue")}
+                  />
+                  {category.eventBLabel && (
+                    <EventFields
+                      title={category.eventBLabel}
+                      time={data.receptionTime}
+                      venue={data.receptionVenue}
+                      placeholders={{
+                        time: t("receptionPlaceholderTime"),
+                        venue: t("receptionPlaceholderVenue"),
+                        address: t("receptionPlaceholderAddress"),
+                      }}
+                      onTime={(v) => update("receptionTime", v)}
+                      onVenue={(f, v) => updateVenue("receptionVenue", f, v)}
+                      mapSearch={mapSearchFor("receptionVenue")}
                     />
-                  </Field>
-                  <Field label={t("venueNameLabel")}>
-                    <input
-                      className={inputClass}
-                      value={data.ceremonyVenue.name}
-                      onChange={(e) => updateVenue("ceremonyVenue", "name", e.target.value)}
-                      placeholder={t("ceremonyPlaceholderVenue")}
-                    />
-                  </Field>
-                  <Field label={t("addressLabel")}>
-                    <textarea
-                      className={inputClass}
-                      rows={2}
-                      value={data.ceremonyVenue.address}
-                      onChange={(e) => updateVenue("ceremonyVenue", "address", e.target.value)}
-                      placeholder={t("ceremonyPlaceholderAddress")}
-                    />
-                  </Field>
-                  <Field label={t("mapsLinkLabel")}>
-                    <input
-                      type="url"
-                      className={inputClass}
-                      value={data.ceremonyVenue.mapsLink ?? ""}
-                      onChange={(e) => updateVenue("ceremonyVenue", "mapsLink", e.target.value)}
-                      placeholder={t("mapsPlaceholder")}
-                    />
-                  </Field>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {step === "story" && (
+              <div className="space-y-8">
+                <FormSection
+                  title={category.storyTitle}
+                  toggle={{ enabled: data.sections.story, onChange: (v) => updateSection("story", v) }}
+                >
+                  <StoryPicker
+                    options={(STORY_PRESETS[template.category] ?? []).map((id) => ({
+                      id,
+                      title: tPresets(`${template.category}.${id}.title`),
+                      tag: tPresets(`${template.category}.${id}.tag`),
+                      preview: fillStory(id, data.brideName, data.groomName),
+                    }))}
+                    selectedId={
+                      storyPreset && data.story === fillStory(storyPreset, data.brideName, data.groomName)
+                        ? storyPreset
+                        : null
+                    }
+                    onChoose={chooseStory}
+                    onWriteOwn={writeOwnStory}
+                  />
+                  <textarea
+                    ref={storyRef}
+                    className={inputClass}
+                    rows={6}
+                    lang={scriptLang(data.story)}
+                    value={data.story}
+                    onChange={(e) => update("story", e.target.value)}
+                    placeholder={t("storyPlaceholder")}
+                  />
                 </FormSection>
 
-                {category.eventBLabel && (
-                  <FormSection title={category.eventBLabel}>
-                    <Field label={t("timeLabel")}>
-                      <input
-                        className={inputClass}
-                        value={data.receptionTime}
-                        onChange={(e) => update("receptionTime", e.target.value)}
-                        placeholder={t("receptionPlaceholderTime")}
-                      />
-                    </Field>
-                    <Field label={t("venueNameLabel")}>
-                      <input
-                        className={inputClass}
-                        value={data.receptionVenue.name}
-                        onChange={(e) => updateVenue("receptionVenue", "name", e.target.value)}
-                        placeholder={t("receptionPlaceholderVenue")}
-                      />
-                    </Field>
-                    <Field label={t("addressLabel")}>
-                      <textarea
-                        className={inputClass}
-                        rows={2}
-                        value={data.receptionVenue.address}
-                        onChange={(e) => updateVenue("receptionVenue", "address", e.target.value)}
-                        placeholder={t("receptionPlaceholderAddress")}
-                      />
-                    </Field>
-                    <Field label={t("mapsLinkLabel")}>
-                      <input
-                        type="url"
-                        className={inputClass}
-                        value={data.receptionVenue.mapsLink ?? ""}
-                        onChange={(e) =>
-                          updateVenue("receptionVenue", "mapsLink", e.target.value)
-                        }
-                        placeholder={t("mapsPlaceholder")}
-                      />
-                    </Field>
+                {category.familyTitle && (
+                  <FormSection
+                    title={category.familyTitle}
+                    toggle={{
+                      enabled: data.sections.family,
+                      onChange: (v) => updateSection("family", v),
+                    }}
+                  >
+                    <FamilyFields
+                      brideHeading={t("familySideOf", {
+                        name: data.brideName.trim() || category.personALabel,
+                      })}
+                      groomHeading={t("familySideOf", {
+                        name: data.groomName.trim() || category.personBLabel,
+                      })}
+                      brideMembers={data.brideFamily ?? getFamily(data, "bride")}
+                      groomMembers={data.groomFamily ?? getFamily(data, "groom")}
+                      onChange={updateFamily}
+                    />
                   </FormSection>
                 )}
               </div>
-            </div>
-
-            <FormSection
-              title={category.storyTitle}
-              toggle={{ enabled: data.sections.story, onChange: (v) => updateSection("story", v) }}
-            >
-              <StoryPicker
-                options={(STORY_PRESETS[template.category] ?? []).map((id) => ({
-                  id,
-                  title: tPresets(`${template.category}.${id}.title`),
-                  tag: tPresets(`${template.category}.${id}.tag`),
-                  preview: fillStory(id, data.brideName, data.groomName),
-                }))}
-                selectedId={
-                  storyPreset && data.story === fillStory(storyPreset, data.brideName, data.groomName)
-                    ? storyPreset
-                    : null
-                }
-                onChoose={chooseStory}
-                onWriteOwn={writeOwnStory}
-              />
-              <textarea
-                ref={storyRef}
-                className={inputClass}
-                rows={6}
-                lang={scriptLang(data.story)}
-                value={data.story}
-                onChange={(e) => update("story", e.target.value)}
-                placeholder={t("storyPlaceholder")}
-              />
-            </FormSection>
-
-            {category.familyTitle && (
-              <FormSection
-                title={category.familyTitle}
-                toggle={{
-                  enabled: data.sections.family,
-                  onChange: (v) => updateSection("family", v),
-                }}
-              >
-                <FamilyFields
-                  brideHeading={t("familySideOf", {
-                    name: data.brideName.trim() || category.personALabel,
-                  })}
-                  groomHeading={t("familySideOf", {
-                    name: data.groomName.trim() || category.personBLabel,
-                  })}
-                  brideMembers={data.brideFamily ?? getFamily(data, "bride")}
-                  groomMembers={data.groomFamily ?? getFamily(data, "groom")}
-                  onChange={updateFamily}
-                />
-              </FormSection>
             )}
 
-            <FormSection
-              title={t("photoGallery")}
-              toggle={{
-                enabled: data.sections.gallery,
-                onChange: (v) => updateSection("gallery", v),
-              }}
-            >
-              <div className="grid grid-cols-3 gap-3">
-                {data.photos.filter(Boolean).map((url, i, all) => (
-                  <PhotoTile
-                    key={url}
-                    index={i}
-                    count={all.length}
-                    url={url}
-                    onRemove={removePhoto}
-                    onMove={movePhoto}
-                  />
-                ))}
-                {data.photos.filter(Boolean).length < 6 && (
-                  <AddPhotoTile
-                    index={data.photos.filter(Boolean).length}
-                    uploading={uploadingIndex !== null}
-                    onPick={pickPhoto}
-                  />
-                )}
-              </div>
-              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("photoGalleryHint")}</p>
-              {data.photos.filter(Boolean).length > 1 && (
-                <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("photoOrderHint")}</p>
-              )}
-              {cropFile && (
-                <PhotoCropper file={cropFile} onCancel={() => setCropFile(null)} onApply={uploadPhoto} />
-              )}
-            </FormSection>
-
-            <FormSection
-              title={t("guestPhotosTitle")}
-              toggle={{
-                enabled: data.sections.guestPhotos,
-                onChange: (v) => updateSection("guestPhotos", v),
-              }}
-            >
-              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("guestPhotosHint")}</p>
-            </FormSection>
-
-            <FormSection
-              title={t("thingsToKnowTitle")}
-              toggle={{ enabled: data.sections.faq, onChange: (v) => updateSection("faq", v) }}
-            >
-              <div className="space-y-4">
-                {data.faq.map((item, i) => (
-                  <div key={i} className="rounded-lg border border-neutral-200 p-3 dark:border-neutral-800">
-                    <div className="mb-2 flex items-center justify-between">
-                      <span className="text-xs font-semibold text-neutral-400 dark:text-neutral-500">
-                        {t("questionLabel", { n: i + 1 })}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => removeFaqItem(i)}
-                        className="text-neutral-400 hover:text-red-600 dark:text-neutral-500 dark:hover:text-red-400"
-                        aria-label={t("removeQuestion")}
-                      >
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                    <input
-                      className={`${inputClass} mb-2`}
-                      value={item.question}
-                      onChange={(e) => updateFaq(i, "question", e.target.value)}
-                      placeholder={t("questionPlaceholder")}
-                    />
-                    <textarea
-                      className={inputClass}
-                      rows={2}
-                      value={item.answer}
-                      onChange={(e) => updateFaq(i, "answer", e.target.value)}
-                      placeholder={t("answerPlaceholder")}
-                    />
+            {step === "photos" && (
+              <div className="space-y-8">
+                <FormSection
+                  title={t("photoGallery")}
+                  toggle={{
+                    enabled: data.sections.gallery,
+                    onChange: (v) => updateSection("gallery", v),
+                  }}
+                >
+                  <div className="grid grid-cols-3 gap-3">
+                    {photos.map((url, i, all) => (
+                      <PhotoTile
+                        key={url}
+                        index={i}
+                        count={all.length}
+                        url={url}
+                        onRemove={removePhoto}
+                        onMove={movePhoto}
+                      />
+                    ))}
+                    {photos.length < 6 && (
+                      <AddPhotoTile index={photos.length} uploading={uploadingIndex !== null} onPick={pickPhoto} />
+                    )}
                   </div>
-                ))}
+                  <p className="text-xs text-neutral-400 dark:text-neutral-500">
+                    {photos.length > 1 ? t("photoOrderHint") : t("photoGalleryHint")}
+                  </p>
+                  {cropFile && (
+                    <PhotoCropper file={cropFile} onCancel={() => setCropFile(null)} onApply={uploadPhoto} />
+                  )}
+                </FormSection>
+
+                <div>
+                  <h3 className="mb-1 text-sm font-semibold text-neutral-800 dark:text-neutral-200">{t("extrasTitle")}</h3>
+                  <p className="mb-3 text-xs text-neutral-500 dark:text-neutral-400">{t("extrasHint")}</p>
+                  <div className="space-y-2.5">
+                    <ExtraCard
+                      icon={Music}
+                      title={t("musicTitle")}
+                      summary={data.backgroundMusic ? t("musicAdded") : t("musicHint")}
+                    >
+                      {data.backgroundMusic ? (
+                        <div className="space-y-2">
+                          <audio controls src={data.backgroundMusic} className="w-full" />
+                          <button
+                            type="button"
+                            onClick={removeMusic}
+                            className="text-xs font-semibold text-red-600 hover:underline"
+                          >
+                            {t("removeTrack")}
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-neutral-300 px-4 py-3 text-sm text-neutral-500 hover:border-amber-400 dark:border-neutral-700">
+                          {uploadingMusic ? t("uploading") : t("uploadAudio")}
+                          <input
+                            type="file"
+                            accept="audio/*"
+                            className="hidden"
+                            disabled={uploadingMusic}
+                            onChange={(e) => handleMusicChange(e.target.files?.[0] ?? null)}
+                          />
+                        </label>
+                      )}
+                    </ExtraCard>
+
+                    <ExtraCard
+                      icon={CalendarCheck}
+                      title={t("guestRsvpTitle")}
+                      summary={t("guestRsvpHint")}
+                      toggle={{ enabled: data.sections.rsvp, onChange: (v) => updateSection("rsvp", v) }}
+                    />
+
+                    <ExtraCard
+                      icon={HelpCircle}
+                      title={t("thingsToKnowTitle")}
+                      summary={t("questionCount", { count: data.faq.length })}
+                      toggle={{ enabled: data.sections.faq, onChange: (v) => updateSection("faq", v) }}
+                    >
+                      <FaqFields
+                        items={data.faq}
+                        onChange={updateFaq}
+                        onAdd={addFaqItem}
+                        onRemove={removeFaqItem}
+                      />
+                    </ExtraCard>
+
+                    <ExtraCard
+                      icon={Camera}
+                      title={t("guestPhotosTitle")}
+                      summary={t("guestPhotosHint")}
+                      toggle={{
+                        enabled: data.sections.guestPhotos,
+                        onChange: (v) => updateSection("guestPhotos", v),
+                      }}
+                    />
+
+                    {/* Only the wedding (royal palace) layout renders these sections. */}
+                    {template.category === "wedding" && (
+                      <>
+                        <ExtraCard
+                          icon={Plane}
+                          title={t("travelTitle")}
+                          summary={t("travelHint")}
+                          toggle={{ enabled: data.sections.travel, onChange: (v) => updateSection("travel", v) }}
+                        >
+                          <NearbyFill
+                            label={t("nearbyFillTravel")}
+                            state={nearbyState.travel}
+                            onFill={() => fillFromVenue("travel")}
+                            onFindVenue={() => goTo("events")}
+                          />
+                          <TravelFields
+                            value={data.travel ?? EMPTY_TRAVEL}
+                            onChange={(v) => update("travel", v)}
+                          />
+                        </ExtraCard>
+                        <ExtraCard
+                          icon={Landmark}
+                          title={t("placesTitle")}
+                          summary={t("placesHint")}
+                          toggle={{ enabled: data.sections.places, onChange: (v) => updateSection("places", v) }}
+                        >
+                          <NearbyFill
+                            label={t("nearbyFillPlaces")}
+                            state={nearbyState.places}
+                            onFill={() => fillFromVenue("places")}
+                            onFindVenue={() => goTo("events")}
+                          />
+                          <PlacesFields value={data.places ?? []} onChange={(v) => update("places", v)} />
+                        </ExtraCard>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
-              {data.faq.length < 4 && (
-                <button
-                  type="button"
-                  onClick={addFaqItem}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
-                >
-                  <Plus size={14} />
-                  {t("addQuestion", { count: data.faq.length })}
-                </button>
-              )}
-            </FormSection>
-
-            {/* Only the wedding (royal palace) layout renders these sections. */}
-            {template.category === "wedding" && (
-              <>
-                <FormSection
-                  title={t("travelTitle")}
-                  toggle={{ enabled: data.sections.travel, onChange: (v) => updateSection("travel", v) }}
-                >
-                  <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("travelHint")}</p>
-                  <TravelFields
-                    value={data.travel ?? EMPTY_TRAVEL}
-                    onChange={(v) => update("travel", v)}
-                  />
-                </FormSection>
-
-                <FormSection
-                  title={t("placesTitle")}
-                  toggle={{ enabled: data.sections.places, onChange: (v) => updateSection("places", v) }}
-                >
-                  <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("placesHint")}</p>
-                  <PlacesFields value={data.places ?? []} onChange={(v) => update("places", v)} />
-                </FormSection>
-              </>
             )}
 
-            <FormSection
-              title={t("guestRsvpTitle")}
-              toggle={{ enabled: data.sections.rsvp, onChange: (v) => updateSection("rsvp", v) }}
-            >
-              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("guestRsvpHint")}</p>
-            </FormSection>
-
-            <FormSection title={t("musicTitle")}>
-              {data.backgroundMusic ? (
-                <div className="space-y-2">
-                  <audio controls src={data.backgroundMusic} className="w-full" />
-                  <button
-                    type="button"
-                    onClick={removeMusic}
-                    className="text-xs font-semibold text-red-600 hover:underline"
-                  >
-                    {t("removeTrack")}
-                  </button>
-                </div>
-              ) : (
-                <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-neutral-300 px-4 py-3 text-sm text-neutral-500 hover:border-neutral-400">
-                  {uploadingMusic ? t("uploading") : t("uploadAudio")}
-                  <input
-                    type="file"
-                    accept="audio/*"
-                    className="hidden"
-                    disabled={uploadingMusic}
-                    onChange={(e) => handleMusicChange(e.target.files?.[0] ?? null)}
-                  />
-                </label>
-              )}
-              <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("musicHint")}</p>
-            </FormSection>
-
-            <FormSection title={t("accentColorTitle")}>
-              <div className="flex flex-wrap items-center gap-2">
-                {ACCENT_PRESETS.map((c) => (
-                  <button
-                    key={c}
-                    type="button"
-                    onClick={() => update("accentColor", c)}
-                    className="h-8 w-8 rounded-full border-2"
-                    style={{
-                      backgroundColor: c,
-                      borderColor: data.accentColor === c ? "#0a0a0a" : "transparent",
-                    }}
-                    aria-label={t("accentColorAria", { color: c })}
-                  />
-                ))}
-                <input
-                  type="color"
-                  value={data.accentColor}
-                  onChange={(e) => update("accentColor", e.target.value)}
-                  className="h-8 w-8 cursor-pointer rounded border border-neutral-300 bg-transparent p-0"
-                  aria-label={t("customAccentAria")}
-                />
-              </div>
-            </FormSection>
-
-            <FormSection title={t("fontPairingTitle")}>
-              <div className="grid grid-cols-2 gap-2">
-                {FONT_PAIRINGS.map((f) => (
-                  <button
-                    key={f.id}
-                    type="button"
-                    onClick={() => update("fontPairing", f.id)}
-                    className={`rounded-lg border px-3 py-2 text-left text-sm transition ${
-                      data.fontPairing === f.id
-                        ? "border-neutral-900 bg-neutral-50 dark:border-neutral-100 dark:bg-neutral-800"
-                        : "border-neutral-200 hover:border-neutral-300 dark:border-neutral-700 dark:hover:border-neutral-600"
-                    }`}
-                  >
-                    <span style={{ fontFamily: f.headingVar }} className="block text-base">
-                      {f.name}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </FormSection>
+            <StepFooter prev={steps[stepIndex - 1]} next={steps[stepIndex + 1]} onSelect={goTo} />
           </div>
         )}
 
@@ -1314,7 +1374,9 @@ export default function Editor({
               })}
             </p>
           )}
-          {!isEditMode && (
+          {/* Asked for on the last step (or when Publish needs it), so the
+              bar stays small while filling in the rest. */}
+          {!isEditMode && (stepIndex === steps.length - 1 || phoneTouched || ownerPhone) && (
             <label className="mb-3 block">
               <span className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
                 {t("ownerPhoneLabel")}
@@ -1388,6 +1450,14 @@ export default function Editor({
               <RotateCcw size={13} aria-hidden />
               {t("replayIntro")}
             </button>
+            {motionReducedElsewhere && (
+              <span
+                className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-medium text-amber-800 dark:bg-amber-950/60 dark:text-amber-300"
+                title={t("motionForcedHint")}
+              >
+                {t("motionForced")}
+              </span>
+            )}
           </div>
           <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-1 dark:border-neutral-800 dark:bg-neutral-900">
             {[

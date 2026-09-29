@@ -12,6 +12,7 @@ import EventRows from "./EventRows";
 import { Palms, Sky } from "../motion/scenery";
 import { FamilyBlock, TempleMandala, TemplePaisleys, Thali } from "../motion/moments";
 import MotionHeading from "../motion/MotionHeading";
+import { directionsUrl } from "@/lib/maps";
 import s from "./royal.module.css";
 
 /** Parses an ISO yyyy-mm-dd as a local-noon date so the day never shifts
@@ -144,8 +145,8 @@ function VenueCard({ venue, label }: { venue: VenueInfo; label: string }) {
       <div className={s.eyebrow}>{label}</div>
       <h3>{venue.name}</h3>
       {venue.address && <p>{venue.address}</p>}
-      {venue.mapsLink && (
-        <a className={s.pill} href={venue.mapsLink} target="_blank" rel="noopener noreferrer">
+      {directionsUrl(venue) && (
+        <a className={s.pill} href={directionsUrl(venue)} target="_blank" rel="noopener noreferrer">
           <MapPin size={13} aria-hidden /> {t("directions")}
         </a>
       )}

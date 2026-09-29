@@ -17,7 +17,9 @@ import {
   sanitizeSections,
   sanitizeTravel,
   sanitizeVenue,
+  sanitizeFontPairing,
 } from "@/lib/sanitize";
+import { tooMany } from "@/lib/rateLimit";
 
 /**
  * Creates or updates a "pending_payment" draft, keyed by a client-generated
@@ -27,6 +29,9 @@ import {
  * Admin SDK here, never directly from the client.
  */
 export async function POST(req: NextRequest) {
+  const limited = tooMany(req, "draft", 30, 60 * 60 * 1000);
+  if (limited) return limited;
+
   const body = await req.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
@@ -119,7 +124,7 @@ export async function POST(req: NextRequest) {
     groomParents: sanitizeParentsLine(groomParents),
     brideParents: sanitizeParentsLine(brideParents),
     accentColor: sanitizeAccentColor(accentColor),
-    fontPairing: fontPairing ? String(fontPairing) : "classic-serif",
+    fontPairing: sanitizeFontPairing(fontPairing),
     photos: sanitizePhotos(photos),
     backgroundMusic: sanitizeBackgroundMusic(backgroundMusic),
     sections: sanitizeSections(sections),

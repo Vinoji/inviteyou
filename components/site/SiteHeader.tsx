@@ -5,8 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Menu, Sparkles, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
-import ThemeToggle from "../ThemeToggle";
-import LanguageSwitcher from "../LanguageSwitcher";
+import SettingsMenu from "./SettingsMenu";
 import AppToolbar from "../AppToolbar";
 import useSafeReducedMotion from "../invite/useSafeReducedMotion";
 import s from "./site.module.css";
@@ -17,7 +16,7 @@ export function isSitePage(pathname: string) {
 }
 
 /** Pages that open with a dark FestiveBanner / hero under the header. */
-const DARK_TOP = new Set(["/", "/demo", "/support", "/privacy"]);
+const DARK_TOP = new Set(["/", "/demo", "/support", "/privacy", "/terms"]);
 
 const NAV = [
   { href: "/#templates", key: "templates", match: (p: string) => p === "/" },
@@ -130,8 +129,7 @@ export default function SiteHeader() {
         </nav>
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
-          <ThemeToggle />
-          <LanguageSwitcher />
+          <SettingsMenu />
           <Link href="/#templates" className={s.cta}>
             <Sparkles size={15} aria-hidden />
             {t("nav.create")}
@@ -186,9 +184,8 @@ export default function SiteHeader() {
                   </Link>
                 </motion.div>
               ))}
-              <div className="mt-2 flex items-center justify-between gap-3 px-1">
-                <ThemeToggle />
-                <LanguageSwitcher />
+              <div className="mt-3 rounded-2xl bg-[#fffaf2] p-4 dark:bg-[#1c1220]">
+                <SettingsMenu inline />
               </div>
               <Link href="/#templates" onClick={() => setOpenFor(null)} className={`${s.cta} mt-3 justify-center`}>
                 <Sparkles size={15} aria-hidden />

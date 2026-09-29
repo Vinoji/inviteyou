@@ -12,6 +12,35 @@ import type {
   ContentLocale,
 } from "./types";
 import { withDefaultSections, PLACE_SCENES, FAMILY_RELATIONS, MAX_FAMILY_MEMBERS } from "./types";
+import { FONT_PAIRINGS } from "./fontPairings";
+
+/** A download URL from this app's Firebase Storage — the only place photos
+ * and music are uploaded to. Anything else is dropped: photo URLs are
+ * fetched server-side (share preview images), so an arbitrary address
+ * would let anyone make the server request it. */
+function isStorageUrl(v: string): boolean {
+  try {
+    const u = new URL(v);
+    return u.protocol === "https:" && u.hostname === "firebasestorage.googleapis.com";
+  } catch {
+    return false;
+  }
+}
+
+/** Only real web links for guests to click — no `javascript:` and the like. */
+function webLink(v: unknown, max: number): string {
+  if (typeof v !== "string" || !v.trim()) return "";
+  try {
+    const u = new URL(v.trim());
+    return u.protocol === "https:" || u.protocol === "http:" ? v.trim().slice(0, max) : "";
+  } catch {
+    return "";
+  }
+}
+
+export function sanitizeFontPairing(v: unknown): string {
+  return FONT_PAIRINGS.some((f) => f.id === v) ? (v as string) : "classic-serif";
+}
 
 export function sanitizeVenue(v: unknown): VenueInfo {
   if (!v || typeof v !== "object") return { name: "", address: "", mapsLink: "" };
@@ -19,8 +48,21 @@ export function sanitizeVenue(v: unknown): VenueInfo {
   return {
     name: typeof obj.name === "string" ? obj.name.slice(0, 150) : "",
     address: typeof obj.address === "string" ? obj.address.slice(0, 300) : "",
-    mapsLink: typeof obj.mapsLink === "string" ? obj.mapsLink.slice(0, 500) : "",
+    mapsLink: webLink(obj.mapsLink, 500),
+    ...coords(obj.lat, obj.lng),
   };
+}
+
+/** A map pin only when both halves are real coordinates. */
+function coords(lat: unknown, lng: unknown): { lat?: number; lng?: number } {
+  return typeof lat === "number" &&
+    typeof lng === "number" &&
+    Number.isFinite(lat) &&
+    Number.isFinite(lng) &&
+    Math.abs(lat) <= 90 &&
+    Math.abs(lng) <= 180
+    ? { lat, lng }
+    : {};
 }
 
 export function sanitizeAccentColor(c: unknown): string {
@@ -29,18 +71,16 @@ export function sanitizeAccentColor(c: unknown): string {
 
 export function sanitizePhotos(p: unknown): string[] {
   if (!Array.isArray(p)) return [];
-  return p.filter((x): x is string => typeof x === "string").slice(0, 6);
+  return p.filter((x): x is string => typeof x === "string" && x.length <= 1000 && isStorageUrl(x)).slice(0, 6);
 }
 
 export function sanitizeParentsLine(v: unknown): string {
   return typeof v === "string" ? v.slice(0, 150) : "";
 }
 
-/** A Storage download URL, or "" for no background track. Not deeply
- * validated (a bad URL just fails to play client-side, not a security
- * issue) — only bounded in length. */
+/** A Storage download URL, or "" for no background track. */
 export function sanitizeBackgroundMusic(v: unknown): string {
-  return typeof v === "string" ? v.slice(0, 1000) : "";
+  return typeof v === "string" && v.length <= 1000 && isStorageUrl(v) ? v : "";
 }
 
 export function sanitizeAttendingSide(v: unknown): "groom" | "bride" | "friend" | undefined {
@@ -70,7 +110,7 @@ export function sanitizeGuestPhotoUrl(v: unknown): string {
   if (typeof v !== "string" || v.length > 1000) return "";
   try {
     const parsed = new URL(v);
-    if (parsed.hostname !== "firebasestorage.googleapis.com") return "";
+    if (parsed.protocol !== "https:" || parsed.hostname !== "firebasestorage.googleapis.com") return "";
     return v;
   } catch {
     return "";
@@ -108,6 +148,10 @@ export function sanitizeTravel(v: unknown): TravelInfo {
       .map((a) => ({ code: str(a.code, 8), name: str(a.name, 80), distance: str(a.distance, 40) }))
       .filter((a) => a.code.trim() || a.name.trim())
       .slice(0, 3),
+    stations: objects(obj.stations)
+      .map((st) => ({ name: str(st.name, 80), code: str(st.code, 8), distance: str(st.distance, 40) }))
+      .filter((st) => st.name.trim() || st.code.trim())
+      .slice(0, 2),
     routes: objects(obj.routes)
       .map((r) => ({
         from: str(r.from, 60),

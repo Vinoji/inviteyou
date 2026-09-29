@@ -94,6 +94,8 @@ export async function generateMetadata({
   return {
     title,
     description,
+    // A couple's names, dates and venues: shareable, never searchable.
+    robots: { index: false, follow: false },
     openGraph: { title, description, type: "website" },
     twitter: { card: "summary_large_image", title, description },
   };

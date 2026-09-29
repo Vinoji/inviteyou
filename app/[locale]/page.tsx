@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { pageAlternates } from "@/lib/seo";
+import StructuredData from "@/components/site/StructuredData";
 import { getAllCategoryMeta } from "@/lib/i18n/categories";
 import { getTemplatesByCategory } from "@/lib/i18n/templates";
 import { showcaseProps } from "@/lib/i18n/showcase";
@@ -17,6 +20,11 @@ import {
 
 /** Openings the hero phone cycles through — one per style family. */
 const FEATURED = ["traditional-gold", "silk-curtain", "engagement-ring", "lantern-night", "baby-moon"];
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return { alternates: pageAlternates(locale, "") };
+}
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -41,6 +49,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 
   return (
     <main className={`flex-1 ${paper.paper}`}>
+      <StructuredData locale={locale} />
       <Hero featured={featured} />
 
       <OccasionMarquee occasions={categories.map((c) => ({ id: c.id, label: c.label }))} />

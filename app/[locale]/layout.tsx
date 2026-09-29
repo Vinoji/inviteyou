@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import {
   Playfair_Display,
   Cormorant_Garamond,
@@ -18,8 +18,11 @@ import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { routing } from "@/i18n/routing";
 import SiteHeader from "@/components/site/SiteHeader";
+import { SITE } from "@/lib/site";
+import { SITE_URL } from "@/lib/seo";
 import SiteFooter from "@/components/site/SiteFooter";
 import EntranceGate from "@/components/site/EntranceGate";
+import HelpMenu from "@/components/site/HelpMenu";
 import { MotionPrefSync } from "@/components/invite/MotionToggle";
 import "../globals.css";
 
@@ -93,15 +96,43 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "landing" });
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  const title = `${t("eyebrow")} — ${t("heading")}`;
+  // Defaults for every page; pages add their own title, description and
+  // canonical (lib/seo.ts), and the site share image comes from
+  // opengraph-image.tsx next to this file.
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-    title: {
-      default: `${t("eyebrow")} — ${t("heading")}`,
-      template: `%s | ${t("eyebrow")}`,
-    },
+    metadataBase: new URL(SITE_URL),
+    applicationName: SITE.name,
+    title: { default: title, template: `%s | ${t("eyebrow")}` },
     description: t("subheading"),
+    keywords: tSeo("keywords").split(",").map((k) => k.trim()),
+    category: "lifestyle",
+    creator: SITE.name,
+    publisher: SITE.name,
+    formatDetection: { telephone: false, email: false, address: false },
+    openGraph: {
+      type: "website",
+      siteName: SITE.name,
+      title,
+      description: t("subheading"),
+      locale: locale === "ta" ? "ta_IN" : "en_IN",
+      alternateLocale: locale === "ta" ? ["en_IN"] : ["ta_IN"],
+    },
+    twitter: { card: "summary_large_image", title, description: t("subheading") },
+    // Search Console ownership, once the site is added there.
+    ...(process.env.GOOGLE_SITE_VERIFICATION
+      ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
+      : {}),
   };
 }
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#3d1236" },
+    { media: "(prefers-color-scheme: dark)", color: "#1a0b1f" },
+  ],
+};
 
 const fontVariables = [
   playfair.variable,
@@ -128,7 +159,7 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  // Theme is decided server-side from a cookie (written by ThemeToggle),
+  // Theme is decided server-side from a cookie (written by lib/themePref.ts),
   // not a client-side "flash of wrong theme, then fix it" script — the
   // right `dark`/`light` class is already in the HTML the browser first
   // paints, on every request including the soft client-side navigation a
@@ -151,6 +182,7 @@ export default async function RootLayout({
           <SiteHeader />
           {children}
           <SiteFooter />
+          <HelpMenu />
         </NextIntlClientProvider>
       </body>
     </html>

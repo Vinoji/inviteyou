@@ -18,6 +18,7 @@ import {
   sanitizeSections,
   sanitizeTravel,
   sanitizeVenue,
+  sanitizeFontPairing,
 } from "@/lib/sanitize";
 
 /** Fetches a published invitation's data for the edit form, gated by token. */
@@ -134,7 +135,7 @@ export async function PUT(
       groomParents: sanitizeParentsLine(groomParents),
       brideParents: sanitizeParentsLine(brideParents),
       accentColor: sanitizeAccentColor(accentColor),
-      fontPairing: fontPairing ? String(fontPairing) : "classic-serif",
+      fontPairing: sanitizeFontPairing(fontPairing),
       photos: sanitizePhotos(photos),
       backgroundMusic: sanitizeBackgroundMusic(backgroundMusic),
       sections: sanitizeSections(sections),

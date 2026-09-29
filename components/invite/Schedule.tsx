@@ -4,6 +4,7 @@ import { getFontPairing } from "@/lib/fontPairings";
 import { getThemeClasses } from "./theme";
 import SectionDivider from "./SectionDivider";
 import type { VenueInfo } from "@/lib/types";
+import { directionsUrl } from "@/lib/maps";
 
 function EventCard({
   title,
@@ -54,9 +55,9 @@ function EventCard({
       {venue?.address && (
         <p className="mt-1 pl-[21px] text-sm text-neutral-600">{venue.address}</p>
       )}
-      {venue?.mapsLink && (
+      {directionsUrl(venue) && (
         <a
-          href={venue.mapsLink}
+          href={directionsUrl(venue)}
           target="_blank"
           rel="noopener noreferrer"
           className="mt-4 inline-flex items-center gap-1 pl-[21px] text-sm font-semibold underline underline-offset-4"

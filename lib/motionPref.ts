@@ -19,12 +19,25 @@ import { useSyncExternalStore } from "react";
 const KEY = "namma:motion";
 const EVENT = "namma:motion-change";
 
-function read(): boolean {
+/** Set while the editor is open: its preview and design cards always play
+ * in full, whatever the saved choice — the couple is judging the design,
+ * and a "Reduce motion" tapped once (often by accident) left the editor
+ * looking broken. The saved choice is untouched and applies again on
+ * every other page. */
+let forceFull = false;
+
+/** The saved choice. */
+function saved(): boolean {
   try {
     return localStorage.getItem(KEY) === "reduced";
   } catch {
     return false;
   }
+}
+
+/** What animations should follow right now. */
+function read(): boolean {
+  return !forceFull && saved();
 }
 
 function subscribe(onChange: () => void) {
@@ -48,14 +61,41 @@ export function setReducedMotionPref(reduced: boolean) {
   } catch {
     // Storage blocked — the choice still applies for this page view.
   }
-  document.documentElement.setAttribute("data-motion", reduced ? "reduced" : "full");
+  applyMotionAttribute();
   window.dispatchEvent(new Event(EVENT));
 }
 
-/** false on the server and during hydration (so markup matches), then the
- * guest's saved choice. */
+/** Turns the editor's full-motion override on or off (see forceFull) and
+ * tells everything already showing. */
+export function forceFullMotion(on: boolean) {
+  forceFull = on;
+  applyMotionAttribute();
+  window.dispatchEvent(new Event(EVENT));
+}
+
+/** The same switch, set quietly while the editor first renders, so its
+ * preview reads "full" from the start (announcing it mid-render would
+ * update other components during that render). forceFullMotion follows
+ * in an effect. */
+export function primeFullMotion() {
+  forceFull = true;
+}
+
+/** false on the server and during hydration (so markup matches), then
+ * whether animations should be reduced here (the saved choice, unless the
+ * editor overrides it). */
 export function useReducedMotionPref(): boolean {
   return useSyncExternalStore(subscribe, read, () => false);
+}
+
+/** The saved choice itself — for the switches that change it. */
+export function useSavedReducedMotion(): boolean {
+  return useSyncExternalStore(subscribe, saved, () => false);
+}
+
+/** Whether the editor's full-motion override is on. */
+export function useMotionForced(): boolean {
+  return useSyncExternalStore(subscribe, () => forceFull, () => false);
 }
 
 /** Whether the device itself asks for reduced motion — only used to decide

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyPaymentSignature } from "@/lib/razorpay";
+import { getRazorpay, verifyPaymentSignature } from "@/lib/razorpay";
 import { fetchOrder, isPublishOrder, publishPaidDraft } from "@/lib/payments";
 
 export async function POST(req: NextRequest) {
@@ -12,7 +12,10 @@ export async function POST(req: NextRequest) {
   if (!draftId || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
     return NextResponse.json({ error: "Missing payment details." }, { status: 400 });
   }
-  if (!process.env.RAZORPAY_KEY_SECRET) {
+  if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
+    return NextResponse.json({ error: "Invalid draftId." }, { status: 400 });
+  }
+  if (!getRazorpay()) {
     return NextResponse.json(
       { error: "Payments are not configured on the server." },
       { status: 500 }
@@ -26,16 +29,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Payment verification failed." }, { status: 400 });
   }
 
-  // The signature proves a payment, not what it was for: confirm with
-  // Razorpay that this order is the ₹199 publish for *this* draft (so a ₹50
-  // restore payment can't publish one).
-  const order = await fetchOrder(razorpay_order_id);
-  if (!isPublishOrder(order, draftId)) {
+  // The signature only proves *an* order was paid. The order must also be
+  // this draft's, for the full price — otherwise one real payment (or a ₹50
+  // restore) could be replayed to publish other drafts. (create-order puts
+  // the draftId in the order's notes.)
+  const order = await fetchOrder(razorpay_order_id).catch(() => null);
+  if (!order || !isPublishOrder(order, draftId)) {
     return NextResponse.json({ error: "This payment isn't for this invitation." }, { status: 400 });
   }
 
-  // The Razorpay webhook may already have published it; either way the
-  // same slug and edit token come back.
+  // Each order publishes once. The Razorpay webhook may already have
+  // published it; either way the same slug and edit token come back.
   const result = await publishPaidDraft(req, draftId, razorpay_order_id, razorpay_payment_id);
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: result.status });

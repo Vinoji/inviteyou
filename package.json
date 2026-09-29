@@ -44,5 +44,8 @@
     "safari >= 15",
     "ios_saf >= 15",
     "samsung >= 18"
-  ]
+  ],
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
 }

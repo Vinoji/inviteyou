@@ -2,8 +2,9 @@ rules_version = '2';
 
 service firebase.storage {
   match /b/{bucket}/o {
+    // Photo formats only — not SVG, which can carry scripts.
     function isImage() {
-      return request.resource.contentType.matches('image/.*')
+      return request.resource.contentType.matches('image/(jpeg|png|webp|heic|heif)')
           && request.resource.size < 8 * 1024 * 1024;
     }
     function isAudio() {
@@ -20,11 +21,6 @@ service firebase.storage {
       allow read: if true;
       allow create: if (fileName.matches('photo-[a-z0-9]+-[a-z0-9]+[.]jpg') && isImage())
                     || (fileName.matches('music-[a-z0-9]+-[a-z0-9]+') && isAudio());
-      // LEGACY — the fixed names the currently deployed site (main) still
-      // uses; it replaces a slot by overwriting. Remove this rule once the
-      // unique-name uploads are live everywhere.
-      allow create, update: if (fileName.matches('photo-[0-5][.]jpg') && isImage())
-                            || (fileName == 'background-music' && isAudio());
       allow delete: if false;
     }
 

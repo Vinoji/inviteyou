@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useOrigin } from "@/lib/useOrigin";
 import festive from "@/components/landing/landing.module.css";
 import ShareCardButton from "@/components/invite/ShareCardButton";
+import WhatsAppShare from "@/components/invite/WhatsAppShare";
 import { useTranslations } from "next-intl";
 import { Check, Copy, Download, ExternalLink, MessageCircle, Printer } from "lucide-react";
 import {
@@ -147,21 +148,21 @@ export default function HostTools({ slug, messages }: { slug: string; messages: 
             {personalUrl}
           </p>
         )}
-        <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-          <a
-            href={
-              guest.trim() && phoneOk
-                ? whatsappUrl(fill(messages.personal, personalUrl, guest.trim()), phone)
-                : undefined
-            }
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-disabled={!guest.trim() || !phoneOk}
-            className={`${waBtn} flex-1 ${guest.trim() && phoneOk ? "" : "pointer-events-none opacity-50"}`}
-          >
+        {/* Once there's a name: the card + personal message, or the message alone. */}
+        {guest.trim() && phoneOk ? (
+          <WhatsAppShare
+            slug={slug}
+            text={fill(messages.personal, personalUrl, guest.trim())}
+            phone={phone}
+            className="mt-3"
+          />
+        ) : (
+          <span aria-disabled className={`${waBtn} mt-3 w-full pointer-events-none opacity-50`}>
             <MessageCircle size={15} aria-hidden />
             {t("sendWhatsapp")}
-          </a>
+          </span>
+        )}
+        <div className="mt-2 flex">
           <button
             type="button"
             disabled={!guest.trim()}

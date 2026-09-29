@@ -1,4 +1,5 @@
 import "server-only";
+import { NextResponse } from "next/server";
 
 /**
  * Best-effort in-memory rate limiter, keyed per warm serverless instance.
@@ -42,4 +43,15 @@ export function getClientIp(headers: Headers): string {
   const forwarded = headers.get("x-forwarded-for");
   if (forwarded) return forwarded.split(",")[0].trim();
   return headers.get("x-real-ip") ?? "unknown";
+}
+
+/** A 429 response when `key` (per client IP) is over its limit, else null. */
+export function tooMany(
+  req: { headers: Headers },
+  key: string,
+  limit: number,
+  windowMs: number
+): NextResponse | null {
+  const { ok } = rateLimit(`${key}:${getClientIp(req.headers)}`, { limit, windowMs });
+  return ok ? null : NextResponse.json({ error: "Too many requests — please wait a moment and try again." }, { status: 429 });
 }

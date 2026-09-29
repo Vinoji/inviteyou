@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle } from "lucide-react";
+import { Loader2, MessageCircle } from "lucide-react";
 import { whatsappUrl } from "@/lib/share";
 
 /**
@@ -22,6 +22,8 @@ export default function ShareCardButton({
   text,
   label,
   hint,
+  preparing,
+  phone,
   className,
 }: {
   imageUrl: string;
@@ -30,10 +32,18 @@ export default function ShareCardButton({
   label: string;
   /** Shown after sharing, e.g. "Message copied — paste it if WhatsApp drops it". */
   hint?: string;
+  /** Label while the card is still downloading, e.g. "Preparing card…". */
+  preparing?: string;
+  /** Guest's number — used where WhatsApp opens directly (not the share
+   * sheet, which can't pre-pick a contact). */
+  phone?: string;
   className?: string;
 }) {
   const fileRef = useRef<File | null>(null);
   const [shared, setShared] = useState(false);
+  // A tap before the card has arrived would miss the share sheet, so the
+  // button waits for it (or for the download to fail).
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -42,7 +52,8 @@ export default function ShareCardButton({
       .then((blob) => {
         if (!cancelled && blob) fileRef.current = new File([blob], fileName, { type: blob.type || "image/png" });
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => !cancelled && setReady(true));
     return () => {
       cancelled = true;
     };
@@ -73,15 +84,15 @@ export default function ShareCardButton({
       return;
     }
     download();
-    window.open(whatsappUrl(text), "_blank", "noopener,noreferrer");
+    window.open(whatsappUrl(text, phone), "_blank", "noopener,noreferrer");
     setShared(true);
   }
 
   return (
     <div className="flex flex-col items-stretch gap-1">
-      <button type="button" onClick={share} className={className}>
-        <MessageCircle size={15} aria-hidden />
-        {label}
+      <button type="button" onClick={share} disabled={!ready && Boolean(preparing)} className={`${className ?? ""} disabled:opacity-70`}>
+        {!ready && preparing ? <Loader2 size={15} className="animate-spin" aria-hidden /> : <MessageCircle size={15} aria-hidden />}
+        {!ready && preparing ? preparing : label}
       </button>
       {shared && hint && <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">{hint}</p>}
     </div>

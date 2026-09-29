@@ -58,7 +58,11 @@ export default async function Image({
     ? format.dateTime(day, { weekday: "long", day: "numeric", month: "long", year: "numeric" })
     : "";
   const venue = [data?.ceremonyVenue?.name, data?.travel?.city].filter(Boolean).join(" · ");
-  const photo = data?.photos?.find((u) => typeof u === "string" && u.startsWith("https://"));
+  // Only our own Storage: this URL is fetched by the server to draw the
+  // image, and older invitations saved before lib/sanitize checked hosts.
+  const photo = data?.photos?.find(
+    (u) => typeof u === "string" && u.startsWith("https://firebasestorage.googleapis.com/")
+  );
 
   // Every string drawn goes through v() — Tamil needs visual reordering.
   const eyebrow = v(t("youreInvited"));

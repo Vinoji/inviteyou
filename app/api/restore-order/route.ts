@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireEditToken } from "@/lib/ownerAuth";
 import { getRazorpay } from "@/lib/razorpay";
 import { RESTORE_PRICE_PAISE, isExpired } from "@/lib/expiry";
+import { tooMany } from "@/lib/rateLimit";
 
 /**
  * Starts a ₹50 payment to restore an expired invitation for 30 more days.
@@ -9,6 +10,9 @@ import { RESTORE_PRICE_PAISE, isExpired } from "@/lib/expiry";
  * order carries the slug in its notes; verify-restore checks it.
  */
 export async function POST(req: NextRequest) {
+  const limited = tooMany(req, "order", 20, 60 * 60 * 1000);
+  if (limited) return limited;
+
   const body = await req.json().catch(() => null);
   const slug = typeof body?.slug === "string" ? body.slug : "";
   const check = await requireEditToken(slug, body?.token);

@@ -1,3 +1,4 @@
+import { SITE } from "./site";
 /**
  * Add-to-calendar links built entirely client-side: a Google Calendar
  * "template" URL per event, and one .ics file (Apple / Outlook / Android)
@@ -141,7 +142,7 @@ export function buildIcs(events: CalendarEvent[], uidBase: string): string | nul
     ];
     return [
       "BEGIN:VEVENT",
-      `UID:${uidBase}-${i}@inviteyou`,
+      `UID:${uidBase}-${i}@${SITE.domain}`,
       `DTSTAMP:${now}`,
       ...when,
       `SUMMARY:${icsText(e.title)}`,
@@ -156,7 +157,7 @@ export function buildIcs(events: CalendarEvent[], uidBase: string): string | nul
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//InviteYou//Invitation//EN",
+    `PRODID:-//${SITE.name}//Invitation//EN`,
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     ...blocks,

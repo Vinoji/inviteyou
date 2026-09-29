@@ -9,7 +9,7 @@
     "friendFallback": "Friend"
   },
   "landing": {
-    "eyebrow": "InviteYou",
+    "eyebrow": "InviteForYou",
     "heading": "A beautiful invitation, live in minutes",
     "subheading": "Weddings, anniversaries, proposals, birthdays, house warmings — pick a template, add your story and photos, and share one link with every guest, with RSVPs, a countdown, directions, and a QR code built in.",
     "useTemplate": "Use this template",
@@ -313,7 +313,83 @@
     "ownerPhoneRequired": "Enter your mobile number to continue — your edit link is sent here.",
     "errNamesRequired": "Please fill in the name(s) first.",
     "errPaymentLoading": "The payment page is still loading — please try again in a moment.",
-    "errDatePast": "Please choose today or a future date."
+    "errDatePast": "Please choose today or a future date.",
+    "steps": {
+      "design": {
+        "label": "Design",
+        "title": "Look & feel",
+        "hint": "Pick a design, colour, font and the language guests will read."
+      },
+      "names": {
+        "label": "Names",
+        "title": "Names & date",
+        "hint": "Who's celebrating, and when."
+      },
+      "events": {
+        "label": "Venues",
+        "title": "When & where",
+        "hint": "Time, venue and map link for each event."
+      },
+      "story": {
+        "label": "Story",
+        "title": "Story & family",
+        "hint": "A few words about you, and the family inviting your guests."
+      },
+      "photos": {
+        "label": "Photos",
+        "title": "Photos & more",
+        "hint": "Your photos, music and the extra sections guests will see."
+      }
+    },
+    "stepCount": "Step {n} of {total}",
+    "nextStep": "Next: {step}",
+    "back": "Back",
+    "readyHint": "All set — check the preview and publish below.",
+    "designPickTitle": "Design",
+    "useDesign": "Use this",
+    "colorDefault": "The design's own colour",
+    "colorCustom": "Pick any colour",
+    "fontSample": "Together with our families",
+    "extrasTitle": "Extra sections",
+    "extrasHint": "Switch on what guests should see — tap a card to fill it in.",
+    "musicAdded": "Track added — plays when guests open the invitation",
+    "questionCount": "{count, plural, =0 {No questions yet} one {# question} other {# questions}}",
+    "venueFind": "Find this venue on the map",
+    "venuePinned": "Pinned on the map",
+    "venueSeePin": "See pin",
+    "venueChangePin": "Change",
+    "venueUnpin": "Remove map pin",
+    "venueSearchPlaceholder": "Venue name and area, e.g. Sri Kalyana Mandapam Mylapore",
+    "venueSearch": "Search",
+    "venueSearchError": "The map search is busy — try again in a moment.",
+    "venueNoResults": "Nothing found — try the hall's name with the area or town.",
+    "venueSearchHint": "Pick your venue to fill its address and pin. Guests get directions from wherever they are.",
+    "stationsLabel": "Nearest railway stations",
+    "stationCode": "Code",
+    "stationName": "Station",
+    "addStation": "Add station",
+    "nearbyFillTravel": "Fill in from the venue's location",
+    "nearbyFillPlaces": "Suggest places near the venue",
+    "nearbyLoading": "Looking around the venue…",
+    "nearbyNeedsPin": "Find your venue on the map first.",
+    "nearbyFindVenue": "Go to venues",
+    "nearbyError": "Couldn't find suggestions right now — try again, or fill it in yourself.",
+    "nearbyDone": "Filled in — check and edit anything below.",
+    "nearbyHint": "Airports, stations and sights near your venue, from OpenStreetMap and Wikipedia. Train timings stay yours to add.",
+    "nearbyReplaceConfirm": "Replace what you've entered here with suggestions for your venue?",
+    "publishing": {
+      "saving": "Saving your invitation",
+      "checkout": "Secure payment",
+      "verifying": "Confirming payment & publishing",
+      "opening": "Opening your invitation",
+      "savingTitle": "Saving your invitation…",
+      "checkoutTitle": "Waiting for payment…",
+      "verifyingTitle": "Payment received — publishing…",
+      "openingTitle": "Almost there!",
+      "dontClose": "Please don't close or refresh this page — it only takes a few seconds."
+    },
+    "motionForced": "Full animations shown here",
+    "motionForcedHint": "You chose Reduce motion for browsing; the preview still plays in full so you can see your design."
   },
   "invite": {
     "hero": {
@@ -401,8 +477,20 @@
       "copy": "Copy",
       "shareVia": "Share via...",
       "shareText": "You're invited! {title}:",
-      "whatsapp": "Share on WhatsApp",
-      "printCard": "Printable card (PDF)"
+      "printCard": "Printable card (PDF)",
+      "formatLabel": "What to send",
+      "withCard": "Card + message",
+      "textOnly": "Message only",
+      "previewLabel": "What your guests get",
+      "cardAlt": "Invitation card",
+      "readMore": "Read more",
+      "showLess": "Show less",
+      "sendWithCard": "Send card on WhatsApp",
+      "sendText": "Send on WhatsApp",
+      "preparingCard": "Preparing card…",
+      "sharedHint": "The message is copied too — paste it in WhatsApp if only the card arrives.",
+      "cardHint": "On a phone, pick WhatsApp and the chat. On a computer the card downloads — attach it in the chat that opens.",
+      "cardHintPhone": "On a phone, pick WhatsApp, then this guest's chat. On a computer the card downloads and their chat opens — attach it there."
     },
     "story": {
       "defaultTitle": "Our Story"
@@ -446,7 +534,7 @@
       "navAria": "{prefix} navigation"
     },
     "view": {
-      "madeWith": "Made with love for {couple} · via InviteYou",
+      "madeWith": "Made with love for {couple} · via InviteForYou",
       "defaultReception": "Reception"
     },
     "opengraph": {
@@ -511,13 +599,16 @@
         "byTrain": "Via train",
         "trains": "Recommended Trains",
         "from": "From {city}",
-        "note": "Timings can change — please confirm with the railways before booking."
+        "note": "Timings can change — please confirm with the railways before booking.",
+        "stations": "Nearest Railway Stations",
+        "km": "{km} km"
       },
       "places": {
         "eyebrow": "While you are here",
         "heading": "Places to Explore",
         "sub": "Hand-picked spots that capture the soul of {city}",
-        "subNoCity": "Hand-picked spots worth a visit"
+        "subNoCity": "Hand-picked spots worth a visit",
+        "kmFromVenue": "{km} km from venue"
       },
       "rsvp": {
         "eyebrow": "R · S · V · P",
@@ -2343,8 +2434,8 @@
     }
   },
   "site": {
-    "brand": "InviteYou",
-    "home": "InviteYou home",
+    "brand": "InviteForYou",
+    "home": "InviteForYou home",
     "mainNav": "Main",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
@@ -2370,7 +2461,8 @@
       "whatsappUs": "Chat on WhatsApp",
       "follow": "Follow us",
       "copyright": "© {years} {brand}. All rights reserved.",
-      "madeWith": "Made with love in Tamil Nadu"
+      "madeWith": "Made with love in Tamil Nadu",
+      "terms": "Terms & conditions"
     },
     "demo": {
       "metaTitle": "Demos",
@@ -2424,88 +2516,302 @@
         "paymentA": "Payments go through Razorpay, a PCI-DSS compliant payment gateway. Card and UPI details are entered on Razorpay's secure form and never reach our servers."
       },
       "contactTitle": "Still need help?",
-      "contactBody": "Write to us with your invitation link and a short description of the problem, and we will get back to you.",
-      "whatsapp": "Chat on WhatsApp",
+      "contactBody": "Fill in the form and send it the way you like — WhatsApp, email or SMS. It arrives with everything we need to help you quickly.",
       "responseTime": "We usually reply within one working day.",
-      "privacyNote": "Please don't send passwords or card details. Read how we handle your data in our <link>privacy policy</link>."
+      "privacyNote": "Please don't send passwords or card details. Read how we handle your data in our <link>privacy policy</link>.",
+      "form": {
+        "greeting": "Hello {brand} support 🙏",
+        "refLabel": "Reference",
+        "topicLabel": "Topic",
+        "nameLabel": "Name",
+        "phoneLabel": "Phone",
+        "phonePlaceholder": "Optional — for a call back",
+        "inviteLabel": "Invitation link",
+        "inviteHint": "Optional — paste your invitation's link if your question is about one. Never share your edit link.",
+        "detailsLabel": "How can we help?",
+        "detailsPlaceholder": "Tell us what happened, and what you expected…",
+        "required": "Please add your name and a few words about the problem.",
+        "noSecrets": "Don't include card numbers, OTPs or passwords.",
+        "sendVia": "Send it by",
+        "viaWhatsapp": "WhatsApp",
+        "viaEmail": "Email",
+        "viaSms": "SMS",
+        "sentNote": "Your message is ready in the app that opened — just press send. Your reference is {ref}; mention it if you follow up.",
+        "directTitle": "Or reach us directly",
+        "chatWhatsapp": "Chat on WhatsApp",
+        "call": "Call us",
+        "emailUs": "Email us",
+        "hours": "We usually reply within one working day.",
+        "quickHello": "Hello {brand}, I need some help with my invitation.",
+        "topics": {
+          "editLink": "Edit link & editing",
+          "payment": "Payment or refund",
+          "guests": "Guests & RSVPs",
+          "design": "Design, photos & text",
+          "technical": "Something isn't working",
+          "other": "Something else"
+        }
+      }
     },
     "privacy": {
       "metaTitle": "Privacy policy",
       "eyebrow": "Legal",
       "title": "Privacy policy",
-      "updated": "Last updated: 28 September 2026",
-      "intro": "InviteYou helps you create and share invitations. This policy explains, in plain language, what information we handle, why, and the choices you have.",
-      "contents": "Contents",
+      "updated": "Last updated: 29 September 2026",
+      "intro": "InviteForYou (inviteforyou.in) helps you create and share invitations. This policy explains, in plain language, what information we handle, why, who helps us handle it, and the choices you have. It is written with India's Digital Personal Data Protection Act, 2023 in mind.",
       "collect": {
         "title": "What we collect",
         "body": [
-          "Invitation content you enter: names, dates, times, venues, your story, family names, FAQs, travel details, and the photos and music you upload.",
-          "We do not ask you to create an account. Instead, each published invitation has a private edit link that only you receive.",
-          "Basic usage information: how many times an invitation was opened (a simple count, not who opened it)."
+          "Invitation content you enter: names, family names, dates, times, venues and their addresses, your story, FAQs, travel details, places nearby, and the photos and music you upload.",
+          "We do not ask you to create an account or a password. Each published invitation has a private edit link that only you receive.",
+          "Basic usage information: how many times an invitation was opened — a simple count, not who opened it."
+        ]
+      },
+      "phone": {
+        "title": "Your phone number",
+        "body": [
+          "When you publish, we ask for your mobile number so we can send you your private edit link by WhatsApp or SMS. It is also used to tell you when an ended invitation is renewed.",
+          "Your number is stored privately with your invitation and is never shown on it. These messages are sent through Twilio."
         ]
       },
       "guests": {
         "title": "Information from your guests",
         "body": [
-          "When guests RSVP they may give their name, number of guests, whether they are coming, which side they are from, a message, and optionally a WhatsApp number for reminders.",
-          "Guest phone numbers are visible only to the invitation owner through the private guest list. They are never shown on the public invitation.",
-          "Messages from guests who accept may appear on the invitation's blessings wall. Photos guests upload appear in the shared guest gallery."
+          "When guests reply they may give their name, how many are coming, whether they can come, which side they are from, a message, and optionally a WhatsApp number for reminders.",
+          "Guest phone numbers are visible only to the invitation's owner, in the private guest list. They are never shown on the public invitation.",
+          "Messages from guests who accept may appear on the invitation's blessings wall. Photos guests upload appear in its shared guest gallery."
         ]
       },
       "use": {
         "title": "How we use information",
         "body": [
-          "To show your invitation to the people you share it with, record RSVPs, and let you manage your guest list.",
-          "To prevent abuse — for example, limiting repeated RSVP or photo submissions from the same device. For this, IP addresses are kept briefly in memory and not stored.",
-          "We do not sell your information, and we do not use it for advertising."
+          "To show your invitation to the people you share it with, record replies, let you manage your guest list, and send you your edit link.",
+          "To keep the service safe — for example, limiting repeated submissions from the same device. For this, IP addresses are kept briefly in memory and not stored.",
+          "We do not sell your information, and we do not use it for advertising or profiling."
+        ]
+      },
+      "maps": {
+        "title": "Maps & places nearby",
+        "body": [
+          "If you search for your venue on the map, the words you type are sent from our server to OpenStreetMap to find it, and the venue's map position is sent to Wikipedia and Wikidata to suggest airports, stations and places nearby. Nothing about you is sent with them.",
+          "A venue you pin is saved with its map position so guests can get directions. Their Directions button opens Google Maps, which asks for their own location under Google's privacy policy — we never see it."
         ]
       },
       "payments": {
-        "title": "Payments & refunds",
+        "title": "Payments",
         "body": [
           "Payments are processed by Razorpay. Your card, UPI or bank details are entered on Razorpay's secure checkout and never reach our servers.",
-          "We keep only the payment and order IDs needed to confirm your purchase and help with any issue. For refund requests, contact us with your payment ID."
+          "We keep only the payment and order IDs needed to confirm your purchase, prevent misuse, and help with any issue or refund."
+        ]
+      },
+      "sharing": {
+        "title": "Who we share it with",
+        "body": [
+          "Only the service providers that run InviteForYou, each for its own part: Google Firebase (database and file storage), Vercel (hosting), Razorpay (payments), Twilio (WhatsApp and SMS messages to you), and OpenStreetMap, Wikipedia and Wikidata (map search and nearby places, as above).",
+          "We may also disclose information when the law requires it. We never sell or rent it to anyone."
         ]
       },
       "storage": {
-        "title": "Where data is stored",
+        "title": "Where data is stored & how it is protected",
         "body": [
-          "Invitations, RSVPs and uploaded files are stored with Google Firebase (Cloud Firestore and Cloud Storage). The website is hosted on Vercel.",
-          "Published invitations and their photos can be seen by anyone who has the link — please share it only with the people you invite.",
-          "Access rules prevent anyone else from changing your invitation or replacing its photos."
+          "Invitations, replies and uploaded files are stored with Google Firebase; the website is hosted on Vercel. Some of these providers may store data outside India.",
+          "All traffic is encrypted (HTTPS). Only our servers can read the database; nobody can change your invitation or replace its photos without your edit link.",
+          "Published invitations and their photos can be seen by anyone who has the link — please share it only with the people you invite."
+        ]
+      },
+      "retention": {
+        "title": "How long we keep it",
+        "body": [
+          "A published invitation stays live until 10 days after its event date. After that it is kept, read-only, so you can renew it — until you ask us to delete it.",
+          "Invitations saved but never paid for may be deleted. Payment records are kept for as long as Indian tax and accounting laws require."
         ]
       },
       "device": {
         "title": "Cookies & storage on your device",
         "body": [
-          "We use a small number of functional cookies and browser storage: your language and theme preference, an unsaved draft of the invitation you are creating (kept only on your device), and a note that you have already opened an invitation so its opening does not replay every visit.",
+          "We use a few functional cookies and browser storage: your language, theme and motion preferences, an unsaved draft of the invitation you are creating (kept only on your device), and a note that you have already seen an invitation's opening so it does not replay on every visit.",
           "We do not use advertising or tracking cookies."
         ]
       },
+      "support": {
+        "title": "When you contact us",
+        "body": [
+          "If you write to us by email, WhatsApp or SMS, your message reaches us through that service and its own privacy terms apply. We use what you send only to help you, and delete it when it is no longer needed.",
+          "Please never send us card numbers, OTPs or passwords — we will never ask for them."
+        ]
+      },
       "yourData": {
-        "title": "Your choices & your data",
+        "title": "Your rights & choices",
         "body": [
           "You can change or remove invitation content at any time with your edit link.",
-          "To delete a published invitation with its RSVPs and photos, or to ask what information we hold, contact us from the email linked below with your invitation link.",
-          "Guests who want their RSVP, message or phone number removed can contact the couple, or write to us directly."
+          "You can ask us to see, correct or delete your information — including deleting a published invitation with its replies and photos — or withdraw consent, by contacting us with your invitation link. You may also nominate someone to act for you.",
+          "Guests who want their reply, message or phone number removed can ask the couple, or write to us directly."
+        ]
+      },
+      "children": {
+        "title": "Children",
+        "body": [
+          "InviteForYou is meant to be used by adults. Invitations for a child's celebration (like a naming ceremony or birthday) are created by their parents or guardians, who decide what to include."
         ]
       },
       "changes": {
         "title": "Changes to this policy",
         "body": [
-          "If we change how we handle information, we will update this page and the date at the top."
+          "If we change how we handle information, we will update this page and the date at the top. Important changes will also be shown on the site."
         ]
-      },
-      "contactTitle": "Questions?",
-      "contactBody": "Contact us about privacy at"
+      }
     },
     "gate": {
       "welcome": "Welcome",
       "skip": "Skip"
+    },
+    "legal": {
+      "contents": "Contents",
+      "contactTitle": "Contact & grievances",
+      "contactBody": "Questions, requests about your data, refunds or complaints — reach us any of these ways:",
+      "grievance": "Grievances are handled by the InviteForYou support team. We acknowledge every complaint within 24 hours and aim to resolve it within 15 days."
+    },
+    "terms": {
+      "metaTitle": "Terms & conditions",
+      "eyebrow": "Legal",
+      "title": "Terms & conditions",
+      "updated": "Last updated: 29 September 2026",
+      "intro": "These terms explain how InviteForYou (inviteforyou.in) works and what we each agree to when you create, publish or view an invitation. Please read them with our Privacy policy.",
+      "agreement": {
+        "title": "Agreeing to these terms",
+        "body": [
+          "By using InviteForYou — creating, publishing, editing or replying to an invitation — you agree to these terms. If you do not agree, please do not use the service.",
+          "You must be 18 or older, or have a parent or guardian's permission, to buy an invitation."
+        ]
+      },
+      "service": {
+        "title": "What we provide",
+        "body": [
+          "An animated invitation website for your event, with a link to share, replies (RSVPs), a guest list, maps, a printable card and more, in English and Tamil.",
+          "We keep improving InviteForYou, so features and designs may change over time. We will not remove what you have paid for from a live invitation without good reason."
+        ]
+      },
+      "editLink": {
+        "title": "Your edit link",
+        "body": [
+          "There are no accounts. After you pay, you receive a private edit link — it is the only key to edit your invitation and see your guest list. Keep it safe and do not share it.",
+          "Anyone with your edit link can change your invitation. If you lose it, contact us with your payment ID and the phone number you gave; we will help once we can confirm it is yours."
+        ]
+      },
+      "content": {
+        "title": "Your content",
+        "body": [
+          "Everything you add — names, text, photos, music — stays yours. You give us permission to store it and show it to anyone who has your invitation's link, only to run the service.",
+          "You confirm you have the right to use what you upload, and the agreement of the people you name or show."
+        ]
+      },
+      "conduct": {
+        "title": "Acceptable use",
+        "body": [
+          "Do not use InviteForYou for anything unlawful, hateful, obscene, misleading or harmful; to impersonate someone; to send spam; or to upload malware.",
+          "Do not try to break, overload, copy or scrape the service, or misuse your guests' information."
+        ]
+      },
+      "guests": {
+        "title": "Guests",
+        "body": [
+          "Guests can reply, leave a blessing and add photos without signing up. The invitation's owner can see replies and guest phone numbers in the private guest list.",
+          "We may remove guest content that breaks these terms, and the owner can ask us to remove anything from their invitation."
+        ]
+      },
+      "pricing": {
+        "title": "Price & payment",
+        "body": [
+          "Publishing an invitation costs ₹199, paid once through Razorpay — no subscription. The price shown at checkout is the price you pay. Editing afterwards is free.",
+          "An invitation stays live until 10 days after its event date. You can renew an ended invitation for 30 more days for ₹50."
+        ]
+      },
+      "refunds": {
+        "title": "Refunds & cancellations",
+        "body": [
+          "Your invitation is created and delivered the moment you pay, so payments are generally not refundable once it is published.",
+          "We give a full refund if you were charged twice, if you paid but your invitation was not published and we cannot fix it within 48 hours, or if a serious fault on our side we cannot fix stops your invitation from working. Ask within 7 days of paying, with your payment ID.",
+          "Approved refunds go back to your original payment method within 5–7 working days. There is nothing to cancel later — you can simply stop using the service."
+        ]
+      },
+      "availability": {
+        "title": "Availability",
+        "body": [
+          "We work hard to keep InviteForYou running smoothly, but we cannot promise it will never be interrupted — for example during maintenance or an outage at one of our providers.",
+          "Please keep your own copies of anything important, like your photos."
+        ]
+      },
+      "thirdParties": {
+        "title": "Other services",
+        "body": [
+          "Some features rely on other services with their own terms: Razorpay (payments), WhatsApp (sharing), Google Maps (directions), and OpenStreetMap, Wikipedia and Wikidata (map search and places nearby).",
+          "Travel and place suggestions are filled in automatically — please check them before sharing. Train timings are yours to add and confirm."
+        ]
+      },
+      "ip": {
+        "title": "Our designs",
+        "body": [
+          "The templates, animations, illustrations, code and the InviteForYou name belong to us. You may use them for your own invitation, but not copy, resell or reuse them elsewhere."
+        ]
+      },
+      "liability": {
+        "title": "Limits of our responsibility",
+        "body": [
+          "InviteForYou is provided as it is. As far as the law allows, we are not responsible for indirect losses — such as a guest missing a message — and our total responsibility for any invitation is limited to the amount you paid for it.",
+          "Nothing in these terms limits rights you have under Indian consumer law."
+        ]
+      },
+      "suspension": {
+        "title": "Removing content",
+        "body": [
+          "We may hide or remove an invitation, or content in it, that breaks these terms or the law, or when legally required. Where we can, we will tell you first and explain why."
+        ]
+      },
+      "law": {
+        "title": "Law & disputes",
+        "body": [
+          "These terms are governed by the laws of India. Please contact us first — most things can be sorted out quickly. Any dispute that remains will be decided by the courts of Tamil Nadu, India."
+        ]
+      },
+      "changes": {
+        "title": "Changes to these terms",
+        "body": [
+          "We may update these terms. The date at the top shows the latest version; continuing to use the service after a change means you accept it."
+        ]
+      }
+    },
+    "help": {
+      "title": "Need help?",
+      "subtitle": "Talk to a real person — we're happy to help.",
+      "whatsapp": "Chat on WhatsApp",
+      "call": "Call us",
+      "email": "Email us",
+      "sms": "Send an SMS",
+      "form": "Open the support form",
+      "fab": "Help",
+      "close": "Close",
+      "hello": "Hello {brand}, I need some help.",
+      "mailSubject": "Help with {brand}"
     }
   },
   "notify": {
     "published": "Your invitation for {title} is live! 🎉\n\nShare with guests: {inviteUrl}\n\nYour private edit link (keep it safe, don’t share): {editUrl}",
     "restored": "Your invitation for {title} is live again until {date}: {inviteUrl}"
+  },
+  "settings": {
+    "title": "Preferences",
+    "open": "Language & display",
+    "language": "Language",
+    "appearance": "Appearance",
+    "auto": "Auto",
+    "reduceMotion": "Reduce motion",
+    "reduceMotionHint": "Calmer pages with fewer animations"
+  },
+  "seo": {
+    "keywords": "digital wedding invitation, online wedding invitation, wedding invitation website, e-invite India, WhatsApp wedding invitation, Tamil wedding invitation, animated invitation, RSVP, engagement invitation, birthday invitation, house warming invitation, InviteForYou",
+    "ogAlt": "InviteForYou — animated invitations for weddings and every celebration",
+    "ogLine": "Animated invitations · RSVPs · Tamil & English",
+    "orgDescription": "Animated online invitations for weddings, engagements, birthdays and every Indian celebration — in Tamil and English, with RSVPs, maps and WhatsApp sharing.",
+    "offerName": "One invitation, all features"
   }
 }

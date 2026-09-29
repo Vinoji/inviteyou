@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
-import { Check, Copy, MessageCircle, Printer, Share2 } from "lucide-react";
-import { whatsappUrl } from "@/lib/share";
+import { Check, Copy, Printer, Share2 } from "lucide-react";
 import { parseIsoDate } from "@/lib/calendar";
 import { useOrigin } from "@/lib/useOrigin";
 import { buildWhatsAppMessage } from "@/lib/inviteMessage";
 import type { VenueInfo } from "@/lib/types";
 import QRCodeBox from "./QRCodeBox";
+import WhatsAppShare from "./WhatsAppShare";
 
 export default function ShareBox({
   slug,
@@ -99,16 +99,9 @@ export default function ShareBox({
           </button>
         </div>
 
+        <WhatsAppShare slug={slug} text={whatsappText} className="mt-4" />
+
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-          <a
-            href={whatsappUrl(whatsappText)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-[#25d366] px-4 py-2 text-sm font-semibold text-[#08331a]"
-          >
-            <MessageCircle size={15} aria-hidden />
-            {t("whatsapp")}
-          </a>
           <button
             onClick={shareLink}
             className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-neutral-300 px-4 py-2 text-sm font-semibold text-neutral-800 sm:hidden"
