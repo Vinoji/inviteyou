@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Mail, MessageCircle, Phone } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { SITE } from "@/lib/site";
+import { SITE, formatPhone } from "@/lib/site";
 import SocialIcons from "./SocialIcons";
 import FooterGate from "./FooterGate";
 import { LogoMark } from "./SiteHeader";
@@ -40,7 +40,8 @@ export default async function SiteFooter() {
       title: t("footer.legal"),
       links: [
         { href: "/privacy", label: t("footer.privacy") },
-        { href: "/privacy#payments", label: t("footer.payments") },
+        { href: "/terms", label: t("footer.terms") },
+        { href: "/terms#refunds", label: t("footer.payments") },
         { href: "/privacy#your-data", label: t("footer.yourData") },
       ],
     },
@@ -88,13 +89,13 @@ export default async function SiteFooter() {
                   </a>
                 </li>
               )}
-              {SITE.contact.phone && (
-                <li>
-                  <a href={`tel:+${SITE.contact.phone}`} className={`inline-flex items-center gap-2 ${s.footerLink}`}>
-                    <Phone size={15} className="text-[#e8b04a]" aria-hidden /> +{SITE.contact.phone}
+              {SITE.contact.phones.map((p) => (
+                <li key={p}>
+                  <a href={`tel:+${p}`} className={`inline-flex items-center gap-2 ${s.footerLink}`}>
+                    <Phone size={15} className="text-[#e8b04a]" aria-hidden /> {formatPhone(p)}
                   </a>
                 </li>
-              )}
+              ))}
             </ul>
           </div>
 

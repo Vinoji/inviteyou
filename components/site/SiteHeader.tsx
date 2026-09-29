@@ -16,7 +16,7 @@ export function isSitePage(pathname: string) {
 }
 
 /** Pages that open with a dark FestiveBanner / hero under the header. */
-const DARK_TOP = new Set(["/", "/demo", "/support", "/privacy"]);
+const DARK_TOP = new Set(["/", "/demo", "/support", "/privacy", "/terms"]);
 
 const NAV = [
   { href: "/#templates", key: "templates", match: (p: string) => p === "/" },

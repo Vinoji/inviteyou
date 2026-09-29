@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ChevronDown, CreditCard, Languages, Mail, MessageCircle, Pencil, Phone, Users } from "lucide-react";
+import { ChevronDown, CreditCard, Languages, Pencil, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { SITE } from "@/lib/site";
 import SocialIcons from "@/components/site/SocialIcons";
 import FestiveBanner from "@/components/site/FestiveBanner";
 import paper from "@/components/landing/landing.module.css";
 import { KolamDivider } from "@/components/site/festive";
 import { pageAlternates } from "@/lib/seo";
+import SupportForm from "@/components/site/SupportForm";
 
 export async function generateMetadata({
   params,
@@ -32,7 +32,6 @@ export default async function SupportPage({ params }: { params: Promise<{ locale
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations("site.support");
-  const { email, whatsapp, phone } = SITE.contact;
 
   return (
     <main className={`flex-1 ${paper.paper}`}>
@@ -67,36 +66,11 @@ export default async function SupportPage({ params }: { params: Promise<{ locale
       </section>
 
       <section id="contact" className="scroll-mt-24 border-t border-neutral-100 bg-amber-50/60 dark:border-neutral-800 dark:bg-neutral-900/40">
-        <div className="mx-auto max-w-3xl px-6 py-14 text-center">
+        <div className="mx-auto max-w-5xl px-6 py-14 text-center">
           <h2 className="font-serif text-3xl font-bold text-neutral-900 dark:text-neutral-50">{t("contactTitle")}</h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-neutral-600 dark:text-neutral-400">{t("contactBody")}</p>
-          <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            {email && (
-              <a
-                href={`mailto:${email}`}
-                className="inline-flex items-center gap-2 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-semibold text-white dark:bg-neutral-100 dark:text-neutral-900"
-              >
-                <Mail size={16} aria-hidden /> {email}
-              </a>
-            )}
-            {whatsapp && (
-              <a
-                href={`https://wa.me/${whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full bg-[#25d366] px-5 py-2.5 text-sm font-semibold text-[#08331a]"
-              >
-                <MessageCircle size={16} aria-hidden /> {t("whatsapp")}
-              </a>
-            )}
-            {phone && (
-              <a
-                href={`tel:+${phone}`}
-                className="inline-flex items-center gap-2 rounded-full border border-neutral-300 px-5 py-2.5 text-sm font-semibold dark:border-neutral-700"
-              >
-                <Phone size={16} aria-hidden /> +{phone}
-              </a>
-            )}
+          <div className="mt-8">
+            <SupportForm />
           </div>
           <p className="mt-4 text-xs text-neutral-500 dark:text-neutral-400">{t("responseTime")}</p>
           <div className="mt-6 flex justify-center">

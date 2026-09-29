@@ -4,6 +4,7 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { LogoMark } from "./site/SiteHeader";
 import SettingsMenu from "./site/SettingsMenu";
+import HelpMenu from "./site/HelpMenu";
 
 /**
  * The slim festive bar above the editor and the guest list: the same
@@ -23,7 +24,10 @@ export default function AppToolbar() {
         <LogoMark size={24} />
         <span className="font-serif text-sm font-bold text-[#ffe9b8]">{t("brand")}</span>
       </Link>
-      <SettingsMenu />
+      <div className="flex items-center gap-2">
+        <HelpMenu variant="toolbar" />
+        <SettingsMenu />
+      </div>
     </div>
   );
 }

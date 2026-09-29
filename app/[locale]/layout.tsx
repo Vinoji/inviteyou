@@ -22,6 +22,7 @@ import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo";
 import SiteFooter from "@/components/site/SiteFooter";
 import EntranceGate from "@/components/site/EntranceGate";
+import HelpMenu from "@/components/site/HelpMenu";
 import { MotionPrefSync } from "@/components/invite/MotionToggle";
 import "../globals.css";
 
@@ -181,6 +182,7 @@ export default async function RootLayout({
           <SiteHeader />
           {children}
           <SiteFooter />
+          <HelpMenu />
         </NextIntlClientProvider>
       </body>
     </html>
