@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { searchVenue } from "@/lib/geo";
+import { tooMany } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -7,6 +8,10 @@ export const runtime = "nodejs";
  * a venue, from OpenStreetMap (lib/geo.ts). Called on an explicit Search,
  * never per keystroke. */
 export async function GET(req: NextRequest) {
+  // Protects the shared OpenStreetMap allowance (lib/geo.ts).
+  const limited = tooMany(req, "geo-search", 30, 10 * 60 * 1000);
+  if (limited) return limited;
+
   const q = req.nextUrl.searchParams.get("q") ?? "";
   const locale = req.nextUrl.searchParams.get("locale") === "ta" ? "ta" : "en";
   try {

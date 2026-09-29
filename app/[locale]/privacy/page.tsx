@@ -3,6 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SITE } from "@/lib/site";
 import FestiveBanner from "@/components/site/FestiveBanner";
 import paper from "@/components/landing/landing.module.css";
+import { pageAlternates } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -11,7 +12,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "site.privacy" });
-  return { title: t("metaTitle"), description: t("intro") };
+  return { title: t("metaTitle"), description: t("intro"), alternates: pageAlternates(locale, "/privacy") };
 }
 
 /** Section ids double as footer anchors (#payments, #your-data). */

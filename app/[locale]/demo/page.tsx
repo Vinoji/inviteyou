@@ -8,6 +8,7 @@ import TemplateShowcase from "@/components/landing/TemplateShowcase";
 import { SITE } from "@/lib/site";
 import FestiveBanner from "@/components/site/FestiveBanner";
 import paper from "@/components/landing/landing.module.css";
+import { pageAlternates } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -16,7 +17,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "site.demo" });
-  return { title: t("metaTitle"), description: t("intro") };
+  return { title: t("metaTitle"), description: t("intro"), alternates: pageAlternates(locale, "/demo") };
 }
 
 /**

@@ -2,9 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { PRICE_PAISE } from "@/lib/pricing"; // ₹199 flat, one-time
+import { tooMany } from "@/lib/rateLimit";
 
 
 export async function POST(req: NextRequest) {
+  const limited = tooMany(req, "order", 20, 60 * 60 * 1000);
+  if (limited) return limited;
+
   const body = await req.json().catch(() => null);
   const draftId = body?.draftId;
   if (typeof draftId !== "string" || !draftId) {

@@ -3,7 +3,8 @@ import crypto from "crypto";
 import { getTranslations } from "next-intl/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { generateUniqueSlug } from "@/lib/slug";
-import { verifyPaymentSignature } from "@/lib/razorpay";
+import { getRazorpay, verifyPaymentSignature } from "@/lib/razorpay";
+import { PRICE_PAISE } from "@/lib/pricing";
 import { sendToOwner } from "@/lib/notify";
 import { ownerLinks } from "@/lib/ownerLinks";
 
@@ -17,7 +18,11 @@ export async function POST(req: NextRequest) {
   if (!draftId || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
     return NextResponse.json({ error: "Missing payment details." }, { status: 400 });
   }
-  if (!process.env.RAZORPAY_KEY_SECRET) {
+  if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
+    return NextResponse.json({ error: "Invalid draftId." }, { status: 400 });
+  }
+  const rz = getRazorpay();
+  if (!rz) {
     return NextResponse.json(
       { error: "Payments are not configured on the server." },
       { status: 500 }
@@ -31,7 +36,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Payment verification failed." }, { status: 400 });
   }
 
+  // The signature only proves *an* order was paid. The order must also be
+  // this draft's, for the full price — otherwise one real payment could be
+  // replayed to publish any number of other drafts. (create-order puts
+  // the draftId in the order's notes and receipt.)
+  const order = await rz.instance.orders.fetch(razorpay_order_id).catch(() => null);
+  const notes = (order?.notes ?? {}) as Record<string, unknown>;
+  if (!order || notes.draftId !== draftId || Number(order.amount) !== PRICE_PAISE) {
+    return NextResponse.json({ error: "This payment isn't for this invitation." }, { status: 400 });
+  }
+
   const db = getAdminDb();
+
   const draftRef = db.collection("invitations").doc(draftId);
   const ownerRef = draftRef.collection("private").doc("owner");
   const [draftSnap, ownerSnap] = await Promise.all([draftRef.get(), ownerRef.get()]);
@@ -66,7 +82,24 @@ export async function POST(req: NextRequest) {
   });
   batch.delete(ownerRef);
   batch.delete(draftRef);
-  await batch.commit();
+  // Each payment publishes once. Created in the same batch as the publish,
+  // so a second use (a double submit racing the first) fails as a whole,
+  // and a failed publish leaves the payment free to retry.
+  batch.create(db.collection("payments").doc(razorpay_payment_id), {
+    orderId: razorpay_order_id,
+    draftId,
+    slug,
+    purpose: "publish",
+    at: now,
+  });
+  try {
+    await batch.commit();
+  } catch (err) {
+    if ((err as { code?: number }).code === 6 /* ALREADY_EXISTS */) {
+      return NextResponse.json({ error: "This payment has already been used." }, { status: 409 });
+    }
+    throw err;
+  }
 
   // Send the owner their links. Published is published: a failed message
   // only means the popup offers the manual send buttons instead.

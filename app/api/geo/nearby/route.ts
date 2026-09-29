@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { nearby } from "@/lib/geo";
+import { tooMany } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -7,6 +8,9 @@ export const runtime = "nodejs";
  * airports and railway stations, and sights nearby (lib/geo.ts), for
  * pre-filling the Travel Guide and Places to Explore. */
 export async function GET(req: NextRequest) {
+  const limited = tooMany(req, "geo-nearby", 20, 10 * 60 * 1000);
+  if (limited) return limited;
+
   const sp = req.nextUrl.searchParams;
   const lat = Number(sp.get("lat"));
   const lng = Number(sp.get("lng"));

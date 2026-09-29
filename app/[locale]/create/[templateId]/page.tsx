@@ -26,7 +26,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "templates" });
   const tEditor = await getTranslations({ locale, namespace: "editor" });
   const template = getTemplateMeta(templateId, t);
-  return { title: tEditor("pageTitleCreate", { name: template.name }) };
+  return { title: tEditor("pageTitleCreate", { name: template.name }), robots: { index: false, follow: false } };
 }
 
 export default async function CreatePage({
