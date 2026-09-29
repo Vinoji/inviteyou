@@ -1,4 +1,4 @@
-# InviteYou — Wedding Invitation Sites
+# InviteForYou — Wedding Invitation Sites (inviteforyou.in)
 
 Next.js (App Router) + TypeScript + Tailwind CSS + Firebase (Firestore +
 Storage) + Razorpay. No authentication, no user accounts — access to a draft

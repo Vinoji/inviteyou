@@ -11,7 +11,7 @@
  * `dark:` utilities respond to EITHER an explicit `.dark` class on <html>
  * (the manual toggle's "Dark" choice) OR the OS preference when neither
  * override class is present (the toggle's "System" choice, which clears
- * the cookie instead of setting a class — see components/ThemeToggle.tsx).
+ * the cookie instead of setting a class — see lib/themePref.ts).
  * Both branches must stay in sync with the --background/--foreground
  * custom-property rules below (:root.dark and the prefers-color-scheme
  * block), which is what a plain `@custom-variant dark (&:where(.dark, .dark
@@ -93,7 +93,7 @@ body {
 }
 
 /* Tuned down from the browser's default (longer, more zoom-heavy) crossfade
-   for the theme toggle's document.startViewTransition — see ThemeToggle.tsx. */
+   for the theme toggle's document.startViewTransition — see lib/themePref.ts. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 0.2s;
@@ -147,4 +147,12 @@ h3:lang(ta) {
 .text-\[10px\]:lang(ta),
 .text-\[10\.5px\]:lang(ta) {
   font-size: 11.5px;
+}
+
+/* Preferences panel (components/site/SettingsMenu.tsx). */
+@keyframes settingsIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.97);
+  }
 }

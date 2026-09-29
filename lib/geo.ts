@@ -23,8 +23,9 @@ import AIRPORTS from "./data/airports.json";
  * part empty.
  */
 
-// Nominatim asks for a way to reach the app's owner (lib/site.ts).
-const UA = `${SITE.name}/1.0 (invitation venue lookup; ${SITE.contact.email})`;
+// Nominatim asks for a way to reach the app's owner (lib/site.ts). Only
+// sent as text, never mailed — the site's address stands in if it's blank.
+const UA = `${SITE.name}/1.0 (invitation venue lookup; ${SITE.contact.email || SITE.url})`;
 const TIMEOUT_MS = 12_000;
 
 type Airport = [code: string, name: string, lat: number, lng: number, city: string, country: string];

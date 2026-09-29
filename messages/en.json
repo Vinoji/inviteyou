@@ -9,7 +9,7 @@
     "friendFallback": "Friend"
   },
   "landing": {
-    "eyebrow": "InviteYou",
+    "eyebrow": "InviteForYou",
     "heading": "A beautiful invitation, live in minutes",
     "subheading": "Weddings, anniversaries, proposals, birthdays, house warmings — pick a template, add your story and photos, and share one link with every guest, with RSVPs, a countdown, directions, and a QR code built in.",
     "useTemplate": "Use this template",
@@ -532,7 +532,7 @@
       "navAria": "{prefix} navigation"
     },
     "view": {
-      "madeWith": "Made with love for {couple} · via InviteYou",
+      "madeWith": "Made with love for {couple} · via InviteForYou",
       "defaultReception": "Reception"
     },
     "opengraph": {
@@ -2432,8 +2432,8 @@
     }
   },
   "site": {
-    "brand": "InviteYou",
-    "home": "InviteYou home",
+    "brand": "InviteForYou",
+    "home": "InviteForYou home",
     "mainNav": "Main",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
@@ -2523,7 +2523,7 @@
       "eyebrow": "Legal",
       "title": "Privacy policy",
       "updated": "Last updated: 28 September 2026",
-      "intro": "InviteYou helps you create and share invitations. This policy explains, in plain language, what information we handle, why, and the choices you have.",
+      "intro": "InviteForYou helps you create and share invitations. This policy explains, in plain language, what information we handle, why, and the choices you have.",
       "contents": "Contents",
       "collect": {
         "title": "What we collect",
@@ -2596,5 +2596,14 @@
   "notify": {
     "published": "Your invitation for {title} is live! 🎉\n\nShare with guests: {inviteUrl}\n\nYour private edit link (keep it safe, don’t share): {editUrl}",
     "restored": "Your invitation for {title} is live again until {date}: {inviteUrl}"
+  },
+  "settings": {
+    "title": "Preferences",
+    "open": "Language & display",
+    "language": "Language",
+    "appearance": "Appearance",
+    "auto": "Auto",
+    "reduceMotion": "Reduce motion",
+    "reduceMotionHint": "Calmer pages with fewer animations"
   }
 }

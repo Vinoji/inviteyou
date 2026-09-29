@@ -18,6 +18,7 @@ import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { routing } from "@/i18n/routing";
 import SiteHeader from "@/components/site/SiteHeader";
+import { SITE } from "@/lib/site";
 import SiteFooter from "@/components/site/SiteFooter";
 import EntranceGate from "@/components/site/EntranceGate";
 import { MotionPrefSync } from "@/components/invite/MotionToggle";
@@ -94,7 +95,7 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "landing" });
   return {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || SITE.url),
     title: {
       default: `${t("eyebrow")} — ${t("heading")}`,
       template: `%s | ${t("eyebrow")}`,
@@ -128,7 +129,7 @@ export default async function RootLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  // Theme is decided server-side from a cookie (written by ThemeToggle),
+  // Theme is decided server-side from a cookie (written by lib/themePref.ts),
   // not a client-side "flash of wrong theme, then fix it" script — the
   // right `dark`/`light` class is already in the HTML the browser first
   // paints, on every request including the soft client-side navigation a

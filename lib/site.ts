@@ -8,11 +8,14 @@
  */
 
 export const SITE = {
-  name: "InviteYou",
+  name: "InviteForYou",
+  /** The live domain — links, share previews, sitemap and contact email. */
+  domain: "inviteforyou.in",
+  url: "https://inviteforyou.in",
   /** Year the service started, for the copyright range. */
   since: 2026,
   contact: {
-    email: "support@inviteyou.example",
+    email: "support@inviteforyou.in",
     /** International format, digits only — used for wa.me and tel: links. */
     whatsapp: "",
     phone: "",
