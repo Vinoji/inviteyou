@@ -27,3 +27,16 @@ export function verifyPaymentSignature(orderId: string, paymentId: string, signa
   }
   return given.length === expected.length && crypto.timingSafeEqual(given, expected);
 }
+
+/**
+ * Checks a webhook's X-Razorpay-Signature: HMAC-SHA256 of the raw request
+ * body with the webhook secret set in the Razorpay dashboard (not the key
+ * secret). The body must be the exact bytes received, before JSON parsing.
+ */
+export function verifyWebhookSignature(rawBody: string, signature: string | null) {
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET;
+  if (!secret || !signature) return false;
+  const expected = crypto.createHmac("sha256", secret).update(rawBody).digest();
+  const given = Buffer.from(signature, "hex");
+  return given.length === expected.length && crypto.timingSafeEqual(given, expected);
+}

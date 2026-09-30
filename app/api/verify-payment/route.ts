@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import crypto from "crypto";
-import { getTranslations } from "next-intl/server";
-import { getAdminDb } from "@/lib/firebase-admin";
-import { generateUniqueSlug } from "@/lib/slug";
 import { getRazorpay, verifyPaymentSignature } from "@/lib/razorpay";
-import { PRICE_PAISE } from "@/lib/pricing";
-import { sendToOwner } from "@/lib/notify";
-import { ownerLinks } from "@/lib/ownerLinks";
+import { fetchOrder, isPublishOrder, publishPaidDraft } from "@/lib/payments";
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -21,8 +15,7 @@ export async function POST(req: NextRequest) {
   if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
     return NextResponse.json({ error: "Invalid draftId." }, { status: 400 });
   }
-  const rz = getRazorpay();
-  if (!rz) {
+  if (!getRazorpay()) {
     return NextResponse.json(
       { error: "Payments are not configured on the server." },
       { status: 500 }
@@ -37,85 +30,19 @@ export async function POST(req: NextRequest) {
   }
 
   // The signature only proves *an* order was paid. The order must also be
-  // this draft's, for the full price — otherwise one real payment could be
-  // replayed to publish any number of other drafts. (create-order puts
-  // the draftId in the order's notes and receipt.)
-  const order = await rz.instance.orders.fetch(razorpay_order_id).catch(() => null);
-  const notes = (order?.notes ?? {}) as Record<string, unknown>;
-  if (!order || notes.draftId !== draftId || Number(order.amount) !== PRICE_PAISE) {
+  // this draft's, for the full price — otherwise one real payment (or a ₹50
+  // restore) could be replayed to publish other drafts. (create-order puts
+  // the draftId in the order's notes.)
+  const order = await fetchOrder(razorpay_order_id).catch(() => null);
+  if (!order || !isPublishOrder(order, draftId)) {
     return NextResponse.json({ error: "This payment isn't for this invitation." }, { status: 400 });
   }
 
-  const db = getAdminDb();
-
-  const draftRef = db.collection("invitations").doc(draftId);
-  const ownerRef = draftRef.collection("private").doc("owner");
-  const [draftSnap, ownerSnap] = await Promise.all([draftRef.get(), ownerRef.get()]);
-  if (!draftSnap.exists) {
-    return NextResponse.json(
-      { error: "Draft not found or already published." },
-      { status: 404 }
-    );
+  // Each order publishes once. The Razorpay webhook may already have
+  // published it; either way the same slug and edit token come back.
+  const result = await publishPaidDraft(req, draftId, razorpay_order_id, razorpay_payment_id);
+  if (!result.ok) {
+    return NextResponse.json({ error: result.error }, { status: result.status });
   }
-  const draft = draftSnap.data()!;
-  const owner = ownerSnap.exists ? ownerSnap.data()! : {};
-
-  const slug = await generateUniqueSlug(draft.groomName ?? "", draft.brideName ?? "");
-  const editToken = crypto.randomBytes(16).toString("hex");
-  const now = Date.now();
-
-  const publishedRef = db.collection("invitations").doc(slug);
-  const batch = db.batch();
-  batch.set(publishedRef, {
-    ...draft,
-    slug,
-    status: "published",
-    viewCount: 0,
-    createdAt: draft.createdAt ?? now,
-    updatedAt: now,
-  });
-  batch.set(publishedRef.collection("private").doc("meta"), {
-    editToken,
-    razorpayPaymentId: razorpay_payment_id,
-    razorpayOrderId: razorpay_order_id,
-    ...(owner.phone ? { ownerPhone: owner.phone, ownerLocale: owner.locale ?? "en" } : {}),
-  });
-  batch.delete(ownerRef);
-  batch.delete(draftRef);
-  // Each payment publishes once. Created in the same batch as the publish,
-  // so a second use (a double submit racing the first) fails as a whole,
-  // and a failed publish leaves the payment free to retry.
-  batch.create(db.collection("payments").doc(razorpay_payment_id), {
-    orderId: razorpay_order_id,
-    draftId,
-    slug,
-    purpose: "publish",
-    at: now,
-  });
-  try {
-    await batch.commit();
-  } catch (err) {
-    if ((err as { code?: number }).code === 6 /* ALREADY_EXISTS */) {
-      return NextResponse.json({ error: "This payment has already been used." }, { status: 409 });
-    }
-    throw err;
-  }
-
-  // Send the owner their links. Published is published: a failed message
-  // only means the popup offers the manual send buttons instead.
-  let sent: string | null = null;
-  if (owner.phone) {
-    const locale = owner.locale === "ta" ? "ta" : "en";
-    const t = await getTranslations({ locale, namespace: "notify" });
-    const links = ownerLinks(req, { slug, templateId: draft.templateId, editToken, locale });
-    const title = [draft.brideName, draft.groomName].filter(Boolean).join(" & ");
-    const result = await sendToOwner(
-      owner.phone,
-      t("published", { title, inviteUrl: links.invite, editUrl: links.edit }),
-      { sid: process.env.TWILIO_WHATSAPP_CONTENT_SID, vars: [title, links.edit] }
-    );
-    sent = result.sent;
-  }
-
-  return NextResponse.json({ slug, editToken, sent });
+  return NextResponse.json({ slug: result.slug, editToken: result.editToken, sent: result.sent });
 }
