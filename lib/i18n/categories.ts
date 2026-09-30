@@ -31,7 +31,9 @@ export interface CategoryMeta {
  * Walima, Holy Matrimony — lib/layoutStyles.ts) gets those names. */
 export function getCategoryMeta(id: string, t: TFunc, templateId?: string): CategoryMeta {
   const config = getCategoryConfig(id);
-  const layout = templateId ? getTemplateConfig(templateId).layout : undefined;
+  const template = templateId ? getTemplateConfig(templateId) : undefined;
+  // Only used for event names below.
+  const layout = template?.layout ?? template?.eventNamesFrom;
   const events = renamesEvents(layout) && config.id === "wedding"
     ? {
         eventALabel: t(`wedding.layouts.${layout}.eventALabel`),

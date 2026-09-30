@@ -1,0 +1,625 @@
+/* Chapel layout: a candlelit chapel with an order-of-service booklet
+ * (ChapelBooklet / booklet.module.css) resting in it. */
+
+.root {
+  --c-ink: #1f2a44;
+  --c-muted: #6b6f86;
+  --c-gold: #b8975a;
+  --c-gold-light: #e8d096;
+  background: #efe7db;
+  color: var(--c-ink);
+}
+
+/* One screen: the chapel behind, the booklet in front. */
+.stage {
+  position: relative;
+  isolation: isolate;
+  height: clamp(620px, 100svh, 940px);
+  padding: 22px 16px 18px;
+  overflow: hidden;
+}
+
+/* ---------- backdrop: inside the chapel ---------- */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  background: linear-gradient(180deg, #f3ede3 0%, #f8f3ea 55%, #efe7db 100%);
+  pointer-events: none;
+}
+.wall {
+  position: absolute;
+  inset: 0 0 38% 0;
+  background: repeating-linear-gradient(90deg, rgba(31, 42, 68, 0.025) 0 1px, transparent 1px 90px);
+}
+.heroWindow {
+  position: absolute;
+  left: 50%;
+  top: 3%;
+  width: min(40vw, 230px);
+  aspect-ratio: 0.46;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+  gap: 3px;
+  padding: 6px;
+  border-radius: 999px 999px 4px 4px;
+  background: #d9cbb3;
+  box-shadow:
+    0 0 0 6px #efe6d6,
+    0 0 70px 24px rgba(255, 240, 200, 0.75);
+  overflow: hidden;
+}
+.heroWindow span {
+  background: linear-gradient(160deg, #fffaf0, #fdf0d4 60%, #f7e2b6);
+}
+.rays {
+  position: absolute;
+  left: 50%;
+  top: 6%;
+  width: min(140vw, 1000px);
+  height: 100%;
+  transform: translateX(-50%);
+  clip-path: polygon(42% 0, 58% 0, 100% 100%, 0 100%);
+  background: linear-gradient(180deg, rgba(255, 244, 214, 0.85), rgba(255, 244, 214, 0) 85%);
+  animation: shimmer 6s ease-in-out infinite;
+}
+@keyframes shimmer {
+  50% {
+    opacity: 0.75;
+  }
+}
+.floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38%;
+  background: linear-gradient(180deg, #ede5d9, #e6ddd0);
+}
+.runner {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(46% 0, 54% 0, 74% 100%, 26% 100%);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0) 60%),
+    linear-gradient(90deg, #f3e1dc, #fbf1ee 50%, #f3e1dc);
+}
+.aisleStand {
+  position: absolute;
+  width: 54px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 100%;
+}
+/* Left stands are anchored by `right`, right stands by `left`; each is
+ * then centred on its anchor. */
+.standL {
+  transform: translateX(50%) scale(var(--s));
+}
+.standR {
+  transform: translateX(-50%) scale(var(--s));
+}
+.aisleCandle {
+  width: 18px;
+}
+.aislePosy {
+  width: 54px;
+  margin-top: -6px;
+}
+.flame {
+  transform-origin: 50% 90%;
+  animation: flicker 1.4s ease-in-out infinite alternate;
+}
+.aisleStand:nth-child(odd) .flame {
+  animation-delay: -0.7s;
+}
+@keyframes flicker {
+  50% {
+    transform: scale(0.9, 1.08) rotate(-3deg);
+  }
+  to {
+    transform: scale(1.05, 0.95) rotate(2deg);
+  }
+}
+
+/* ---------- shared page pieces ---------- */
+.eyebrow {
+  font-family: var(--rp-caps, var(--rp-body));
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.pageHead {
+  text-align: center;
+  margin: 4px auto 22px;
+}
+.pageHead h2 {
+  margin-top: 6px;
+  font-size: clamp(27px, 7vw, 34px);
+  line-height: 1.12;
+  color: var(--page-ink, var(--c-ink));
+}
+.pageHead .eyebrow {
+  color: var(--page-muted, var(--c-muted));
+}
+/* Doubled class: the royal root's `.root p { margin: 0 }` would win otherwise. */
+.pageHead.pageHead p {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--page-muted, var(--c-muted));
+}
+.crossRule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.crossRule span {
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c-gold));
+}
+.crossRule span:last-child {
+  transform: scaleX(-1);
+}
+
+/* ---------- cover ---------- */
+.cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 0;
+}
+.coverDove {
+  width: 52px;
+  margin-bottom: 14px;
+  filter: drop-shadow(0 2px 3px rgba(31, 42, 68, 0.2));
+}
+.coverNames {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(clamp(42px, 12vw, 60px) * var(--name-fit, 1));
+  line-height: 1.02;
+  color: var(--c-ink);
+}
+.coverAmp {
+  font-size: 0.5em;
+  font-style: italic;
+  color: var(--c-gold);
+  margin: 4px 0;
+}
+.cover .coverLead {
+  margin-top: 14px;
+  max-width: 300px;
+  font-style: italic;
+  font-size: 15px;
+  line-height: 1.55;
+  color: #4b5068;
+}
+.coverDate {
+  margin-top: 14px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-family: var(--rp-caps, var(--rp-body));
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-ink);
+  box-shadow: inset 0 0 0 1px rgba(184, 151, 90, 0.5);
+}
+.cover .verse {
+  margin: 14px auto 0;
+  max-width: 280px;
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--c-muted);
+}
+.verse span {
+  display: block;
+  margin-top: 4px;
+  font-style: normal;
+  font-family: var(--rp-caps, var(--rp-body));
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+}
+.cover .turnHint {
+  margin-top: 22px;
+  font-family: var(--rp-caps, var(--rp-body));
+  font-size: 10.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+  animation: nudge 2.2s ease-in-out infinite;
+}
+@keyframes nudge {
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+/* ---------- story: stained-glass arch + sealed letter ---------- */
+.glassArch {
+  position: relative;
+  width: min(56%, 210px);
+  aspect-ratio: 0.66;
+  margin: 0 auto 26px;
+  filter: drop-shadow(0 12px 22px rgba(31, 42, 68, 0.2));
+}
+.archPhoto {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, #e9eef6, #d5dcea);
+}
+.archPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.archMono {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding-top: 18%;
+  font-family: var(--rp-heading);
+  font-size: 46px;
+  color: var(--c-ink);
+}
+.archMono span {
+  font-size: 0.5em;
+  color: var(--c-gold);
+}
+.archFrame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.letter {
+  position: relative;
+  margin: 0 0 34px;
+  padding: 22px 18px 44px;
+  border-radius: 3px;
+  background: #fbf4e6;
+  box-shadow: 0 8px 20px rgba(31, 42, 68, 0.1);
+}
+.letter .storyText {
+  font-style: italic;
+  font-size: 15.5px;
+  line-height: 1.75;
+  color: #3a3f55;
+  text-align: center;
+  white-space: pre-line;
+}
+.seal {
+  position: absolute;
+  left: 50%;
+  bottom: -26px;
+  width: 58px;
+  transform: translateX(-50%) rotate(-8deg);
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+}
+
+/* ---------- families: lace-edged cards ---------- */
+.cards {
+  display: grid;
+  gap: 34px;
+  padding-top: 18px;
+}
+.card {
+  position: relative;
+  padding: 22px 16px 20px;
+  text-align: center;
+  border-radius: 0 0 6px 6px;
+  background: #f8f1e8;
+}
+.cardLace {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -21px;
+}
+.card h3 {
+  margin-top: 6px;
+  font-size: 28px;
+  color: var(--c-ink);
+}
+.kin {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+.kinName {
+  color: var(--c-ink);
+  font-weight: 600;
+}
+
+/* ---------- order of service ---------- */
+.service {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.service li {
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px dashed rgba(184, 151, 90, 0.45);
+}
+.service li:last-child {
+  border-bottom: 0;
+}
+.serviceNo {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-family: var(--rp-heading);
+  font-size: 15px;
+  color: var(--c-gold);
+  box-shadow: inset 0 0 0 1px rgba(184, 151, 90, 0.6);
+}
+.serviceTime {
+  font-family: var(--rp-caps, var(--rp-body));
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-gold);
+}
+.serviceBody h3 {
+  margin-top: 2px;
+  font-size: 23px;
+  color: var(--c-ink);
+}
+.serviceVenue {
+  margin-top: 4px;
+  font-weight: 600;
+  color: #3a3f55;
+}
+.serviceBody p {
+  margin-top: 3px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #fbf7ef;
+  background: var(--c-ink);
+  text-decoration: none;
+}
+.pill:hover {
+  background: #2e3b5c;
+}
+.calendar {
+  margin: 16px 0 8px;
+}
+
+/* ---------- countdown: hymn board ---------- */
+.hymnBoard {
+  max-width: 280px;
+  margin: 0 auto 10px;
+  padding: 40px 20px 20px;
+  border-radius: 140px 140px 10px 10px;
+  background:
+    repeating-linear-gradient(178deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 11px),
+    linear-gradient(180deg, #7b4f2e, #5e3a20);
+  box-shadow:
+    inset 0 0 0 6px #8e5f39,
+    inset 0 0 0 8px rgba(0, 0, 0, 0.2),
+    0 14px 28px rgba(58, 34, 18, 0.3);
+}
+.boardTitle {
+  text-align: center;
+  font-family: var(--rp-caps, var(--rp-body));
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #f1dfb8;
+  margin-bottom: 12px;
+}
+.boardRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 0;
+  border-top: 2px solid rgba(0, 0, 0, 0.18);
+}
+.boardLabel {
+  font-family: var(--rp-caps, var(--rp-body));
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #e9d3a6;
+}
+.boardNumber {
+  display: inline-block;
+  min-width: 90px;
+  padding: 4px 12px;
+  border-radius: 3px;
+  text-align: center;
+  font-family: var(--rp-heading);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #1f1a17;
+  background: linear-gradient(180deg, #ffffff, #eee8dc);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+.began {
+  text-align: center;
+  font-size: 22px;
+  font-family: var(--rp-heading);
+}
+
+/* ---------- album: chapel windows ---------- */
+.windows {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin: 0 -26px 0 -30px;
+  padding: 4px 30px 18px;
+  scrollbar-width: none;
+}
+.windows::-webkit-scrollbar {
+  display: none;
+}
+.window {
+  flex: 0 0 72%;
+  margin: 0;
+  aspect-ratio: 0.66;
+  padding: 6px;
+  border-radius: 999px 999px 6px 6px;
+  background: linear-gradient(180deg, #e8d096, #b8975a);
+  box-shadow: 0 10px 22px rgba(31, 42, 68, 0.2);
+  scroll-snap-align: center;
+}
+.window img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 999px 999px 3px 3px;
+}
+
+/* ---------- back cover: the chapel at night ---------- */
+.backCover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18% 0 170px;
+  text-align: center;
+}
+.backCover .eyebrow {
+  color: #c9cfe0;
+}
+.backCover h2 {
+  margin-top: 10px;
+  font-size: clamp(32px, 8vw, 42px);
+  color: #fbf7ef;
+}
+.backCover p {
+  margin-top: 10px;
+  font-family: var(--rp-heading);
+  font-size: 22px;
+  color: var(--c-gold-light);
+}
+.nightDoves {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.nightDove {
+  position: absolute;
+  width: 34px;
+  left: -50px;
+  top: 6%;
+  opacity: 0.9;
+  animation: glide 14s linear infinite;
+}
+.nightDove:last-child {
+  top: 14%;
+  width: 26px;
+  animation-delay: -7s;
+}
+@keyframes glide {
+  to {
+    transform: translate(520px, -20px);
+  }
+}
+.nightChapel {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 140px;
+  height: 104px;
+  transform: translateX(-50%);
+  background: #0f1524;
+  clip-path: polygon(0 100%, 0 42%, 50% 8%, 100% 42%, 100% 100%);
+}
+.nightWindow {
+  position: absolute;
+  left: 50%;
+  top: 36%;
+  width: 18px;
+  aspect-ratio: 1;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffe3a3, #e8a94f);
+}
+.nightDoor {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 28px;
+  height: 40px;
+  transform: translateX(-50%);
+  border-radius: 14px 14px 0 0;
+  background: linear-gradient(180deg, #ffe3a3, #d98f3f);
+}
+.candleRow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  pointer-events: none;
+}
+.rowCandle {
+  width: 18px;
+}
+/* Keeps the middle clear for the chapel. */
+.candleGap {
+  flex: 0 0 160px;
+}
+
+.footer {
+  padding: 16px 24px;
+  text-align: center;
+  font-size: 12px;
+  color: #9aa1b8;
+  background: #0d1220;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rays,
+  .flame,
+  .nightDove,
+  .cover .turnHint {
+    animation: none;
+  }
+}

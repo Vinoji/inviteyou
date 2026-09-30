@@ -442,6 +442,18 @@ const THEMES: Record<string, MotionTheme> = {
     thread: "vine",
     moments: { family: "doors", events: "diyas", gallery: "arch", mandalaLayer: true },
   },
+  // "Chapel Bells": its own layout (components/invite/chapel) — dust motes
+  // in the window light, petals when a guest says yes.
+  "chapel-bells": {
+    sectionEnter: "rise",
+    heading: "maskUp",
+    divider: "none",
+    ambient: "glitter",
+    ambientAt: ["hero", "thanks"],
+    rsvpBurst: "pastelPetals",
+    pageBg: "#FBF7EF",
+    thread: null,
+  },
   // "Garden Glasshouse": its own layout (components/invite/garden) — a
   // morning garden; butterflies over the hero, petals when a guest says yes.
   "botanical-garden": {

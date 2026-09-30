@@ -712,6 +712,77 @@
         "heading": "Thank you"
       }
     },
+    "chapel": {
+      "intro": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "You are invited",
+        "open": "Open invitation",
+        "hint": "Ring the chapel bell"
+      },
+      "hero": {
+        "eyebrow": "Together with their families",
+        "lead": "request the honour of your presence as they are joined in Holy Matrimony",
+        "verse": "“Love is patient, love is kind.”",
+        "verseRef": "1 Corinthians 13:4",
+        "turn": "Turn the page"
+      },
+      "story": {
+        "eyebrow": "Our story",
+        "heading": "Written by grace"
+      },
+      "family": {
+        "eyebrow": "With the blessings of",
+        "heading": "Our Families",
+        "sub": "Two families, united in love",
+        "bride": "The Bride",
+        "groom": "The Groom"
+      },
+      "day": {
+        "eyebrow": "The wedding day",
+        "heading": "Order of Service",
+        "sub": "Join us at the altar and afterwards to celebrate",
+        "directions": "Get directions"
+      },
+      "countdown": {
+        "eyebrow": "Growing closer",
+        "heading": "Until the bells ring",
+        "aria": "Time until the wedding",
+        "board": "Counting the days"
+      },
+      "album": {
+        "eyebrow": "Our album",
+        "heading": "Through the chapel windows",
+        "sub": "Swipe through our moments",
+        "carouselLabel": "Photo album",
+        "photoAlt": "Photo {n}"
+      },
+      "rsvp": {
+        "eyebrow": "Kindly respond",
+        "heading": "Will you join us at the altar?",
+        "sub": "Your presence would make our day complete."
+      },
+      "thanks": {
+        "eyebrow": "With love and gratitude",
+        "heading": "God bless you"
+      },
+      "booklet": {
+        "roleDescription": "booklet",
+        "label": "Wedding booklet",
+        "navLabel": "Booklet pages",
+        "prev": "Previous page",
+        "next": "Next page",
+        "goTo": "Go to {title}",
+        "pageOf": "Page {n} of {total}"
+      },
+      "pages": {
+        "travel": "Travel Guide",
+        "places": "Places to Explore",
+        "guestPhotos": "Share your photos",
+        "faq": "Things to know",
+        "blessings": "Blessings",
+        "share": "Share"
+      }
+    },
     "intros": {
       "kolam": {
         "dialogLabel": "Invitation cover",
@@ -1464,6 +1535,11 @@
       "name": "Garden Glasshouse",
       "tagline": "Ivy, ferns & morning light",
       "description": "A white glasshouse door swings open onto a morning garden — butterflies, hanging wooden signs, polaroids pegged to a string line and fireflies at dusk."
+    },
+    "chapel-bells": {
+      "name": "Chapel Bells",
+      "tagline": "Candlelit aisle & stained glass",
+      "description": "The chapel bell rings, the doors open onto candlelight and doves fly out — then your invitation is an order-of-service booklet guests turn page by page."
     },
     "minimal-modern": {
       "name": "Minimal Modern",

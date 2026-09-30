@@ -380,6 +380,22 @@ const PALETTES: Record<string, RoyalPalette> = {
     leaf: "#4E7A3A",
     leafLight: "#8FBD72",
   },
+  // Chapel Bells: its own layout; Travel Guide, Places and the RSVP form
+  // reuse royal components, which read these.
+  "chapel-bells": {
+    deep: "#1F2A44",
+    mid: "#2E3B5C",
+    gold: "#B8975A",
+    goldLight: "#E8D096",
+    goldDeep: "#8C6A2E",
+    ivory: "#FBF7EF",
+    ivory2: "#F5EAE6",
+    text: "#1F2A44",
+    muted: "#6B6F86",
+    flowers: ["#FFFFFF", "#F6E3E6", "#F3D27A"],
+    leaf: "#8FA87A",
+    leafLight: "#C9D8BC",
+  },
   "beach-boho": {
     deep: "#1D6E7A",
     mid: "#25838F",

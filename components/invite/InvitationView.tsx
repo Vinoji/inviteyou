@@ -34,6 +34,7 @@ import MotionThemeProvider from "./motion/MotionThemeProvider";
 import ScrollScene from "./ScrollScene";
 import RoyalInvitation from "./royal/RoyalInvitation";
 import GardenInvitation from "./garden/GardenInvitation";
+import ChapelInvitation from "./chapel/ChapelInvitation";
 
 /**
  * Composes every section of an invitation. Shared between the editor's live
@@ -80,10 +81,11 @@ export default function InvitationView({
   const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
 
   // A template with its own page (see TemplateConfig.pageLayout).
-  if (template.pageLayout === "garden") {
+  if (template.pageLayout) {
+    const Page = template.pageLayout === "chapel" ? ChapelInvitation : GardenInvitation;
     return (
       <MotionThemeProvider templateId={data.templateId}>
-        <GardenInvitation
+        <Page
           data={data}
           slug={slug}
           mode={mode}
