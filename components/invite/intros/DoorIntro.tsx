@@ -48,7 +48,7 @@ export default function DoorIntro({
   useWarmAudio(!preview);
   const [opening, setOpening] = useState(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const palette = getRoyalPalette(templateId);
+  const palette = getRoyalPalette(templateId, accent);
 
   useEffect(() => {
     const pending = timers.current;

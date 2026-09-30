@@ -43,10 +43,14 @@
   --surface-muted: #fafafa;
   --border: #e5e5e5;
   --accent: #b8860b;
+  /* Native controls (date/time pickers and their calendar icons, selects,
+     scrollbars) follow the app's theme, not only the OS's. */
+  color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
+    color-scheme: dark;
     --background: #0a0a0a;
     --foreground: #ededed;
     --surface: #171717;
@@ -56,6 +60,7 @@
 }
 
 :root.dark {
+  color-scheme: dark;
   --background: #0a0a0a;
   --foreground: #ededed;
   --surface: #171717;
@@ -176,3 +181,10 @@ h3:lang(ta) {
     transform: translateY(-4px) scale(0.97);
   }
 }
+
+/* The invitation is a designed page with its own colours in both themes;
+   its native controls stay light so they match it. */
+[data-invite-root] {
+  color-scheme: light;
+}
+

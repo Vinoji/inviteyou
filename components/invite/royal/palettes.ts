@@ -1,4 +1,6 @@
 import type { CSSProperties } from "react";
+import { isRecolor, recolor } from "@/lib/color";
+import { getTemplateConfig } from "@/lib/templates";
 
 /**
  * Colour roles for the royal-palace wedding layout. Every wedding template
@@ -501,8 +503,37 @@ const PALETTES: Record<string, RoyalPalette> = {
   },
 };
 
-export function getRoyalPalette(templateId: string): RoyalPalette {
-  return PALETTES[templateId] ?? PALETTES["traditional-gold"];
+/**
+ * A template's palette. With `accent` — the colour the couple picked — every
+ * colour of the palette moves into that colour (lib/color.ts), so choosing a
+ * colour changes the whole invitation, not just its highlights.
+ */
+export function getRoyalPalette(templateId: string, accent?: string): RoyalPalette {
+  const base = PALETTES[templateId] ?? PALETTES["traditional-gold"];
+  const designColor = getTemplateConfig(templateId).defaultAccent;
+  if (!isRecolor(designColor, accent)) return base;
+  const r = (c: string) => recolor(c, designColor, accent);
+  return {
+    deep: r(base.deep),
+    mid: r(base.mid),
+    gold: r(base.gold),
+    goldLight: r(base.goldLight),
+    goldDeep: r(base.goldDeep),
+    ivory: r(base.ivory),
+    ivory2: r(base.ivory2),
+    text: r(base.text),
+    muted: r(base.muted),
+    flowers: [r(base.flowers[0]), r(base.flowers[1]), r(base.flowers[2])],
+    leaf: r(base.leaf),
+    leafLight: r(base.leafLight),
+  };
+}
+
+/** Any other design colour (a page background, a motion theme's colour),
+ * recoloured the same way as the palette. */
+export function recolorForTemplate(templateId: string, color: string, accent?: string): string {
+  const designColor = getTemplateConfig(templateId).defaultAccent;
+  return isRecolor(designColor, accent) ? recolor(color, designColor, accent) : color;
 }
 
 /** The palette + accent as CSS custom properties, consumed by royal.module.css. */

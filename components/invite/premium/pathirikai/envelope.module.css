@@ -5,7 +5,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  background: radial-gradient(ellipse at 50% 40%, #8c3822, #5a1d10 80%);
+  background: radial-gradient(ellipse at 50% 40%, var(--floor-1, #8c3822), var(--floor-3, #5a1d10) 80%);
 }
 .floorArt {
   position: absolute;
@@ -55,7 +55,7 @@
 }
 .suzhi {
   font-size: clamp(16px, 5cqw, 22px);
-  color: #a8131b;
+  color: var(--kumkum, #a8131b);
 }
 .cardNames {
   padding: 0 8%;
@@ -117,7 +117,7 @@
   height: 26px;
   margin-left: -13px;
   border-radius: 50%;
-  background: radial-gradient(circle at 40% 35%, #d8323a, #a8131b 55%, #6e0a10);
+  background: radial-gradient(circle at 40% 35%, #ffffff40, var(--kumkum, #a8131b) 45%, #00000060);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 

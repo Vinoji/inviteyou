@@ -63,6 +63,10 @@ export interface TemplateConfig {
   /** A completely separate page instead of the royal layout (with or
    * without a `layout` style): "garden" is components/invite/garden. */
   pageLayout?: "garden";
+  /** Retired as a duplicate of another design in its category: not offered
+   * for new invitations, but kept so ones already made with it still render
+   * and can be edited. */
+  hidden?: true;
   /** Publishing price in ₹. Leave out to use the default (PRICE_INR in
    * lib/pricing.ts). */
   price?: number;
@@ -185,6 +189,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "watercolor-botanical",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#C0674F",
     defaultFont: "elegant-script",
@@ -219,6 +224,7 @@ export const TEMPLATES: TemplateConfig[] = [
   // ── Classic royal-palace layout ──
   {
     id: "traditional-gold",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#b8860b",
     defaultFont: "royal-cinzel",
@@ -228,6 +234,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "minimal-modern",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#C2410C",
     defaultFont: "modern-clean",
@@ -237,6 +244,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "floral-pastel",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#d9738a",
     defaultFont: "classic-serif",
@@ -246,6 +254,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "elegant-bw",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#111111",
     defaultFont: "elegant-script",
@@ -255,6 +264,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "beach-boho",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#c2703d",
     defaultFont: "classic-serif",
@@ -264,6 +274,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "silk-curtain",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#c9a54a",
     defaultFont: "royal-cinzel",
@@ -273,6 +284,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "scratch-reveal",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#a56c7c",
     defaultFont: "classic-serif",
@@ -318,6 +330,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "grand-reception",
+    hidden: true,
     category: "wedding",
     defaultAccent: "#e8a33d",
     defaultFont: "elegant-script",

@@ -19,6 +19,7 @@ import ShareBox from "../../ShareBox";
 import Section from "../../motion/Section";
 import ArtImage, { artSrc } from "../ArtImage";
 import { parseDate, type PremiumProps } from "../types";
+import { isRecolor } from "@/lib/color";
 import m from "../materials.module.css";
 import s from "./editorial.module.css";
 
@@ -97,6 +98,9 @@ export default function EditorialInvitation({
     "--e-body": font.bodyVar,
     "--inv-heading": font.headingVar,
     "--accent": data.accentColor,
+    // The magazine's one highlight colour (kickers, page numbers, drop cap):
+    // its classic red, or the colour the couple picked.
+    ...(isRecolor(getTemplateConfig(id).defaultAccent, data.accentColor) ? { "--red": data.accentColor } : {}),
   } as CSSProperties;
 
   return (

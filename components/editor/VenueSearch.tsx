@@ -147,7 +147,7 @@ export default function VenueSearch({
           © OpenStreetMap
         </a>
       </div>
-      <button type="button" onClick={() => setOpen(false)} className="text-xs font-semibold text-neutral-500 hover:text-neutral-800">
+      <button type="button" onClick={() => setOpen(false)} className="text-xs font-semibold text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-100">
         {t("cropCancel")}
       </button>
     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import SceneIntro, { type Scene } from "../../intros/SceneIntro";
@@ -7,6 +8,7 @@ import { softChime } from "../../intros/sceneSounds";
 import type { IntroProps } from "../../intros/types";
 import ArtImage from "../ArtImage";
 import m from "../materials.module.css";
+import { pathirikaiColors } from "./colors";
 import s from "./envelope.module.css";
 
 /**
@@ -19,17 +21,18 @@ export default function EnvelopeOpening(props: IntroProps) {
   const scene: Scene = {
     id: "pathirikaiEnvelope",
     look: {
-      bg: "radial-gradient(ellipse at 50% 40%, #8c3822, #5a1d10 80%)",
+      bg: "#5a1d10",
       ink: "#fbeedd",
       accent: "#e9c98b",
       halo: "0 2px 12px rgba(0,0,0,.5)",
-      button: "#a8131b",
+      button: String(pathirikaiColors(props.templateId, props.accent)["--kumkum" as keyof CSSProperties]),
       buttonInk: "#fff6e6",
     },
     mode: "center",
     cover: (open, reduce) => (
       <motion.div
         className={s.stage}
+        style={pathirikaiColors(props.templateId, props.accent)}
         initial={false}
         animate={open ? { y: "12%", opacity: 0 } : { y: "0%", opacity: 1 }}
         transition={{ duration: reduce ? 0 : 0.7, delay: reduce ? 0 : 1.9, ease: "easeIn" }}

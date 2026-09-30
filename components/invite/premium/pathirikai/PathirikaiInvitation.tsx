@@ -19,6 +19,7 @@ import ShareBox from "../../ShareBox";
 import Section from "../../motion/Section";
 import ArtImage from "../ArtImage";
 import { parseDate, type PremiumProps } from "../types";
+import { pathirikaiColors } from "./colors";
 import { BrassLamp, KolamBorder, MangoLeaves } from "./drawn";
 import m from "../materials.module.css";
 import s from "./pathirikai.module.css";
@@ -83,6 +84,7 @@ export default function PathirikaiInvitation({
     "--p-body": font.bodyVar,
     "--accent": data.accentColor,
     "--inv-heading": font.headingVar,
+    ...pathirikaiColors(id, data.accentColor),
   } as CSSProperties;
 
   const dayLine = date ? format.dateTime(date, { weekday: "long" }) : "";
