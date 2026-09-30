@@ -219,6 +219,19 @@ const THEMES: Record<string, MotionTheme> = {
     thread: "vine",
     moments: { family: "doors", events: "diyas", gallery: "arch", mandalaLayer: true },
   },
+  // "Garden Glasshouse": its own layout (components/invite/garden) — a
+  // morning garden; butterflies over the hero, petals when a guest says yes.
+  "botanical-garden": {
+    sectionEnter: "rise",
+    heading: "maskUp",
+    headingWobble: true,
+    divider: "none",
+    ambient: "butterflies",
+    ambientAt: ["hero", "rsvp"],
+    rsvpBurst: "pastelPetals",
+    pageBg: "#F7F2E4",
+    thread: null,
+  },
   // "Kasavu & Nilavilakku": a Kerala temple wedding.
   "kerala-kasavu": {
     sectionEnter: "rise",

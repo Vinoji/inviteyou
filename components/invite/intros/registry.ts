@@ -33,4 +33,5 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   ringbox: dynamic(() => import("./RingBoxIntro")),
   cradle: dynamic(() => import("./CradleIntro")),
   ticket: dynamic(() => import("./TicketIntro")),
+  glasshouse: dynamic(() => import("./GlasshouseIntro")),
 };

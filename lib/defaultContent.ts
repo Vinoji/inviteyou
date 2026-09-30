@@ -12,6 +12,7 @@ export const DEFAULT_CONTENT_DATES: Record<
   { weddingDate: string; ceremonyTime: string; receptionTime: string }
 > = {
   "traditional-gold": { weddingDate: "2027-01-24", ceremonyTime: "10:00 AM", receptionTime: "7:00 PM" },
+  "botanical-garden": { weddingDate: "2027-02-06", ceremonyTime: "4:30 PM", receptionTime: "7:30 PM" },
   "minimal-modern": { weddingDate: "2026-12-12", ceremonyTime: "4:00 PM", receptionTime: "8:00 PM" },
   "floral-pastel": { weddingDate: "2027-02-14", ceremonyTime: "5:30 PM", receptionTime: "8:30 PM" },
   "elegant-bw": { weddingDate: "2026-11-21", ceremonyTime: "6:00 PM", receptionTime: "9:00 PM" },

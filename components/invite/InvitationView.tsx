@@ -33,6 +33,7 @@ import Section from "./motion/Section";
 import MotionThemeProvider from "./motion/MotionThemeProvider";
 import ScrollScene from "./ScrollScene";
 import RoyalInvitation from "./royal/RoyalInvitation";
+import GardenInvitation from "./garden/GardenInvitation";
 
 /**
  * Composes every section of an invitation. Shared between the editor's live
@@ -78,7 +79,26 @@ export default function InvitationView({
     : `${data.brideName || tCommon("brideFallback")} & ${data.groomName || tCommon("groomFallback")}`;
   const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
 
-  // Every wedding template uses the royal-palace layout, differing only in
+  // A template with its own layout (see TemplateConfig.layout).
+  if (template.layout === "garden") {
+    return (
+      <MotionThemeProvider templateId={data.templateId}>
+        <GardenInvitation
+          data={data}
+          slug={slug}
+          mode={mode}
+          category={category}
+          occasionTitle={occasionTitle}
+          coupleLabel={coupleLabel}
+          rsvpMessages={rsvpMessages}
+          guestPhotos={guestPhotos}
+          guestGreeting={guestGreeting}
+        />
+      </MotionThemeProvider>
+    );
+  }
+
+  // Other wedding templates use the royal-palace layout, differing only in
   // palette; other occasions keep the section layout below.
   if (template.category === "wedding") {
     return (

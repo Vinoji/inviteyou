@@ -89,6 +89,22 @@ const PALETTES: Record<string, RoyalPalette> = {
     leafLight: "#555555",
   },
   // Beach at golden hour: sand, driftwood, turquoise, coral, sunset gold.
+  // Botanical garden: its own layout, but Travel Guide / Places to Explore
+  // reuse the royal components, which read these.
+  "botanical-garden": {
+    deep: "#2F4A2C",
+    mid: "#3D5E39",
+    gold: "#B0885A",
+    goldLight: "#E9CF95",
+    goldDeep: "#7E5E36",
+    ivory: "#F7F2E4",
+    ivory2: "#E4EBD6",
+    text: "#2F4A2C",
+    muted: "#6C7F57",
+    flowers: ["#F2A7B8", "#FFFFFF", "#F6C453"],
+    leaf: "#4E7A3A",
+    leafLight: "#8FBD72",
+  },
   "beach-boho": {
     deep: "#1D6E7A",
     mid: "#25838F",

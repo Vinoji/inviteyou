@@ -19,7 +19,8 @@ export type IntroId =
   | "spotlight"
   | "ringbox"
   | "cradle"
-  | "ticket";
+  | "ticket"
+  | "glasshouse";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -35,6 +36,9 @@ export interface TemplateConfig {
   cardGradient: string;
   cardTextClass: string;
   intro: IntroId;
+  /** Page layout. Wedding templates use the shared royal-palace layout
+   * unless they name their own here. */
+  layout?: "garden";
   /** Publishing price in ₹. Leave out to use the default (PRICE_INR in
    * lib/pricing.ts). */
   price?: number;
@@ -52,6 +56,16 @@ export const TEMPLATES: TemplateConfig[] = [
     cardGradient: "from-amber-200 via-yellow-100 to-red-100",
     cardTextClass: "text-amber-900",
     intro: "kolam",
+  },
+  {
+    id: "botanical-garden",
+    category: "wedding",
+    defaultAccent: "#2F4A2C",
+    defaultFont: "classic-serif",
+    cardGradient: "from-emerald-100 via-lime-50 to-amber-50",
+    cardTextClass: "text-emerald-950",
+    intro: "glasshouse",
+    layout: "garden",
   },
   {
     id: "minimal-modern",

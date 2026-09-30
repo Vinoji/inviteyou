@@ -57,6 +57,7 @@ const THEMES: Record<string, CardTheme> = {
   "minimal-modern": T(["#ededea", "#f7f7f4"], "#ffffff", "#141414", "#6b7280", "#141414", "#c2410c", "minimal"),
   "floral-pastel": T(["#f9dfe6", "#e7f3ea"], "#fffafb", "#4a2d3a", "#8a6b78", "#d9a0ae", "#c0587a", "floral"),
   "elegant-bw": T(["#050505", "#1c1c1c"], "#0f0f0f", "#f5f5f5", "#a3a3a3", "#c7c7c7", "#ffffff", "deco"),
+  "botanical-garden": T(["#dbe8cf", "#f6f1e0"], "#fffdf5", "#2f4a2c", "#6c7f57", "#9cb57e", "#b0885a", "leaves"),
   "beach-boho": T(["#fbe0c3", "#cdeeea"], "#fffaf2", "#3b2a1e", "#8a6f58", "#d08b5b", "#2a8f84", "waves"),
   "silk-curtain": T(["#2a060c", "#551422"], "#35091a", "#fff6ea", "#e9c9a0", "#c9a54a", "#ebd08a", "curtain"),
   "scratch-reveal": T(["#e6ddf6", "#f3d9de"], "#fbf8ff", "#3e3358", "#6e6784", "#d8a7b1", "#a56c7c", "foil"),
