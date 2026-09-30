@@ -37,7 +37,10 @@ export type IntroId =
   | "balloonPop"
   | "cakeCandles"
   // Premium layouts' own openings (components/invite/premium).
-  | "pathirikaiEnvelope";
+  | "pathirikaiEnvelope"
+  | "photoParty"
+  | "photoCandle"
+  | "photoFresh";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -497,7 +500,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "classic-serif",
     cardGradient: "from-rose-950 via-red-800 to-rose-400",
     cardTextClass: "text-neutral-900",
-    intro: "curtain",
+    intro: "photoCandle",
     layout: "roses",
     seed: "anniversary-emerald",
   },
@@ -640,7 +643,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "modern-clean",
     cardGradient: "from-pink-200 via-yellow-100 to-sky-200",
     cardTextClass: "text-neutral-900",
-    intro: "balloonPop",
+    intro: "photoParty",
     layout: "balloons",
     seed: "birthday-confetti",
   },
@@ -794,7 +797,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "elegant-script",
     cardGradient: "from-sky-100 via-pink-50 to-yellow-50",
     cardTextClass: "text-neutral-900",
-    intro: "balloonPop",
+    intro: "photoFresh",
     layout: "balloons",
     seed: "baby-moon",
   },

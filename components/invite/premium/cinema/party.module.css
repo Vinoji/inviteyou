@@ -1,0 +1,454 @@
+/* Birthday — "It's a party": a night party in photographs. */
+
+.root {
+  --night: #0b0710;
+  --hot: #ff3d8b;
+  --gold: #ffd166;
+  --ink: #fff5fb;
+  --soft: rgba(255, 245, 251, 0.72);
+  --glass: rgba(20, 10, 24, 0.55);
+  --edge: rgba(255, 255, 255, 0.16);
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: clip;
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--p-body);
+}
+
+/* ---------- photo layers ---------- */
+.photoLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+.photoShade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 7, 16, 0.25) 0%, rgba(11, 7, 16, 0.1) 35%, rgba(11, 7, 16, 0.85) 78%, var(--night) 100%);
+}
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding: 0 20px 44px;
+}
+.heroText {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.heroKicker {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--hot);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  box-shadow: 0 0 24px rgba(255, 61, 139, 0.55);
+}
+.heroLead {
+  margin-top: 14px;
+  font-size: 17px;
+  color: var(--soft);
+}
+.heroName {
+  margin-top: 2px;
+  font-family: var(--p-display);
+  font-weight: 800;
+  font-size: calc(clamp(58px, 20vw, 140px) * var(--name-fit, 1));
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+  background: linear-gradient(100deg, #fff 0%, #ffd1e6 30%, var(--hot) 55%, var(--gold) 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 6px 30px rgba(255, 61, 139, 0.35));
+}
+.heroDate {
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 18px;
+  max-width: 380px;
+}
+.unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 4px 8px;
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  background: var(--glass);
+}
+.num {
+  font-family: var(--p-display);
+  font-size: 26px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.label {
+  margin-top: 4px;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.countdownDone {
+  margin-top: 16px;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+/* ---------- sections ---------- */
+.section {
+  position: relative;
+  padding: 64px 20px;
+}
+.band {
+  position: relative;
+  isolation: isolate;
+  padding: 88px 20px 72px;
+  min-height: 90svh;
+  display: flex;
+  align-items: center;
+}
+.band .photoShade {
+  background: linear-gradient(180deg, var(--night) 0%, rgba(11, 7, 16, 0.55) 22%, rgba(11, 7, 16, 0.55) 78%, var(--night) 100%);
+}
+.light .photoShade {
+  background: linear-gradient(180deg, var(--night) 0%, rgba(11, 7, 16, 0.35) 25%, rgba(11, 7, 16, 0.6) 75%, var(--night) 100%);
+}
+.inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.heading {
+  margin-bottom: 26px;
+}
+.kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--hot);
+}
+.title {
+  margin-top: 6px;
+  font-family: var(--p-display);
+  font-weight: 800;
+  font-size: clamp(36px, 11vw, 64px);
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+}
+
+.cards {
+  display: grid;
+  gap: 14px;
+}
+@media (min-width: 640px) {
+  .cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.card {
+  padding: 20px 18px;
+  border: 1px solid var(--edge);
+  border-radius: 20px;
+  background: var(--glass);
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.7);
+}
+.cardLabel {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.cardTime {
+  margin-top: 6px;
+  font-family: var(--p-display);
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1;
+}
+.cardVenue {
+  margin-top: 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
+.cardAddress {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 10px 18px;
+  border: 1px solid rgba(255, 61, 139, 0.7);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(255, 61, 139, 0.14);
+  box-shadow: 0 0 18px rgba(255, 61, 139, 0.25);
+}
+.calendar {
+  margin-top: 22px;
+}
+.calendarRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.calendar .button {
+  margin-top: 0;
+}
+.calendarHint {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--soft);
+}
+
+.story {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--soft);
+}
+.story p + p {
+  margin-top: 14px;
+}
+.lead {
+  font-size: 21px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.storyPhoto {
+  float: right;
+  width: 44%;
+  max-width: 220px;
+  margin: 4px 0 14px 16px;
+  transform: rotate(3deg);
+}
+.storyPhoto img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.8), 0 0 0 3px #fff;
+}
+.signoff {
+  clear: both;
+}
+
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.photo:first-child {
+  grid-column: 1 / -1;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: 0 16px 36px -18px rgba(0, 0, 0, 0.9);
+}
+.photo:first-child img {
+  aspect-ratio: 16 / 10;
+}
+
+.guide {
+  display: grid;
+  gap: 22px;
+}
+.guideHead {
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--edge);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.guideItem {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.guideItem > p:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+.guideItem span {
+  color: var(--soft);
+  white-space: nowrap;
+}
+.guideText {
+  margin-top: 3px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+
+/* Shared parts (FAQ, guest photos, share) on a light card. */
+.shared {
+  margin-top: 28px;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #fff7fb;
+  color: #1a1020;
+}
+
+.reply {
+  margin-top: 28px;
+  padding: 26px 20px;
+  border: 1px solid var(--edge);
+  border-radius: 24px;
+  background: linear-gradient(160deg, rgba(255, 61, 139, 0.16), rgba(255, 209, 102, 0.08));
+}
+.replyHead {
+  margin-bottom: 18px;
+}
+.replyHead p:last-child {
+  margin-top: 8px;
+  color: var(--soft);
+}
+.replyForm {
+  max-width: none;
+}
+.formLabel {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.formInput {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 16px;
+  color: var(--ink);
+}
+.formInput:focus {
+  outline: none;
+  border-color: var(--hot);
+}
+.formInput option {
+  color: #000;
+}
+.formButton {
+  width: 100%;
+  padding: 15px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  box-shadow: 0 10px 30px -10px rgba(255, 61, 139, 0.8);
+}
+.formButton:disabled {
+  opacity: 0.6;
+}
+.formNote {
+  text-align: center;
+  font-size: 12px;
+  color: var(--soft);
+}
+.thanksCard {
+  padding: 18px 0;
+  text-align: center;
+}
+.thanksTitle {
+  font-family: var(--p-display);
+  font-size: 30px;
+  font-weight: 800;
+}
+.thanksBody {
+  margin-top: 6px;
+  color: var(--soft);
+}
+
+/* ---------- closing ---------- */
+.closing {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 70svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 60px 20px;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 100%, #2a0f2e, var(--night) 70%);
+}
+.closingLine {
+  position: relative;
+  z-index: 2;
+  font-family: var(--p-display);
+  font-size: clamp(30px, 9vw, 56px);
+  font-weight: 800;
+  line-height: 1.05;
+}
+.closingName {
+  position: relative;
+  z-index: 2;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.footer {
+  padding: 18px;
+  text-align: center;
+  font-size: 12px;
+  background: #000;
+  color: rgba(255, 245, 251, 0.5);
+}

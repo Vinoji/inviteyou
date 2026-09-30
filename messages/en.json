@@ -884,6 +884,24 @@
         "eyebrow": "A card for you",
         "open": "Open the envelope",
         "view": "View invitation"
+      },
+      "photoParty": {
+        "dialogLabel": "Birthday party",
+        "eyebrow": "You're invited",
+        "open": "Lights on!",
+        "view": "View invitation"
+      },
+      "photoCandle": {
+        "dialogLabel": "Anniversary",
+        "eyebrow": "Celebrating us",
+        "open": "Light the candles",
+        "view": "View invitation"
+      },
+      "photoFresh": {
+        "dialogLabel": "Baby shower",
+        "eyebrow": "Something little is coming",
+        "open": "Open the invitation",
+        "view": "View invitation"
       }
     },
     "kin": {
@@ -3986,6 +4004,62 @@
       "replySub": "Kindly reply by two weeks before the date.",
       "backKicker": "From all of us",
       "thanks": "Thank you"
+    },
+    "cinema": {
+      "directions": "Directions",
+      "byAir": "By air",
+      "byTrain": "By train",
+      "nearby": "While you're here",
+      "dateTba": "Date to be announced"
+    },
+    "party": {
+      "kicker": "It's a party!",
+      "lead": "Come celebrate the birthday of",
+      "eventsKicker": "Save the night",
+      "eventsTitle": "The party",
+      "storyKicker": "A birthday wish",
+      "storyTitle": "Happy birthday",
+      "photosKicker": "Snapshots",
+      "photosTitle": "Good times",
+      "guideKicker": "Getting there",
+      "guideTitle": "Find the party",
+      "replyKicker": "RSVP",
+      "replyTitle": "Are you in?",
+      "replySub": "Tell us you're coming — we'll save you a slice.",
+      "closing": "See you on the dance floor!"
+    },
+    "candlelight": {
+      "lead": "Still falling in love",
+      "storyKicker": "Our story",
+      "storyTitle": "Where it all began",
+      "signoff": "With all our love, {names}",
+      "photosKicker": "Memories",
+      "photosTitle": "The years we've shared",
+      "eventsKicker": "Join us",
+      "eventsTitle": "An evening together",
+      "guideKicker": "Getting there",
+      "guideTitle": "Finding us",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you join us?",
+      "replySub": "It would mean the world to have you there.",
+      "closing": "Thank you for being part of our story"
+    },
+    "fresh": {
+      "script": "Oh baby!",
+      "lead": "A little one is on the way — join us to celebrate",
+      "eventsKicker": "Save the date",
+      "eventsTitle": "The shower",
+      "storyKicker": "A little note",
+      "storyTitle": "Our growing family",
+      "signoff": "With love, {names}",
+      "photosKicker": "Moments",
+      "photosTitle": "Waiting for you",
+      "guideKicker": "Getting there",
+      "guideTitle": "Finding us",
+      "replyKicker": "RSVP",
+      "replyTitle": "Will you come?",
+      "replySub": "Let us know so we can save you a seat.",
+      "closing": "We can't wait to meet our little one"
     }
   }
 }

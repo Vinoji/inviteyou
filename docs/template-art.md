@@ -23,12 +23,24 @@ image** — the invitation sets all text itself, in the guest's language.
 
 ## temple-gopuram — Tamil pathirikai
 
+Photographs in use (Pexels licence: free for commercial use including sold
+templates, when edited — cropped and set with text; credit appreciated):
+
+| Slot | Photo | Photographer | Where |
+|---|---|---|---|
+| `gopuram` | [View of a Hindu Temple](https://www.pexels.com/photo/view-of-a-hindu-temple-14179203/) | Nirmal Dev | Behind the top of the card |
+| `lamp-photo` | [A Close-Up Shot of a Brass Diya](https://www.pexels.com/photo/a-close-up-shot-of-a-brass-diya-6176512/) | Souptik Pal | Envelope opening; behind the function cards |
+| `aarti` | [Ceremonial Brass Oil Lamps with Flames](https://www.pexels.com/photo/ceremonial-brass-oil-lamps-with-flames-33853980/) | Ajay Kumar | Closing section |
+
+Optional AI slots (nothing is drawn in their place; the page is complete
+without them):
+
 | Slot | Size | Notes |
 |---|---|---|
-| `floor` | 1600×2400 | Page background behind the card and the envelope |
+| `ganesha` | 800×800, transparent | Under "உ" at the head of the card |
 | `thoranam` | 2400×360, transparent | Strung across the top of the page |
-| `ganesha` | 800×800, transparent | Sits under "உ" at the head of the card |
 | `lamp` | 600×900, transparent | On each function card |
+| `floor` | 1600×2400 | Floor under the card, below the temple photo |
 
 **floor**
 > Top-down photograph of a traditional South Indian home floor in polished
@@ -75,3 +87,24 @@ image** — the invitation sets all text itself, in the guest's language.
 > A single red wax seal pressed on paper, top view, realistic wax texture
 > and soft shadow, blank centre with no letters, isolated on a plain white
 > background, square, no text.
+
+---
+
+## Cinematic photo templates (components/invite/premium/cinema)
+
+Photographs from Pexels (licence: free for commercial use including sold
+templates, when edited — cropped and set with text; credit appreciated).
+Motion (slow zoom, flicker, light leaks, petals, confetti, sparks,
+fireworks) is added in code.
+
+| Template | Slot | Photo | Where |
+|---|---|---|---|
+| birthday-balloon-party | `cake` | [Burning Candles on Birthday Cake](https://www.pexels.com/photo/burning-candles-on-birthday-cake-15211704/) | Opening and hero |
+| birthday-balloon-party | `sparkler` | [Sparkler Sparkling in the Night Sky](https://www.pexels.com/photo/sparkler-sparkling-in-the-night-sky-34416999/) | Behind the party details |
+| birthday-balloon-party | `balloons` | [Colorful Balloons with Confetti](https://www.pexels.com/photo/colorful-balloons-with-confetti-796606/) | Behind the photos |
+| anniversary-wine-roses | `table` | [Elegant Dinner Table with Roses and Candle](https://www.pexels.com/photo/elegant-dinner-table-with-roses-and-candle-36587801/) | Opening and hero |
+| anniversary-wine-roses | `roses` | [Red Roses near Clear Wine Glasses](https://www.pexels.com/photo/red-roses-near-clear-wine-glasses-6822851/) | Behind the evening's details |
+| anniversary-wine-roses | `candles` | [Moody Candlelit Dessert](https://www.pexels.com/photo/moody-candlelit-dessert-with-fruit-slice-33926170/) | Closing |
+| baby-shower-balloons | `shoes-hand` | [Pexels photo 37621032](https://www.pexels.com/photo/close-up-of-baby-pink-shoes-with-bows-37621032/) | Opening and hero |
+| baby-shower-balloons | `nursery` | [Pexels photo 19015553](https://www.pexels.com/photo/hand-holding-baby-shoes-19015553/) | Behind the shower details |
+| baby-shower-balloons | `booties` | [Adorable Baby Booties on Nature Background](https://www.pexels.com/photo/adorable-baby-booties-on-nature-background-31769696/) | Closing |

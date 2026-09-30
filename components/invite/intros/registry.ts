@@ -48,4 +48,7 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   balloonPop: dynamic(() => import("./LayoutIntros").then((m) => m.BalloonPopIntro)),
   cakeCandles: dynamic(() => import("./LayoutIntros").then((m) => m.CakeCandlesIntro)),
   pathirikaiEnvelope: dynamic(() => import("../premium/pathirikai/EnvelopeOpening")),
+  photoParty: dynamic(() => import("../premium/cinema/PhotoIntros").then((m) => m.PartyIntro)),
+  photoCandle: dynamic(() => import("../premium/cinema/PhotoIntros").then((m) => m.CandleIntro)),
+  photoFresh: dynamic(() => import("../premium/cinema/PhotoIntros").then((m) => m.FreshIntro)),
 };

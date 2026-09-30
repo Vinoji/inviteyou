@@ -1,1 +1,22 @@
-{}
+{
+  "anniversary-wine-roses": [
+    "candles.webp",
+    "roses.webp",
+    "table.webp"
+  ],
+  "baby-shower-balloons": [
+    "booties.webp",
+    "nursery.webp",
+    "shoes-hand.webp"
+  ],
+  "birthday-balloon-party": [
+    "balloons.webp",
+    "cake.webp",
+    "sparkler.webp"
+  ],
+  "temple-gopuram": [
+    "aarti.webp",
+    "gopuram.webp",
+    "lamp-photo.webp"
+  ]
+}

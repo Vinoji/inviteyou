@@ -37,7 +37,7 @@ export default function EnvelopeOpening(props: IntroProps) {
         animate={open ? { y: "12%", opacity: 0 } : { y: "0%", opacity: 1 }}
         transition={{ duration: reduce ? 0 : 0.7, delay: reduce ? 0 : 1.9, ease: "easeIn" }}
       >
-        <ArtImage templateId={props.templateId} slot="floor" className={s.floorArt} priority />
+        <ArtImage templateId={props.templateId} slot="lamp-photo" className={s.floorArt} priority />
         <div className={s.envelope}>
           <div className={`${s.back} ${m.paper}`} />
           <motion.div

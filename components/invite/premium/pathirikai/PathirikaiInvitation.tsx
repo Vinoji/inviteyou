@@ -17,12 +17,20 @@ import ThingsToKnow from "../../ThingsToKnow";
 import BlessingsWall from "../../BlessingsWall";
 import ShareBox from "../../ShareBox";
 import Section from "../../motion/Section";
-import ArtImage from "../ArtImage";
+import ArtImage, { artSrc } from "../ArtImage";
 import { parseDate, type PremiumProps } from "../types";
 import { pathirikaiColors } from "./colors";
-import { BrassLamp, KolamBorder, MangoLeaves } from "./drawn";
+import CinemaParticles, { type Emitter } from "../cinema/CinemaParticles";
+import BurstOnView from "../cinema/BurstOnView";
+import c from "../cinema/cinema.module.css";
 import m from "../materials.module.css";
 import s from "./pathirikai.module.css";
+
+// Akshathai thrown from above the couple's names.
+const SHOWER: Emitter[] = [
+  { x: 0.3, y: -0.1, angle: 80, spread: 30 },
+  { x: 0.7, y: -0.1, angle: 100, spread: 30 },
+];
 
 /**
  * Temple Gopuram — a Tamil wedding pathirikai. The invitation is the
@@ -115,9 +123,18 @@ export default function PathirikaiInvitation({
       {/* ── The card on the floor ── */}
       <section className={s.floor}>
         <ArtImage templateId={id} slot="floor" className={s.floorArt} priority />
-        <div className={s.thoranam} aria-hidden>
-          <ArtImage templateId={id} slot="thoranam" className={s.thoranamArt} priority fallback={<MangoLeaves />} />
+        {/* The temple itself rises behind the card, fading into the floor. */}
+        <div className={s.heroPhotoWrap} aria-hidden>
+          <ArtImage templateId={id} slot="gopuram" className={`${s.heroPhoto} ${c.kenburns}`} priority />
+          <span className={c.leak} style={{ ["--leak-a" as string]: "rgba(255,200,120,.35)", ["--leak-b" as string]: "rgba(255,140,60,.2)" }} />
         </div>
+        <CinemaParticles kind="petals" palette="marigold" density={0.55} className={c.particles} />
+        <CinemaParticles kind="petals" palette="jasmine" density={0.35} className={c.particles} />
+        {artSrc(id, "thoranam") && (
+          <div className={s.thoranam} aria-hidden>
+            <ArtImage templateId={id} slot="thoranam" className={s.thoranamArt} priority />
+          </div>
+        )}
 
         <article className={`${s.card} ${m.paper} ${m.lifted}`}>
           <span className={`${s.turmeric} ${s.tl}`} aria-hidden />
@@ -133,9 +150,11 @@ export default function PathirikaiInvitation({
             <p className={s.pillaiyarSuzhi} aria-hidden>
               உ
             </p>
-            <div className={s.deity}>
-              <ArtImage templateId={id} slot="ganesha" alt="" className={s.deityArt} priority fallback={<BrassLamp small />} />
-            </div>
+            {artSrc(id, "ganesha") && (
+              <div className={s.deity}>
+                <ArtImage templateId={id} slot="ganesha" alt="" className={s.deityArt} priority />
+              </div>
+            )}
             {invocation && (
               <p className={`${s.invocation} ${m.press}`} lang={scriptLang(invocation)}>
                 {invocation.split("\n").pop()}
@@ -145,9 +164,12 @@ export default function PathirikaiInvitation({
             <p className={`${s.request} ${m.press}`}>{t("request")}</p>
 
             <div
-              className={s.couple}
+              className={`${s.couple} ${s.blessed}`}
               style={{ ["--name-fit" as string]: nameFitScale(data.groomName, data.brideName) }}
             >
+              {/* Akshathai — turmeric rice and petals showered in blessing. */}
+              <BurstOnView kind="grains" palette="turmeric" emitters={SHOWER} density={0.9} />
+              <BurstOnView kind="petals" palette="marigold" emitters={SHOWER} density={0.8} delay={350} />
               <div className={s.person}>
                 <p className={s.role}>{t("groom")}</p>
                 <h1 className={`${s.name} ${m.foil}`} lang={scriptLang(groom)}>
@@ -198,13 +220,20 @@ export default function PathirikaiInvitation({
         {/* ── Function cards (inserts) ── */}
         {sections.schedule && shownEvents.length > 0 && (
           <Section index={1}>
-            <section className={s.block}>
+            <section className={`${s.block} ${s.photoBand}`}>
+              <ArtImage templateId={id} slot="lamp-photo" className={`${s.bandPhoto} ${c.kenburnsOut}`} />
+              <span className={c.flicker} style={{ ["--x" as string]: "70%", ["--y" as string]: "30%", ["--r" as string]: "280px" }} />
               <Heading kicker={t("functionsKicker")} title={t("functions")} />
               <div className={s.inserts}>
                 {shownEvents.map((e, i) => (
-                  <EventInsert key={i} label={e.label} time={e.time} venue={e.venue} directions={t("directions")} lampSlot={
-                    <ArtImage templateId={id} slot="lamp" className={s.lampArt} fallback={<BrassLamp />} />
-                  } />
+                  <EventInsert
+                    key={i}
+                    label={e.label}
+                    time={e.time}
+                    venue={e.venue}
+                    directions={t("directions")}
+                    lampSlot={artSrc(id, "lamp") ? <ArtImage templateId={id} slot="lamp" className={s.lampArt} /> : null}
+                  />
                 ))}
               </div>
               <AddToCalendar
@@ -396,12 +425,13 @@ export default function PathirikaiInvitation({
 
       {/* ── Closing: the welcome at the doorstep ── */}
       <section className={s.closing}>
-        <KolamBorder />
+        <ArtImage templateId={id} slot="aarti" className={`${s.closingPhoto} ${c.kenburns}`} />
+        <CinemaParticles kind="bokeh" palette="warm" density={0.8} className={c.particles} />
+        <CinemaParticles kind="fireworks" palette="gold" density={0.7} className={c.particles} />
         <p className={s.closingLine}>{t("closing")}</p>
         <p className={`${s.closingNames} ${m.foil}`} lang={scriptLang(coupleLabel)}>
           {coupleLabel}
         </p>
-        <KolamBorder flip />
       </section>
       <footer className={s.footer}>{tView("madeWith", { couple: coupleLabel })}</footer>
     </div>
@@ -434,9 +464,11 @@ function EventInsert({
   const href = directionsUrl(venue);
   return (
     <article className={`${s.insert} ${m.paper} ${m.lifted}`}>
-      <div className={s.insertLamp} aria-hidden>
-        {lampSlot}
-      </div>
+      {lampSlot && (
+        <div className={s.insertLamp} aria-hidden>
+          {lampSlot}
+        </div>
+      )}
       <h3 className={m.foil} lang={scriptLang(label)}>
         {label}
       </h3>
