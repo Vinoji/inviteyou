@@ -81,8 +81,9 @@ const BASE: MotionTheme = {
 const THEMES: Record<string, MotionTheme> = {
   // ── Premium layout styles (lib/layoutStyles.ts) ──
   "temple-gopuram": {
-    sectionEnter: "tier", heading: "goldSweep", divider: "kolamLine", ambient: "embers",
-    pageBg: "#3B0A14", thread: "gold",
+    // Has its own page (premium/pathirikai): only the section entrance is used.
+    sectionEnter: "rise", heading: "goldSweep", divider: "none",
+    pageBg: "#5a1d10", thread: null,
     moments: { family: "doors", events: "diyas", gallery: "arch", countdown: "flip" },
   },
   "mandap-marigold": {
@@ -121,9 +122,9 @@ const THEMES: Record<string, MotionTheme> = {
     moments: { family: "pressed", gallery: "masonry", story: "wreath", countdown: "bud" },
   },
   "luxe-editorial": {
-    sectionEnter: "wipe", heading: "inkType", divider: "hairline", pageBg: "#F7F4EE", thread: "ink",
+    // Has its own page (premium/editorial): only the section entrance is used.
+    sectionEnter: "rise", heading: "inkType", divider: "none", pageBg: "#F4F0E9", thread: null,
     plain: true,
-    moments: { events: "stickyTimes", gallery: "strip", story: "split", pinnedCountdown: true },
   },
   "watercolor-botanical": {
     sectionEnter: "bloom", heading: "handwrite", divider: "vine", ambient: "pastelPetals",

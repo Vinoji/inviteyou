@@ -50,6 +50,7 @@ export default function RsvpForm({
   variant = "default",
   header,
   initialName = "",
+  classes,
 }: {
   slug: string;
   accentColor: string;
@@ -62,8 +63,10 @@ export default function RsvpForm({
   header?: ReactNode;
   /** Prefill from a personal invite link's greeting. */
   initialName?: string;
+  /** A premium layout's own styling, over the variant's. */
+  classes?: Partial<typeof DEFAULT_CLASSES>;
 }) {
-  const c = variant === "royal" ? ROYAL_CLASSES : DEFAULT_CLASSES;
+  const c = { ...(variant === "royal" ? ROYAL_CLASSES : DEFAULT_CLASSES), ...classes };
   const t = useTranslations("invite.rsvp");
   const tCategories = useTranslations("categories");
   const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories, templateId);

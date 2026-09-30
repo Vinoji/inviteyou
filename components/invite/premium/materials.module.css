@@ -1,0 +1,92 @@
+/* Real-stationery materials shared by the premium layouts: paper grain,
+   deckled edges, gold foil, letterpress and the shadow of a card lying on a
+   surface. Everything is a static background or a one-shot animation —
+   nothing repaints while scrolling, so it stays smooth on phones. */
+
+/* Fibre + grain of cotton paper: fractal noise, multiplied into the paper
+   colour. Rasterised once as a background tile. */
+.paper {
+  position: relative;
+  background-color: var(--paper, #fbf6ea);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012 .09' numOctaves='2' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .42 0 0 0 0 .3 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23f)'/%3E%3C/svg%3E");
+  color: var(--ink, #2a1d12);
+}
+
+/* A card lying on a surface: contact shadow, soft lift and ambient falloff. */
+.lifted {
+  box-shadow:
+    0 1px 1px rgba(40, 20, 5, 0.12),
+    0 3px 6px -2px rgba(40, 20, 5, 0.18),
+    0 22px 40px -18px rgba(40, 20, 5, 0.45),
+    0 50px 90px -40px rgba(20, 8, 0, 0.5);
+}
+
+/* Hand-torn cotton-rag edge. The torn outline is a mask (not a filter on
+   the content), so text stays crisp. */
+.deckle {
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' preserveAspectRatio='none'%3E%3Cpath d='M0 12V5l4 1 3-2 5 2 4-3 5 2 3-1 6 3 4-2 3 1 5-3 4 2 6-1 3 2 5-3 4 2 3-1 5 3 4-2 6 1 3-2 4 2 5-2 3 2 5-1 4 2 V12Z'/%3E%3C/svg%3E") top / 120px 12px repeat-x,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' preserveAspectRatio='none'%3E%3Cpath d='M0 0V7l4-1 3 2 5-2 4 3 5-2 3 1 6-3 4 2 3-1 5 3 4-2 6 1 3-2 5 3 4-2 3 1 5-3 4 2 6-1 3 2 4-2 5 2 3-2 5 1 4-2 V0Z'/%3E%3C/svg%3E") bottom / 120px 12px repeat-x,
+    linear-gradient(#000, #000) center / 100% calc(100% - 22px) no-repeat;
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' preserveAspectRatio='none'%3E%3Cpath d='M0 12V5l4 1 3-2 5 2 4-3 5 2 3-1 6 3 4-2 3 1 5-3 4 2 6-1 3 2 5-3 4 2 3-1 5 3 4-2 6 1 3-2 4 2 5-2 3 2 5-1 4 2 V12Z'/%3E%3C/svg%3E") top / 120px 12px repeat-x,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='12' preserveAspectRatio='none'%3E%3Cpath d='M0 0V7l4-1 3 2 5-2 4 3 5-2 3 1 6-3 4 2 3-1 5 3 4-2 6 1 3-2 5 3 4-2 3 1 5-3 4 2 6-1 3 2 4-2 5 2 3-2 5 1 4-2 V0Z'/%3E%3C/svg%3E") bottom / 120px 12px repeat-x,
+    linear-gradient(#000, #000) center / 100% calc(100% - 22px) no-repeat;
+}
+
+/* Hot-foil gold: a brushed metallic gradient clipped to the letters, with
+   a pressed-in edge. The sheen sweeps once when it scrolls into view. */
+.foil {
+  background-image: linear-gradient(
+    100deg,
+    #8a6420 0%,
+    #c9a14a 18%,
+    #f3dc9b 30%,
+    #b98c34 42%,
+    #7d5a1c 55%,
+    #d8b565 70%,
+    #fff0c2 78%,
+    #a57a2a 90%
+  );
+  background-size: 220% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, 0.55)) drop-shadow(0 -0.5px 0 rgba(60, 35, 5, 0.35));
+  animation: foilSheen 2.6s cubic-bezier(0.3, 0, 0.2, 1) 0.4s both;
+}
+@keyframes foilSheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+:global(html[data-motion="reduced"]) .foil {
+  animation: none;
+  background-position: 30% 0;
+}
+
+/* A gold-foil rule or frame line (not text). */
+.foilLine {
+  background: linear-gradient(90deg, #8a6420, #e9cf85 30%, #a57a2a 55%, #f3dc9b 75%, #8a6420);
+}
+
+/* Letterpress: ink pressed into the sheet — a light lower edge. */
+.press {
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.7),
+    0 -0.5px 0 rgba(0, 0, 0, 0.12);
+}
+
+/* Blind emboss: raised, uninked. */
+.emboss {
+  color: transparent;
+  text-shadow:
+    -1px -1px 0 rgba(255, 255, 255, 0.85),
+    1px 1px 1px rgba(90, 60, 20, 0.28);
+}

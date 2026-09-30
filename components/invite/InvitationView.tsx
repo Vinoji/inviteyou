@@ -33,6 +33,7 @@ import Section from "./motion/Section";
 import MotionThemeProvider from "./motion/MotionThemeProvider";
 import ScrollScene from "./ScrollScene";
 import RoyalInvitation from "./royal/RoyalInvitation";
+import PremiumInvitation, { hasPremiumLayout } from "./premium/registry";
 
 /**
  * Composes every section of an invitation. Shared between the editor's live
@@ -77,6 +78,25 @@ export default function InvitationView({
     ? data.brideName || tCommon("friendFallback")
     : `${data.brideName || tCommon("brideFallback")} & ${data.groomName || tCommon("groomFallback")}`;
   const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
+
+  // Premium templates have a page of their own.
+  if (hasPremiumLayout(template.id)) {
+    return (
+      <MotionThemeProvider templateId={data.templateId}>
+        <PremiumInvitation
+          data={data}
+          slug={slug}
+          mode={mode}
+          category={category}
+          occasionTitle={occasionTitle}
+          coupleLabel={coupleLabel}
+          rsvpMessages={rsvpMessages}
+          guestPhotos={guestPhotos}
+          guestGreeting={guestGreeting}
+        />
+      </MotionThemeProvider>
+    );
+  }
 
   // Wedding templates, and every template with a layout style (any
   // occasion), use the royal layout; other occasions keep the section

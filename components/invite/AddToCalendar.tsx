@@ -33,6 +33,7 @@ export default function AddToCalendar({
   date,
   events,
   variant = "default",
+  classes,
 }: {
   slug: string;
   /** e.g. "Priya & Arjun's Wedding". */
@@ -41,9 +42,11 @@ export default function AddToCalendar({
   date: string;
   events: { label: string; time: string; venue: VenueInfo }[];
   variant?: "default" | "royal";
+  /** A premium layout's own styling, over the variant's. */
+  classes?: Partial<(typeof CLASSES)["default"]>;
 }) {
   const t = useTranslations("invite.calendar");
-  const c = CLASSES[variant];
+  const c = { ...CLASSES[variant], ...classes };
   const shown = events.filter((e) => e.time || e.venue?.name);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
   // No events filled in: still offer the day itself as one entry.

@@ -827,6 +827,12 @@
         "eyebrow": "Make a wish",
         "open": "Blow out the candles",
         "view": "View invitation"
+      },
+      "pathirikaiEnvelope": {
+        "dialogLabel": "Wedding card in an envelope",
+        "eyebrow": "A card for you",
+        "open": "Open the envelope",
+        "view": "View invitation"
       }
     },
     "kin": {
@@ -3773,5 +3779,75 @@
     "ogLine": "Animated invitations · RSVPs · Tamil & English",
     "orgDescription": "Animated online invitations for weddings, engagements, birthdays and every Indian celebration — in Tamil and English, with RSVPs, maps and WhatsApp sharing.",
     "offerName": "One invitation, all features"
+  },
+  "premium": {
+    "pathirikai": {
+      "request": "By the grace of the Almighty and with the blessings of our elders, we solicit your gracious presence with family and friends at the marriage of",
+      "groom": "Bridegroom",
+      "bride": "Bride",
+      "groomHonorific": "Chi.",
+      "brideHonorific": "Sow.",
+      "with": "with",
+      "muhurtham": "Muhurtham",
+      "time": "between {time}",
+      "dateTba": "Date to be announced",
+      "blessing": "Your presence and blessings will make the occasion complete.",
+      "scroll": "Scroll to open",
+      "functionsKicker": "The functions",
+      "functions": "Celebrations",
+      "directions": "Directions",
+      "storyKicker": "A letter from us",
+      "story": "Our story",
+      "signoff": "With love, {names}",
+      "photosKicker": "Moments",
+      "photos": "From our album",
+      "travelKicker": "Getting here",
+      "travel": "Reaching the venue",
+      "travelCity": "Reaching {city}",
+      "byAir": "By air",
+      "byTrain": "By train",
+      "nearby": "While you are here",
+      "rsvpKicker": "Kindly reply",
+      "rsvp": "Will you join us?",
+      "rsvpSub": "Please let us know a week before the muhurtham.",
+      "closing": "Your presence is our blessing",
+      "envelope": {
+        "to": "To our dear family & friends"
+      }
+    },
+    "editorial": {
+      "issue": "Vol. 01 · Wedding Issue",
+      "price": "Priceless",
+      "exclusive": "Exclusive",
+      "dateTba": "Date to be announced",
+      "coverDate": "The date: {date}",
+      "coverVenue": "The venue: {venue}",
+      "coverStory": "How it all began, p. {page}",
+      "contents": "Contents",
+      "inThisIssue": "In this issue",
+      "editorsNote": "A note from {names}: we could not imagine this day without you. Read on for everything you need.",
+      "feature": "Feature",
+      "story": "The story",
+      "standfirst": "How {a} and {b} found each other — and why they want you there when they say yes.",
+      "caption": "{names}, photographed for this issue.",
+      "families": "With the blessings of",
+      "agenda": "The Agenda",
+      "agendaTitle": "The day, hour by hour",
+      "directions": "Directions",
+      "portfolio": "Portfolio",
+      "plate": "Plate {n}",
+      "guide": "The Guide",
+      "guideTitle": "Getting there",
+      "guideCity": "{city}, a guide",
+      "byAir": "By air",
+      "byTrain": "By train",
+      "seeAndDo": "See & do",
+      "reply": "Reply card",
+      "replyKicker": "Detach & return",
+      "replyTitle": "Répondez s'il vous plaît",
+      "replySub": "Kindly reply by two weeks before the date.",
+      "backKicker": "From all of us",
+      "thanks": "Thank you"
+    }
   }
 }

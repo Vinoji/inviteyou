@@ -33,7 +33,9 @@ export type IntroId =
   | "sunrise"
   | "candlelight"
   | "balloonPop"
-  | "cakeCandles";
+  | "cakeCandles"
+  // Premium layouts' own openings (components/invite/premium).
+  | "pathirikaiEnvelope";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -73,7 +75,7 @@ export const TEMPLATES: TemplateConfig[] = [
     defaultFont: "royal-cinzel",
     cardGradient: "from-rose-900 via-red-800 to-amber-600",
     cardTextClass: "text-amber-100",
-    intro: "gopuram",
+    intro: "pathirikaiEnvelope",
     layout: "temple",
     seed: "traditional-gold",
   },

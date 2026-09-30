@@ -6,7 +6,7 @@ import { getTemplateConfig } from "@/lib/templates";
 
 /** What the invitation itself renders with (InvitationView and everything
  * under it) — independent of the page's UI language. */
-export const INVITATION_NAMESPACES = ["invite", "common", "categories"] as const;
+export const INVITATION_NAMESPACES = ["invite", "common", "categories", "premium"] as const;
 
 /**
  * A subset of one locale's messages, for a nested NextIntlClientProvider
