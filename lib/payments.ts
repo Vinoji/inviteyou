@@ -6,7 +6,7 @@ import { getTranslations } from "next-intl/server";
 import { getAdminDb } from "./firebase-admin";
 import { generateUniqueSlug } from "./slug";
 import { getRazorpay } from "./razorpay";
-import { PRICE_PAISE } from "./pricing";
+import { templatePricePaise } from "./pricing";
 import { RESTORE_PRICE_PAISE, expiresAt, restoredUntilAfterPayment } from "./expiry";
 import { sendToOwner } from "./notify";
 import { ownerLinks } from "./ownerLinks";
@@ -29,9 +29,12 @@ export async function fetchOrder(orderId: string) {
   return { amount: Number(order.amount), notes: (order.notes ?? {}) as OrderNotes };
 }
 
+/** An order made by create-order. Whether its amount covers the draft's
+ * template is checked in publishPaidDraft, against the draft itself. */
 export function isPublishOrder(order: { amount: number; notes: OrderNotes }, draftId?: string) {
   return (
-    order.amount === PRICE_PAISE &&
+    order.amount > 0 &&
+    order.notes.purpose !== "restore" &&
     typeof order.notes.draftId === "string" &&
     (draftId === undefined || order.notes.draftId === draftId)
   );
@@ -59,7 +62,8 @@ export async function publishPaidDraft(
   req: NextRequest,
   draftId: string,
   orderId: string,
-  paymentId: string
+  paymentId: string,
+  paidPaise: number
 ): Promise<PublishResult> {
   const db = getAdminDb();
   const paymentRef = db.collection("payments").doc(orderId);
@@ -73,6 +77,11 @@ export async function publishPaidDraft(
       return { ok: false, status: 404, error: "Draft not found or already published." };
     }
     const draft = draftSnap.data()!;
+    // The amount must cover this draft's template (so a cheap template's
+    // order can't publish a dearer one after switching designs).
+    if (paidPaise < templatePricePaise(draft.templateId ?? "")) {
+      return { ok: false, status: 400, error: "This payment doesn't cover this design's price." };
+    }
     const slug = await generateUniqueSlug(draft.groomName ?? "", draft.brideName ?? "");
     const editToken = crypto.randomBytes(16).toString("hex");
 
@@ -85,6 +94,7 @@ export async function publishPaidDraft(
       // The other caller got here first.
       if (paySnap.exists || !dSnap.exists) return null;
       const d = dSnap.data()!;
+      if (paidPaise < templatePricePaise(d.templateId ?? "")) return null;
       const owner = oSnap.exists ? oSnap.data()! : {};
       const now = Date.now();
       const publishedRef = db.collection("invitations").doc(slug);

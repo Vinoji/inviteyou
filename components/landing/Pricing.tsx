@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { BadgeIndianRupee, Crown, Palette, Repeat, ShieldCheck, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { PRICE_INR } from "@/lib/pricing";
+import { LOWEST_PRICE_INR, PRICES_VARY } from "@/lib/pricing";
 import { Garland, Petals, Stars, Thoranam } from "../site/festive";
 import f from "./landing.module.css";
 
@@ -13,8 +13,8 @@ const TEAM_ITEMS = ["team1", "team2", "team3"] as const;
  * Home-page pricing, set like a function hall: a dusk stage with a
  * thoranam, each plan a temple-arch card with its price in a scalloped
  * seal (the featured one in red wax, under a "Most loved" ribbon and a
- * garland). The price is lib/pricing.ts — the same constant the payment
- * route charges.
+ * garland). The price is lib/pricing.ts — the same prices the payment
+ * route charges ("from ₹…" once templates differ).
  */
 export default async function Pricing() {
   const t = await getTranslations("landing.pricing");
@@ -35,7 +35,7 @@ export default async function Pricing() {
       key: "paid",
       icon: Crown,
       name: t("paidName"),
-      price: `₹${PRICE_INR}`,
+      price: PRICES_VARY ? t("paidFrom", { price: LOWEST_PRICE_INR }) : `₹${LOWEST_PRICE_INR}`,
       unit: t("paidUnit"),
       blurb: t("paidBlurb"),
       items: PAID_ITEMS.map((k) => t(k)),

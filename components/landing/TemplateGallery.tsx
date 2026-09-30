@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { templateListPriceInr, templatePriceInr } from "@/lib/pricing";
 import TemplateShowcase, { type ShowcaseProps } from "./TemplateShowcase";
 import f from "./landing.module.css";
 
@@ -90,7 +91,9 @@ export default function TemplateGallery({
       </div>
 
       <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
-        {shown.map((tpl, i) => (
+        {shown.map((tpl, i) => {
+          const listPrice = templateListPriceInr(tpl.id);
+          return (
           <li
             key={tpl.id}
             className={
@@ -104,8 +107,26 @@ export default function TemplateGallery({
             }
           >
             <article className={`${f.festiveCard} group flex h-full flex-col transition duration-300 hover:-translate-y-1`}>
-              <div className="overflow-hidden rounded-t-[21px]">
+              <div className="relative overflow-hidden rounded-t-[21px]">
                 <TemplateShowcase {...tpl.showcase} />
+                {/* Top right: the showcase's "Tap to try it" hint owns top left. */}
+                <div className="pointer-events-none absolute top-2 right-2 z-30 flex flex-col items-end gap-1">
+                  <span className="inline-flex items-baseline gap-1 rounded-full bg-white/95 px-2.5 py-1 shadow-md ring-1 ring-amber-200 dark:bg-neutral-900/95 dark:ring-amber-800">
+                    {listPrice && (
+                      <s className="text-[10px] font-medium text-neutral-500 sm:text-xs dark:text-neutral-400">
+                        ₹{listPrice}
+                      </s>
+                    )}
+                    <span className="text-xs font-bold text-amber-800 sm:text-sm dark:text-amber-400">
+                      ₹{templatePriceInr(tpl.id)}
+                    </span>
+                  </span>
+                  {listPrice && (
+                    <span className="rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase shadow-md sm:text-xs">
+                      {t("offer")}
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
                 <h3 className="truncate font-serif text-base font-bold text-neutral-900 sm:text-lg dark:text-neutral-50">
@@ -122,7 +143,8 @@ export default function TemplateGallery({
               </div>
             </article>
           </li>
-        ))}
+          );
+        })}
       </ul>
 
       {!expanded && shown.length > FIRST_ROWS.phone && (
