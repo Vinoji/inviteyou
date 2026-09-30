@@ -25,7 +25,7 @@ import ScrollThread from "../motion/ScrollThread";
 import { FilmGrain, PinnedCountdown, Sky } from "../motion/scenery";
 import { getMotionTheme } from "@/lib/motionThemes";
 import { getTemplateConfig } from "@/lib/templates";
-import { getRoyalPalette, royalCssVars } from "./palettes";
+import { getRoyalPalette, recolorForTemplate, royalCssVars } from "./palettes";
 import { RoyalEvents, RoyalFamilies, RoyalHero } from "./RoyalSections";
 import GratefulNote from "./GratefulNote";
 import MemoryStack from "./MemoryStack";
@@ -67,7 +67,7 @@ export default function RoyalInvitation({
   guestGreeting: string;
 }) {
   const tView = useTranslations("invite.view");
-  const palette = getRoyalPalette(data.templateId);
+  const palette = getRoyalPalette(data.templateId, data.accentColor);
   const font = getFontPairing(data.fontPairing);
   const sections = withDefaultSections(data.sections);
   // Docs published before these fields existed simply don't have them.
@@ -100,7 +100,7 @@ export default function RoyalInvitation({
     // Read by the shared components used on this page (ShareBox, RsvpForm…).
     "--inv-heading": font.headingVar,
     // Shows between sections (dividers) and behind them while they enter.
-    background: theme.pageBg,
+    background: recolorForTemplate(data.templateId, theme.pageBg, data.accentColor),
   } as CSSProperties;
 
   return (

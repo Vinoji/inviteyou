@@ -21,11 +21,13 @@ export function getTemplateMeta(id: string, t: TFunc): TemplateMeta {
 }
 
 export function getAllTemplateMeta(t: TFunc): TemplateMeta[] {
-  return TEMPLATES.map((tpl) => getTemplateMeta(tpl.id, t));
+  return TEMPLATES.filter((tpl) => !tpl.hidden).map((tpl) => getTemplateMeta(tpl.id, t));
 }
 
-export function getTemplatesByCategory(category: CategoryId, t: TFunc): TemplateMeta[] {
-  return TEMPLATES.filter((tpl) => tpl.category === category).map((tpl) =>
+/** The designs offered for an occasion. Retired (hidden) designs are left
+ * out, except `keepId` — the one an existing invitation already uses. */
+export function getTemplatesByCategory(category: CategoryId, t: TFunc, keepId?: string): TemplateMeta[] {
+  return TEMPLATES.filter((tpl) => tpl.category === category && (!tpl.hidden || tpl.id === keepId)).map((tpl) =>
     getTemplateMeta(tpl.id, t)
   );
 }

@@ -76,7 +76,7 @@ export default function GardenInvitation({
   guestGreeting: string;
 }) {
   const tView = useTranslations("invite.view");
-  const palette = getRoyalPalette(data.templateId);
+  const palette = getRoyalPalette(data.templateId, data.accentColor);
   const font = getFontPairing(data.fontPairing);
   const sections = withDefaultSections(data.sections);
   const travel = data.travel ?? EMPTY_TRAVEL;

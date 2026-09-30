@@ -1,0 +1,684 @@
+/* Temple Gopuram — the pathirikai (Tamil wedding card) on a kolam floor. */
+
+.root {
+  --paper: #fbf3df;
+  --ink: #3b1d0e;
+  --ink-soft: #6e4a30;
+  /* Design colours — replaced from the page's style when the couple picks
+     their own colour (paper, turmeric and foil are materials and stay). */
+  --kumkum: #a8131b;
+  --floor-1: #8c3822;
+  --floor-2: #6b2415;
+  --floor-3: #5a1d10;
+  --floor-4: #4a170d;
+  --floor-5: #2e0e07;
+  --turmeric: #e2a20f;
+  --oxide: #7a2d1b;
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: clip;
+  background: var(--oxide);
+  color: var(--ink);
+  font-family: var(--p-body);
+}
+
+/* ---------- floor + hero card ---------- */
+
+/* Polished red-oxide floor: warm base, a sheen where the light falls, and
+   a faint rice-flour kolam grid. The painted floor art covers it once added. */
+.floor {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  padding: 118px 18px 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 30%, rgba(255, 210, 170, 0.18), transparent 70%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Cg fill='none' stroke='%23fff' stroke-opacity='.10' stroke-width='1.6'%3E%3Cpath d='M36 6 C54 6 66 18 66 36 C66 54 54 66 36 66 C18 66 6 54 6 36 C6 18 18 6 36 6Z'/%3E%3Cpath d='M36 22 L50 36 L36 50 L22 36Z'/%3E%3C/g%3E%3Cg fill='%23fff' fill-opacity='.16'%3E%3Ccircle cx='36' cy='36' r='2'/%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3Ccircle cx='72' cy='0' r='2'/%3E%3Ccircle cx='0' cy='72' r='2'/%3E%3Ccircle cx='72' cy='72' r='2'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.6' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .2 0 0 0 0 .05 0 0 0 0 .02 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E"),
+    linear-gradient(170deg, var(--floor-1), var(--floor-2) 70%, var(--floor-3));
+}
+.floorArt {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thoranam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 110px;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35));
+}
+.thoranamArt {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.card {
+  position: relative;
+  width: min(100%, 460px);
+  padding: 30px 22px 34px;
+  border-radius: 3px;
+  transform: rotate(-0.6deg);
+  text-align: center;
+}
+@media (min-width: 640px) {
+  .card {
+    padding: 42px 44px 46px;
+  }
+}
+
+/* Double gold-foil frame, inset from the edge like a printed border. */
+.frame {
+  position: absolute;
+  inset: 12px;
+  pointer-events: none;
+}
+.frame span {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  padding: 1.5px;
+}
+.frame span + span {
+  inset: 6px;
+  padding: 0.75px;
+}
+
+/* Turmeric smeared on each corner with a dot of kumkum — the pigment
+   soaks unevenly into the fibres (noise-masked), as it does on real cards. */
+.turmeric {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, var(--kumkum) 0 5px, rgba(168, 19, 27, 0.6) 6.5px, transparent 8px),
+    radial-gradient(closest-side, rgba(226, 162, 15, 0.9), rgba(226, 162, 15, 0.55) 55%, rgba(226, 162, 15, 0.15) 85%, transparent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='74' height='74'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 -.7'/%3E%3C/filter%3E%3Crect width='74' height='74' filter='url(%23n)'/%3E%3C/svg%3E");
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='74' height='74'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.09' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.4 -.7'/%3E%3C/filter%3E%3Crect width='74' height='74' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+.tl {
+  top: -22px;
+  left: -22px;
+}
+.tr {
+  top: -22px;
+  right: -22px;
+  transform: rotate(90deg);
+}
+.bl {
+  bottom: -22px;
+  left: -22px;
+  transform: rotate(-90deg);
+}
+.br {
+  bottom: -22px;
+  right: -22px;
+  transform: rotate(180deg);
+}
+
+.cardInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* The pillaiyar suzhi — "உ" in kumkum red, always first on a Tamil card. */
+.pillaiyarSuzhi {
+  font-family: "Noto Serif Tamil", var(--p-heading), serif;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--kumkum);
+  opacity: 0.92;
+}
+.deity {
+  display: grid;
+  place-items: center;
+  min-height: 90px;
+}
+.deityArt {
+  width: 112px;
+  height: auto;
+  mix-blend-mode: multiply;
+}
+.invocation {
+  font-family: var(--p-heading);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--kumkum);
+}
+.request {
+  max-width: 34ch;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.couple {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 10px 0 4px;
+  width: 100%;
+}
+.person {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.role {
+  font-size: 10.5px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.name {
+  font-family: var(--p-heading);
+  font-size: calc(clamp(30px, 9vw, 44px) * var(--name-fit, 1));
+  font-weight: 600;
+  line-height: 1.12;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.honorific {
+  font-size: 0.5em;
+  letter-spacing: 0.06em;
+  vertical-align: 0.35em;
+}
+.kin {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+.kinName {
+  color: var(--ink);
+  font-weight: 600;
+}
+.with {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0;
+  font-family: var(--p-heading);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--kumkum);
+}
+.with span {
+  width: 42px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+/* The muhurtham: boxed, like the printed panchangam block. */
+.muhurtham {
+  width: 100%;
+  margin-top: 8px;
+  padding: 16px 12px 14px;
+  border-top: 1px solid rgba(110, 74, 48, 0.35);
+  border-bottom: 1px solid rgba(110, 74, 48, 0.35);
+}
+.muhurthamLabel {
+  font-size: 10.5px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--kumkum);
+}
+.day {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.date {
+  font-family: var(--p-heading);
+  font-size: 24px;
+  line-height: 1.25;
+}
+.time {
+  margin-top: 4px;
+  font-size: 14.5px;
+}
+.venue {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.4;
+}
+.venue span {
+  display: block;
+  font-weight: 400;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+.blessing {
+  margin-top: 6px;
+  max-width: 34ch;
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.scrollHint {
+  margin-top: 26px;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 236, 214, 0.75);
+}
+
+/* ---------- the rest of the page: inserts laid on the same floor ---------- */
+
+.table {
+  padding: 8px 16px 40px;
+  background: linear-gradient(180deg, var(--floor-3), var(--floor-4));
+}
+.block {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 48px 0 12px;
+}
+.heading {
+  text-align: center;
+  margin-bottom: 22px;
+  color: #fbeedd;
+}
+.kicker {
+  font-size: 10.5px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #e9c98b;
+}
+.heading h2 {
+  margin-top: 6px;
+  font-family: var(--p-heading);
+  font-size: clamp(26px, 7vw, 34px);
+  line-height: 1.2;
+}
+.headingRule {
+  display: block;
+  width: 64px;
+  height: 1px;
+  margin: 14px auto 0;
+  background: linear-gradient(90deg, transparent, #e9c98b, transparent);
+}
+
+.inserts {
+  display: grid;
+  gap: 22px;
+}
+@media (min-width: 640px) {
+  .inserts {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.insert {
+  padding: 22px 18px 24px;
+  border-radius: 3px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.insert:nth-child(odd) {
+  transform: rotate(-0.8deg);
+}
+.insert:nth-child(even) {
+  transform: rotate(0.7deg);
+}
+.insertLamp {
+  display: grid;
+  place-items: center;
+  height: 118px;
+  margin-bottom: 6px;
+}
+.insertLamp > svg,
+.lampArt {
+  height: 118px;
+  width: auto;
+  mix-blend-mode: multiply;
+}
+.insert h3 {
+  font-family: var(--p-heading);
+  font-size: 24px;
+  font-weight: 600;
+}
+.insertTime {
+  font-size: 15px;
+  font-weight: 600;
+}
+.insertVenue {
+  margin-top: 6px;
+  font-size: 15px;
+}
+.insertAddress {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+.pillButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 9px 18px;
+  border: 1px solid rgba(168, 19, 27, 0.55);
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--kumkum);
+  background: rgba(255, 255, 255, 0.35);
+}
+.calendar {
+  margin-top: 26px;
+  text-align: center;
+}
+.calendarRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.calendar .pillButton {
+  color: #fbeedd;
+  border-color: rgba(233, 201, 139, 0.6);
+  background: rgba(255, 255, 255, 0.06);
+}
+.calendarHint {
+  margin-top: 8px;
+  font-size: 12.5px;
+  font-style: italic;
+  color: rgba(251, 238, 221, 0.7);
+}
+
+/* Folded letter with a photo tucked into its corner. */
+.letter {
+  position: relative;
+  padding: 30px 22px 26px;
+  border-radius: 2px;
+  font-size: 16px;
+  line-height: 1.75;
+  background-image: linear-gradient(180deg, transparent 49.6%, rgba(90, 60, 30, 0.07) 50%, transparent 50.4%);
+}
+.letter p + p {
+  margin-top: 14px;
+}
+.dropCap::first-letter {
+  float: left;
+  margin: 6px 8px 0 0;
+  font-family: var(--p-heading);
+  font-size: 3.2em;
+  line-height: 0.8;
+  color: var(--kumkum);
+}
+.tucked {
+  float: right;
+  width: 42%;
+  max-width: 180px;
+  margin: -6px -6px 12px 14px;
+  padding: 6px 6px 22px;
+  background: #fff;
+  transform: rotate(3deg);
+  box-shadow: 0 10px 20px -8px rgba(40, 20, 5, 0.45);
+}
+.tucked img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.signoff {
+  clear: both;
+  margin-top: 18px;
+  text-align: right;
+  font-family: var(--p-heading);
+  font-style: italic;
+  color: var(--kumkum);
+}
+
+/* Prints held with black photo corners. */
+.prints {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+@media (min-width: 640px) {
+  .prints {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.print {
+  position: relative;
+  padding: 7px 7px 26px;
+  background: #fffdf7;
+  transform: rotate(var(--tilt, 0deg));
+  box-shadow:
+    0 1px 1px rgba(0, 0, 0, 0.15),
+    0 14px 24px -12px rgba(0, 0, 0, 0.6);
+}
+.print img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  filter: saturate(0.92) contrast(1.03);
+}
+.corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #1b1410 50%, transparent 50%);
+  top: 2px;
+  left: 2px;
+}
+.corner + .corner {
+  top: auto;
+  left: auto;
+  bottom: 21px;
+  right: 2px;
+  transform: rotate(180deg);
+}
+
+/* Route card: a typeset list, like the back of a printed card. */
+.routeCard {
+  padding: 24px 20px;
+  border-radius: 2px;
+  display: grid;
+  gap: 20px;
+}
+.routeLabel {
+  margin-bottom: 8px;
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--kumkum);
+}
+.routeRow {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px dotted rgba(110, 74, 48, 0.4);
+  font-size: 14.5px;
+}
+.routeRow em,
+.place em {
+  font-style: normal;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.place {
+  padding: 8px 0;
+  border-bottom: 1px dotted rgba(110, 74, 48, 0.4);
+}
+.place p {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+.place span {
+  display: block;
+  margin-top: 2px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* Shared sections (FAQ, guest photos, share) on a plain sheet. */
+.shared {
+  max-width: 560px;
+  margin: 40px auto 0;
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+/* Reply card: perforated top edge. */
+.reply {
+  position: relative;
+  padding: 34px 22px 28px;
+  border-radius: 2px;
+}
+.reply::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  right: 14px;
+  border-top: 2px dotted rgba(110, 74, 48, 0.45);
+}
+.replyHead {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.replyHead .kicker {
+  color: var(--kumkum);
+}
+.replyHead h2 {
+  margin-top: 6px;
+  font-family: var(--p-heading);
+  font-size: 28px;
+}
+.replyHead p:last-child {
+  margin-top: 6px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+.replyForm {
+  margin: 0 auto;
+  max-width: 420px;
+}
+.formLabel {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+/* Written-on lines, not boxes. */
+.formInput {
+  width: 100%;
+  padding: 8px 2px;
+  border: 0;
+  border-bottom: 1px solid rgba(59, 29, 14, 0.45);
+  background: transparent;
+  font-size: 16px;
+  color: var(--ink);
+}
+.formInput:focus {
+  outline: none;
+  border-bottom-color: var(--kumkum);
+}
+.formButton {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #fff6e6;
+  transition: opacity 0.2s;
+}
+.formButton:disabled {
+  opacity: 0.6;
+}
+.formNote {
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.thanksCard {
+  padding: 22px 8px;
+  text-align: center;
+}
+.thanksTitle {
+  margin-top: 6px;
+  font-family: var(--p-heading);
+  font-size: 24px;
+}
+.thanksBody {
+  margin-top: 6px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* ---------- closing ---------- */
+.closing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 56px 20px 60px;
+  background: var(--floor-4);
+  color: #f4e9d6;
+  text-align: center;
+}
+.closingLine {
+  font-family: var(--p-heading);
+  font-size: clamp(22px, 6vw, 30px);
+}
+.closingNames {
+  font-family: var(--p-heading);
+  font-size: clamp(26px, 8vw, 40px);
+  font-weight: 600;
+}
+.footer {
+  padding: 18px;
+  text-align: center;
+  font-size: 12px;
+  background: var(--floor-5);
+  color: rgba(244, 233, 214, 0.55);
+}

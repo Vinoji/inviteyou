@@ -114,7 +114,9 @@ export function ColorPicker({
               aria-label={i === 0 ? t("colorDefault") : t("accentColorAria", { color: c })}
               title={i === 0 ? t("colorDefault") : c}
               className={`relative flex h-9 w-9 items-center justify-center rounded-full shadow-sm transition hover:scale-110 ${
-                on ? "ring-2 ring-offset-2 ring-offset-[#fffaf2] dark:ring-offset-[#140d18]" : ""
+                on
+                  ? "ring-2 ring-offset-2 ring-offset-[#fffaf2] dark:ring-offset-[#140d18]"
+                  : "ring-1 ring-black/10 dark:ring-white/30"
               }`}
               style={{ backgroundColor: c, ["--tw-ring-color" as string]: c }}
             >
@@ -187,14 +189,19 @@ export function FontPicker({
                   <Check size={10} strokeWidth={3} aria-hidden />
                 </span>
               )}
-              <span
-                className="block max-w-full truncate text-xl leading-snug"
-                style={{ fontFamily: f.headingVar, color: accent }}
-              >
-                {sample}
-              </span>
-              <span className="mt-0.5 block max-w-full truncate text-xs text-neutral-500 dark:text-neutral-400" style={{ fontFamily: f.bodyVar }}>
-                {t("fontSample")}
+              {/* On a card-paper swatch in both themes: the sample shows how the
+                  names read on the invitation, whose accent colours are chosen
+                  for light paper, not for the editor's dark mode. */}
+              <span className="block w-full rounded-lg bg-[#fbf6ea] px-2 py-2 ring-1 ring-black/5">
+                <span
+                  className="block max-w-full truncate text-xl leading-snug"
+                  style={{ fontFamily: f.headingVar, color: accent }}
+                >
+                  {sample}
+                </span>
+                <span className="mt-0.5 block max-w-full truncate text-xs text-neutral-600" style={{ fontFamily: f.bodyVar }}>
+                  {t("fontSample")}
+                </span>
               </span>
               <span className="mt-2 block max-w-full truncate border-t border-neutral-100 pt-1.5 text-[10px] font-semibold tracking-wide text-neutral-400 uppercase dark:border-neutral-800">
                 {sub ? sub.replace(")", "") : main}

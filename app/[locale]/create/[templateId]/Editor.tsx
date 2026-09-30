@@ -254,7 +254,7 @@ export default function Editor({
   // Edit mode: whether the invitation has expired (lib/expiry.ts).
   const [expiry, setExpiry] = useState<{ expiresAt: number | null; expired: boolean } | null>(null);
   const [restoring, setRestoring] = useState(false);
-  const sameCategoryTemplates = getTemplatesByCategory(template.category, tTemplates);
+  const sameCategoryTemplates = getTemplatesByCategory(template.category, tTemplates, template.id);
   const storyRef = useRef<HTMLTextAreaElement>(null);
   // Which part of the form is open. A design switch comes back to the
   // design step (?step=design); otherwise start with the names.
@@ -1510,7 +1510,7 @@ export default function Editor({
         <button
           onClick={() => setMobileView("edit")}
           className={`flex-1 py-3 text-sm font-semibold ${
-            mobileView === "edit" ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-400 dark:text-neutral-600"
+            mobileView === "edit" ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-500 dark:text-neutral-400"
           }`}
         >
           {t("editTab")}
@@ -1518,7 +1518,7 @@ export default function Editor({
         <button
           onClick={() => setMobileView("preview")}
           className={`flex-1 py-3 text-sm font-semibold ${
-            mobileView === "preview" ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-400 dark:text-neutral-600"
+            mobileView === "preview" ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-500 dark:text-neutral-400"
           }`}
         >
           {t("previewTab")}

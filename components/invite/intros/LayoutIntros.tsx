@@ -153,7 +153,7 @@ function VelvetCurtain({ p, flip }: { p: RoyalPalette; flip?: boolean }) {
 /* ---------- the openings ---------- */
 
 export function GopuramIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const scene: Scene = {
     id: "gopuram",
     look: { bg: `radial-gradient(ellipse at 50% 45%, #fff6e6, ${p.ivory2} 75%)`, ink: p.deep, accent: p.goldDeep, halo: halo("#fff6e6"), button: p.gold, buttonInk: p.deep },
@@ -168,7 +168,7 @@ export function GopuramIntro(props: IntroProps) {
 }
 
 export function MarigoldCurtainIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const scene: Scene = {
     id: "marigoldCurtain",
     look: { bg: `radial-gradient(ellipse at 50% 45%, ${p.ivory}, ${p.ivory2} 80%)`, ink: p.deep, accent: p.goldDeep, halo: halo(p.ivory), button: p.deep, buttonInk: p.goldLight },
@@ -183,7 +183,7 @@ export function MarigoldCurtainIntro(props: IntroProps) {
 }
 
 export function JharokhaIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const scene: Scene = {
     id: "jharokha",
     look: { bg: `radial-gradient(ellipse at 50% 45%, ${p.ivory}, ${p.ivory2} 80%)`, ink: p.deep, accent: p.goldDeep, halo: halo(p.ivory), button: p.deep, buttonInk: p.goldLight },
@@ -198,7 +198,7 @@ export function JharokhaIntro(props: IntroProps) {
 }
 
 export function LotusBloomIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   // Outer petals first, so the inner ones sit on top.
   const petals = [-66, 66, -44, 44, -22, 22, 0];
   const scene: Scene = {
@@ -234,7 +234,7 @@ export function LotusBloomIntro(props: IntroProps) {
 }
 
 export function MughalDoorsIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const scene: Scene = {
     id: "mughalDoors",
     look: { bg: `radial-gradient(ellipse at 50% 45%, ${p.ivory}, ${p.ivory2} 85%)`, ink: p.deep, accent: p.goldDeep, halo: halo(p.ivory), button: p.gold, buttonInk: p.deep },
@@ -249,7 +249,7 @@ export function MughalDoorsIntro(props: IntroProps) {
 }
 
 export function MoonLanternsIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const lanterns = [18, 50, 82];
   const scene: Scene = {
     id: "moonLanterns",
@@ -291,7 +291,7 @@ export function MoonLanternsIntro(props: IntroProps) {
 }
 
 export function StainedGlassIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const glass = ["#9B2335", "#1F4E8C", "#D4A017", "#2E7D5B", "#6A2C70", "#1F4E8C", "#9B2335", "#D4A017", "#2E7D5B", "#6A2C70", "#D4A017", "#1F4E8C"];
   const scene: Scene = {
     id: "stainedGlass",
@@ -333,7 +333,7 @@ export function StainedGlassIntro(props: IntroProps) {
 }
 
 export function FoilCardIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const initials = [props.monogram.a, props.monogram.b].filter(Boolean).join(" & ");
   const scene: Scene = {
     id: "foilCard",
@@ -361,7 +361,7 @@ export function FoilCardIntro(props: IntroProps) {
 }
 
 export function SunriseIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const scene: Scene = {
     id: "sunrise",
     look: { bg: `linear-gradient(180deg, #f6e7d5, ${p.ivory})`, ink: p.deep, accent: p.goldDeep, halo: halo(p.ivory), button: p.goldDeep, buttonInk: p.ivory },
@@ -385,7 +385,7 @@ export function SunriseIntro(props: IntroProps) {
 }
 
 export function CandlelightIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const scene: Scene = {
     id: "candlelight",
     look: { bg: `radial-gradient(ellipse at 50% 50%, ${p.mid}, ${p.deep} 75%)`, ink: "#fbf1dc", accent: p.goldLight, halo: halo(p.deep), button: p.gold, buttonInk: p.deep },
@@ -422,7 +422,7 @@ const BALLOON_SPOTS = [
 ] as const;
 
 export function BalloonPopIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const colors = [...p.flowers, p.gold, p.flowers[0], p.flowers[1], p.gold];
   const scene: Scene = {
     id: "balloonPop",
@@ -460,7 +460,7 @@ export function BalloonPopIntro(props: IntroProps) {
 }
 
 export function CakeCandlesIntro(props: IntroProps) {
-  const p = getRoyalPalette(props.templateId);
+  const p = getRoyalPalette(props.templateId, props.accent);
   const scene: Scene = {
     id: "cakeCandles",
     look: { bg: `radial-gradient(ellipse at 50% 60%, ${p.ivory}, ${p.ivory2} 80%)`, ink: p.deep, accent: p.goldDeep, halo: halo(p.ivory), button: p.deep, buttonInk: p.ivory },

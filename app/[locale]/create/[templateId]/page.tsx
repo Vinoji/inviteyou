@@ -55,7 +55,7 @@ export default async function CreatePage({
   // real opening with its sample names (as on the home page).
   const current = getTemplateMeta(templateId, tTemplates);
   const singlePerson = getCategoryMeta(current.category, tCategories).singlePerson;
-  const designs = getTemplatesByCategory(current.category, tTemplates).map((tpl) => ({
+  const designs = getTemplatesByCategory(current.category, tTemplates, templateId).map((tpl) => ({
     id: tpl.id,
     name: tpl.name,
     tagline: tpl.tagline,
