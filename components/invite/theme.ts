@@ -26,6 +26,13 @@ export function getThemeClasses(templateId: string): ThemeClasses {
         card: "border rounded-none",
         heroOverlay: "bg-gradient-to-t from-black/85 via-black/35 to-transparent",
       };
+    case "chapel-bells":
+      return {
+        page: "bg-gradient-to-b from-stone-50 via-white to-rose-50",
+        card: "border rounded-2xl",
+        heroOverlay:
+          "bg-gradient-to-t from-slate-950/80 via-slate-900/30 to-transparent",
+      };
     case "botanical-garden":
       return {
         page: "bg-gradient-to-b from-lime-50 via-amber-50 to-emerald-50",

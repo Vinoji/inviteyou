@@ -35,6 +35,7 @@ import ScrollScene from "./ScrollScene";
 import RoyalInvitation from "./royal/RoyalInvitation";
 import PremiumInvitation, { hasPremiumLayout } from "./premium/registry";
 import GardenInvitation from "./garden/GardenInvitation";
+import ChapelInvitation from "./chapel/ChapelInvitation";
 
 /**
  * Composes every section of an invitation. Shared between the editor's live
@@ -100,10 +101,11 @@ export default function InvitationView({
   }
 
   // A template with its own page (see TemplateConfig.pageLayout).
-  if (template.pageLayout === "garden") {
+  if (template.pageLayout) {
+    const Page = template.pageLayout === "chapel" ? ChapelInvitation : GardenInvitation;
     return (
       <MotionThemeProvider templateId={data.templateId}>
-        <GardenInvitation
+        <Page
           data={data}
           slug={slug}
           mode={mode}

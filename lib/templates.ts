@@ -23,6 +23,8 @@ export type IntroId =
   | "ticket"
   // Botanical garden's own page (components/invite/garden).
   | "glasshouse"
+  // Chapel Bells' own page (components/invite/chapel).
+  | "chapel"
   // Layout-style openings (components/invite/intros/LayoutIntros.tsx).
   | "gopuram"
   | "marigoldCurtain"
@@ -64,8 +66,12 @@ export interface TemplateConfig {
    * it's shared with another template; defaults to the template's own id. */
   seed?: string;
   /** A completely separate page instead of the royal layout (with or
-   * without a `layout` style): "garden" is components/invite/garden. */
-  pageLayout?: "garden";
+   * without a `layout` style): components/invite/garden or
+   * components/invite/chapel. */
+  pageLayout?: "garden" | "chapel";
+  /** Borrow a layout style's event names (e.g. "church" → Holy Matrimony)
+   * without using its look — for templates with their own pageLayout. */
+  eventNamesFrom?: LayoutStyleId;
   /** Retired as a duplicate of another design in its category: not offered
    * for new invitations, but kept so ones already made with it still render
    * and can be edited. */
@@ -89,6 +95,18 @@ export const TEMPLATES: TemplateConfig[] = [
     cardTextClass: "text-emerald-950",
     intro: "glasshouse",
     pageLayout: "garden",
+  },
+  {
+    id: "chapel-bells",
+    category: "wedding",
+    defaultAccent: "#1F2A44",
+    defaultFont: "classic-serif",
+    cardGradient: "from-sky-100 via-stone-50 to-rose-50",
+    cardTextClass: "text-slate-900",
+    intro: "chapel",
+    pageLayout: "chapel",
+    eventNamesFrom: "church",
+    seed: "christian",
   },
   // ── Premium styles, each with its own layout (lib/layoutStyles.ts) ──
   {

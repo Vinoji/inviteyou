@@ -1,0 +1,191 @@
+/* The chapel booklet: one page at a time, turned in 3D. */
+
+.booklet {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+.booklet:focus-visible .book {
+  outline: 2px solid #b8975a;
+  outline-offset: 6px;
+  border-radius: 10px;
+}
+
+.book {
+  position: relative;
+  flex: 1 1 auto;
+  width: min(100%, 460px);
+  min-height: 0;
+  max-height: 780px;
+  perspective: 1800px;
+  touch-action: pan-y;
+}
+/* The edges of the pages still to come, peeking out on the right. */
+.pagesBehind {
+  position: absolute;
+  inset: 6px -6px 6px 8px;
+  border-radius: 4px 10px 10px 4px;
+  background: #efe6d6;
+  box-shadow:
+    3px 0 0 #e4d8c3,
+    6px 0 0 #d9ccb4,
+    0 24px 50px rgba(31, 42, 68, 0.35);
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px 10px 10px 4px;
+  transform-origin: 0 50%;
+  backface-visibility: hidden;
+  color: #1f2a44;
+  background:
+    linear-gradient(90deg, rgba(120, 92, 50, 0.16), rgba(120, 92, 50, 0) 7%),
+    radial-gradient(120% 70% at 100% 0%, rgba(214, 190, 150, 0.18), transparent 60%),
+    #fffdf8;
+  box-shadow:
+    inset 0 0 0 1px rgba(184, 151, 90, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+/* A gold rule framing each page, inset from the edge. */
+.page::before {
+  content: "";
+  position: absolute;
+  inset: 10px 10px 10px 16px;
+  border: 1px solid rgba(184, 151, 90, 0.4);
+  border-radius: 3px;
+  pointer-events: none;
+}
+.navy {
+  /* Read by chapel.module.css headings. */
+  --page-ink: #fbf7ef;
+  --page-muted: #c9cfe0;
+  color: #fbf7ef;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 7%),
+    radial-gradient(90% 55% at 50% 0%, rgba(255, 214, 130, 0.16), transparent 70%),
+    #1f2a44;
+}
+.navy::before {
+  border-color: rgba(232, 208, 150, 0.35);
+}
+
+.pageScroll {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 30px 26px 12px 30px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(184, 151, 90, 0.5) transparent;
+}
+/* Short pages sit in the middle of the page; long ones start at the top
+ * and scroll (auto margins never push content above the scroll origin). */
+.pageInner {
+  margin: auto 0;
+}
+.fill {
+  flex: 1 0 auto;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fill > * {
+  flex: 1 0 auto;
+}
+/* Shared sections placed on a page (travel, FAQ, RSVP…) bring their own
+ * page-sized padding and backgrounds; on a booklet page they sit flush. */
+.pageScroll section {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 4px !important;
+  padding-bottom: 8px !important;
+  background: transparent !important;
+}
+.folio {
+  flex: 0 0 auto;
+  padding: 2px 0 16px;
+  text-align: center;
+  font-family: var(--rp-heading);
+  font-size: 13px;
+  color: #b8975a;
+}
+
+/* ---------- navigation ---------- */
+.nav {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fbf7ef;
+  background: #1f2a44;
+  box-shadow: 0 6px 16px rgba(31, 42, 68, 0.3);
+  transition:
+    transform 0.15s ease,
+    opacity 0.2s ease;
+}
+.arrow:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+.arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.arrow:focus-visible,
+.dot:focus-visible {
+  outline: 2px solid #b8975a;
+  outline-offset: 3px;
+}
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  max-width: 220px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  background: rgba(31, 42, 68, 0.25);
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+.dotOn {
+  width: 22px;
+  background: #b8975a;
+}
+.counter {
+  margin: 8px 0 0;
+  font-family: var(--rp-caps, var(--rp-body));
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(31, 42, 68, 0.6);
+}
