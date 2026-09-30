@@ -146,17 +146,7 @@ export function FilmGrain() {
   return (
     <div ref={ref} className={s.grainLayer} aria-hidden>
       <div className={s.grainFrame} style={paneHeight ? { height: paneHeight } : undefined}>
-        <svg className={s.grain}>
-          <filter id="motion-grain">
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.85"
-              numOctaves="2"
-              stitchTiles="stitch"
-            />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#motion-grain)" />
-        </svg>
+        <div className={s.grain} />
       </div>
     </div>
   );

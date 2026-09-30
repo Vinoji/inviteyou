@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
-import { Mail, MessageCircle, Phone } from "lucide-react";
+import { Mail } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { SITE, formatPhone } from "@/lib/site";
+import { SITE } from "@/lib/site";
 import SocialIcons from "./SocialIcons";
 import FooterGate from "./FooterGate";
 import { LogoMark } from "./SiteHeader";
@@ -77,25 +77,6 @@ export default async function SiteFooter() {
                   </a>
                 </li>
               )}
-              {SITE.contact.whatsapp && (
-                <li>
-                  <a
-                    href={`https://wa.me/${SITE.contact.whatsapp}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`inline-flex items-center gap-2 ${s.footerLink}`}
-                  >
-                    <MessageCircle size={15} className="text-[#e8b04a]" aria-hidden /> {t("footer.whatsappUs")}
-                  </a>
-                </li>
-              )}
-              {SITE.contact.phones.map((p) => (
-                <li key={p}>
-                  <a href={`tel:+${p}`} className={`inline-flex items-center gap-2 ${s.footerLink}`}>
-                    <Phone size={15} className="text-[#e8b04a]" aria-hidden /> {formatPhone(p)}
-                  </a>
-                </li>
-              ))}
             </ul>
           </div>
 

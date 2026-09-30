@@ -2,15 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { HelpCircle, LifeBuoy, Mail, MessageCircle, MessageSquare, Phone, X } from "lucide-react";
+import { HelpCircle, LifeBuoy, Mail, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
-import { SITE, formatPhone } from "@/lib/site";
-import { supportMailUrl, supportSmsUrl, supportWhatsAppUrl, telUrl } from "@/lib/support";
+import { SITE } from "@/lib/site";
+import { supportMailUrl } from "@/lib/support";
 import { isSitePage } from "./SiteHeader";
 
 /**
- * "Need help?" — every way to reach us, one tap away: WhatsApp, call,
- * email, SMS, or the full support form. A floating button on the site's
+ * "Need help?" — email us, or open the support form, one tap away. A floating button on the site's
  * own pages (`floating`), a small icon in the editor / guest-list toolbar
  * (`toolbar`). Never on a couple's invitation — guests aren't our
  * customers there.
@@ -50,26 +49,6 @@ export default function HelpMenu({ variant = "floating" }: { variant?: "floating
     >
       <p className="px-3 pt-1 font-serif text-base font-bold text-neutral-900 dark:text-neutral-50">{t("title")}</p>
       <p className="px-3 pb-2 text-xs text-neutral-500 dark:text-neutral-400">{t("subtitle")}</p>
-      <a href={supportWhatsAppUrl(hello)} target="_blank" rel="noopener noreferrer" className={item}>
-        <span className={`${icon} bg-[#25d366] text-white`}>
-          <MessageCircle size={16} aria-hidden />
-        </span>
-        <span>
-          <span className="block font-semibold">{t("whatsapp")}</span>
-          <span className="block text-xs text-neutral-500">{formatPhone(SITE.contact.whatsapp)}</span>
-        </span>
-      </a>
-      {SITE.contact.phones.map((p) => (
-        <a key={p} href={telUrl(p)} className={item}>
-          <span className={`${icon} bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300`}>
-            <Phone size={15} aria-hidden />
-          </span>
-          <span>
-            <span className="block font-semibold">{t("call")}</span>
-            <span className="block text-xs text-neutral-500">{formatPhone(p)}</span>
-          </span>
-        </a>
-      ))}
       <a href={supportMailUrl(t("mailSubject", { brand: SITE.name }), hello)} className={item}>
         <span className={`${icon} bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300`}>
           <Mail size={15} aria-hidden />
@@ -78,12 +57,6 @@ export default function HelpMenu({ variant = "floating" }: { variant?: "floating
           <span className="block font-semibold">{t("email")}</span>
           <span className="block truncate text-xs text-neutral-500">{SITE.contact.email}</span>
         </span>
-      </a>
-      <a href={supportSmsUrl(hello)} className={item}>
-        <span className={`${icon} bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300`}>
-          <MessageSquare size={15} aria-hidden />
-        </span>
-        <span className="block font-semibold">{t("sms")}</span>
       </a>
       <Link
         href="/support#contact"
@@ -124,7 +97,7 @@ export default function HelpMenu({ variant = "floating" }: { variant?: "floating
         aria-label={open ? t("close") : t("title")}
         className="flex h-13 items-center gap-2 rounded-full bg-gradient-to-br from-amber-500 to-rose-600 px-4 text-sm font-semibold text-white shadow-lg shadow-rose-900/30 transition hover:brightness-110 active:scale-95"
       >
-        {open ? <X size={18} aria-hidden /> : <MessageCircle size={18} aria-hidden />}
+        {open ? <X size={18} aria-hidden /> : <HelpCircle size={18} aria-hidden />}
         <span className="hidden sm:inline">{open ? t("close") : t("fab")}</span>
       </button>
     </div>

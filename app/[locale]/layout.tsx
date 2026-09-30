@@ -23,6 +23,7 @@ import { SITE_URL } from "@/lib/seo";
 import SiteFooter from "@/components/site/SiteFooter";
 import EntranceGate from "@/components/site/EntranceGate";
 import HelpMenu from "@/components/site/HelpMenu";
+import OffscreenPause from "@/components/site/OffscreenPause";
 import { MotionPrefSync } from "@/components/invite/MotionToggle";
 import "../globals.css";
 
@@ -178,6 +179,7 @@ export default async function RootLayout({
       <body className="flex min-h-full flex-col bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
         <NextIntlClientProvider>
           <MotionPrefSync />
+          <OffscreenPause />
           <EntranceGate />
           <SiteHeader />
           {children}

@@ -78,17 +78,37 @@ body {
 }
 
 /*
- * Smooth color/background/border transitions app-wide, so a theme change
- * (or the class-level part of a locale change) crossfades instead of
- * snapping instantly. Kept short and GPU-cheap (color-family properties
- * only, no layout-triggering ones) so it never feels laggy. Respects
- * prefers-reduced-motion like the rest of the app's animations do.
+ * Colours crossfade while the theme is being switched (lib/themePref.ts
+ * adds .theme-switching to <html> for a moment) — only then: a transition
+ * on every element all the time made pages slower to update on phones.
  */
 @media (prefers-reduced-motion: no-preference) {
-  * {
+  html.theme-switching * {
     transition-property: background-color, border-color, color, fill, stroke, box-shadow;
     transition-duration: 0.15s;
     transition-timing-function: ease;
+  }
+}
+
+/* Animations out of view are paused (components/site/OffscreenPause.tsx)
+   and resume where they stopped as they scroll back in. */
+[data-offscreen],
+[data-offscreen] *,
+[data-offscreen] *::before,
+[data-offscreen] *::after {
+  animation-play-state: paused !important;
+}
+
+/* Touch devices: no blur-behind. Re-blurring what moves underneath (the
+   header over the animated hero, chips, overlays) every frame is one of
+   the most expensive things a phone GPU can be asked to do; the elements
+   keep their tinted backgrounds. */
+@media (pointer: coarse) {
+  *,
+  *::before,
+  *::after {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 }
 

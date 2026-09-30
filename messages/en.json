@@ -2458,7 +2458,6 @@
       "privacy": "Privacy policy",
       "payments": "Payments & refunds",
       "yourData": "Your data",
-      "whatsappUs": "Chat on WhatsApp",
       "follow": "Follow us",
       "copyright": "© {years} {brand}. All rights reserved.",
       "madeWith": "Made with love in Tamil Nadu",
@@ -2516,7 +2515,7 @@
         "paymentA": "Payments go through Razorpay, a PCI-DSS compliant payment gateway. Card and UPI details are entered on Razorpay's secure form and never reach our servers."
       },
       "contactTitle": "Still need help?",
-      "contactBody": "Fill in the form and send it the way you like — WhatsApp, email or SMS. It arrives with everything we need to help you quickly.",
+      "contactBody": "Fill in the form and send it by email. It arrives with everything we need to help you quickly.",
       "responseTime": "We usually reply within one working day.",
       "privacyNote": "Please don't send passwords or card details. Read how we handle your data in our <link>privacy policy</link>.",
       "form": {
@@ -2532,17 +2531,10 @@
         "detailsPlaceholder": "Tell us what happened, and what you expected…",
         "required": "Please add your name and a few words about the problem.",
         "noSecrets": "Don't include card numbers, OTPs or passwords.",
-        "sendVia": "Send it by",
-        "viaWhatsapp": "WhatsApp",
-        "viaEmail": "Email",
-        "viaSms": "SMS",
-        "sentNote": "Your message is ready in the app that opened — just press send. Your reference is {ref}; mention it if you follow up.",
-        "directTitle": "Or reach us directly",
-        "chatWhatsapp": "Chat on WhatsApp",
-        "call": "Call us",
+        "sentNote": "Your message is ready in your mail app — just press send. Your reference is {ref}; mention it if you follow up.",
+        "directTitle": "Or write to us directly",
         "emailUs": "Email us",
         "hours": "We usually reply within one working day.",
-        "quickHello": "Hello {brand}, I need some help with my invitation.",
         "topics": {
           "editLink": "Edit link & editing",
           "payment": "Payment or refund",
@@ -2550,7 +2542,8 @@
           "design": "Design, photos & text",
           "technical": "Something isn't working",
           "other": "Something else"
-        }
+        },
+        "sendEmail": "Send by email"
       }
     },
     "privacy": {
@@ -2636,7 +2629,7 @@
       "support": {
         "title": "When you contact us",
         "body": [
-          "If you write to us by email, WhatsApp or SMS, your message reaches us through that service and its own privacy terms apply. We use what you send only to help you, and delete it when it is no longer needed.",
+          "If you write to us by email, your message reaches us through your email provider and its own privacy terms apply. We use what you send only to help you, and delete it when it is no longer needed.",
           "Please never send us card numbers, OTPs or passwords — we will never ask for them."
         ]
       },
@@ -2668,7 +2661,7 @@
     "legal": {
       "contents": "Contents",
       "contactTitle": "Contact & grievances",
-      "contactBody": "Questions, requests about your data, refunds or complaints — reach us any of these ways:",
+      "contactBody": "Questions, requests about your data, refunds or complaints — email us:",
       "grievance": "Grievances are handled by the InviteForYou support team. We acknowledge every complaint within 24 hours and aim to resolve it within 15 days."
     },
     "terms": {
@@ -2783,10 +2776,7 @@
     "help": {
       "title": "Need help?",
       "subtitle": "Talk to a real person — we're happy to help.",
-      "whatsapp": "Chat on WhatsApp",
-      "call": "Call us",
       "email": "Email us",
-      "sms": "Send an SMS",
       "form": "Open the support form",
       "fab": "Help",
       "close": "Close",

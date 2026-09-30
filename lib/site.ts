@@ -13,12 +13,9 @@ export const SITE = {
   url: "https://inviteforyou.in",
   /** Year the service started, for the copyright range. */
   since: 2026,
+  /** Email only — no phone numbers are published, for privacy. */
   contact: {
     email: "support.inviteforyou@gmail.com",
-    /** International format, digits only. WhatsApp chats and SMS go here. */
-    whatsapp: "916379792412",
-    /** Numbers to call, in the order shown. */
-    phones: ["916379792412", "919655921680"],
   },
   /** Profile URLs; "" hides that icon. */
   social: {
@@ -37,9 +34,3 @@ export const SITE = {
 } as const;
 
 export type SocialId = keyof typeof SITE.social;
-
-/** "916379792412" → "+91 63797 92412" (Indian numbers; others as +digits). */
-export function formatPhone(digits: string): string {
-  const m = /^91(\d{5})(\d{5})$/.exec(digits);
-  return m ? `+91 ${m[1]} ${m[2]}` : `+${digits}`;
-}

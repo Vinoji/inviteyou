@@ -1,6 +1,6 @@
 import { getTranslations } from "next-intl/server";
-import { Mail, MessageCircle, Phone } from "lucide-react";
-import { SITE, formatPhone } from "@/lib/site";
+import { Mail } from "lucide-react";
+import { SITE } from "@/lib/site";
 import FestiveBanner from "./FestiveBanner";
 import paper from "@/components/landing/landing.module.css";
 
@@ -61,23 +61,6 @@ export default async function LegalPage({
                 <Mail size={15} aria-hidden /> {SITE.contact.email}
               </a>
             </li>
-            <li>
-              <a
-                href={`https://wa.me/${SITE.contact.whatsapp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 font-semibold text-amber-800 underline dark:text-amber-400"
-              >
-                <MessageCircle size={15} aria-hidden /> WhatsApp {formatPhone(SITE.contact.whatsapp)}
-              </a>
-            </li>
-            {SITE.contact.phones.map((p) => (
-              <li key={p}>
-                <a href={`tel:+${p}`} className="inline-flex items-center gap-2 font-semibold text-amber-800 underline dark:text-amber-400">
-                  <Phone size={15} aria-hidden /> {formatPhone(p)}
-                </a>
-              </li>
-            ))}
           </ul>
           <p className="mt-4 text-xs text-neutral-600 dark:text-neutral-400">{tLegal("grievance")}</p>
         </section>

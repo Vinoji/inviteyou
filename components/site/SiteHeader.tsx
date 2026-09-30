@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Menu, Sparkles, X } from "lucide-react";
@@ -18,12 +18,23 @@ export function isSitePage(pathname: string) {
 /** Pages that open with a dark FestiveBanner / hero under the header. */
 const DARK_TOP = new Set(["/", "/demo", "/support", "/privacy", "/terms"]);
 
+/** Home-page sections the nav points into, top to bottom. */
+type HomeSection = "templates" | "pricing";
+
 const NAV = [
-  { href: "/#templates", key: "templates", match: (p: string) => p === "/" },
-  { href: "/#pricing", key: "pricing", match: () => false },
+  { href: "/#templates", key: "templates", match: (p: string, sec: HomeSection) => p === "/" && sec === "templates" },
+  { href: "/#pricing", key: "pricing", match: (p: string, sec: HomeSection) => p === "/" && sec === "pricing" },
   { href: "/demo", key: "demos", match: (p: string) => p.startsWith("/demo") },
   { href: "/support", key: "support", match: (p: string) => p.startsWith("/support") },
 ] as const;
+
+/** Which home section the reader is in: the last one whose top has passed
+ * a line a third of the way down the screen (Templates above them all). */
+function currentHomeSection(): HomeSection {
+  const line = window.innerHeight / 3;
+  const pricing = document.getElementById("pricing");
+  return pricing && pricing.getBoundingClientRect().top <= line ? "pricing" : "templates";
+}
 
 /** Three marigold tassels dangling from one end of the header capsule. */
 function Tassels({ side }: { side: "L" | "R" }) {
@@ -82,16 +93,43 @@ export default function SiteHeader() {
   const pathname = usePathname();
   const reduce = useSafeReducedMotion();
   const [scrolled, setScrolled] = useState(false);
+  // On the home page the active dot follows the section in view.
+  const [section, setSection] = useState<HomeSection>("templates");
+  // After a nav click, the smooth scroll passes other sections on its way;
+  // hold the clicked one until it has arrived.
+  const held = useRef<number | null>(null);
   const [openFor, setOpenFor] = useState<string | null>(null);
   // The menu belongs to the page it was opened on — navigating closes it.
   const open = openFor === pathname;
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      // Once per frame at most; React skips the render when nothing changed.
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        setScrolled(window.scrollY > 12);
+        if (pathname === "/" && held.current === null) setSection(currentHomeSection());
+      });
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [pathname]);
+
+  /** A home-section link moves the dot at once, not after the smooth scroll. */
+  function onNavClick(key: string) {
+    if (key !== "templates" && key !== "pricing") return;
+    setSection(key);
+    if (held.current !== null) window.clearTimeout(held.current);
+    held.current = window.setTimeout(() => {
+      held.current = null;
+    }, 1200);
+  }
 
   // Transparent over a page's dusk banner at the top; the plum-and-gold bar
   // (with its hanging garland) everywhere else.
@@ -113,11 +151,12 @@ export default function SiteHeader() {
 
         <nav className="ml-6 hidden items-center gap-1 md:flex" aria-label={t("mainNav")}>
           {NAV.map((item) => {
-            const active = item.match(pathname);
+            const active = item.match(pathname, section);
             return (
               <Link
                 key={item.key}
                 href={item.href}
+                onClick={() => onNavClick(item.key)}
                 className={`${s.navLink} ${active ? s.navActive : ""} relative rounded-full px-3.5 py-2 text-sm font-medium transition ${
                   active ? "text-[#ffe9b8]" : "text-[#fff6e6]/80 hover:text-white"
                 }`}
@@ -175,9 +214,12 @@ export default function SiteHeader() {
                 >
                   <Link
                     href={item.href}
-                    onClick={() => setOpenFor(null)}
+                    onClick={() => {
+                      onNavClick(item.key);
+                      setOpenFor(null);
+                    }}
                     className={`block rounded-xl px-4 py-3 text-base font-medium ${
-                      item.match(pathname) ? `${s.navPill} text-[#ffe9b8]` : "text-[#fff6e6]/80"
+                      item.match(pathname, section) ? `${s.navPill} text-[#ffe9b8]` : "text-[#fff6e6]/80"
                     }`}
                   >
                     {t(`nav.${item.key}`)}

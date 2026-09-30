@@ -31,6 +31,10 @@ function applyThemeClass(pref: ThemePref) {
 /** Switches theme now and remembers it. A crossfade where the browser
  * supports view transitions; a plain swap everywhere else. */
 export function setThemePref(pref: ThemePref) {
+  // Colours crossfade only while switching (globals.css .theme-switching).
+  const root = document.documentElement;
+  root.classList.add("theme-switching");
+  window.setTimeout(() => root.classList.remove("theme-switching"), 400);
   if (typeof document.startViewTransition === "function") {
     document.startViewTransition(() => applyThemeClass(pref));
   } else {

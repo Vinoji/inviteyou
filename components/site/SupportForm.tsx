@@ -2,26 +2,18 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { Check, Mail, MessageCircle, MessageSquare, Phone } from "lucide-react";
-import { SITE, formatPhone } from "@/lib/site";
-import {
-  SUPPORT_TOPICS,
-  supportMailUrl,
-  supportReference,
-  supportSmsUrl,
-  supportWhatsAppUrl,
-  telUrl,
-  type SupportTopic,
-} from "@/lib/support";
+import { Check, Mail } from "lucide-react";
+import { SITE } from "@/lib/site";
+import { SUPPORT_TOPICS, supportMailUrl, supportReference, type SupportTopic } from "@/lib/support";
 
 const input =
   "w-full rounded-xl border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100";
 
 /**
  * The support form: say who you are, what it's about and what happened,
- * then send it by WhatsApp, email or SMS — it opens in your own app,
- * already written, with a reference code to quote later. Nothing is
- * stored on our side; it goes straight to the support inbox and phone.
+ * then send it — it opens in your own mail app, already written, with a
+ * reference code to quote later. Nothing is stored on our side; it goes
+ * straight to the support inbox.
  */
 export default function SupportForm() {
   const t = useTranslations("site.support.form");
@@ -31,7 +23,7 @@ export default function SupportForm() {
   const [invite, setInvite] = useState("");
   const [details, setDetails] = useState("");
   const [ref, setRef] = useState<string | null>(null);
-  const [sentVia, setSentVia] = useState<string | null>(null);
+  const [sent, setSent] = useState(false);
   const [touched, setTouched] = useState(false);
 
   const ready = name.trim().length > 0 && details.trim().length >= 10;
@@ -47,28 +39,26 @@ export default function SupportForm() {
     return [t("greeting", { brand: SITE.name }), "", ...facts, "", details.trim()].join("\n");
   }
 
-  /** Opens the chosen app; the same reference is kept for every channel. */
-  function send(via: "whatsapp" | "email" | "sms") {
+  /** Opens the mail app with the message written; the reference stays
+   * the same if they send again. */
+  function send() {
     setTouched(true);
     if (!ready) return;
     const reference = ref ?? supportReference();
     setRef(reference);
-    const text = message(reference);
     const subject = `[${reference}] ${t(`topics.${topic}`)} — ${name.trim()}`;
-    const url = via === "whatsapp" ? supportWhatsAppUrl(text) : via === "email" ? supportMailUrl(subject, text) : supportSmsUrl(text);
-    if (via === "whatsapp") window.open(url, "_blank", "noopener,noreferrer");
-    else window.location.href = url;
-    setSentVia(via);
+    window.location.href = supportMailUrl(subject, message(reference));
+    setSent(true);
   }
 
-  const btn = "inline-flex flex-1 items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition disabled:opacity-60";
+  const btn = "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold transition disabled:opacity-60";
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          send("whatsapp");
+          send();
         }}
         className="space-y-4 rounded-3xl border border-amber-200/70 bg-white/90 p-5 text-left shadow-sm sm:p-7 dark:border-amber-500/20 dark:bg-neutral-900/80"
         noValidate
@@ -142,22 +132,11 @@ export default function SupportForm() {
           </span>
         </label>
 
-        <div>
-          <p className="mb-2 text-sm font-medium text-neutral-800 dark:text-neutral-200">{t("sendVia")}</p>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <button type="submit" className={`${btn} bg-[#25d366] text-[#08331a] hover:brightness-95`}>
-              <MessageCircle size={16} aria-hidden /> {t("viaWhatsapp")}
-            </button>
-            <button type="button" onClick={() => send("email")} className={`${btn} bg-neutral-900 text-white hover:bg-amber-700 dark:bg-neutral-100 dark:text-neutral-900`}>
-              <Mail size={16} aria-hidden /> {t("viaEmail")}
-            </button>
-            <button type="button" onClick={() => send("sms")} className={`${btn} border border-neutral-300 text-neutral-800 hover:border-amber-500 dark:border-neutral-700 dark:text-neutral-100`}>
-              <MessageSquare size={16} aria-hidden /> {t("viaSms")}
-            </button>
-          </div>
-        </div>
+        <button type="submit" className={`${btn} w-full bg-neutral-900 text-white hover:bg-amber-700 dark:bg-neutral-100 dark:text-neutral-900`}>
+          <Mail size={16} aria-hidden /> {t("sendEmail")}
+        </button>
 
-        {ref && sentVia && (
+        {ref && sent && (
           <p role="status" className="flex items-start gap-2 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-200">
             <Check size={16} className="mt-0.5 shrink-0" aria-hidden />
             <span>{t("sentNote", { ref })}</span>
@@ -165,38 +144,9 @@ export default function SupportForm() {
         )}
       </form>
 
-      {/* Direct lines, for anyone who'd rather just call or chat. */}
+      {/* Or just write, without the form. */}
       <aside className="space-y-3 text-left">
         <p className="text-xs font-semibold tracking-widest text-amber-700 uppercase dark:text-amber-400">{t("directTitle")}</p>
-        <a
-          href={supportWhatsAppUrl(t("quickHello", { brand: SITE.name }))}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 transition hover:shadow-md dark:border-emerald-900 dark:bg-emerald-950/30"
-        >
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#25d366] text-white">
-            <MessageCircle size={18} aria-hidden />
-          </span>
-          <span>
-            <span className="block text-sm font-semibold text-neutral-900 dark:text-neutral-50">{t("chatWhatsapp")}</span>
-            <span className="block text-xs text-neutral-600 dark:text-neutral-400">{formatPhone(SITE.contact.whatsapp)}</span>
-          </span>
-        </a>
-        {SITE.contact.phones.map((p) => (
-          <a
-            key={p}
-            href={telUrl(p)}
-            className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-4 transition hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900"
-          >
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-              <Phone size={18} aria-hidden />
-            </span>
-            <span>
-              <span className="block text-sm font-semibold text-neutral-900 dark:text-neutral-50">{t("call")}</span>
-              <span className="block text-xs text-neutral-600 dark:text-neutral-400">{formatPhone(p)}</span>
-            </span>
-          </a>
-        ))}
         <a
           href={`mailto:${SITE.contact.email}`}
           className="flex items-center gap-3 rounded-2xl border border-neutral-200 bg-white p-4 transition hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900"
