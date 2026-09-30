@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { getAdminDb } from "@/lib/firebase-admin";
-import { PRICE_PAISE } from "@/lib/pricing"; // ₹199 flat, one-time
+import { templatePricePaise } from "@/lib/pricing";
 import { tooMany } from "@/lib/rateLimit";
 
 
@@ -41,10 +41,12 @@ export async function POST(req: NextRequest) {
 
   const instance = new Razorpay({ key_id: keyId, key_secret: keySecret });
   const order = await instance.orders.create({
-    amount: PRICE_PAISE,
+    // Each template has its own price; verify-payment and the webhook check
+    // what was paid covers the draft's template at publish time.
+    amount: templatePricePaise(snap.data()?.templateId ?? ""),
     currency: "INR",
     receipt: draftId,
-    notes: { draftId },
+    notes: { draftId, templateId: snap.data()?.templateId ?? "" },
   });
 
   return NextResponse.json({

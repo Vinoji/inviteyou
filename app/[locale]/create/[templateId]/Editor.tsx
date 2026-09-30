@@ -50,7 +50,7 @@ import {
 import type { NearbySuggestion as NearbyResult } from "@/lib/geo";
 import { getFamily, legacyParentsLine } from "@/lib/family";
 import { STORY_PRESETS } from "@/lib/storyPresets";
-import { PRICE_INR } from "@/lib/pricing";
+import { templatePriceInr } from "@/lib/pricing";
 import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
 import InvitationView from "@/components/invite/InvitationView";
 import { FormSection, Field, inputClass, SectionToggle } from "@/components/editor/FormFields";
@@ -1425,7 +1425,7 @@ export default function Editor({
               style={{ backgroundColor: data.accentColor }}
               className={`w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50 ${festive.shine}`}
             >
-              {publishing ? t("processing") : t("publishCta", { price: PRICE_INR })}
+              {publishing ? t("processing") : t("publishCta", { price: templatePriceInr(templateId) })}
             </button>
           )}
         </div>

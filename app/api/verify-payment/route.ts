@@ -30,9 +30,9 @@ export async function POST(req: NextRequest) {
   }
 
   // The signature only proves *an* order was paid. The order must also be
-  // this draft's, for the full price — otherwise one real payment (or a ₹50
-  // restore) could be replayed to publish other drafts. (create-order puts
-  // the draftId in the order's notes.)
+  // this draft's — otherwise one real payment (or a ₹50 restore) could be
+  // replayed to publish other drafts. (create-order puts the draftId in the
+  // order's notes; publishPaidDraft checks the amount covers its template.)
   const order = await fetchOrder(razorpay_order_id).catch(() => null);
   if (!order || !isPublishOrder(order, draftId)) {
     return NextResponse.json({ error: "This payment isn't for this invitation." }, { status: 400 });
@@ -40,7 +40,13 @@ export async function POST(req: NextRequest) {
 
   // Each order publishes once. The Razorpay webhook may already have
   // published it; either way the same slug and edit token come back.
-  const result = await publishPaidDraft(req, draftId, razorpay_order_id, razorpay_payment_id);
+  const result = await publishPaidDraft(
+    req,
+    draftId,
+    razorpay_order_id,
+    razorpay_payment_id,
+    order.amount
+  );
   if (!result.ok) {
     return NextResponse.json({ error: result.error }, { status: result.status });
   }

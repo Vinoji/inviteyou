@@ -18,6 +18,7 @@
     "allDesigns": "All designs",
     "categoriesLabel": "Occasions",
     "useShort": "Use this design",
+    "offer": "Offer",
     "showAll": "Show all {count} designs",
     "pricing": {
       "eyebrow": "Pricing",
@@ -35,6 +36,7 @@
       "freeCta": "Start designing",
       "paidName": "Publish",
       "paidUnit": "once per invitation",
+      "paidFrom": "from ₹{price}",
       "paidBlurb": "Your invitation, live with its own link.",
       "paid1": "Your own invitation link — unlimited guests and views",
       "paid2": "RSVPs with a private guest list",
@@ -65,7 +67,7 @@
       "ctaPrimary": "Create your invitation",
       "ctaSecondary": "Watch the openings",
       "trust1": "Free to design",
-      "trust2": "₹199 once to publish",
+      "trust2": "From ₹{price} to publish",
       "trust3": "RSVP & reminders built in",
       "showDesign": "Show design {n}",
       "rsvpTitle": "128 attending",
@@ -3683,7 +3685,7 @@
       "pricing": {
         "title": "Price & payment",
         "body": [
-          "Publishing an invitation costs ₹199, paid once through Razorpay — no subscription. The price shown at checkout is the price you pay. Editing afterwards is free.",
+          "Publishing an invitation costs the price shown for its design, paid once through Razorpay — no subscription. The price shown at checkout is the price you pay. Editing afterwards is free.",
           "An invitation stays live until 10 days after its event date. You can renew an ended invitation for 30 more days for ₹50."
         ]
       },

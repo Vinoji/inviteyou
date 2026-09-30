@@ -56,6 +56,12 @@ export interface TemplateConfig {
   /** Sample content to start from (`defaultContent.<seed>` in messages) when
    * it's shared with another template; defaults to the template's own id. */
   seed?: string;
+  /** Publishing price in ₹. Leave out to use the default (PRICE_INR in
+   * lib/pricing.ts). */
+  price?: number;
+  /** "Was" price in ₹, shown struck through beside the price. Leave out to
+   * use the default (LIST_PRICE_INR in lib/pricing.ts). */
+  listPrice?: number;
 }
 
 export const TEMPLATES: TemplateConfig[] = [
@@ -372,6 +378,8 @@ export const TEMPLATES: TemplateConfig[] = [
     cardGradient: "from-slate-900 via-blue-900 to-sky-700",
     cardTextClass: "text-sky-50",
     intro: "ticket",
+    // TEMP: ₹1 for live-payment testing.
+    // price: 1,
   },
   // ── Premium styles for the other occasions ──
   {

@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo";
-import { PRICE_INR } from "@/lib/pricing";
+import { LOWEST_PRICE_INR } from "@/lib/pricing";
 
 /**
  * schema.org JSON-LD for the home page: the business, the website (in
@@ -44,7 +44,7 @@ export default async function StructuredData({ locale }: { locale: string }) {
         offers: {
           "@type": "Offer",
           name: t("offerName"),
-          price: String(PRICE_INR),
+          price: String(LOWEST_PRICE_INR),
           priceCurrency: "INR",
           url: `${home}#pricing`,
           availability: "https://schema.org/InStock",

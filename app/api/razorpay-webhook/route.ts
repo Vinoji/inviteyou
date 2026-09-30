@@ -55,7 +55,8 @@ export async function POST(req: NextRequest) {
         req,
         order.notes.draftId as string,
         orderEntity.id,
-        paymentId
+        paymentId,
+        order.amount
       );
       if (!result.ok) console.error("razorpay-webhook: publish skipped", orderEntity.id, result.error);
       return NextResponse.json({ published: result.ok });
