@@ -33,6 +33,7 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   ringbox: dynamic(() => import("./RingBoxIntro")),
   cradle: dynamic(() => import("./CradleIntro")),
   ticket: dynamic(() => import("./TicketIntro")),
+  glasshouse: dynamic(() => import("./GlasshouseIntro")),
   // Layout-style openings share one chunk (LayoutIntros.tsx).
   gopuram: dynamic(() => import("./LayoutIntros").then((m) => m.GopuramIntro)),
   marigoldCurtain: dynamic(() => import("./LayoutIntros").then((m) => m.MarigoldCurtainIntro)),

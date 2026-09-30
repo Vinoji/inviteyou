@@ -21,6 +21,8 @@ export type IntroId =
   | "ringbox"
   | "cradle"
   | "ticket"
+  // Botanical garden's own page (components/invite/garden).
+  | "glasshouse"
   // Layout-style openings (components/invite/intros/LayoutIntros.tsx).
   | "gopuram"
   | "marigoldCurtain"
@@ -58,6 +60,9 @@ export interface TemplateConfig {
   /** Sample content to start from (`defaultContent.<seed>` in messages) when
    * it's shared with another template; defaults to the template's own id. */
   seed?: string;
+  /** A completely separate page instead of the royal layout (with or
+   * without a `layout` style): "garden" is components/invite/garden. */
+  pageLayout?: "garden";
   /** Publishing price in ₹. Leave out to use the default (PRICE_INR in
    * lib/pricing.ts). */
   price?: number;
@@ -67,6 +72,17 @@ export interface TemplateConfig {
 }
 
 export const TEMPLATES: TemplateConfig[] = [
+  // ── Featured: its own page (components/invite/garden), first in the gallery ──
+  {
+    id: "botanical-garden",
+    category: "wedding",
+    defaultAccent: "#2F4A2C",
+    defaultFont: "classic-serif",
+    cardGradient: "from-emerald-100 via-lime-50 to-amber-50",
+    cardTextClass: "text-emerald-950",
+    intro: "glasshouse",
+    pageLayout: "garden",
+  },
   // ── Premium styles, each with its own layout (lib/layoutStyles.ts) ──
   {
     id: "temple-gopuram",
@@ -827,7 +843,9 @@ export const TEMPLATES: TemplateConfig[] = [
 ];
 
 export function getTemplateConfig(id: string): TemplateConfig {
-  return TEMPLATES.find((t) => t.id === id) ?? TEMPLATES[0];
+  // Unknown ids fall back to the classic template by id, not TEMPLATES[0],
+  // so reordering the gallery never changes the fallback.
+  return TEMPLATES.find((t) => t.id === id) ?? TEMPLATES.find((t) => t.id === "traditional-gold")!;
 }
 
 export const TEMPLATE_IDS = TEMPLATES.map((t) => t.id);

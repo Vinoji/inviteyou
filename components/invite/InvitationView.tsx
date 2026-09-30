@@ -34,6 +34,7 @@ import MotionThemeProvider from "./motion/MotionThemeProvider";
 import ScrollScene from "./ScrollScene";
 import RoyalInvitation from "./royal/RoyalInvitation";
 import PremiumInvitation, { hasPremiumLayout } from "./premium/registry";
+import GardenInvitation from "./garden/GardenInvitation";
 
 /**
  * Composes every section of an invitation. Shared between the editor's live
@@ -84,6 +85,25 @@ export default function InvitationView({
     return (
       <MotionThemeProvider templateId={data.templateId}>
         <PremiumInvitation
+          data={data}
+          slug={slug}
+          mode={mode}
+          category={category}
+          occasionTitle={occasionTitle}
+          coupleLabel={coupleLabel}
+          rsvpMessages={rsvpMessages}
+          guestPhotos={guestPhotos}
+          guestGreeting={guestGreeting}
+        />
+      </MotionThemeProvider>
+    );
+  }
+
+  // A template with its own page (see TemplateConfig.pageLayout).
+  if (template.pageLayout === "garden") {
+    return (
+      <MotionThemeProvider templateId={data.templateId}>
+        <GardenInvitation
           data={data}
           slug={slug}
           mode={mode}

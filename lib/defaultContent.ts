@@ -12,6 +12,7 @@ export const DEFAULT_CONTENT_DATES: Record<
   { weddingDate: string; ceremonyTime: string; receptionTime: string }
 > = {
   "traditional-gold": { weddingDate: "2027-01-24", ceremonyTime: "10:00 AM", receptionTime: "7:00 PM" },
+  "botanical-garden": { weddingDate: "2027-02-06", ceremonyTime: "4:30 PM", receptionTime: "7:30 PM" },
   // Shared sample couples (TemplateConfig.seed).
   "hindu-north": { weddingDate: "2027-02-06", ceremonyTime: "8:30 PM", receptionTime: "7:30 PM" },
   muslim: { weddingDate: "2027-01-16", ceremonyTime: "11:00 AM", receptionTime: "7:30 PM" },

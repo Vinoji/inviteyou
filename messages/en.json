@@ -661,6 +661,57 @@
         "daysToGo": "days to go"
       }
     },
+    "garden": {
+      "intro": {
+        "dialogLabel": "Invitation cover",
+        "eyebrow": "You are invited",
+        "open": "Open invitation",
+        "hint": "Step into the garden"
+      },
+      "hero": {
+        "eyebrow": "Together with their families",
+        "lead": "invite you to celebrate their wedding in the garden",
+        "scroll": "Scroll"
+      },
+      "story": {
+        "eyebrow": "Our story",
+        "heading": "How our love grew"
+      },
+      "family": {
+        "eyebrow": "With the blessings of",
+        "heading": "Our Families",
+        "sub": "Two families, one garden",
+        "bride": "The Bride",
+        "groom": "The Groom"
+      },
+      "day": {
+        "eyebrow": "The wedding day",
+        "heading": "Under the open sky",
+        "sub": "Follow the stepping stones through our day",
+        "directions": "Get directions"
+      },
+      "countdown": {
+        "eyebrow": "Growing closer",
+        "heading": "Until we say “I do”",
+        "aria": "Time until the wedding"
+      },
+      "album": {
+        "eyebrow": "Our album",
+        "heading": "Moments in bloom",
+        "sub": "Swipe along the line",
+        "carouselLabel": "Photo album",
+        "photoAlt": "Photo {n}"
+      },
+      "rsvp": {
+        "eyebrow": "Kindly respond",
+        "heading": "Will you join us in the garden?",
+        "sub": "It would mean the world to have you with us."
+      },
+      "thanks": {
+        "eyebrow": "With all our love",
+        "heading": "Thank you"
+      }
+    },
     "intros": {
       "kolam": {
         "dialogLabel": "Invitation cover",
@@ -1415,6 +1466,11 @@
       "tagline": "Kolam, brass lamps & temple bells",
       "description": "A kolam draws itself on granite and the temple bell rings open your invitation — temple gold, jasmine and lamp light throughout."
     },
+    "botanical-garden": {
+      "name": "Garden Glasshouse",
+      "tagline": "Ivy, ferns & morning light",
+      "description": "A white glasshouse door swings open onto a morning garden — butterflies, hanging wooden signs, polaroids pegged to a string line and fireflies at dusk."
+    },
     "minimal-modern": {
       "name": "Minimal Modern",
       "tagline": "Clean lines, editorial calm",
@@ -1825,6 +1881,88 @@
           "description": "Bronze galleries with some of the finest Chola-era sculpture anywhere.",
           "distance": "5 km from venue",
           "scene": "palace"
+        }
+      ]
+    },
+    "botanical-garden": {
+      "brideName": "Meera",
+      "groomName": "Karthik",
+      "ceremonyVenueName": "The Fern House Garden Estate",
+      "ceremonyVenueAddress": "Kanakapura Road, Bengaluru",
+      "receptionVenueName": "The Fern House Lawns",
+      "receptionVenueAddress": "Kanakapura Road, Bengaluru",
+      "groomParents": "Mr. & Mrs. Ramesh Iyer",
+      "brideParents": "Mr. & Mrs. Suresh Rao",
+      "story": "Meera and Karthik met at a Sunday plant swap in Lalbagh — she left with his fern, he left with her number. What began as notes about watering schedules grew into weekend walks, a balcony full of pots and a very patient money plant. Now, with the blessings of both families, they would love you beside them as they say their vows under the open sky, among the trees that brought them together.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Garden festive — light fabrics and pastels are perfect. The ceremony is on the lawn, so comfortable footwear is a good idea."
+        },
+        {
+          "question": "Is the venue outdoors?",
+          "answer": "The ceremony is in the open garden at sunset, and the reception moves to the covered lawns, so you'll be comfortable whatever the weather."
+        }
+      ],
+      "travel": {
+        "city": "Bengaluru",
+        "cityCode": "SBC",
+        "airports": [
+          {
+            "code": "BLR",
+            "name": "Bengaluru (Kempegowda)",
+            "distance": "55 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "12007",
+                "name": "Mysuru Shatabdi",
+                "fromStation": "Chennai Central",
+                "departs": "6:00 AM",
+                "toStation": "KSR Bengaluru",
+                "arrives": "11:00 AM",
+                "frequency": "Daily except Wednesday"
+              }
+            ]
+          },
+          {
+            "from": "Coimbatore",
+            "trains": [
+              {
+                "number": "12678",
+                "name": "Bengaluru Intercity",
+                "fromStation": "Coimbatore Junction",
+                "departs": "8:30 AM",
+                "toStation": "KSR Bengaluru",
+                "arrives": "3:00 PM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Lalbagh Botanical Garden",
+          "description": "Where the couple first met — a 240-acre garden with a Victorian glasshouse and centuries-old trees.",
+          "distance": "22 km from venue",
+          "scene": "nature"
+        },
+        {
+          "title": "Bangalore Palace",
+          "description": "A Tudor-style palace with turrets and wood carvings, set in wide palace grounds.",
+          "distance": "30 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Nandi Hills",
+          "description": "A hilltop above the clouds — a favourite sunrise drive from the city.",
+          "distance": "85 km from venue",
+          "scene": "nature"
         }
       ]
     },

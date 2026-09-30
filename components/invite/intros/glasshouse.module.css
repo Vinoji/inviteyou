@@ -1,0 +1,367 @@
+/* Glasshouse intro (botanical-garden). Fills IntroHost's slot. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  color: #2f4a2c;
+  /* Morning sky over a lawn. */
+  background:
+    linear-gradient(180deg, #dcecf2 0%, #eef5ec 46%, #f7f3e6 62%, #b9d39a 62.2%, #9cc07c 78%, #86ae67 100%);
+  transition: opacity 0.5s ease 2.05s;
+}
+.opening {
+  opacity: 0;
+}
+
+/* ---------- sky ---------- */
+.sky {
+  position: absolute;
+  inset: 0 0 40% 0;
+  pointer-events: none;
+}
+.cloud {
+  position: absolute;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  filter: blur(1px);
+  animation: drift 26s linear infinite;
+}
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  background: inherit;
+}
+.cloud::before {
+  width: 40%;
+  height: 170%;
+  left: 18%;
+  bottom: 20%;
+}
+.cloud::after {
+  width: 30%;
+  height: 130%;
+  left: 50%;
+  bottom: 30%;
+}
+.c1 {
+  width: 120px;
+  top: 16%;
+  left: -30%;
+}
+.c2 {
+  width: 84px;
+  top: 30%;
+  left: -20%;
+  opacity: 0.75;
+  animation-duration: 34s;
+  animation-delay: -14s;
+}
+@keyframes drift {
+  to {
+    transform: translateX(160cqw);
+  }
+}
+
+/* ---------- heading ---------- */
+.heading {
+  position: absolute;
+  top: 7cqh;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 0 20px;
+  transition:
+    opacity 0.5s ease,
+    transform 0.6s ease;
+}
+.opening .heading {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+.eyebrow {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #6c7f57;
+}
+.names {
+  margin: 8px 0 0;
+  font-size: calc(min(9cqw, 40px) * var(--name-fit, 1));
+  font-weight: 500;
+  line-height: 1.15;
+  color: #2f4a2c;
+}
+.amp {
+  font-style: italic;
+  color: #b0885a;
+}
+.date {
+  margin: 8px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  color: #6c7f57;
+}
+
+/* ---------- the glasshouse ---------- */
+.stage {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 60%;
+  transition:
+    transform 1.6s cubic-bezier(0.55, 0, 0.3, 1) 0.75s,
+    filter 1.6s ease 0.75s;
+}
+.opening .stage {
+  transform: scale(3.1);
+  filter: blur(2px);
+}
+.house {
+  position: absolute;
+  left: 50%;
+  bottom: 22cqh;
+  width: min(62cqw, 300px, 36cqh);
+  aspect-ratio: 0.68;
+  transform: translateX(-50%);
+}
+/* White-painted frame around the doorway. */
+.gable {
+  position: absolute;
+  inset: 4% 4% 0 4%;
+  border-radius: 50% 50% 0 0 / 28% 28% 0 0;
+  background: linear-gradient(180deg, #ffffff, #f2efe6);
+  box-shadow:
+    0 12px 30px rgba(47, 74, 44, 0.18),
+    inset 0 0 0 1px rgba(47, 74, 44, 0.08);
+}
+.doorway {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  top: 8%;
+  bottom: 0;
+  /* Semicircular top: width/height of this box is 0.591. */
+  border-radius: 50% 50% 0 0 / 29.6% 29.6% 0 0;
+  overflow: hidden;
+  perspective: 900px;
+  box-shadow: inset 0 0 0 3px #fbfaf5;
+}
+/* The garden seen through the glass. */
+.beyond {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, #fdf6d8 0%, #e8f2d9 55%, #a9cd8a 56%, #7fae62 100%);
+}
+.sun {
+  position: absolute;
+  left: 50%;
+  top: 34%;
+  width: 70%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 244, 196, 0.95), rgba(255, 244, 196, 0) 70%);
+  transition: transform 1.4s ease 0.4s;
+}
+.opening .sun {
+  transform: translate(-50%, -50%) scale(1.8);
+}
+.hedgeFar,
+.hedgeNear {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  border-radius: 50% 50% 0 0;
+}
+.hedgeFar {
+  top: 48%;
+  height: 20%;
+  background: #8fbd72;
+}
+.hedgeNear {
+  top: 58%;
+  height: 50%;
+  background: #6c9f52;
+}
+
+/* ---------- door leaves ---------- */
+.leaf {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 4%;
+  padding: 8% 7% 6%;
+  background: rgba(251, 250, 245, 0.35);
+  box-shadow: inset 0 0 0 3px #fbfaf5;
+  transition: transform 1.25s cubic-bezier(0.5, 0, 0.2, 1) 0.1s;
+}
+.leafL {
+  left: 0;
+  transform-origin: 0 50%;
+}
+.leafR {
+  right: 0;
+  transform-origin: 100% 50%;
+}
+.opening .leafL {
+  transform: rotateY(100deg);
+}
+.opening .leafR {
+  transform: rotateY(-100deg);
+}
+.panes {
+  flex: 1 1 64%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+}
+.pane {
+  border-radius: 2px;
+  background: linear-gradient(155deg, rgba(234, 247, 242, 0.62), rgba(180, 214, 196, 0.32) 60%, rgba(255, 255, 255, 0.5));
+  box-shadow: inset 0 0 0 1.5px #fbfaf5;
+  backdrop-filter: blur(1.5px);
+}
+.kick {
+  flex: 0 0 24%;
+  border-radius: 2px;
+  background: #f4f1e7;
+  box-shadow:
+    inset 0 0 0 3px #fbfaf5,
+    inset 0 0 0 5px rgba(47, 74, 44, 0.08);
+}
+.handle {
+  position: absolute;
+  top: 58%;
+  width: 4px;
+  height: 11%;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #a47b3d, #e8c77e, #a47b3d);
+}
+.leafL .handle {
+  right: 8%;
+}
+.leafR .handle {
+  left: 8%;
+}
+
+/* Ivy over the frame: the SVG's arch (184×311 units inside a 212×327
+ * viewBox) lands exactly on .doorway (left 10%, width 80%, top 8%,
+ * height 92% of the house). */
+.ivy {
+  position: absolute;
+  left: 3.92%;
+  width: 92.16%;
+  top: 4.45%;
+  height: 96.7%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* ---------- ground ---------- */
+.path {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22.2cqh;
+  background: linear-gradient(180deg, #efe4c9, #e2d2ad);
+  clip-path: polygon(40% 0, 60% 0, 86% 100%, 14% 100%);
+  opacity: 0.95;
+}
+.potWrap {
+  position: absolute;
+  bottom: 15cqh;
+  width: min(30cqw, 150px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.potL {
+  left: max(2cqw, calc(50% - min(62cqw, 300px, 36cqh) / 2 - min(30cqw, 150px) + 12px));
+}
+.potR {
+  right: max(2cqw, calc(50% - min(62cqw, 300px, 36cqh) / 2 - min(30cqw, 150px) + 12px));
+}
+.fern {
+  width: 100%;
+  margin-bottom: -8%;
+  transform-origin: 50% 100%;
+  animation: sway 5s ease-in-out infinite;
+}
+.potR .fern {
+  animation-delay: -2.5s;
+}
+.pot {
+  width: 58%;
+}
+@keyframes sway {
+  50% {
+    rotate: 2.5deg;
+  }
+}
+
+/* ---------- call to action ---------- */
+.cta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: opacity 0.4s ease;
+}
+.opening .cta {
+  opacity: 0;
+}
+.openBtn {
+  border: 0;
+  cursor: pointer;
+  padding: 13px 30px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #2f4a2c;
+  background: linear-gradient(135deg, #ffffff, #f3f7ee);
+  box-shadow:
+    0 10px 26px rgba(47, 74, 44, 0.28),
+    inset 0 0 0 1px rgba(47, 74, 44, 0.12);
+  animation: glow 2.6s ease-in-out infinite;
+}
+.openBtn:focus-visible {
+  outline: 2px solid #2f4a2c;
+  outline-offset: 4px;
+}
+@keyframes glow {
+  50% {
+    box-shadow:
+      0 10px 34px rgba(246, 196, 83, 0.55),
+      inset 0 0 0 1px rgba(47, 74, 44, 0.12);
+  }
+}
+.hint {
+  margin: 0;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(35, 58, 31, 0.8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloud,
+  .fern,
+  .openBtn {
+    animation: none;
+  }
+}
