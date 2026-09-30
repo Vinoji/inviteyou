@@ -18,8 +18,8 @@ import {
   SectionHeading,
 } from "@/components/landing/Sections";
 
-/** Openings the hero phone cycles through — one per style family. */
-const FEATURED = ["traditional-gold", "silk-curtain", "engagement-ring", "lantern-night", "baby-moon"];
+/** Openings the hero phone cycles through — one per tradition and style. */
+const FEATURED = ["temple-gopuram", "nikah-emerald", "church-stained-glass", "mandap-marigold", "velvet-gold", "engagement-ring"];
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;

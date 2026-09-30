@@ -66,7 +66,7 @@ export default function Hero({
   const format = useFormatter();
   const font = getFontPairing(fontPairing);
   const theme = getThemeClasses(templateId);
-  const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories);
+  const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories, templateId);
   const variant = particleVariant(templateId);
   const reduceMotion = useSafeReducedMotion();
   const heroRef = useRef<HTMLElement>(null);

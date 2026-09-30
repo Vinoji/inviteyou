@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "./types";
@@ -69,8 +69,8 @@ function clearedShare(canvas: HTMLCanvasElement) {
  * off, confetti bursts and the card lifts away. A "Reveal" button does the
  * same for keyboard users and with reduced motion.
  */
-export default function ScratchIntro({ names, dateLabel, fonts, onOpen, onDone, burst }: IntroProps) {
-  const t = useTranslations("invite.intros.scratch");
+export default function ScratchIntro({ templateId, names, dateLabel, fonts, onOpen, onDone, burst }: IntroProps) {
+  const t = useIntroText("invite.intros.scratch", templateId);
   const reduceMotion = useSafeReducedMotion();
   const [revealed, setRevealed] = useState(false);
   const [scratching, setScratching] = useState(false);

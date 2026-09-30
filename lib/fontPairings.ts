@@ -46,6 +46,13 @@ export const FONT_PAIRINGS: FontPairing[] = [
     bodyVar: `var(--font-ebgaramond), ${FALLBACK_SERIF}`,
   },
   {
+    // High-fashion Didone headlines over a clean geometric body.
+    id: "luxe-didone",
+    name: "Luxe Didone",
+    headingVar: `var(--font-bodoni), ${FALLBACK_SERIF}`,
+    bodyVar: `var(--font-jost), ${FALLBACK_SANS}`,
+  },
+  {
     // Named in Tamil script itself so the picker shows off the actual
     // glyphs, not a Latin fallback rendering of an English label.
     id: "tamil-calligraphy",

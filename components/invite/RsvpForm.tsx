@@ -66,7 +66,9 @@ export default function RsvpForm({
   const c = variant === "royal" ? ROYAL_CLASSES : DEFAULT_CLASSES;
   const t = useTranslations("invite.rsvp");
   const tCategories = useTranslations("categories");
-  const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories);
+  const category = getCategoryMeta(getTemplateConfig(templateId).category, tCategories, templateId);
+  // One-person occasions (birthday, housewarming…) have a host, not a couple.
+  const hostOnly = !category.personBLabel;
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -212,7 +214,7 @@ export default function RsvpForm({
               placeholder="98765 43210"
               disabled={mode === "preview"}
             />
-            <p className={`mt-1 ${c.note} text-left`}>{t("phoneHint")}</p>
+            <p className={`mt-1 ${c.note} text-left`}>{t(hostOnly ? "phoneHintHost" : "phoneHint")}</p>
           </div>
           {!category.singlePerson && (
             <div>
@@ -241,7 +243,7 @@ export default function RsvpForm({
               onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
               rows={3}
               className={c.input}
-              placeholder={t("messagePlaceholder")}
+              placeholder={t(hostOnly ? "messagePlaceholderHost" : "messagePlaceholder")}
               disabled={mode === "preview"}
             />
           </div>

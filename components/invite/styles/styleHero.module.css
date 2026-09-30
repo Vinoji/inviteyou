@@ -1,0 +1,583 @@
+/*
+ * Hero of the layout-style templates (StyleHero). Shared structure first,
+ * then one block per style: its backdrop pattern, frame and type
+ * treatment. Colours come from the template palette (--rp-*), set on the
+ * invitation root by RoyalInvitation. Patterns are CSS gradients or small
+ * inline SVG tiles — drawn once, no images to load.
+ */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 28px 14px 30px;
+  background: var(--rp-deep);
+  color: var(--rp-text);
+}
+.frame {
+  position: relative;
+  max-width: 440px;
+  margin: 0 auto;
+  text-align: center;
+}
+.top svg,
+.bottom svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.content {
+  position: relative;
+  padding: 22px 20px 18px;
+  background: var(--rp-ivory);
+}
+.invocation {
+  margin-bottom: 4px;
+}
+.invocation p:first-child {
+  white-space: pre-line;
+  font-family: var(--rp-body);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: var(--rp-gold-deep);
+  line-height: 1.5;
+}
+.arabic {
+  font-family: var(--font-amiri), "Noto Naskh Arabic", "Geeza Pro", serif !important;
+  font-size: 26px !important;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+.invocationNote {
+  margin-top: 2px;
+  font-family: var(--rp-body);
+  font-style: italic;
+  font-size: 11.5px;
+  color: var(--rp-muted);
+}
+.invocationNote:empty {
+  display: none;
+}
+.lead {
+  margin-top: 14px;
+  font-family: var(--rp-body);
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--rp-muted);
+  white-space: pre-line;
+}
+.names {
+  margin-top: 12px;
+  color: var(--rp-accent);
+}
+.name {
+  display: block;
+  font-family: var(--rp-heading);
+  font-size: calc(48px * var(--name-fit, 1));
+  line-height: 1.06;
+  overflow-wrap: anywhere;
+}
+.weds {
+  display: block;
+  margin: 6px 0;
+  font-family: var(--rp-heading);
+  font-size: 24px;
+  color: var(--rp-gold-deep);
+}
+.countdown {
+  margin: 16px 0 4px;
+}
+.when {
+  margin-top: 10px;
+  font-family: var(--rp-body);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--rp-gold-deep);
+}
+.scrollCue {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 20px;
+  color: var(--rp-gold-light);
+  animation: cue 1.8s ease-in-out infinite;
+}
+@keyframes cue {
+  50% {
+    transform: translateY(6px);
+  }
+}
+:global(html[data-motion="reduced"]) .scrollCue {
+  animation: none;
+}
+
+/* ---------- Temple: maroon sanctum, kolam dots, gold-railed card ---------- */
+.hero[data-style="temple"] {
+  background:
+    radial-gradient(circle, rgba(235, 196, 106, 0.22) 1.4px, transparent 2px) 0 0 / 22px 22px,
+    radial-gradient(ellipse at 50% 30%, #5a1020, var(--rp-deep) 70%);
+}
+.hero[data-style="temple"] .content {
+  border: 3px solid var(--rp-gold);
+  border-top: 0;
+  border-radius: 0 0 20px 20px;
+  box-shadow: inset 0 0 0 6px var(--rp-ivory), inset 0 0 0 7px var(--rp-gold-light);
+}
+
+/* ---------- Mandap: rani pink, marigold dots, festive card ---------- */
+.hero[data-style="mandap"] {
+  background:
+    radial-gradient(circle, rgba(255, 195, 0, 0.3) 2px, transparent 2.6px) 0 0 / 26px 26px,
+    radial-gradient(circle, rgba(255, 122, 0, 0.22) 2px, transparent 2.6px) 13px 13px / 26px 26px,
+    linear-gradient(180deg, var(--rp-mid), var(--rp-deep));
+}
+.hero[data-style="mandap"] .content {
+  margin: 0 12px;
+  border: 2px solid var(--rp-gold);
+  border-top: 0;
+  border-radius: 0 0 30px 30px;
+}
+.hero[data-style="mandap"] .weds {
+  font-style: italic;
+}
+
+/* ---------- Palace: indigo with gold miniature flowers ---------- */
+.hero[data-style="palace"] {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cg fill='%23F2CF73' fill-opacity='.22'%3E%3Ccircle cx='20' cy='14' r='3'/%3E%3Ccircle cx='20' cy='26' r='3'/%3E%3Ccircle cx='14' cy='20' r='3'/%3E%3Ccircle cx='26' cy='20' r='3'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='2' fill='%23E4572E' fill-opacity='.35'/%3E%3C/svg%3E") 0 0 / 40px 40px,
+    radial-gradient(ellipse at 50% 20%, var(--rp-mid), var(--rp-deep) 75%);
+}
+.hero[data-style="palace"] .content {
+  margin: 0 20px;
+  border-left: 7px solid var(--rp-gold);
+  border-right: 7px solid var(--rp-gold);
+  background:
+    linear-gradient(var(--rp-ivory), var(--rp-ivory)) padding-box,
+    var(--rp-gold);
+}
+.hero[data-style="palace"] .bottom {
+  margin-top: -6px;
+}
+
+/* ---------- Lotus: sage water with ripples, no card ---------- */
+.hero[data-style="lotus"] {
+  background:
+    repeating-radial-gradient(circle at 50% 110%, transparent 0 22px, rgba(15, 118, 110, 0.07) 23px 24px),
+    linear-gradient(180deg, #f6f1ea 0%, var(--rp-ivory) 55%, #e4efe9 100%);
+}
+.hero[data-style="lotus"] .content {
+  background: transparent;
+}
+.hero[data-style="lotus"] .scrollCue {
+  color: var(--rp-gold-deep);
+}
+
+/* ---------- Nikah: emerald with eight-point star lattice ---------- */
+.hero[data-style="nikah"] {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='none' stroke='%23E9CF8A' stroke-opacity='.2' stroke-width='1.2'%3E%3Crect x='14' y='14' width='28' height='28'/%3E%3Crect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/%3E%3Ccircle cx='28' cy='28' r='5'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 56px 56px,
+    radial-gradient(ellipse at 50% 25%, var(--rp-mid), var(--rp-deep) 75%);
+}
+.hero[data-style="nikah"] .content {
+  margin: 0 18px;
+  border: 1.5px solid var(--rp-gold);
+  border-top: 0;
+  outline: 5px double var(--rp-gold);
+  outline-offset: 4px;
+  border-radius: 0 0 6px 6px;
+}
+.hero[data-style="nikah"] .bottom {
+  margin-top: 10px;
+}
+
+/* ---------- Moonlit: night sky, glass card, light text ---------- */
+.hero[data-style="moonlit"] {
+  background:
+    radial-gradient(circle at 12% 18%, #fff 0 1px, transparent 1.5px) 0 0 / 130px 130px,
+    radial-gradient(circle at 68% 42%, #fff 0 0.8px, transparent 1.3px) 0 0 / 90px 90px,
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.7) 0 0.8px, transparent 1.3px) 0 0 / 70px 70px,
+    linear-gradient(180deg, #050b1c 0%, var(--rp-deep) 50%, var(--rp-mid) 100%);
+  color: #f3efe2;
+}
+.hero[data-style="moonlit"] .content {
+  margin: 0 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid color-mix(in srgb, var(--rp-gold-light) 55%, transparent);
+  border-radius: 180px 180px 14px 14px;
+  padding-top: 36px;
+}
+.hero[data-style="moonlit"] .lead,
+.hero[data-style="moonlit"] .invocationNote {
+  color: rgba(243, 239, 226, 0.78);
+}
+.hero[data-style="moonlit"] .invocation p:first-child,
+.hero[data-style="moonlit"] .weds,
+.hero[data-style="moonlit"] .when {
+  color: var(--rp-gold-light);
+}
+
+/* ---------- Church: ivory stone, leaded-glass lattice ---------- */
+.hero[data-style="church"] {
+  background:
+    repeating-linear-gradient(45deg, rgba(184, 145, 58, 0.09) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(-45deg, rgba(184, 145, 58, 0.09) 0 1px, transparent 1px 28px),
+    linear-gradient(180deg, #f3eee4, var(--rp-ivory));
+}
+.hero[data-style="church"] .content {
+  margin: 0 22px;
+  background: #fff;
+  border: 1.5px solid var(--rp-gold);
+  border-top: 0;
+  box-shadow: 0 18px 40px -24px rgba(42, 24, 48, 0.35);
+}
+.hero[data-style="church"] .scrollCue {
+  color: var(--rp-gold);
+}
+
+/* ---------- Garden: fresh sage and white, airy, script names ---------- */
+.hero[data-style="garden"] {
+  background:
+    radial-gradient(ellipse at 10% 0%, rgba(139, 168, 136, 0.28), transparent 45%),
+    radial-gradient(ellipse at 90% 100%, rgba(139, 168, 136, 0.25), transparent 45%),
+    var(--rp-ivory);
+}
+.hero[data-style="garden"] .content {
+  background: transparent;
+  margin: 0 18px;
+  border-top: 1px solid var(--rp-gold-light);
+  border-bottom: 1px solid var(--rp-gold-light);
+}
+.hero[data-style="garden"] .scrollCue {
+  color: var(--rp-gold-deep);
+}
+
+/* ---------- Editorial: magazine cover — big type, rules, no ornament ---------- */
+.hero[data-style="editorial"] {
+  background: var(--rp-ivory);
+  padding-top: 36px;
+}
+.hero[data-style="editorial"] .content {
+  background: transparent;
+  padding: 18px 8px;
+}
+.hero[data-style="editorial"] .lead {
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--rp-text);
+}
+.hero[data-style="editorial"] .name {
+  font-size: calc(66px * var(--name-fit, 1));
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: var(--rp-text);
+}
+.hero[data-style="editorial"] .weds {
+  font-style: italic;
+  font-size: 30px;
+  color: var(--rp-gold);
+  text-transform: lowercase;
+}
+.hero[data-style="editorial"] .when {
+  font-size: 12px;
+  letter-spacing: 0.34em;
+  color: var(--rp-text);
+}
+.hero[data-style="editorial"] .scrollCue {
+  color: var(--rp-text);
+}
+
+/* ---------- Watercolour: painted paper, no card ---------- */
+.hero[data-style="watercolor"] {
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(242, 184, 160, 0.45), transparent 40%),
+    radial-gradient(ellipse at 100% 8%, rgba(185, 207, 175, 0.5), transparent 42%),
+    radial-gradient(ellipse at 50% 100%, rgba(249, 217, 201, 0.55), transparent 50%),
+    var(--rp-ivory);
+}
+.hero[data-style="watercolor"] .content {
+  background: transparent;
+}
+.hero[data-style="watercolor"] .scrollCue {
+  color: var(--rp-gold-deep);
+}
+
+/* ---------- Boho arch: the whole hero inside one tall arch ---------- */
+.hero[data-style="arch"] {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(235, 196, 154, 0.55), transparent 55%),
+    linear-gradient(180deg, #f6e7d5, var(--rp-ivory2));
+}
+.hero[data-style="arch"] .frame {
+  padding-top: 26px;
+  border: 2px solid var(--rp-gold);
+  border-radius: 220px 220px 14px 14px;
+  background: var(--rp-ivory);
+  overflow: hidden;
+}
+.hero[data-style="arch"] .content {
+  background: transparent;
+}
+.hero[data-style="arch"] .scrollCue {
+  color: var(--rp-gold-deep);
+}
+
+/* ---------- Velvet: wine velvet, damask, gold double frame ---------- */
+.hero[data-style="velvet"] {
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 6c8 10 8 18 0 24c-8-6-8-14 0-24zm0 48c8-10 8-18 0-24c-8 6-8 14 0 24zM6 30c10-8 18-8 24 0c-6 8-14 8-24 0zm48 0c-10-8-18-8-24 0c6 8 14 8 24 0z' fill='%23D4AF37' fill-opacity='.08'/%3E%3C/svg%3E") 0 0 / 60px 60px,
+    radial-gradient(ellipse at 50% 30%, #5a1224, var(--rp-deep) 70%);
+  color: #f6ead0;
+}
+.hero[data-style="velvet"] .content {
+  margin: 0 14px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1.5px solid var(--rp-gold);
+  outline: 1px solid var(--rp-gold-light);
+  outline-offset: 5px;
+}
+.hero[data-style="velvet"] .lead,
+.hero[data-style="velvet"] .invocationNote {
+  color: rgba(246, 234, 208, 0.8);
+}
+.hero[data-style="velvet"] .weds,
+.hero[data-style="velvet"] .when {
+  color: var(--rp-gold-light);
+}
+
+/* ================= Looks for the other occasions ================= */
+
+/* Sparkle: champagne, glints */
+.hero[data-style="sparkle"] {
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.7) 0 1px, transparent 1.6px) 0 0 / 60px 60px,
+    radial-gradient(ellipse at 50% 20%, var(--rp-ivory), var(--rp-ivory2) 70%, var(--rp-gold-light));
+}
+.hero[data-style="sparkle"] .content {
+  margin: 0 18px;
+  border: 1px solid var(--rp-gold);
+  border-radius: 14px;
+  box-shadow: 0 20px 50px -30px rgba(80, 60, 20, 0.5);
+}
+
+/* Thamboolam: banana-leaf green, turmeric */
+.hero[data-style="thamboolam"] {
+  background:
+    repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.06) 0 14px, transparent 14px 30px),
+    linear-gradient(180deg, var(--rp-mid), var(--rp-deep));
+}
+.hero[data-style="thamboolam"] .content {
+  margin: 0 16px;
+  border: 3px solid var(--rp-gold);
+  border-radius: 18px;
+  box-shadow: inset 0 0 0 5px var(--rp-ivory), inset 0 0 0 6px var(--rp-gold-light);
+}
+
+/* Vintage: sepia paper, polaroid card with tape */
+.hero[data-style="vintage"] {
+  background:
+    radial-gradient(circle at 30% 40%, rgba(120, 80, 40, 0.08) 0 1px, transparent 1.6px) 0 0 / 24px 24px,
+    linear-gradient(180deg, #efe2cc, #e4d2b4);
+}
+.hero[data-style="vintage"] .content {
+  margin: 14px 26px 6px;
+  background: #fffdf8;
+  padding-bottom: 40px;
+  box-shadow: 0 16px 34px -18px rgba(60, 40, 20, 0.5);
+  transform: rotate(-1.2deg);
+}
+.hero[data-style="vintage"] .content::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 96px;
+  height: 24px;
+  margin-left: -48px;
+  background: color-mix(in srgb, var(--rp-gold-light) 70%, transparent);
+  transform: rotate(2deg);
+}
+
+/* Roses: deep wine, rose dots */
+.hero[data-style="roses"] {
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--rp-gold-light) 22%, transparent) 2px, transparent 2.6px) 0 0 / 30px 30px,
+    radial-gradient(ellipse at 50% 30%, var(--rp-mid), var(--rp-deep) 75%);
+}
+.hero[data-style="roses"] .content {
+  margin: 0 18px;
+  border-radius: 24px;
+  border: 1.5px solid var(--rp-gold-light);
+}
+
+/* Letter: cream paper, airmail border */
+.hero[data-style="letter"] {
+  background: linear-gradient(180deg, var(--rp-ivory2), var(--rp-ivory));
+}
+.hero[data-style="letter"] .content {
+  margin: 0 16px;
+  border: 8px solid transparent;
+  border-image: repeating-linear-gradient(45deg, #c8102e 0 12px, #fff 12px 20px, #1f4e8c 20px 32px, #fff 32px 40px) 8;
+}
+
+/* Neon: night, glowing text */
+.hero[data-style="neon"] {
+  background:
+    radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--rp-mid) 90%, transparent), var(--rp-deep) 70%);
+  color: #fdf2ff;
+}
+.hero[data-style="neon"] .content {
+  background: transparent;
+}
+.hero[data-style="neon"] .name {
+  color: #fff;
+  text-shadow: 0 0 6px var(--rp-accent), 0 0 18px var(--rp-accent), 0 0 34px var(--rp-accent);
+}
+.hero[data-style="neon"] .lead,
+.hero[data-style="neon"] .invocationNote {
+  color: rgba(253, 242, 255, 0.78);
+}
+.hero[data-style="neon"] .weds,
+.hero[data-style="neon"] .when {
+  color: var(--rp-gold-light);
+}
+
+/* Clouds: pastel sky */
+.hero[data-style="clouds"] {
+  background: linear-gradient(180deg, var(--rp-ivory2) 0%, var(--rp-ivory) 60%, #fff 100%);
+}
+.hero[data-style="clouds"] .content {
+  background: transparent;
+}
+.hero[data-style="clouds"] .scrollCue {
+  color: var(--rp-gold-deep);
+}
+
+/* Balloons: confetti dots, white card */
+.hero[data-style="balloons"] {
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--rp-accent) 30%, transparent) 2px, transparent 2.6px) 0 0 / 34px 34px,
+    radial-gradient(circle, color-mix(in srgb, var(--rp-gold) 30%, transparent) 2px, transparent 2.6px) 17px 17px / 34px 34px,
+    var(--rp-ivory);
+}
+.hero[data-style="balloons"] .content {
+  margin: 0 18px;
+  background: #fff;
+  border-radius: 26px;
+  box-shadow: 0 18px 40px -26px rgba(0, 0, 0, 0.35);
+}
+.hero[data-style="balloons"] .scrollCue {
+  color: var(--rp-gold-deep);
+}
+
+/* Kids: bright, polka dots, chunky card */
+.hero[data-style="kids"] {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.55) 5px, transparent 5.5px) 0 0 / 38px 38px,
+    var(--rp-gold-light);
+}
+.hero[data-style="kids"] .content {
+  margin: 0 16px;
+  background: #fff;
+  border: 5px solid var(--rp-accent);
+  border-radius: 30px;
+}
+.hero[data-style="kids"] .name {
+  font-weight: 700;
+}
+
+/* Cake: pastel with sprinkles */
+.hero[data-style="cake"] {
+  background:
+    linear-gradient(60deg, transparent 47%, color-mix(in srgb, var(--rp-gold) 40%, transparent) 47% 53%, transparent 53%) 0 0 / 26px 26px,
+    var(--rp-ivory2);
+}
+.hero[data-style="cake"] .content {
+  margin: 0 18px;
+  background: #fff;
+  border-radius: 24px;
+}
+
+/* Keys: architect's line grid, outlined */
+.hero[data-style="keys"] {
+  background:
+    linear-gradient(color-mix(in srgb, var(--rp-text) 6%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(90deg, color-mix(in srgb, var(--rp-text) 6%, transparent) 1px, transparent 1px) 0 0 / 24px 24px,
+    var(--rp-ivory);
+}
+.hero[data-style="keys"] .content {
+  margin: 0 20px;
+  background: transparent;
+  border: 1.5px solid var(--rp-text);
+}
+.hero[data-style="keys"] .scrollCue {
+  color: var(--rp-text);
+}
+
+/* Door: festive terracotta with kolam dots */
+.hero[data-style="door"] {
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--rp-gold-light) 25%, transparent) 1.5px, transparent 2px) 0 0 / 20px 20px,
+    linear-gradient(180deg, var(--rp-mid), var(--rp-deep));
+}
+.hero[data-style="door"] .content {
+  margin: 0 18px;
+  border: 2px solid var(--rp-gold);
+  border-top: 0;
+  border-radius: 0 0 22px 22px;
+}
+
+/* Bangles: rani and green, rounded */
+.hero[data-style="bangles"] {
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--rp-gold-light) 30%, transparent) 3px, transparent 3.5px) 0 0 / 30px 30px,
+    linear-gradient(160deg, var(--rp-mid), var(--rp-deep));
+}
+.hero[data-style="bangles"] .content {
+  margin: 0 18px;
+  border: 2px solid var(--rp-gold);
+  border-radius: 999px 999px 24px 24px;
+  padding-top: 40px;
+}
+
+/* Teddy: nursery checks, soft card */
+.hero[data-style="teddy"] {
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.5) 50%, transparent 50%) 0 0 / 40px 40px,
+    linear-gradient(rgba(255, 255, 255, 0.5) 50%, transparent 50%) 0 0 / 40px 40px,
+    var(--rp-ivory2);
+}
+.hero[data-style="teddy"] .content {
+  margin: 0 18px;
+  background: #fff;
+  border-radius: 28px;
+  box-shadow: 0 14px 34px -22px rgba(0, 0, 0, 0.3);
+}
+
+/* Tech: dark grid, glass card */
+.hero[data-style="tech"] {
+  background:
+    linear-gradient(color-mix(in srgb, var(--rp-accent) 14%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(90deg, color-mix(in srgb, var(--rp-accent) 14%, transparent) 1px, transparent 1px) 0 0 / 32px 32px,
+    radial-gradient(ellipse at 50% 20%, var(--rp-mid), var(--rp-deep) 70%);
+  color: #eef2ff;
+}
+.hero[data-style="tech"] .content {
+  margin: 0 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid color-mix(in srgb, var(--rp-accent) 55%, transparent);
+  border-radius: 16px;
+}
+.hero[data-style="tech"] .lead,
+.hero[data-style="tech"] .invocationNote {
+  color: rgba(238, 242, 255, 0.75);
+}
+.hero[data-style="tech"] .name {
+  color: #fff;
+}
+.hero[data-style="tech"] .when {
+  color: var(--rp-gold-light);
+}

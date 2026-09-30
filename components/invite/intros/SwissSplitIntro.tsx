@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import type { IntroProps } from "./types";
 import s from "./split.module.css";
@@ -20,6 +20,7 @@ const EXPO = [0.77, 0, 0.175, 1] as const;
  * Reduced motion: no split — the intro steps aside immediately.
  */
 export default function SwissSplitIntro({
+  templateId,
   names,
   dateLabel,
   fonts,
@@ -28,7 +29,7 @@ export default function SwissSplitIntro({
   onDone,
   burst,
 }: IntroProps) {
-  const t = useTranslations("invite.intros.split");
+  const t = useIntroText("invite.intros.split", templateId);
   const reduceMotion = useSafeReducedMotion();
   const [open, setOpen] = useState(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);

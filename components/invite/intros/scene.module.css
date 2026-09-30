@@ -1,0 +1,186 @@
+/* Layout-style openings (SceneIntro). Fills IntroHost's slot; each scene
+   sets its colours through the --sc-* properties. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  overflow: hidden;
+  background: var(--sc-bg);
+  color: var(--sc-ink);
+}
+
+.behind {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.behind svg {
+  width: 100%;
+  height: 100%;
+}
+
+.center {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: min(2cqh, 14px);
+  padding: 0 34px;
+  text-align: center;
+}
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--sc-accent);
+  max-width: 28ch;
+  line-height: 1.6;
+}
+.names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 100%;
+  font-size: calc(clamp(30px, 10cqw, 54px) * var(--name-fit, 1));
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--sc-ink);
+  text-shadow: var(--sc-halo);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+.amp {
+  margin: 4px 0;
+  font-size: 0.55em;
+  color: var(--sc-accent);
+}
+.date {
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--sc-accent);
+}
+
+/* Two panels over the names: doors (3D swing) or curtains (slide). */
+.doorway {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  perspective: 1400px;
+  pointer-events: none;
+}
+.panel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.5%;
+  backface-visibility: hidden;
+}
+.panel svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.panelLeft {
+  left: 0;
+  transform-origin: 0 50%;
+}
+.panelRight {
+  right: 0;
+  transform-origin: 100% 50%;
+}
+
+.cover {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.top,
+.bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.top {
+  top: 0;
+}
+.bottom {
+  bottom: 0;
+}
+.top svg,
+.bottom svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.actions {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: max(26px, 8cqh);
+  transform: translateX(-50%);
+}
+.openBtn {
+  padding: 12px 26px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--sc-btn);
+  color: var(--sc-btn-ink);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 10px 26px -10px rgba(0, 0, 0, 0.55);
+  animation: nudge 2.4s ease-in-out infinite;
+}
+.openBtn:disabled {
+  cursor: default;
+}
+@keyframes nudge {
+  50% {
+    transform: translateY(-3px);
+  }
+}
+:global(html[data-motion="reduced"]) .openBtn {
+  animation: none;
+}
+
+/* Shared scene pieces. */
+.glow {
+  transition: opacity 1.2s ease;
+}
+/* A light sweep across foil — a moving layer (GPU), not a repainted
+   background-position. */
+.shine {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 60%;
+  background: linear-gradient(105deg, transparent, rgba(255, 244, 214, 0.35), transparent);
+  animation: shine 3.2s ease-in-out infinite;
+}
+@keyframes shine {
+  to {
+    transform: translateX(270%);
+  }
+}
+:global(html[data-motion="reduced"]) .shine::after {
+  animation: none;
+}

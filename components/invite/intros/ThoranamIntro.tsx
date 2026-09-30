@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "./types";
@@ -62,8 +62,8 @@ function MangoLeaf({ i }: { i: number }) {
  * strings aside, kolam dots bloom around the names, jasmine and marigold
  * petals fall. 3s. Reduced motion: strings already parted, "View invitation".
  */
-export default function ThoranamIntro({ names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
-  const t = useTranslations("invite.intros.thoranam");
+export default function ThoranamIntro({ templateId, names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
+  const t = useIntroText("invite.intros.thoranam", templateId);
   const reduceMotion = useSafeReducedMotion();
   useWarmAudio(!preview);
   const [open, setOpen] = useState(false);

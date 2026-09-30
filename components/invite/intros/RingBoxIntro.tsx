@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "./types";
@@ -34,8 +34,8 @@ function twinkle() {
  * rises with a sparkle and the couple's names appear. 2.8s. Reduced
  * motion: the box already open and a "View invitation" button.
  */
-export default function RingBoxIntro({ names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
-  const t = useTranslations("invite.intros.ringbox");
+export default function RingBoxIntro({ templateId, names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
+  const t = useIntroText("invite.intros.ringbox", templateId);
   const reduceMotion = useSafeReducedMotion();
   useWarmAudio(!preview);
   const [open, setOpen] = useState(false);

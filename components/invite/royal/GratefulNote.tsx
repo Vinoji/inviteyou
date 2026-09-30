@@ -133,7 +133,9 @@ export default function GratefulNote({
   if (!story) return null;
 
   const names = [brideName, groomName].filter(Boolean).join(" & ");
-  const initials = resolveMonogram(brideName, groomName, monogram, false);
+  // A one-person note is written to them (a birthday wish), so it isn't signed with their name.
+  const signature = groomName ? names : "";
+  const initials = resolveMonogram(brideName, groomName, monogram, !groomName);
   const monogramText = [initials.a, initials.b].filter(Boolean).join("&");
   const variant = moments?.story;
 
@@ -163,7 +165,7 @@ export default function GratefulNote({
         <div className={s.eyebrow}>{t("eyebrow")}</div>
         <MotionHeading>{t("heading")}</MotionHeading>
         <SplitStory story={story} photo={portrait} />
-        {names && <div className={s.sign}>{t("sign", { names })}</div>}
+        {signature && <div className={s.sign}>{t("sign", { names: signature })}</div>}
       </section>
     );
   }
@@ -197,7 +199,7 @@ export default function GratefulNote({
           <p className={s.msg} lang={scriptLang(story)}>
             {story}
           </p>
-          {names && <div className={s.sign}>{t("sign", { names })}</div>}
+          {signature && <div className={s.sign}>{t("sign", { names: signature })}</div>}
         </div>
       </div>
       <Scallop color={scallopColor} className={s.scallop} />

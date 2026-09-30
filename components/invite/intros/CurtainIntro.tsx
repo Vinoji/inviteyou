@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, type PanInfo } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "./types";
@@ -37,8 +37,8 @@ const EASE = [0.65, 0, 0.25, 1] as const;
  * squeeze, the couple's names rise in the footlights and gold dust falls.
  * 2.8s. Reduced motion: curtains already open and a "View invitation" button.
  */
-export default function CurtainIntro({ names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
-  const t = useTranslations("invite.intros.curtain");
+export default function CurtainIntro({ templateId, names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
+  const t = useIntroText("invite.intros.curtain", templateId);
   const reduceMotion = useSafeReducedMotion();
   useWarmAudio(!preview);
   const [open, setOpen] = useState(false);
