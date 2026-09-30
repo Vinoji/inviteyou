@@ -1844,3 +1844,324 @@
   font-style: normal;
   overflow-wrap: anywhere;
 }
+
+/* ============ LAYOUT STYLES (data-layout, lib/layoutStyles.ts) ============ */
+/* The premium templates restyle every section around their tradition:
+   an emblem above each heading, the hero's pattern carried into the dark
+   sections, their own family-arch shape and card style. Emblems are CSS
+   masks, so they take the palette's gold. Hero: components/invite/styles. */
+.root[data-layout] .head::before,
+.root[data-layout] .families .eyebrow::before,
+.root[data-layout] .grateful .eyebrow::before,
+.root[data-layout] .glass .eyebrow::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto 10px;
+  background: var(--rp-gold);
+  -webkit-mask: var(--ly-emblem) center / contain no-repeat;
+  mask: var(--ly-emblem) center / contain no-repeat;
+}
+.root[data-layout] .grateful .eyebrow::before,
+.root[data-layout] .families .eyebrow::before,
+.root[data-layout] .glass .eyebrow::before {
+  background: var(--rp-gold-light);
+}
+/* Pattern layers carry their own position/size, so these use the
+   background shorthand with the section's colour as the last layer. */
+.root[data-layout] .grateful,
+.root[data-layout] .rsvp {
+  background: var(--ly-pattern-dark, none), var(--rp-deep);
+}
+.root[data-layout] .families {
+  background: var(--ly-pattern-dark, none), var(--rp-mid);
+}
+.root[data-layout] .light {
+  background: var(--ly-pattern-light, none), var(--rp-ivory);
+}
+.root[data-layout] .thanks {
+  background: var(--ly-pattern-dark, none), linear-gradient(var(--rp-mid), var(--rp-deep));
+}
+.root[data-layout] .card {
+  border-color: color-mix(in srgb, var(--rp-gold) 45%, transparent);
+}
+
+/* --- Temple: gopuram spire, kolam dots, stepped crown on the family arch --- */
+.root[data-layout="temple"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 2l4 8h-8zM14 11h12v5H14zM11 17h18v6H11zM8 24h24v7H8zM5 32h30v6H5z'/></svg>");
+  --ly-pattern-dark: radial-gradient(circle, rgba(235, 196, 106, 0.16) 1.4px, transparent 2px) 0 0 / 22px 22px;
+  --ly-pattern-light: radial-gradient(circle, rgba(201, 150, 44, 0.12) 1.2px, transparent 1.8px) 0 0 / 22px 22px;
+}
+.root[data-layout="temple"] .archTop {
+  border-radius: 28px 28px 14px 14px;
+  outline: 1px solid color-mix(in srgb, var(--rp-gold-light) 45%, transparent);
+  outline-offset: 5px;
+}
+
+/* --- Mandap: kalash, marigold dots, festive rounded frames --- */
+.root[data-layout="mandap"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='7' r='4'/><path d='M8 10q6-6 11 2q-6 1-11-2zM32 10q-6-6-11 2q6 1 11-2zM13 13h14l3 6q0 16-10 17q-10-1-10-17z'/></svg>");
+  --ly-pattern-dark: radial-gradient(circle, rgba(255, 195, 0, 0.18) 2px, transparent 2.6px) 0 0 / 26px 26px;
+  --ly-pattern-light: radial-gradient(circle, rgba(255, 122, 0, 0.1) 2px, transparent 2.6px) 0 0 / 26px 26px;
+}
+.root[data-layout="mandap"] .archTop {
+  border-radius: 48px 48px 24px 24px;
+  border-width: 2px;
+  border-style: dashed;
+}
+.root[data-layout="mandap"] .card {
+  border-radius: 24px;
+  border-width: 2px;
+}
+
+/* --- Palace: jharokha arch emblem, miniature flowers, gilded frames --- */
+.root[data-layout="palace"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M6 38V20q0-6 5-6q0-5 5-6q2-6 4-6q2 0 4 6q5 1 5 6q5 0 5 6v18h-4V21q0-3-3-3q-1-4-4-4q-1-5-3-5q-2 0-3 5q-3 0-4 4q-3 0-3 3v17z'/></svg>");
+  --ly-pattern-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><g fill='%23F2CF73' fill-opacity='.14'><circle cx='20' cy='14' r='3'/><circle cx='20' cy='26' r='3'/><circle cx='14' cy='20' r='3'/><circle cx='26' cy='20' r='3'/></g></svg>") 0 0 / 40px 40px;
+  --ly-pattern-light: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><g fill='%231E3A8A' fill-opacity='.06'><circle cx='20' cy='14' r='3'/><circle cx='20' cy='26' r='3'/><circle cx='14' cy='20' r='3'/><circle cx='26' cy='20' r='3'/></g></svg>") 0 0 / 40px 40px;
+}
+.root[data-layout="palace"] .archTop {
+  border-radius: 170px 170px 6px 6px;
+  border-width: 3px;
+  outline: 1px solid color-mix(in srgb, var(--rp-gold-light) 50%, transparent);
+  outline-offset: 5px;
+}
+.root[data-layout="palace"] .card {
+  border-radius: 6px;
+  border-width: 2px;
+  box-shadow: inset 0 0 0 4px #fffdf7, inset 0 0 0 5px color-mix(in srgb, var(--rp-gold) 40%, transparent);
+}
+
+/* --- Lotus: lotus emblem, water ripples, soft pill frames --- */
+.root[data-layout="lotus"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 8q6 10 0 22q-6-12 0-22zM20 30q-10-2-14-12q8 0 14 12zM20 30q10-2 14-12q-8 0-14 12zM6 32h28v2H6z'/></svg>");
+  --ly-pattern-dark: repeating-radial-gradient(circle at 50% 120%, transparent 0 22px, rgba(232, 207, 149, 0.07) 23px 24px);
+  --ly-pattern-light: repeating-radial-gradient(circle at 50% 120%, transparent 0 22px, rgba(15, 118, 110, 0.05) 23px 24px);
+}
+.root[data-layout="lotus"] .archTop {
+  border-radius: 999px 999px 40px 40px;
+}
+.root[data-layout="lotus"] .card {
+  border-radius: 28px;
+}
+
+/* --- Nikah: eight-point star, star lattice, onion arch, double gold --- */
+.root[data-layout="nikah"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M9 9h22v22H9z'/><path d='M20 4.5 35.5 20 20 35.5 4.5 20z'/></svg>");
+  --ly-pattern-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'><g fill='none' stroke='%23E9CF8A' stroke-opacity='.14' stroke-width='1.2'><rect x='14' y='14' width='28' height='28'/><rect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/></g></svg>") 0 0 / 56px 56px;
+  --ly-pattern-light: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'><g fill='none' stroke='%230F5132' stroke-opacity='.07' stroke-width='1.2'><rect x='14' y='14' width='28' height='28'/><rect x='14' y='14' width='28' height='28' transform='rotate(45 28 28)'/></g></svg>") 0 0 / 56px 56px;
+}
+.root[data-layout="nikah"] .archTop {
+  border-radius: 50% 50% 10px 10px / 34% 34% 10px 10px;
+  border-width: 2px;
+  outline: 1px solid color-mix(in srgb, var(--rp-gold-light) 50%, transparent);
+  outline-offset: 6px;
+}
+.root[data-layout="nikah"] .card {
+  border-radius: 4px;
+  outline: 1px solid color-mix(in srgb, var(--rp-gold) 35%, transparent);
+  outline-offset: -6px;
+}
+
+/* --- Moonlit: crescent and star, night sky, glass frames --- */
+.root[data-layout="moonlit"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M24 6a14 14 0 1 0 10 24a11 11 0 1 1-10-24z'/><path d='M31 7l1.5 3.2 3.4.4-2.5 2.3.7 3.3-3.1-1.7-3.1 1.7.7-3.3-2.5-2.3 3.4-.4z'/></svg>");
+  --ly-pattern-dark:
+    radial-gradient(circle at 12% 18%, #fff 0 1px, transparent 1.5px) 0 0 / 130px 130px,
+    radial-gradient(circle at 68% 42%, rgba(255, 255, 255, 0.8) 0 0.8px, transparent 1.3px) 0 0 / 90px 90px;
+  --ly-pattern-light: radial-gradient(circle at 30% 40%, rgba(17, 26, 51, 0.12) 0 1px, transparent 1.5px) 0 0 / 60px 60px;
+}
+.root[data-layout="moonlit"] .archTop {
+  border-radius: 50% 50% 14px 14px / 30% 30% 14px 14px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* --- Church: cross, leaded-glass lattice, pointed frames --- */
+.root[data-layout="church"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M18 3h4v10h9v4h-9v20h-4V17H9v-4h9z'/></svg>");
+  --ly-pattern-dark:
+    repeating-linear-gradient(45deg, rgba(221, 191, 120, 0.08) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(-45deg, rgba(221, 191, 120, 0.08) 0 1px, transparent 1px 28px);
+  --ly-pattern-light:
+    repeating-linear-gradient(45deg, rgba(184, 145, 58, 0.07) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(-45deg, rgba(184, 145, 58, 0.07) 0 1px, transparent 1px 28px);
+}
+.root[data-layout="church"] .archTop {
+  border-radius: 50% 50% 8px 8px / 42% 42% 8px 8px;
+}
+.root[data-layout="church"] .card {
+  border-radius: 4px;
+  background: #fff;
+}
+
+/* --- Garden: olive sprig, fresh sage, airy rounded cards --- */
+.root[data-layout="garden"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M6 33Q20 23 33 6l1 1Q21 24 7 34z'/><path d='M14 25q-6-2-8-8q6 1 8 8zM20 19q-2-7 2-12q2 7-2 12zM22 21q6-4 12-2q-5 5-12 2zM16 27q4 5 10 5q-3-6-10-5z'/></svg>");
+  --ly-pattern-dark: radial-gradient(ellipse at 10% 0%, rgba(220, 203, 151, 0.12), transparent 45%);
+  --ly-pattern-light: radial-gradient(ellipse at 90% 100%, rgba(139, 168, 136, 0.14), transparent 45%);
+}
+.root[data-layout="garden"] .archTop {
+  border-radius: 40px;
+  border-style: dotted;
+  border-width: 2px;
+}
+.root[data-layout="garden"] .card {
+  border-radius: 22px;
+  box-shadow: 0 10px 30px -18px rgba(47, 62, 46, 0.35);
+}
+
+/* --- Editorial: no emblems; hairlines, sharp corners, big caps --- */
+.root[data-layout="editorial"] .head::before,
+.root[data-layout="editorial"] .families .eyebrow::before,
+.root[data-layout="editorial"] .grateful .eyebrow::before,
+.root[data-layout="editorial"] .glass .eyebrow::before {
+  display: none;
+}
+.root[data-layout="editorial"] .head h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.root[data-layout="editorial"] .card,
+.root[data-layout="editorial"] .archTop {
+  border-radius: 0;
+}
+
+/* --- Watercolour: leaf emblem, painted washes, soft cards --- */
+.root[data-layout="watercolor"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 37C8 27 8 12 20 3c12 9 12 24 0 34zm-1-4V9h2v24z' fill-rule='evenodd'/></svg>");
+  --ly-pattern-dark: radial-gradient(ellipse at 0% 0%, rgba(242, 184, 160, 0.14), transparent 45%);
+  --ly-pattern-light:
+    radial-gradient(ellipse at 0% 0%, rgba(242, 184, 160, 0.22), transparent 38%),
+    radial-gradient(ellipse at 100% 100%, rgba(185, 207, 175, 0.26), transparent 40%);
+}
+.root[data-layout="watercolor"] .archTop {
+  border-radius: 60% 40% 30% 30% / 40% 40% 20% 20%;
+  border-style: solid;
+}
+.root[data-layout="watercolor"] .card {
+  border-color: transparent;
+  border-radius: 26px;
+  box-shadow: 0 16px 40px -24px rgba(160, 89, 60, 0.35);
+}
+
+/* --- Boho arch: sun emblem, tall arches everywhere --- */
+.root[data-layout="arch"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M4 30a16 16 0 0 1 32 0zM19 4h2v7h-2zM5.6 10.4 7 9l5 5-1.4 1.4zM34.4 10.4 33 9l-5 5 1.4 1.4zM2 32h36v2H2z'/></svg>");
+  --ly-pattern-dark: radial-gradient(ellipse at 50% 0%, rgba(235, 196, 154, 0.14), transparent 55%);
+  --ly-pattern-light: radial-gradient(ellipse at 50% 0%, rgba(235, 196, 154, 0.3), transparent 55%);
+}
+.root[data-layout="arch"] .archTop {
+  border-radius: 999px 999px 14px 14px;
+  padding-top: 48px;
+}
+.root[data-layout="arch"] .card {
+  border-radius: 140px 140px 16px 16px;
+  padding-top: 34px;
+}
+
+/* --- Velvet: filigree diamond, damask, double gold frames --- */
+.root[data-layout="velvet"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 3l7 17-7 17-7-17zM3 20q8-7 12 0q-4 7-12 0zM37 20q-8-7-12 0q4 7 12 0z'/></svg>");
+  --ly-pattern-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><path d='M30 6c8 10 8 18 0 24c-8-6-8-14 0-24zm0 48c8-10 8-18 0-24c-8 6-8 14 0 24zM6 30c10-8 18-8 24 0c-6 8-14 8-24 0zm48 0c-10-8-18-8-24 0c6 8 14 8 24 0z' fill='%23D4AF37' fill-opacity='.07'/></svg>") 0 0 / 60px 60px;
+  --ly-pattern-light: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><path d='M30 6c8 10 8 18 0 24c-8-6-8-14 0-24zm0 48c8-10 8-18 0-24c-8 6-8 14 0 24z' fill='%23420C1B' fill-opacity='.05'/></svg>") 0 0 / 60px 60px;
+}
+.root[data-layout="velvet"] .archTop {
+  border-radius: 6px;
+  border-width: 2px;
+  outline: 1px solid color-mix(in srgb, var(--rp-gold-light) 55%, transparent);
+  outline-offset: 6px;
+}
+.root[data-layout="velvet"] .card {
+  border-radius: 4px;
+  border-width: 2px;
+  outline: 1px solid color-mix(in srgb, var(--rp-gold) 40%, transparent);
+  outline-offset: -7px;
+}
+
+/* ---- Looks for the other occasions ---- */
+.root[data-layout="sparkle"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 4l12 10-6 18H14L8 14z'/></svg>");
+  --ly-pattern-dark: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.5) 0 1px, transparent 1.6px) 0 0 / 60px 60px;
+  --ly-pattern-light: radial-gradient(circle at 20% 30%, rgba(180, 140, 60, 0.18) 0 1px, transparent 1.6px) 0 0 / 60px 60px;
+}
+.root[data-layout="sparkle"] .card { border-radius: 14px; }
+.root[data-layout="thamboolam"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 37C10 29 3 21 6 12c2-6 10-8 14-2c4-6 12-4 14 2c3 9-4 17-14 25z'/></svg>");
+  --ly-pattern-dark: repeating-linear-gradient(100deg, rgba(255, 255, 255, 0.05) 0 14px, transparent 14px 30px);
+  --ly-pattern-light: radial-gradient(circle, rgba(224, 165, 38, 0.14) 1.4px, transparent 2px) 0 0 / 22px 22px;
+}
+.root[data-layout="thamboolam"] .archTop { border-radius: 30px 30px 14px 14px; border-width: 2px; }
+.root[data-layout="vintage"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path fill-rule='evenodd' d='M7 4h26v32H7zM10 7v19h20V7z'/></svg>");
+  --ly-pattern-dark: radial-gradient(circle at 30% 40%, rgba(255, 240, 210, 0.08) 0 1px, transparent 1.6px) 0 0 / 24px 24px;
+  --ly-pattern-light: radial-gradient(circle at 30% 40%, rgba(120, 80, 40, 0.07) 0 1px, transparent 1.6px) 0 0 / 24px 24px;
+}
+.root[data-layout="vintage"] .card { border-radius: 2px; box-shadow: 0 12px 28px -18px rgba(60, 40, 20, 0.45); }
+.root[data-layout="roses"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='20' cy='11' r='7'/><circle cx='12' cy='18' r='7'/><circle cx='28' cy='18' r='7'/><circle cx='15' cy='27' r='7'/><circle cx='25' cy='27' r='7'/></svg>");
+  --ly-pattern-dark: radial-gradient(circle, rgba(255, 220, 220, 0.12) 2px, transparent 2.6px) 0 0 / 30px 30px;
+  --ly-pattern-light: radial-gradient(circle, rgba(160, 30, 60, 0.07) 2px, transparent 2.6px) 0 0 / 30px 30px;
+}
+.root[data-layout="roses"] .archTop { border-radius: 999px 999px 30px 30px; }
+.root[data-layout="roses"] .card { border-radius: 24px; }
+.root[data-layout="letter"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path fill-rule='evenodd' d='M3 9h34v24H3zM6 12l14 11 14-11v-.5H6z'/></svg>");
+  --ly-pattern-light: repeating-linear-gradient(45deg, rgba(200, 16, 46, 0.05) 0 12px, transparent 12px 20px, rgba(31, 78, 140, 0.05) 20px 32px, transparent 32px 40px);
+}
+.root[data-layout="letter"] .card { border-radius: 4px; }
+.root[data-layout="neon"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 35C6 25 3 15 9 9c4-4 9-3 11 2c2-5 7-6 11-2c6 6 3 16-11 26z'/></svg>");
+  --ly-pattern-dark: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.35) 0 1px, transparent 1.6px) 0 0 / 70px 70px;
+}
+.root[data-layout="neon"] .head h2,
+.root[data-layout="neon"] .families h2 { text-shadow: 0 0 12px color-mix(in srgb, var(--rp-accent) 70%, transparent); }
+.root[data-layout="clouds"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M8 30a7 7 0 0 1 2-13a10 10 0 0 1 19-2a7 7 0 0 1 3 15z'/></svg>");
+  --ly-pattern-light: radial-gradient(ellipse at 10% 10%, rgba(255, 255, 255, 0.9), transparent 35%), radial-gradient(ellipse at 90% 90%, rgba(255, 255, 255, 0.8), transparent 35%);
+}
+.root[data-layout="clouds"] .archTop, .root[data-layout="clouds"] .card { border-radius: 36px; }
+.root[data-layout="balloons"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><ellipse cx='20' cy='15' rx='11' ry='13'/><path d='M18 28h4l-2 3zM19.5 31h1v7h-1z'/></svg>");
+  --ly-pattern-light: radial-gradient(circle, color-mix(in srgb, var(--rp-accent) 18%, transparent) 2px, transparent 2.6px) 0 0 / 34px 34px;
+}
+.root[data-layout="balloons"] .card { border-radius: 24px; }
+.root[data-layout="kids"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 3l5 11 12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1z'/></svg>");
+  --ly-pattern-light: radial-gradient(circle, color-mix(in srgb, var(--rp-gold) 22%, transparent) 5px, transparent 5.5px) 0 0 / 38px 38px;
+}
+.root[data-layout="kids"] .card { border-radius: 28px; border-width: 3px; }
+.root[data-layout="cake"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M6 22h28v14H6zM10 14h20v8H10zM19 6h2v8h-2z'/></svg>");
+  --ly-pattern-light: linear-gradient(60deg, transparent 47%, color-mix(in srgb, var(--rp-gold) 18%, transparent) 47% 53%, transparent 53%) 0 0 / 26px 26px;
+}
+.root[data-layout="cake"] .card { border-radius: 22px; }
+.root[data-layout="keys"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path d='M20 4l16 13h-4v19H8V17H4zM17 26v10h6V26z' fill-rule='evenodd'/></svg>");
+  --ly-pattern-light: linear-gradient(color-mix(in srgb, var(--rp-text) 5%, transparent) 1px, transparent 1px) 0 0 / 24px 24px;
+}
+.root[data-layout="keys"] .card, .root[data-layout="keys"] .archTop { border-radius: 0; }
+.root[data-layout="door"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path fill-rule='evenodd' d='M8 38V16Q20 0 32 16v22zM12 38V18q8-10 16 0v20z'/></svg>");
+  --ly-pattern-dark: radial-gradient(circle, rgba(255, 230, 170, 0.14) 1.5px, transparent 2px) 0 0 / 20px 20px;
+  --ly-pattern-light: radial-gradient(circle, rgba(180, 90, 40, 0.1) 1.5px, transparent 2px) 0 0 / 20px 20px;
+}
+.root[data-layout="door"] .archTop { border-radius: 999px 999px 10px 10px; }
+.root[data-layout="bangles"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path fill-rule='evenodd' d='M20 4a16 16 0 1 1 0 32a16 16 0 1 1 0-32zm0 5a11 11 0 1 0 0 22a11 11 0 1 0 0-22z'/></svg>");
+  --ly-pattern-dark: radial-gradient(circle, rgba(255, 220, 150, 0.14) 3px, transparent 3.5px) 0 0 / 30px 30px;
+  --ly-pattern-light: radial-gradient(circle, rgba(194, 24, 91, 0.07) 3px, transparent 3.5px) 0 0 / 30px 30px;
+}
+.root[data-layout="bangles"] .archTop { border-radius: 999px 999px 24px 24px; }
+.root[data-layout="bangles"] .card { border-radius: 22px; }
+.root[data-layout="teddy"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><circle cx='10' cy='10' r='6'/><circle cx='30' cy='10' r='6'/><circle cx='20' cy='22' r='14'/></svg>");
+  --ly-pattern-light: linear-gradient(90deg, rgba(255, 255, 255, 0.55) 50%, transparent 50%) 0 0 / 40px 40px;
+}
+.root[data-layout="teddy"] .card, .root[data-layout="teddy"] .archTop { border-radius: 30px; }
+.root[data-layout="tech"] {
+  --ly-emblem: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'><path fill-rule='evenodd' d='M20 3l15 8.5v17L20 37 5 28.5v-17zm0 7l-9 5v10l9 5 9-5V15z'/></svg>");
+  --ly-pattern-dark: linear-gradient(rgba(120, 160, 255, 0.07) 1px, transparent 1px) 0 0 / 32px 32px;
+  --ly-pattern-light: linear-gradient(rgba(40, 60, 140, 0.05) 1px, transparent 1px) 0 0 / 32px 32px;
+}
+.root[data-layout="tech"] .card { border-radius: 14px; }

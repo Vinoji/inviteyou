@@ -33,6 +33,7 @@ import TravelGuide from "./TravelGuide";
 import PlacesToExplore from "./PlacesToExplore";
 import ThankYou from "./ThankYou";
 import RsvpHeader from "./RsvpHeader";
+import StyleHero from "../styles/StyleHero";
 import s from "./royal.module.css";
 
 /**
@@ -75,9 +76,19 @@ export default function RoyalInvitation({
   const names = [data.brideName, data.groomName].filter(Boolean).join(" & ");
   const brideFamily = getFamily(data, "bride");
   const groomFamily = getFamily(data, "groom");
-  const familyShown = sections.family && brideFamily.length + groomFamily.length > 0;
+  const familyShown =
+    sections.family && Boolean(category.familyTitle) && brideFamily.length + groomFamily.length > 0;
+  // Weddings always have a second event (a reception by default); other
+  // occasions only when their category names one.
+  const eventBLabel = category.eventBLabel || (category.id === "wedding" ? tView("defaultReception") : "");
+  const events = [
+    { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue },
+    ...(eventBLabel ? [{ label: eventBLabel, time: data.receptionTime, venue: data.receptionVenue }] : []),
+  ];
 
   const theme = getMotionTheme(data.templateId);
+  // Premium templates restyle the layout around their tradition (lib/layoutStyles.ts).
+  const layout = getTemplateConfig(data.templateId).layout;
   // Numbers only the sections actually rendered (JSX `cond && …` only calls
   // it for those), for alternating wipes and the "01, 02…" divider labels.
   let sectionCount = 0;
@@ -95,6 +106,7 @@ export default function RoyalInvitation({
   return (
     <div
       data-invite-root
+      data-layout={layout}
       className={`min-h-full w-full ${s.root} ${theme.plain ? s.plain : ""} ${theme.moments?.sky ? s.skyMode : ""}`}
       style={style}
     >
@@ -108,7 +120,7 @@ export default function RoyalInvitation({
         weddingDate={data.weddingDate}
         brideName={data.brideName}
         groomName={data.groomName}
-        singlePerson={false}
+        singlePerson={category.singlePerson}
         accentColor={data.accentColor}
         fontPairing={data.fontPairing}
         monogram={data.monogram}
@@ -124,13 +136,26 @@ export default function RoyalInvitation({
 
       <div className="relative">
         <Ambient at="hero" />
-        <RoyalHero
-          palette={palette}
-          brideName={data.brideName}
-          groomName={data.groomName}
-          weddingDate={data.weddingDate}
-          showCountdown={category.showCountdown}
-        />
+        {layout ? (
+          <StyleHero
+            layout={layout}
+            templateId={data.templateId}
+            singlePerson={category.singlePerson}
+            palette={palette}
+            brideName={data.brideName}
+            groomName={data.groomName}
+            weddingDate={data.weddingDate}
+            showCountdown={category.showCountdown}
+          />
+        ) : (
+          <RoyalHero
+            palette={palette}
+            brideName={data.brideName}
+            groomName={data.groomName}
+            weddingDate={data.weddingDate}
+            showCountdown={category.showCountdown}
+          />
+        )}
       </div>
       <PinnedCountdown weddingDate={data.weddingDate} />
 
@@ -170,21 +195,15 @@ export default function RoyalInvitation({
             receptionTime={data.receptionTime}
             receptionVenue={data.receptionVenue}
             eventALabel={category.eventALabel}
-            eventBLabel={category.eventBLabel || tView("defaultReception")}
+            eventBLabel={eventBLabel}
+            occasion={category.id}
           >
             <AddToCalendar
               slug={slug}
               title={occasionTitle}
               date={data.weddingDate}
               variant="royal"
-              events={[
-                { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue },
-                {
-                  label: category.eventBLabel || tView("defaultReception"),
-                  time: data.receptionTime,
-                  venue: data.receptionVenue,
-                },
-              ]}
+              events={events}
             />
           </RoyalEvents>
         </Section>
@@ -251,7 +270,7 @@ export default function RoyalInvitation({
               mode={mode}
               initialName={guestGreeting}
               variant="royal"
-              header={<RsvpHeader key="rsvp-header" />}
+              header={<RsvpHeader key="rsvp-header" occasion={category.id} />}
             />
           </section>
         </Section>
@@ -278,14 +297,7 @@ export default function RoyalInvitation({
                 accentColor={data.accentColor}
                 weddingDate={data.weddingDate}
                 hosts={coupleLabel}
-                events={[
-                  { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue },
-                  {
-                    label: category.eventBLabel || tView("defaultReception"),
-                    time: data.receptionTime,
-                    venue: data.receptionVenue,
-                  },
-                ]}
+                events={events}
               />
         </div>
       )}
@@ -293,7 +305,7 @@ export default function RoyalInvitation({
       <div className="relative isolate">
         <Sky at="thanks" />
         <Ambient at="thanks" />
-        <ThankYou names={names} />
+        <ThankYou names={names} occasion={category.id} />
       </div>
 
       <footer className="bg-neutral-950 px-6 py-6 text-center text-xs text-neutral-400">

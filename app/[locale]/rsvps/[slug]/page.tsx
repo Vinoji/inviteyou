@@ -67,7 +67,7 @@ async function buildHostMessages(data: InvitationData, templateCategory: string)
     getTranslations({ locale, namespace: "common" }),
     getFormatter({ locale }),
   ]);
-  const category = getCategoryMeta(templateCategory, tCategories);
+  const category = getCategoryMeta(templateCategory, tCategories, data.templateId);
   const title = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
   const day = parseIsoDate(data.weddingDate);
   const date = day
@@ -132,7 +132,7 @@ export default async function RsvpsPage({
   const tCommon = await getTranslations("common");
   const format = await getFormatter({ locale });
   const template = getTemplateConfig(data.templateId);
-  const category = getCategoryMeta(template.category, tCategories);
+  const category = getCategoryMeta(template.category, tCategories, template.id);
   const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
   const hostMessages = await buildHostMessages(data, template.category);
 

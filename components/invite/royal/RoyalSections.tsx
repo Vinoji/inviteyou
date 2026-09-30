@@ -163,6 +163,7 @@ export function RoyalEvents({
   receptionVenue,
   eventALabel,
   eventBLabel,
+  occasion = "wedding",
   children,
 }: {
   weddingDate: string;
@@ -172,7 +173,10 @@ export function RoyalEvents({
   receptionTime: string;
   receptionVenue: VenueInfo;
   eventALabel: string;
+  /** "" when the occasion has only one event. */
   eventBLabel: string;
+  /** The category id: heading and line under it ("The Party", "Open House"…). */
+  occasion?: string;
   /** Rendered after the venue cards (the add-to-calendar buttons). */
   children?: React.ReactNode;
 }) {
@@ -183,7 +187,7 @@ export function RoyalEvents({
   const events = [
     { key: "a", label: eventALabel, time: ceremonyTime, venue: ceremonyVenue },
     { key: "b", label: eventBLabel, time: receptionTime, venue: receptionVenue },
-  ].filter((e) => e.time || e.venue?.name);
+  ].filter((e) => e.label && (e.time || e.venue?.name));
   if (events.length === 0) return null;
 
   // The reception gets its own venue card only when it's actually somewhere else.
@@ -196,8 +200,8 @@ export function RoyalEvents({
   return (
     <section className={`${s.section} ${s.light}`}>
       <div className={s.head}>
-        <MotionHeading>{t("heading")}</MotionHeading>
-        <p>{t("sub")}</p>
+        <MotionHeading>{occasion === "wedding" ? t("heading") : t(`headings.${occasion}`)}</MotionHeading>
+        <p>{occasion === "wedding" ? t("sub") : t(`subs.${occasion}`)}</p>
       </div>
       {city && (
         <div className={s.city}>

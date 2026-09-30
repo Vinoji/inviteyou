@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "./types";
@@ -45,8 +45,8 @@ const BULBS = [
  * gold confetti falls. 2.6s. Reduced motion: lights already on and a
  * "View invitation" button.
  */
-export default function SpotlightIntro({ names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
-  const t = useTranslations("invite.intros.spotlight");
+export default function SpotlightIntro({ templateId, names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
+  const t = useIntroText("invite.intros.spotlight", templateId);
   const reduceMotion = useSafeReducedMotion();
   useWarmAudio(!preview);
   const [on, setOn] = useState(false);

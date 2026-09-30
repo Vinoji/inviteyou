@@ -49,7 +49,7 @@ export default async function InvitationCardPage({
     getFormatter({ locale }),
   ]);
   const template = getTemplateConfig(data.templateId);
-  const category = getCategoryMeta(template.category, tCategories);
+  const category = getCategoryMeta(template.category, tCategories, template.id);
   const title = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
 
   const h = await headers();

@@ -72,7 +72,7 @@ export async function generateMetadata({
 
   const tCategories = await getTranslations({ locale, namespace: "categories" });
   const tCommon = await getTranslations({ locale, namespace: "common" });
-  const category = getCategoryMeta(getTemplateConfig(data.templateId).category, tCategories);
+  const category = getCategoryMeta(getTemplateConfig(data.templateId).category, tCategories, data.templateId);
   const title = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
   // Ended invitations drop out of search results.
   if (isExpired(data)) {
@@ -126,7 +126,7 @@ export default async function InvitePage({
   if (isExpired(data)) {
     const tCategories = await getTranslations({ locale: contentLocale, namespace: "categories" });
     const tCommon = await getTranslations({ locale: contentLocale, namespace: "common" });
-    const category = getCategoryMeta(getTemplateConfig(data.templateId).category, tCategories);
+    const category = getCategoryMeta(getTemplateConfig(data.templateId).category, tCategories, data.templateId);
     const expiredMessages = await getContentMessages(contentLocale, ["invitePage"]);
     return (
       <NextIntlClientProvider locale={contentLocale} messages={expiredMessages}>

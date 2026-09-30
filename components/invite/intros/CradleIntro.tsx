@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "./types";
@@ -41,8 +41,8 @@ const STARS = [
  * stars glow, bubbles float up and the name appears. 2.8s. Reduced motion:
  * everything settled and a "View invitation" button.
  */
-export default function CradleIntro({ names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
-  const t = useTranslations("invite.intros.cradle");
+export default function CradleIntro({ templateId, names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
+  const t = useIntroText("invite.intros.cradle", templateId);
   const reduceMotion = useSafeReducedMotion();
   useWarmAudio(!preview);
   const [awake, setAwake] = useState(false);

@@ -8,7 +8,7 @@ import s from "./royal.module.css";
  * Give the element a key at the call site: an element handed from a server
  * component into a client component's child list otherwise trips React's
  * dev-only missing-key warning. */
-export default function RsvpHeader() {
+export default function RsvpHeader({ occasion = "wedding" }: { occasion?: string }) {
   const t = useTranslations("invite.royal.rsvp");
   return (
     <div className={s.head}>
@@ -16,7 +16,7 @@ export default function RsvpHeader() {
       <MotionHeading>
         {t("heading")} <span className={s.rsvpScript}>{t("headingScript")}</span>
       </MotionHeading>
-      <p>{t("sub")}</p>
+      <p>{occasion === "wedding" ? t("sub") : t(`subs.${occasion}`)}</p>
     </div>
   );
 }

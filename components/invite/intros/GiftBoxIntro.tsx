@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { scriptLang } from "@/lib/monogram";
 import { motion, type PanInfo } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import type { IntroProps } from "./types";
 import s from "./giftbox.module.css";
@@ -22,8 +22,8 @@ const PULL = 120;
  * Reduced motion: the box already open with the card showing, and a "View
  * invitation" button.
  */
-export default function GiftBoxIntro({ names, monogram, fonts, onOpen, onDone, burst }: IntroProps) {
-  const t = useTranslations("invite.intros.giftbox");
+export default function GiftBoxIntro({ templateId, names, monogram, fonts, onOpen, onDone, burst }: IntroProps) {
+  const t = useIntroText("invite.intros.giftbox", templateId);
   const reduceMotion = useSafeReducedMotion();
   const [stage, setStage] = useState<0 | 1 | 2 | 3 | 4>(0); // closed, untied, lid up, card up, push
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);

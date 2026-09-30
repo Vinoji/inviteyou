@@ -69,7 +69,7 @@ export default function InvitationView({
   const theme = getThemeClasses(data.templateId);
   const font = getFontPairing(data.fontPairing);
   const template = getTemplateConfig(data.templateId);
-  const category = getCategoryMeta(template.category, tCategories);
+  const category = getCategoryMeta(template.category, tCategories, template.id);
   // Safe even for docs published before section toggles existed — missing
   // keys default to shown, matching their original always-on behavior.
   const sections = withDefaultSections(data.sections);
@@ -78,9 +78,10 @@ export default function InvitationView({
     : `${data.brideName || tCommon("brideFallback")} & ${data.groomName || tCommon("groomFallback")}`;
   const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
 
-  // Every wedding template uses the royal-palace layout, differing only in
-  // palette; other occasions keep the section layout below.
-  if (template.category === "wedding") {
+  // Wedding templates, and every template with a layout style (any
+  // occasion), use the royal layout; other occasions keep the section
+  // layout below.
+  if (template.category === "wedding" || template.layout) {
     return (
       <MotionThemeProvider templateId={data.templateId}>
         <RoyalInvitation

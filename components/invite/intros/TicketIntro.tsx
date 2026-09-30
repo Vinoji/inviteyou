@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, type PanInfo } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "./types";
@@ -35,8 +35,8 @@ function tear() {
  * lifts and glows. 2.2s. Reduced motion: the pass alone and a "View
  * invitation" button.
  */
-export default function TicketIntro({ names, dateLabel, fonts, accent, onOpen, onDone, burst, preview }: IntroProps) {
-  const t = useTranslations("invite.intros.ticket");
+export default function TicketIntro({ templateId, names, dateLabel, fonts, accent, onOpen, onDone, burst, preview }: IntroProps) {
+  const t = useIntroText("invite.intros.ticket", templateId);
   const reduceMotion = useSafeReducedMotion();
   useWarmAudio(!preview);
   const [torn, setTorn] = useState(false);

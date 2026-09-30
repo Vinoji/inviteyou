@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useIntroText } from "./useIntroText";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import type { IntroProps } from "./types";
 import { useRevealHole } from "./useRevealHole";
@@ -69,8 +69,8 @@ function Vine({ side, grow, still }: { side: "left" | "right"; grow: boolean; st
  * Reduced motion: the fully open peony and grown vines, and a "View
  * invitation" button.
  */
-export default function BloomIntro({ names, fonts, onOpen, onDone, burst }: IntroProps) {
-  const t = useTranslations("invite.intros.bloom");
+export default function BloomIntro({ templateId, names, fonts, onOpen, onDone, burst }: IntroProps) {
+  const t = useIntroText("invite.intros.bloom", templateId);
   const reduceMotion = useSafeReducedMotion();
   const [open, setOpen] = useState(false);
   const [vines, setVines] = useState(false);

@@ -33,4 +33,17 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   ringbox: dynamic(() => import("./RingBoxIntro")),
   cradle: dynamic(() => import("./CradleIntro")),
   ticket: dynamic(() => import("./TicketIntro")),
+  // Layout-style openings share one chunk (LayoutIntros.tsx).
+  gopuram: dynamic(() => import("./LayoutIntros").then((m) => m.GopuramIntro)),
+  marigoldCurtain: dynamic(() => import("./LayoutIntros").then((m) => m.MarigoldCurtainIntro)),
+  jharokha: dynamic(() => import("./LayoutIntros").then((m) => m.JharokhaIntro)),
+  lotusBloom: dynamic(() => import("./LayoutIntros").then((m) => m.LotusBloomIntro)),
+  mughalDoors: dynamic(() => import("./LayoutIntros").then((m) => m.MughalDoorsIntro)),
+  moonLanterns: dynamic(() => import("./LayoutIntros").then((m) => m.MoonLanternsIntro)),
+  stainedGlass: dynamic(() => import("./LayoutIntros").then((m) => m.StainedGlassIntro)),
+  foilCard: dynamic(() => import("./LayoutIntros").then((m) => m.FoilCardIntro)),
+  sunrise: dynamic(() => import("./LayoutIntros").then((m) => m.SunriseIntro)),
+  candlelight: dynamic(() => import("./LayoutIntros").then((m) => m.CandlelightIntro)),
+  balloonPop: dynamic(() => import("./LayoutIntros").then((m) => m.BalloonPopIntro)),
+  cakeCandles: dynamic(() => import("./LayoutIntros").then((m) => m.CakeCandlesIntro)),
 };

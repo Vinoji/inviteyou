@@ -1,4 +1,6 @@
 import { CATEGORIES, getCategoryConfig, type CategoryId } from "@/lib/categories";
+import { getTemplateConfig } from "@/lib/templates";
+import { renamesEvents } from "@/lib/layoutStyles";
 
 /** A translation function scoped to a namespace, as returned by next-intl's
  * `useTranslations`/`getTranslations` — accepts an ICU-style key plus
@@ -23,9 +25,19 @@ export interface CategoryMeta {
 }
 
 /** `t` must be scoped to the `categories` namespace, e.g.
- * `useTranslations("categories")` / `getTranslations("categories")`. */
-export function getCategoryMeta(id: string, t: TFunc): CategoryMeta {
+ * `useTranslations("categories")` / `getTranslations("categories")`.
+ * Pass the invitation's `templateId` where there is one: a template whose
+ * layout style names its events for its tradition (Muhurtham, Nikah &
+ * Walima, Holy Matrimony — lib/layoutStyles.ts) gets those names. */
+export function getCategoryMeta(id: string, t: TFunc, templateId?: string): CategoryMeta {
   const config = getCategoryConfig(id);
+  const layout = templateId ? getTemplateConfig(templateId).layout : undefined;
+  const events = renamesEvents(layout) && config.id === "wedding"
+    ? {
+        eventALabel: t(`wedding.layouts.${layout}.eventALabel`),
+        eventBLabel: t(`wedding.layouts.${layout}.eventBLabel`),
+      }
+    : { eventALabel: t(`${config.id}.eventALabel`), eventBLabel: t(`${config.id}.eventBLabel`) };
   return {
     id: config.id,
     singlePerson: config.singlePerson,
@@ -35,8 +47,7 @@ export function getCategoryMeta(id: string, t: TFunc): CategoryMeta {
     tagline: t(`${config.id}.tagline`),
     heroEyebrow: t(`${config.id}.heroEyebrow`),
     dateLabel: t(`${config.id}.dateLabel`),
-    eventALabel: t(`${config.id}.eventALabel`),
-    eventBLabel: t(`${config.id}.eventBLabel`),
+    ...events,
     storyTitle: t(`${config.id}.storyTitle`),
     familyTitle: t(`${config.id}.familyTitle`),
     personALabel: t(`${config.id}.personALabel`),

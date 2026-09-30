@@ -46,7 +46,7 @@ export async function renderCardImage({
     getFormatter({ locale }),
   ]);
   const template = getTemplateConfig(data.templateId);
-  const category = getCategoryMeta(template.category, tCategories);
+  const category = getCategoryMeta(template.category, tCategories, template.id);
   const theme = getCardTheme(template.id);
   const dark = isDarkPaper(theme);
   // The couple's own accent colour when they changed it from the template's.

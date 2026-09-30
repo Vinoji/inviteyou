@@ -455,6 +455,7 @@
       "sideFriend": "Friend of both",
       "messageLabel": "Message (optional)",
       "messagePlaceholder": "Wishes for the couple...",
+      "messagePlaceholderHost": "Your wishes...",
       "errName": "Please enter your name.",
       "errGeneric": "Something went wrong. Please try again.",
       "sending": "Sending...",
@@ -462,6 +463,7 @@
       "disabledPreview": "This form is disabled in the live preview.",
       "phoneLabel": "WhatsApp number (optional)",
       "phoneHint": "Only the couple sees this — for event reminders.",
+      "phoneHintHost": "Only the host sees this — for event reminders.",
       "errPhone": "Please enter a valid phone number, or leave it empty."
     },
     "schedule": {
@@ -579,7 +581,27 @@
         "sub": "A day of music, blessings and a beautiful new beginning",
         "location": "Location",
         "venue": "Venue",
-        "directions": "Get directions"
+        "directions": "Get directions",
+        "headings": {
+          "engagement": "The Engagement",
+          "anniversary": "The Celebration",
+          "valentine": "The Date",
+          "proposal": "The Moment",
+          "birthday": "The Party",
+          "housewarming": "Open House",
+          "baby": "The Celebration",
+          "corporate": "The Event"
+        },
+        "subs": {
+          "engagement": "Rings, blessings and the start of forever",
+          "anniversary": "Years of love, and many more to come",
+          "valentine": "An evening made for two",
+          "proposal": "A question, a ring and a lifetime",
+          "birthday": "Cake, laughter and a lot of love",
+          "housewarming": "Come see our new home",
+          "baby": "Blessings for our little one",
+          "corporate": "Everything you need for the day"
+        }
       },
       "memories": {
         "heading": "Our Memories",
@@ -614,13 +636,24 @@
         "eyebrow": "R · S · V · P",
         "heading": "Join us",
         "headingScript": "in Celebration",
-        "sub": "We would be honoured to celebrate this beautiful journey with you."
+        "sub": "We would be honoured to celebrate this beautiful journey with you.",
+        "subs": {
+          "engagement": "We would love to have you with us as we say yes to forever.",
+          "anniversary": "Celebrate these years of love with us.",
+          "valentine": "Spend an evening of love with us.",
+          "proposal": "Be there for the question of a lifetime.",
+          "birthday": "The party isn't complete without you.",
+          "housewarming": "Our new home would love its first guests.",
+          "baby": "Shower our little one with your blessings.",
+          "corporate": "Please confirm your attendance."
+        }
       },
       "thanks": {
         "eyebrow": "With grateful hearts",
         "heading": "Thank You",
         "body": "Your presence and blessings will make our celebration complete. We are honoured to share this beautiful beginning with you.",
-        "replay": "Replay the opening"
+        "replay": "Replay the opening",
+        "bodyOccasion": "Your presence will make our celebration complete. We can't wait to celebrate with you."
       },
       "pinned": {
         "daysToGo": "days to go"
@@ -720,6 +753,78 @@
         "hint": "Tear off the stub",
         "view": "View invitation",
         "admitOne": "Admit one"
+      },
+      "gopuram": {
+        "dialogLabel": "Temple doors",
+        "eyebrow": "With the blessings of the Almighty",
+        "open": "Open the temple doors",
+        "view": "View invitation"
+      },
+      "marigoldCurtain": {
+        "dialogLabel": "Marigold curtain",
+        "eyebrow": "You are invited to our shubh vivah",
+        "open": "Part the marigolds",
+        "view": "View invitation"
+      },
+      "jharokha": {
+        "dialogLabel": "Palace window",
+        "eyebrow": "A royal invitation awaits",
+        "open": "Open the jharokha",
+        "view": "View invitation"
+      },
+      "lotusBloom": {
+        "dialogLabel": "Lotus bud",
+        "eyebrow": "By the grace of Radha Krishna",
+        "open": "Let the lotus bloom",
+        "view": "View invitation"
+      },
+      "mughalDoors": {
+        "dialogLabel": "Arched doors",
+        "eyebrow": "Bismillah — you are invited",
+        "open": "Open the doors",
+        "view": "View invitation"
+      },
+      "moonLanterns": {
+        "dialogLabel": "Night of lanterns",
+        "eyebrow": "Under the crescent moon",
+        "open": "Release the lanterns",
+        "view": "View invitation"
+      },
+      "stainedGlass": {
+        "dialogLabel": "Rose window",
+        "eyebrow": "Together with their families",
+        "open": "Let the light in",
+        "view": "View invitation"
+      },
+      "foilCard": {
+        "dialogLabel": "Invitation card",
+        "eyebrow": "The wedding of",
+        "open": "Open the invitation",
+        "view": "View invitation"
+      },
+      "sunrise": {
+        "dialogLabel": "Sun arch",
+        "eyebrow": "A new day, a new beginning",
+        "open": "Open the arch",
+        "view": "View invitation"
+      },
+      "candlelight": {
+        "dialogLabel": "Velvet curtains",
+        "eyebrow": "An evening in your honour",
+        "open": "Draw the curtains",
+        "view": "View invitation"
+      },
+      "balloonPop": {
+        "dialogLabel": "Balloons",
+        "eyebrow": "You're invited",
+        "open": "Let the balloons go",
+        "view": "View invitation"
+      },
+      "cakeCandles": {
+        "dialogLabel": "Birthday cake",
+        "eyebrow": "Make a wish",
+        "open": "Blow out the candles",
+        "view": "View invitation"
       }
     },
     "kin": {
@@ -774,6 +879,276 @@
       "edit": "Edit",
       "rsvps": "RSVPs",
       "editLink": "Edit link"
+    },
+    "styles": {
+      "temple": {
+        "invocation": "Om Sri Ganeshaya Namaha",
+        "invocationNote": "With the blessings of Lord Ganesha",
+        "lead": "With the blessings of the Almighty and our elders,\nwe joyfully invite you to the wedding of",
+        "weds": "weds"
+      },
+      "mandap": {
+        "invocation": "॥ श्री गणेशाय नमः ॥",
+        "invocationNote": "Shri Ganeshaya Namah",
+        "lead": "Together with our families,\nwe invite you to the shubh vivah of",
+        "weds": "weds"
+      },
+      "palace": {
+        "invocation": "॥ शुभ विवाह ॥",
+        "invocationNote": "An auspicious wedding",
+        "lead": "Our families request the honour of your presence\nat the royal wedding of",
+        "weds": "&"
+      },
+      "lotus": {
+        "invocation": "॥ राधे कृष्ण ॥",
+        "invocationNote": "Radhe Krishna",
+        "lead": "By the grace of Radha Krishna,\nwe invite you to celebrate the union of",
+        "weds": "&"
+      },
+      "nikah": {
+        "invocation": "بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        "invocationNote": "In the name of Allah, the Most Gracious, the Most Merciful",
+        "lead": "With the blessings of Allah and our families,\nwe request the honour of your presence at the Nikah of",
+        "weds": "&"
+      },
+      "moonlit": {
+        "invocation": "بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ",
+        "invocationNote": "In the name of Allah, the Most Gracious, the Most Merciful",
+        "lead": "Under a sky full of blessings,\njoin us for the Nikah and Walima of",
+        "weds": "&"
+      },
+      "church": {
+        "invocation": "“Love is patient, love is kind.”",
+        "invocationNote": "1 Corinthians 13:4",
+        "lead": "Together with their families,\nrequest the honour of your presence at the Holy Matrimony of",
+        "weds": "&"
+      },
+      "garden": {
+        "invocation": "“What God has joined together, let no one separate.”",
+        "invocationNote": "Mark 10:9",
+        "lead": "With joyful hearts and by God's grace,\nwe invite you to the wedding of",
+        "weds": "&"
+      },
+      "editorial": {
+        "lead": "The wedding of",
+        "weds": "and"
+      },
+      "watercolor": {
+        "lead": "Together with our families,\nwe invite you to celebrate the wedding of",
+        "weds": "&"
+      },
+      "arch": {
+        "lead": "Open skies and full hearts —\njoin us for the wedding of",
+        "weds": "&"
+      },
+      "velvet": {
+        "lead": "An evening of love, candlelight and celebration\nfor the wedding of",
+        "weds": "&"
+      }
+    },
+    "templateText": {
+      "engagement-sparkle": {
+        "lead": "With joy in our hearts, we invite you to celebrate the engagement of",
+        "weds": "&"
+      },
+      "engagement-thamboolam": {
+        "invocation": "Om Sri Ganeshaya Namaha",
+        "invocationNote": "With the blessings of Lord Ganesha",
+        "lead": "With the blessings of our elders,\nwe invite you to the nichayathartham of",
+        "weds": "&",
+        "intro": {
+          "eyebrow": "You are warmly welcomed to our nichayathartham"
+        }
+      },
+      "engagement-rose-garden": {
+        "lead": "Two hearts, one promise —\njoin us for the engagement of",
+        "weds": "&"
+      },
+      "engagement-save-the-date": {
+        "lead": "Save the date —\nwe're engaged",
+        "weds": "&",
+        "intro": {
+          "eyebrow": "The engagement of"
+        }
+      },
+      "engagement-mangni": {
+        "invocation": "॥ श्री गणेशाय नमः ॥",
+        "invocationNote": "With the blessings of Lord Ganesha",
+        "lead": "With the blessings of our families,\nwe invite you to the ring ceremony of",
+        "weds": "&"
+      },
+      "anniversary-golden-jubilee": {
+        "lead": "Fifty golden years together —\njoin us in celebrating",
+        "weds": "&"
+      },
+      "anniversary-vintage-reel": {
+        "lead": "Years of love, a lifetime of memories —\ncelebrate the anniversary of",
+        "weds": "&"
+      },
+      "anniversary-wine-roses": {
+        "lead": "Still falling in love —\njoin us for the anniversary of",
+        "weds": "&",
+        "intro": {
+          "eyebrow": "An anniversary evening"
+        }
+      },
+      "anniversary-silver-jubilee": {
+        "lead": "Twenty-five silver years —\ncelebrate with us",
+        "weds": "&",
+        "intro": {
+          "eyebrow": "25 years of"
+        }
+      },
+      "anniversary-shashtiabdapoorthi": {
+        "invocation": "Om Sri Ganeshaya Namaha",
+        "invocationNote": "With the blessings of the Almighty",
+        "lead": "By the grace of God, our parents complete sixty years —\nwe invite you to the Shashtiabdapoorthi of",
+        "weds": "&"
+      },
+      "valentine-love-letter": {
+        "lead": "A little letter for you —\nbe our Valentine",
+        "weds": "&"
+      },
+      "valentine-neon-hearts": {
+        "lead": "One night, all the love —\na Valentine's party with",
+        "weds": "&",
+        "intro": {
+          "eyebrow": "Valentine's night"
+        }
+      },
+      "valentine-cupid-clouds": {
+        "lead": "Head in the clouds, heart in your hands —\ncelebrate love with",
+        "weds": "&"
+      },
+      "valentine-polaroid": {
+        "lead": "Snapshots of us —\nspend Valentine's with",
+        "weds": "&",
+        "intro": {
+          "together": "Be my Valentine"
+        }
+      },
+      "valentine-red-roses": {
+        "lead": "Roses are red, and so is our love —\nbe our Valentine",
+        "weds": "&"
+      },
+      "proposal-starry-night": {
+        "lead": "Under a sky full of stars,\none question for",
+        "weds": "&"
+      },
+      "proposal-candlelight": {
+        "lead": "By candlelight, a question —\njoin us for the proposal of",
+        "weds": "&"
+      },
+      "proposal-will-you": {
+        "lead": "I have one question…\nwill you?",
+        "weds": "&"
+      },
+      "proposal-beach-sunset": {
+        "lead": "Where the sea meets the sky —\na proposal for",
+        "weds": "&"
+      },
+      "proposal-rose-gold-ring": {
+        "lead": "The question of a lifetime —\ncelebrate with",
+        "weds": "&",
+        "intro": {
+          "eyebrow": "Will you marry me?"
+        }
+      },
+      "birthday-balloon-party": {
+        "lead": "Balloons up — it's a birthday party for"
+      },
+      "birthday-neon-night": {
+        "lead": "Lights on, music up —\nlet's celebrate",
+        "intro": {
+          "eyebrow": "Birthday bash"
+        }
+      },
+      "birthday-kids-fiesta": {
+        "lead": "Come play, eat cake and have fun —\nit's the birthday of",
+        "intro": {
+          "together": "It's party time!"
+        }
+      },
+      "birthday-golden-milestone": {
+        "lead": "A milestone worth celebrating —\njoin us in honouring",
+        "intro": {
+          "eyebrow": "A milestone birthday"
+        }
+      },
+      "birthday-cake-candles": {
+        "lead": "Make a wish! Join us for the birthday of"
+      },
+      "housewarming-griha-pravesam": {
+        "invocation": "Om Sri Ganeshaya Namaha",
+        "invocationNote": "With the blessings of Lord Ganesha",
+        "lead": "With the blessings of the Almighty,\nwe invite you to the griha pravesam of our new home —",
+        "intro": {
+          "eyebrow": "You are warmly welcomed to our new home"
+        }
+      },
+      "housewarming-new-keys": {
+        "lead": "New keys, new beginnings —\ncome see the new home of"
+      },
+      "housewarming-boho-nest": {
+        "lead": "Our little nest is ready —\njoin us for a housewarming with"
+      },
+      "housewarming-green-home": {
+        "lead": "Come grow memories with us —\na housewarming at the home of"
+      },
+      "housewarming-vastu-lamp": {
+        "invocation": "Om Sri Ganeshaya Namaha",
+        "invocationNote": "With the blessings of Lord Ganesha",
+        "lead": "With a vastu puja and the first lamp lit,\nwe invite you to our new home —"
+      },
+      "baby-twinkle-star": {
+        "lead": "Twinkle, twinkle, little star —\na baby shower for"
+      },
+      "baby-valaikaappu": {
+        "invocation": "Om Sri Ganeshaya Namaha",
+        "invocationNote": "With the blessings of the Almighty",
+        "lead": "With bangles, flowers and blessings,\nwe invite you to the valaikaappu of",
+        "intro": {
+          "eyebrow": "You are invited to our valaikaappu"
+        }
+      },
+      "baby-teddy-hug": {
+        "lead": "Something little is coming —\nshower of love for",
+        "intro": {
+          "together": "A little one is on the way"
+        }
+      },
+      "baby-naming-lotus": {
+        "invocation": "Om Sri Ganeshaya Namaha",
+        "invocationNote": "With the blessings of the Almighty",
+        "lead": "With the blessings of our elders,\nwe invite you to the naming ceremony of our little one —",
+        "intro": {
+          "eyebrow": "By the grace of God"
+        }
+      },
+      "baby-shower-balloons": {
+        "lead": "Oh baby! Join us for a baby shower for"
+      },
+      "corporate-gala-night": {
+        "lead": "You are cordially invited to an evening gala hosted by",
+        "intro": {
+          "eyebrow": "Gala night"
+        }
+      },
+      "corporate-tech-launch": {
+        "lead": "Something new is launching —\nbe there first with"
+      },
+      "corporate-conference": {
+        "lead": "Join us for a day of ideas —\nhosted by"
+      },
+      "corporate-awards-night": {
+        "lead": "Celebrating excellence —\nan awards night presented by",
+        "intro": {
+          "eyebrow": "And the award goes to…"
+        }
+      },
+      "corporate-offsite": {
+        "lead": "Pack your bags — a team offsite with"
+      }
     }
   },
   "rsvpsPage": {
@@ -837,7 +1212,37 @@
       "storyTitle": "Our Story",
       "familyTitle": "Family & Blessings",
       "personALabel": "Bride's name",
-      "personBLabel": "Groom's name"
+      "personBLabel": "Groom's name",
+      "layouts": {
+        "temple": {
+          "eventALabel": "Muhurtham",
+          "eventBLabel": "Reception"
+        },
+        "mandap": {
+          "eventALabel": "Shubh Vivah",
+          "eventBLabel": "Reception"
+        },
+        "palace": {
+          "eventALabel": "Vivah Ceremony",
+          "eventBLabel": "Reception"
+        },
+        "nikah": {
+          "eventALabel": "Nikah",
+          "eventBLabel": "Walima"
+        },
+        "moonlit": {
+          "eventALabel": "Nikah",
+          "eventBLabel": "Walima"
+        },
+        "church": {
+          "eventALabel": "Holy Matrimony",
+          "eventBLabel": "Reception"
+        },
+        "garden": {
+          "eventALabel": "Wedding Ceremony",
+          "eventBLabel": "Reception"
+        }
+      }
     },
     "anniversary": {
       "label": "Anniversary",
@@ -937,6 +1342,66 @@
     }
   },
   "templates": {
+    "temple-gopuram": {
+      "name": "Temple Gopuram",
+      "tagline": "Gopuram, brass lamps & temple gold",
+      "description": "A South Indian temple wedding — a carved gopuram crowns your names, brass kuthuvilakku lamps glow below, and maroon and temple gold carry through every section."
+    },
+    "mandap-marigold": {
+      "name": "Marigold Mandap",
+      "tagline": "Marigold strings, kalash & rani pink",
+      "description": "A North Indian shaadi under a marigold-draped mandap — rani pink, saffron and gold, with a kalash and a Ganesh invocation."
+    },
+    "rajwada-palace": {
+      "name": "Rajwada Palace",
+      "tagline": "Jharokha windows, peacocks & royal indigo",
+      "description": "A Rajasthani palace wedding in miniature-painting style — carved jharokha arches, dancing peacocks, indigo and gold leaf."
+    },
+    "lotus-peacock": {
+      "name": "Lotus & Peacock",
+      "tagline": "Lotus pond, peacock feather & flute",
+      "description": "A soft, devotional look inspired by Radha Krishna — lotus pond, a peacock feather and flute, in sage, blush and peacock teal."
+    },
+    "nikah-emerald": {
+      "name": "Emerald Nikah",
+      "tagline": "Mughal arches, star lattice & Bismillah",
+      "description": "An elegant Nikah invitation — pointed Mughal arches, eight-point star lattice and a Bismillah in Arabic calligraphy, in emerald and antique gold."
+    },
+    "walima-moonlit": {
+      "name": "Moonlit Walima",
+      "tagline": "Crescent moon, lanterns & midnight blue",
+      "description": "A night of blessings — a crescent moon, hanging brass lanterns and a domed skyline in midnight navy and gold, for the Nikah and Walima."
+    },
+    "church-stained-glass": {
+      "name": "Stained Glass",
+      "tagline": "Rose window, lilies & church bells",
+      "description": "A church wedding in ivory and gold — a stained-glass rose window, white lilies and a verse from Corinthians for your Holy Matrimony."
+    },
+    "christian-garden": {
+      "name": "Garden Blessing",
+      "tagline": "Olive branch, doves & white roses",
+      "description": "A fresh garden wedding — a dove with an olive branch, white roses and sage greenery, airy and full of grace."
+    },
+    "luxe-editorial": {
+      "name": "Luxe Editorial",
+      "tagline": "Magazine-cover type in black & gold",
+      "description": "High-fashion minimalism — oversized Didone type, ivory paper, black ink and a single line of gold foil, like the cover of a wedding issue."
+    },
+    "watercolor-botanical": {
+      "name": "Watercolour Botanical",
+      "tagline": "Hand-painted blooms on soft paper",
+      "description": "Loose, hand-painted watercolour florals in peach, blush and sage on warm paper — the world's favourite invitation style."
+    },
+    "boho-arch": {
+      "name": "Boho Sun Arch",
+      "tagline": "Terracotta arch, pampas & golden sun",
+      "description": "A modern boho look — your names inside a tall terracotta arch with a rising sun and dried pampas grass."
+    },
+    "velvet-gold": {
+      "name": "Velvet & Gold",
+      "tagline": "Wine velvet, gold filigree & candlelight",
+      "description": "An evening of old-world glamour — wine-red velvet damask, gold filigree and candlelight for a grand reception."
+    },
     "traditional-gold": {
       "name": "Traditional Gold",
       "tagline": "Kolam, brass lamps & temple bells",
@@ -1036,6 +1501,206 @@
       "name": "Event Pass",
       "tagline": "Launches, conferences & office events",
       "description": "A clean event pass on a midnight grid — guests tear off the \"Admit one\" stub to open your invitation, with RSVP built in."
+    },
+    "engagement-sparkle": {
+      "name": "Diamond Sparkle",
+      "tagline": "A ring box, diamonds & champagne gold",
+      "description": "A ring box opens to your names, diamond sparkles drift across a champagne-gold page — made for the moment you said yes."
+    },
+    "engagement-thamboolam": {
+      "name": "Nichayathartham",
+      "tagline": "Thamboolam, betel leaves & mango thoranam",
+      "description": "A Tamil nichayathartham — a mango-leaf thoranam, a thamboolam plate of betel, bananas and turmeric, and banana-leaf green with marigold gold."
+    },
+    "engagement-rose-garden": {
+      "name": "Rose Garden",
+      "tagline": "Watercolour roses & soft greenery",
+      "description": "Hand-painted watercolour roses bloom around your names, with blush and sage washes through every section."
+    },
+    "engagement-save-the-date": {
+      "name": "Save the Date",
+      "tagline": "Editorial type & a gold-foil monogram",
+      "description": "A magazine-style save-the-date: a black cover with your gold-foil monogram lifts away to crisp editorial type."
+    },
+    "engagement-mangni": {
+      "name": "Royal Mangni",
+      "tagline": "Jharokha windows, rani pink & gold",
+      "description": "A Rajasthani ring ceremony — carved jharokha shutters open onto rani pink, peacock teal and gold."
+    },
+    "anniversary-golden-jubilee": {
+      "name": "Golden Jubilee",
+      "tagline": "Candlelight, velvet & 50 golden years",
+      "description": "Velvet curtains part in candlelight for fifty golden years — deep gold and warm light for a grand anniversary."
+    },
+    "anniversary-vintage-reel": {
+      "name": "Vintage Reel",
+      "tagline": "Sepia, film frames & old love letters",
+      "description": "A vintage keepsake — sepia tones, film-strip frames and a sealed letter for a love that has only grown."
+    },
+    "anniversary-wine-roses": {
+      "name": "Wine & Roses",
+      "tagline": "Deep red roses & a velvet curtain",
+      "description": "A romantic evening in wine red — velvet curtains, deep roses and soft gold for an anniversary dinner."
+    },
+    "anniversary-silver-jubilee": {
+      "name": "Silver Jubilee",
+      "tagline": "Silver foil, stars & 25 years",
+      "description": "Twenty-five years in silver — a foil card lifts to reveal starlight sparkles on cool silver and white."
+    },
+    "anniversary-shashtiabdapoorthi": {
+      "name": "Shashtiabdapoorthi",
+      "tagline": "Temple gopuram & the 60th blessing",
+      "description": "The sacred 60th — a temple gopuram, brass lamps and kolam for Shashtiabdapoorthi, with the family's blessings."
+    },
+    "valentine-love-letter": {
+      "name": "Love Letter",
+      "tagline": "A sealed envelope & airmail stripes",
+      "description": "An airmail love letter — a red wax seal breaks open to your names, with hearts and handwriting throughout."
+    },
+    "valentine-neon-hearts": {
+      "name": "Neon Hearts",
+      "tagline": "Glowing pink neon after dark",
+      "description": "A night-out invite in hot-pink neon — a spotlight finds your names and glowing hearts flicker on."
+    },
+    "valentine-cupid-clouds": {
+      "name": "Cupid Clouds",
+      "tagline": "Pastel clouds, stars & a scratch-off heart",
+      "description": "Soft pastel clouds and tiny stars — guests scratch a heart to reveal the date."
+    },
+    "valentine-polaroid": {
+      "name": "Polaroid Love",
+      "tagline": "Instant photos, tape & a gift box",
+      "description": "Taped-up instant photos and a gift box that pops open — playful and warm, like a scrapbook of you two."
+    },
+    "valentine-red-roses": {
+      "name": "Red Roses",
+      "tagline": "A bouquet of deep red roses",
+      "description": "Classic romance — deep red roses bloom open around your names on blush and crimson."
+    },
+    "proposal-starry-night": {
+      "name": "Starry Night",
+      "tagline": "Moon, lanterns & a sky full of stars",
+      "description": "Lanterns rise into a violet night sky and the moon lights your names — for a proposal under the stars."
+    },
+    "proposal-candlelight": {
+      "name": "Candlelight Proposal",
+      "tagline": "Velvet, candles & a quiet question",
+      "description": "Velvet curtains part on a candlelit table — warm, intimate and just for two."
+    },
+    "proposal-will-you": {
+      "name": "Will You?",
+      "tagline": "A handwritten note & a scratch-off answer",
+      "description": "A handwritten note that asks the big question — scratch the card to reveal the answer."
+    },
+    "proposal-beach-sunset": {
+      "name": "Beach Sunset",
+      "tagline": "A boho arch, the sea & a setting sun",
+      "description": "A boho arch by the sea opens as the sun sets — coral, peach and sky blue for a beach proposal."
+    },
+    "proposal-rose-gold-ring": {
+      "name": "Rose Gold Ring",
+      "tagline": "A ring box & rose-gold sparkle",
+      "description": "A velvet ring box opens in rose gold — sparkles and blush for the question of a lifetime."
+    },
+    "birthday-balloon-party": {
+      "name": "Balloon Party",
+      "tagline": "A bunch of balloons floats away",
+      "description": "A bunch of bright balloons floats up and away to reveal the birthday star — bright, bubbly and fun."
+    },
+    "birthday-neon-night": {
+      "name": "Neon Night",
+      "tagline": "Glow-in-the-dark party vibes",
+      "description": "A late-night party in cyan and magenta neon — a spotlight sweeps in and the stars flicker on."
+    },
+    "birthday-kids-fiesta": {
+      "name": "Kids Fiesta",
+      "tagline": "Crayons, stars & a surprise gift box",
+      "description": "A crayon-bright party for little ones — a gift box pops open with stars, squiggles and confetti."
+    },
+    "birthday-golden-milestone": {
+      "name": "Golden Milestone",
+      "tagline": "Black & gold for the big numbers",
+      "description": "For 30, 50 or 75 — a black card with a gold-foil monogram lifts away to an elegant golden evening."
+    },
+    "birthday-cake-candles": {
+      "name": "Cake & Candles",
+      "tagline": "Make a wish, blow out the candles",
+      "description": "A frosted cake with glowing candles — the tap blows them out and the party begins."
+    },
+    "housewarming-griha-pravesam": {
+      "name": "Griha Pravesam",
+      "tagline": "A decorated door, kolam & thoranam",
+      "description": "A traditional griha pravesam — a mango-leaf thoranam over a decorated doorway, kolam at the threshold and a lit lamp."
+    },
+    "housewarming-new-keys": {
+      "name": "New Keys",
+      "tagline": "Clean lines & a key to our new door",
+      "description": "A modern housewarming — clean type, a key tag and fresh teal, opening like a new front door."
+    },
+    "housewarming-boho-nest": {
+      "name": "Boho Nest",
+      "tagline": "Terracotta, pampas & a sunlit arch",
+      "description": "A cosy boho housewarming — a terracotta arch opens as the sun rises, with pampas grass and warm neutrals."
+    },
+    "housewarming-green-home": {
+      "name": "Green Home",
+      "tagline": "Leaves, plants & fresh air",
+      "description": "Fresh and leafy — potted plants and green garlands bloom open for a bright, airy housewarming."
+    },
+    "housewarming-vastu-lamp": {
+      "name": "Vastu & Lamp",
+      "tagline": "Temple gold, brass lamps & a vastu puja",
+      "description": "A sacred housewarming — a gopuram, brass lamps and kolam for the vastu puja and first lamp lighting."
+    },
+    "baby-twinkle-star": {
+      "name": "Twinkle Little Star",
+      "tagline": "Clouds, stars & a rocking cradle",
+      "description": "A dreamy baby shower — a cradle rocks among pastel clouds while little stars twinkle."
+    },
+    "baby-valaikaappu": {
+      "name": "Valaikaappu",
+      "tagline": "Glass bangles, marigolds & blessings",
+      "description": "A Tamil valaikaappu — a marigold curtain parts to glass bangles in rani pink, gold and green."
+    },
+    "baby-teddy-hug": {
+      "name": "Teddy Hug",
+      "tagline": "A teddy bear & a gift box of love",
+      "description": "A soft teddy bear peeks out of a gift box — powder blue, peach and cuddles."
+    },
+    "baby-naming-lotus": {
+      "name": "Naming Ceremony",
+      "tagline": "A lotus opens for a new name",
+      "description": "A gentle namakaranam — a lotus blooms open, with soft pink, teal and gold for the baby's first name."
+    },
+    "baby-shower-balloons": {
+      "name": "Baby Balloons",
+      "tagline": "Pastel balloons float away",
+      "description": "Pastel balloons drift up to reveal the mom-to-be — soft pink, blue and butter yellow."
+    },
+    "corporate-gala-night": {
+      "name": "Gala Night",
+      "tagline": "Navy velvet, gold & a spotlight",
+      "description": "A black-tie gala — a spotlight sweeps across navy velvet and gold for an evening to remember."
+    },
+    "corporate-tech-launch": {
+      "name": "Tech Launch",
+      "tagline": "Grid lines, gradients & a launch",
+      "description": "A product launch in indigo and cyan — a split screen opens on a clean grid, built for keynotes and demos."
+    },
+    "corporate-conference": {
+      "name": "Conference Pass",
+      "tagline": "A tear-off ticket & clean type",
+      "description": "A conference pass — a ticket tears open to crisp blue type, schedule and venue at a glance."
+    },
+    "corporate-awards-night": {
+      "name": "Awards Night",
+      "tagline": "Black, gold & a stage curtain",
+      "description": "The curtain rises on an awards night — black and gold with sparkles for every winner."
+    },
+    "corporate-offsite": {
+      "name": "Team Offsite",
+      "tagline": "Sunrise, trails & fresh air",
+      "description": "A team offsite at sunrise — a sunlit arch opens onto greens and sky blue for a day outdoors."
     }
   },
   "defaultContent": {
@@ -2228,6 +2893,309 @@
         {
           "question": "Is there parking?",
           "answer": "Free parking is available in the convention centre basement."
+        }
+      ]
+    },
+    "hindu-north": {
+      "brideName": "Ananya",
+      "groomName": "Rohan",
+      "ceremonyVenueName": "Rambagh Palace",
+      "ceremonyVenueAddress": "Bhawani Singh Road, Jaipur",
+      "receptionVenueName": "Jai Mahal Palace",
+      "receptionVenueAddress": "Jacob Road, Civil Lines, Jaipur",
+      "groomParents": "Mr. & Mrs. Vikram Singh Rathore",
+      "brideParents": "Mr. & Mrs. Rajesh Sharma",
+      "story": "Ananya and Rohan met at a friend's Diwali party in Delhi, argued about the best chaat in Chandni Chowk, and have been settling it together ever since. After five years of long drives, family dinners and one sunset proposal at Nahargarh Fort, they're ready to take their pheras in the Pink City. Come dance at the sangeet, bless us at the mandap, and celebrate with the families who made us who we are.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Festive Indian wear — lehengas, sarees, sherwanis and kurtas. Pastels for the day, jewel tones for the evening."
+        },
+        {
+          "question": "Is there a place to stay?",
+          "answer": "We've reserved rooms at the venue for out-of-town guests — just let us know when you RSVP."
+        }
+      ],
+      "travel": {
+        "city": "Jaipur",
+        "cityCode": "JAI",
+        "airports": [
+          {
+            "code": "JAI",
+            "name": "Jaipur",
+            "distance": "12 km"
+          },
+          {
+            "code": "DEL",
+            "name": "Delhi",
+            "distance": "270 km"
+          },
+          {
+            "code": "UDR",
+            "name": "Udaipur",
+            "distance": "395 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Delhi",
+            "trains": [
+              {
+                "number": "12015",
+                "name": "Ajmer Shatabdi",
+                "fromStation": "New Delhi",
+                "departs": "6:10 AM",
+                "toStation": "Jaipur Jn",
+                "arrives": "10:35 AM",
+                "frequency": "Daily"
+              },
+              {
+                "number": "12986",
+                "name": "Double Decker Express",
+                "fromStation": "Delhi Sarai Rohilla",
+                "departs": "5:35 PM",
+                "toStation": "Jaipur Jn",
+                "arrives": "10:05 PM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Mumbai",
+            "trains": [
+              {
+                "number": "12955",
+                "name": "Jaipur Superfast",
+                "fromStation": "Mumbai Central",
+                "departs": "6:40 PM",
+                "toStation": "Jaipur Jn",
+                "arrives": "1:05 PM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Amer Fort",
+          "description": "A hilltop fort of honey sandstone and mirrored halls overlooking Maota Lake.",
+          "distance": "11 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Hawa Mahal",
+          "description": "The Palace of Winds — 953 latticed windows built so royal ladies could watch the street below.",
+          "distance": "5 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "City Palace",
+          "description": "Still home to Jaipur's royal family, with courtyards, museums and the famous Peacock Gate.",
+          "distance": "5 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Nahargarh Fort",
+          "description": "Sunset over the whole Pink City from the ramparts on the Aravalli ridge.",
+          "distance": "14 km from venue",
+          "scene": "nature"
+        }
+      ]
+    },
+    "muslim": {
+      "brideName": "Ayesha",
+      "groomName": "Imran",
+      "ceremonyVenueName": "Al-Noor Nikah Hall",
+      "ceremonyVenueAddress": "Road No. 12, Banjara Hills, Hyderabad",
+      "receptionVenueName": "Falaknuma Palace",
+      "receptionVenueAddress": "Engine Bowli, Falaknuma, Hyderabad",
+      "groomParents": "Mr. & Mrs. Mohammed Farooq Khan",
+      "brideParents": "Mr. & Mrs. Syed Anwar Hussain",
+      "story": "Ayesha and Imran first met at a family iftar in Hyderabad, where a shared plate of haleem turned into a conversation that never really ended. With the duas of our parents and the blessings of Allah, we begin our journey together. Join us for the Nikah, share in the joy of the Walima, and keep us in your prayers.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Modest festive wear — sherwanis, kurtas, shararas and abayas are all perfect."
+        },
+        {
+          "question": "Is there a prayer space?",
+          "answer": "Yes, separate prayer areas for men and women are available at both venues."
+        }
+      ],
+      "travel": {
+        "city": "Hyderabad",
+        "cityCode": "HYD",
+        "airports": [
+          {
+            "code": "HYD",
+            "name": "Hyderabad",
+            "distance": "30 km"
+          },
+          {
+            "code": "VGA",
+            "name": "Vijayawada",
+            "distance": "275 km"
+          },
+          {
+            "code": "BLR",
+            "name": "Bengaluru",
+            "distance": "570 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "12759",
+                "name": "Charminar Express",
+                "fromStation": "Chennai Central",
+                "departs": "6:10 PM",
+                "toStation": "Hyderabad Deccan",
+                "arrives": "8:00 AM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Bengaluru",
+            "trains": [
+              {
+                "number": "12785",
+                "name": "Kacheguda Express",
+                "fromStation": "KSR Bengaluru",
+                "departs": "7:05 PM",
+                "toStation": "Kacheguda",
+                "arrives": "7:40 AM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "Charminar",
+          "description": "The 16th-century monument at the heart of the old city, ringed by the bangle shops of Laad Bazaar.",
+          "distance": "6 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Chowmahalla Palace",
+          "description": "The Nizams' palace of four courtyards, chandeliers and vintage cars.",
+          "distance": "5 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Golconda Fort",
+          "description": "A hilltop fort famed for its acoustics — a clap at the gate is heard at the top.",
+          "distance": "11 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Hussain Sagar",
+          "description": "A heart-shaped lake with a monolithic Buddha — lovely at sunset.",
+          "distance": "4 km from venue",
+          "scene": "nature"
+        }
+      ]
+    },
+    "christian": {
+      "brideName": "Anna",
+      "groomName": "Joseph",
+      "ceremonyVenueName": "St. Mary's Cathedral Basilica",
+      "ceremonyVenueAddress": "Broadway, Ernakulam, Kochi",
+      "receptionVenueName": "Bolgatty Palace",
+      "receptionVenueAddress": "Mulavukad, Kochi",
+      "groomParents": "Mr. & Mrs. George Varghese",
+      "brideParents": "Mr. & Mrs. Thomas Mathew",
+      "story": "Anna and Joseph met in the church choir in Kochi and have been singing the same song ever since. By God's grace and with the love of our families, we will be joined in Holy Matrimony. We would be so glad to have you with us at the altar, and afterwards to celebrate by the backwaters.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Formal wear — suits, dresses and sarees. Please keep shoulders covered in the church."
+        },
+        {
+          "question": "What time should I arrive?",
+          "answer": "Please be seated in the church fifteen minutes before the service begins."
+        }
+      ],
+      "travel": {
+        "city": "Kochi",
+        "cityCode": "COK",
+        "airports": [
+          {
+            "code": "COK",
+            "name": "Kochi",
+            "distance": "32 km"
+          },
+          {
+            "code": "TRV",
+            "name": "Thiruvananthapuram",
+            "distance": "210 km"
+          },
+          {
+            "code": "CJB",
+            "name": "Coimbatore",
+            "distance": "185 km"
+          }
+        ],
+        "routes": [
+          {
+            "from": "Bengaluru",
+            "trains": [
+              {
+                "number": "12677",
+                "name": "Ernakulam Intercity",
+                "fromStation": "KSR Bengaluru",
+                "departs": "6:10 AM",
+                "toStation": "Ernakulam Jn",
+                "arrives": "4:55 PM",
+                "frequency": "Daily"
+              }
+            ]
+          },
+          {
+            "from": "Chennai",
+            "trains": [
+              {
+                "number": "12623",
+                "name": "Trivandrum Mail",
+                "fromStation": "Chennai Central",
+                "departs": "7:45 PM",
+                "toStation": "Ernakulam Jn",
+                "arrives": "8:05 AM",
+                "frequency": "Daily"
+              }
+            ]
+          }
+        ]
+      },
+      "places": [
+        {
+          "title": "St. Francis Church",
+          "description": "India's oldest European church, in the lanes of Fort Kochi.",
+          "distance": "12 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Chinese Fishing Nets",
+          "description": "Giant cantilevered nets on the Fort Kochi shore — best at sunset.",
+          "distance": "12 km from venue",
+          "scene": "beach"
+        },
+        {
+          "title": "Mattancherry Palace",
+          "description": "The Dutch Palace, with some of Kerala's finest temple murals.",
+          "distance": "10 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Vembanad Backwaters",
+          "description": "A calm houseboat ride through coconut-lined canals.",
+          "distance": "45 km from venue",
+          "scene": "nature"
         }
       ]
     }

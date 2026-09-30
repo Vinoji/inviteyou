@@ -55,7 +55,8 @@ function rollForward(iso: string): string {
 
 export function getDefaultInvitationData(templateId: string, t: TFunc): InvitationData {
   const template = getTemplateConfig(templateId);
-  const id = template.id;
+  // Sample content can be shared between templates (TemplateConfig.seed).
+  const id = template.seed ?? template.id;
   const dates = DEFAULT_CONTENT_DATES[id] ?? DEFAULT_CONTENT_DATES["traditional-gold"];
   const faq = t.raw(`${id}.faq`) as FaqItem[];
   // Only wedding templates use the palace layout that renders the Travel
@@ -70,7 +71,7 @@ export function getDefaultInvitationData(templateId: string, t: TFunc): Invitati
     name ? [{ relation: "parents", name, label: "" }] : [];
 
   return {
-    templateId: id,
+    templateId: template.id,
     accentColor: template.defaultAccent,
     fontPairing: template.defaultFont,
     photos: [],

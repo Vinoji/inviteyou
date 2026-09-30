@@ -189,7 +189,7 @@ export default function Editor({
   const uiLocale: ContentLocale = useLocale() === "ta" ? "ta" : "en";
   const timeZone = useTimeZone();
   const template = getTemplateMeta(templateId, tTemplates);
-  const category = getCategoryMeta(template.category, tCategories);
+  const category = getCategoryMeta(template.category, tCategories, templateId);
   const isEditMode = Boolean(editSlug && editToken);
 
   const [draftId, setDraftId] = useState(() => generateDraftId());

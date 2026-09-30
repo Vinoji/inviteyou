@@ -43,7 +43,7 @@ export default async function Image({
     getFormatter({ locale }),
   ]);
   const template = getTemplateConfig(data?.templateId ?? "traditional-gold");
-  const category = getCategoryMeta(template.category, tCategories);
+  const category = getCategoryMeta(template.category, tCategories, template.id);
   const isWedding = template.category === "wedding";
   const p = getRoyalPalette(isWedding ? template.id : "");
   const accent = data?.accentColor || template.defaultAccent;

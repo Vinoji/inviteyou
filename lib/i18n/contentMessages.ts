@@ -2,6 +2,7 @@ import "server-only";
 import { getMessages } from "next-intl/server";
 import type { AbstractIntlMessages } from "next-intl";
 import type { ContentLocale } from "@/lib/types";
+import { getTemplateConfig } from "@/lib/templates";
 
 /** What the invitation itself renders with (InvitationView and everything
  * under it) — independent of the page's UI language. */
@@ -21,8 +22,10 @@ export async function getContentMessages(
   const picked: Record<string, AbstractIntlMessages> = {};
   for (const ns of namespaces) {
     if (ns === "defaultContent" && templateId) {
-      const seed = all.defaultContent?.[templateId];
-      picked.defaultContent = seed ? { [templateId]: seed } : {};
+      // The template's own sample content, or the one it shares (TemplateConfig.seed).
+      const key = getTemplateConfig(templateId).seed ?? templateId;
+      const seed = all.defaultContent?.[key];
+      picked.defaultContent = seed ? { [key]: seed } : {};
     } else if (all[ns]) {
       picked[ns] = all[ns];
     }

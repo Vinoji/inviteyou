@@ -11,6 +11,9 @@ import {
   Kavivanar,
   Meera_Inimai,
   Catamaran,
+  Bodoni_Moda,
+  Jost,
+  Amiri,
 } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
@@ -86,6 +89,28 @@ const catamaran = Catamaran({
   weight: ["400", "500", "600"],
 });
 
+// Only some templates use these (luxe-didone pairing, the Arabic
+// invocation of the Nikah styles) — not preloaded, so other pages don't
+// download them.
+const bodoni = Bodoni_Moda({
+  variable: "--font-bodoni",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  preload: false,
+});
+const jost = Jost({
+  variable: "--font-jost",
+  subsets: ["latin"],
+  weight: ["300", "400", "500"],
+  preload: false,
+});
+const amiri = Amiri({
+  variable: "--font-amiri",
+  subsets: ["arabic"],
+  weight: ["400", "700"],
+  preload: false,
+});
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -147,6 +172,9 @@ const fontVariables = [
   kavivanar.variable,
   meeraInimai.variable,
   catamaran.variable,
+  bodoni.variable,
+  jost.variable,
+  amiri.variable,
 ].join(" ");
 
 export default async function RootLayout({
