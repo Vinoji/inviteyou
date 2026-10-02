@@ -3,9 +3,10 @@
  * `audio.volume`; iOS ignores it (the property stays at 1 and only the
  * hardware buttons change loudness), so there the element is routed
  * through a Web Audio gain node instead — only for songs served from this
- * site (the /music library): a cross-origin file routed that way plays
- * silent unless its server sends CORS headers, which our Firebase Storage
- * bucket doesn't. Uploaded songs on iOS therefore follow the device volume.
+ * site: a cross-origin file routed that way plays silent unless its server
+ * sends CORS headers, which our Firebase Storage bucket doesn't. So on iOS
+ * AudioToggle plays uploaded songs through the same-origin /api/media proxy
+ * (lib/media/viaSite).
  */
 export const DEFAULT_MUSIC_VOLUME = 0.25;
 

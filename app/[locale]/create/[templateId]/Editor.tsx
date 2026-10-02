@@ -34,6 +34,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { MAX_AUDIO_INPUT, compressAudio } from "@/lib/media/compressAudio";
 import { compressPhoto } from "@/lib/media/compressImage";
+import { viaSite } from "@/lib/media/viaSite";
 import { MAX_PHOTOS, photoShape, type PhotoShape } from "@/lib/photoPlan";
 import { getTemplateMeta, getTemplatesByCategory } from "@/lib/i18n/templates";
 import { TEMPLATE_STYLE_KEYS, changedFields, clearDraft, loadDraft, saveDraft } from "@/lib/draftStore";
@@ -683,7 +684,7 @@ export default function Editor({
     let file = photoOriginals.current.get(url);
     if (!file) {
       try {
-        const res = await fetch(url);
+        const res = await fetch(viaSite(url));
         if (!res.ok) throw new Error(String(res.status));
         file = new File([await res.blob()], "photo.jpg", { type: "image/jpeg" });
       } catch (err) {

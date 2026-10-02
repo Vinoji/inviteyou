@@ -1,11 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Music, Volume1, Volume2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { INTRO_OPENED_EVENT, MUSIC_STATE_EVENT, MUSIC_TOGGLE_EVENT } from "./intros/events";
 import MotionToggle from "./MotionToggle";
-import { saveMusicVolume, savedMusicVolume, setMusicVolume } from "@/lib/media/volume";
+import { saveMusicVolume, savedMusicVolume, setMusicVolume, volumeLocked } from "@/lib/media/volume";
+import { viaSite } from "@/lib/media/viaSite";
+
+const noSubscribe = () => () => {};
 
 const GESTURES = ["pointerdown", "keydown", "touchend"] as const;
 
@@ -45,6 +48,11 @@ export default function AudioToggle({
   const [volumeOpen, setVolumeOpen] = useState(false);
   const volumeBox = useRef<HTMLDivElement>(null);
   const usingFile = Boolean(src);
+  // On iOS the volume goes through Web Audio, which needs the song served
+  // from our own origin (lib/media/viaSite). False on the server and during
+  // hydration, so the markup matches.
+  const locked = useSyncExternalStore(noSubscribe, volumeLocked, () => false);
+  const playSrc = src && locked ? viaSite(src) : src;
   const playing = filePlaying;
 
   useEffect(() => {
@@ -147,9 +155,9 @@ export default function AudioToggle({
         <audio
           // A fresh element per song: on iOS a library song is wired into
           // a Web Audio graph for volume, which an uploaded song can't use.
-          key={src}
+          key={playSrc}
           ref={audioRef}
-          src={src}
+          src={playSrc}
           loop
           preload="metadata"
           onPause={() => setFilePlaying(false)}
