@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Music } from "lucide-react";
+import { Music, Volume1, Volume2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { INTRO_OPENED_EVENT, MUSIC_STATE_EVENT, MUSIC_TOGGLE_EVENT } from "./intros/events";
 import MotionToggle from "./MotionToggle";
+import { saveMusicVolume, savedMusicVolume, setMusicVolume } from "@/lib/media/volume";
 
 const GESTURES = ["pointerdown", "keydown", "touchend"] as const;
 
@@ -15,7 +16,9 @@ const GESTURES = ["pointerdown", "keydown", "touchend"] as const;
  * anywhere on the page (or opening the intro) — browsers block sound
  * before any interaction. A guest who pauses it stays paused.
  *
- * Without a track there's no music button at all.
+ * It plays at 25% by default; the small speaker beside the button opens a
+ * volume slider (remembered on the device, and working on iPhones too —
+ * see lib/media/volume). Without a track there's no music button at all.
  *
  * `preview` is the editor's copy: it sits in the corner of the preview
  * pane, starts only on taps inside the preview (`[data-preview-root]`),
@@ -36,6 +39,11 @@ export default function AudioToggle({
   const audioRef = useRef<HTMLAudioElement>(null);
   const [filePlaying, setFilePlaying] = useState(false);
   const userPaused = useRef(false);
+  // Read once on the client; the slider only renders after a tap.
+  const [volume, setVolume] = useState(savedMusicVolume);
+  const volumeRef = useRef(volume);
+  const [volumeOpen, setVolumeOpen] = useState(false);
+  const volumeBox = useRef<HTMLDivElement>(null);
   const usingFile = Boolean(src);
   const playing = filePlaying;
 
@@ -59,11 +67,12 @@ export default function AudioToggle({
     const disarm = () => {
       armed = false;
       GESTURES.forEach((g) => window.removeEventListener(g, onGesture, true));
-      window.removeEventListener(INTRO_OPENED_EVENT, tryPlay);
+      window.removeEventListener(INTRO_OPENED_EVENT, onIntro);
     };
-    function tryPlay() {
+    function tryPlay(fromGesture = false) {
       const audio = audioRef.current;
       if (!armed || userPaused.current || !audio || !audio.paused) return;
+      setMusicVolume(audio, volumeRef.current, fromGesture);
       audio
         .play()
         .then(() => {
@@ -76,11 +85,12 @@ export default function AudioToggle({
     }
     function onGesture(e: Event) {
       if (preview && !(e.target as Element | null)?.closest?.("[data-preview-root]")) return;
-      tryPlay();
+      tryPlay(true);
     }
+    const onIntro = () => tryPlay(true);
     tryPlay();
     GESTURES.forEach((g) => window.addEventListener(g, onGesture, true));
-    window.addEventListener(INTRO_OPENED_EVENT, tryPlay);
+    window.addEventListener(INTRO_OPENED_EVENT, onIntro);
     return disarm;
   }, [usingFile, src, preview]);
 
@@ -93,6 +103,7 @@ export default function AudioToggle({
       setFilePlaying(false);
     } else {
       userPaused.current = false;
+      setMusicVolume(audio, volumeRef.current, true);
       audio
         .play()
         .then(() => setFilePlaying(true))
@@ -102,6 +113,22 @@ export default function AudioToggle({
         });
     }
   }
+  function changeVolume(v: number) {
+    setVolume(v);
+    volumeRef.current = v;
+    saveMusicVolume(v);
+    if (audioRef.current) setMusicVolume(audioRef.current, v, true);
+  }
+
+  useEffect(() => {
+    if (!volumeOpen) return;
+    const onDown = (e: PointerEvent) => {
+      if (!volumeBox.current?.contains(e.target as Node)) setVolumeOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [volumeOpen]);
+
   const toggleRef = useRef(toggle);
   useEffect(() => {
     toggleRef.current = toggle;
@@ -118,6 +145,9 @@ export default function AudioToggle({
     <>
       {usingFile && (
         <audio
+          // A fresh element per song: on iOS a library song is wired into
+          // a Web Audio graph for volume, which an uploaded song can't use.
+          key={src}
           ref={audioRef}
           src={src}
           loop
@@ -127,6 +157,40 @@ export default function AudioToggle({
         />
       )}
       {!preview && <MotionToggle accentColor={accentColor} aboveMusic={usingFile} />}
+      {usingFile && (
+        <div
+          ref={volumeBox}
+          className={`${preview ? "absolute right-[4.25rem] bottom-5" : "fixed right-[5.25rem] bottom-6"} z-40`}
+        >
+          {volumeOpen && (
+            <div className="absolute right-0 bottom-full mb-2 w-44 rounded-2xl bg-white/95 p-3 shadow-lg backdrop-blur">
+              <label className="flex flex-col gap-1 text-xs font-semibold" style={{ color: accentColor }}>
+                {t("volume")}
+                <input
+                  type="range"
+                  min={0.05}
+                  max={1}
+                  step={0.05}
+                  value={volume}
+                  onChange={(e) => changeVolume(Number(e.target.value))}
+                  className="w-full"
+                  style={{ accentColor }}
+                />
+              </label>
+            </div>
+          )}
+          <button
+            type="button"
+            onClick={() => setVolumeOpen((o) => !o)}
+            aria-expanded={volumeOpen}
+            aria-label={t("volume")}
+            style={{ color: accentColor }}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur active:scale-90"
+          >
+            {volume < 0.5 ? <Volume1 size={17} /> : <Volume2 size={17} />}
+          </button>
+        </div>
+      )}
       {usingFile && (
         <button
           onClick={toggle}

@@ -639,7 +639,8 @@
       "pause": "Pause background music",
       "play": "Play background music",
       "reduceMotion": "Reduce motion",
-      "playMotion": "Turn animations on"
+      "playMotion": "Turn animations on",
+      "volume": "Music volume"
     },
     "carousel": {
       "previous": "Previous photo",

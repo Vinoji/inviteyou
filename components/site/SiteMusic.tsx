@@ -8,7 +8,7 @@ import { MUSIC_LIBRARY } from "@/lib/mediaLibrary";
 /** The site's theme music: Krishna flute, looping. */
 const TRACK = MUSIC_LIBRARY.find((t) => t.id === "krishna-flute")!.src;
 /** Low-to-medium by default; visitors can raise it with the slider. */
-const DEFAULT_VOLUME = 0.35;
+const DEFAULT_VOLUME = 0.25;
 const PREF_KEY = "namma:site-music";
 const VOLUME_KEY = "namma:site-music-volume";
 const GESTURES = ["pointerdown", "keydown", "touchend"] as const;
