@@ -5,6 +5,7 @@ import { Upload } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebase";
+import { compressPhoto } from "@/lib/media/compressImage";
 import { getFontPairing } from "@/lib/fontPairings";
 import SectionDivider from "./SectionDivider";
 import Carousel from "./Carousel";
@@ -43,19 +44,21 @@ export default function GuestGallery({
       setError(t("errImageFile"));
       return;
     }
-    if (file.size > 8 * 1024 * 1024) {
-      setError(t("errImageSize"));
-      return;
-    }
     setError(null);
     setUploading(true);
     try {
+      // Phone photos are often 4-12 MB; compressed they're a few hundred KB.
+      const photo = await compressPhoto(file);
+      if (photo.size > 8 * 1024 * 1024) {
+        setError(t("errImageSize"));
+        return;
+      }
       const id =
         typeof crypto !== "undefined" && "randomUUID" in crypto
           ? crypto.randomUUID()
           : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
       const storageRef = ref(storage, `invitations/${slug}/guest-photos/${id}.jpg`);
-      await uploadBytes(storageRef, file, { contentType: file.type });
+      await uploadBytes(storageRef, photo, { contentType: photo.type || file.type });
       const url = await getDownloadURL(storageRef);
 
       const res = await fetch(`/api/guest-photos/${slug}`, {

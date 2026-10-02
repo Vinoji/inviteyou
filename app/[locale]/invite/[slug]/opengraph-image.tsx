@@ -8,6 +8,8 @@ import { parseIsoDate } from "@/lib/calendar";
 import { resolveMonogram } from "@/lib/monogram";
 import { ogFonts, tamilVisualOrder as v } from "@/lib/ogFonts";
 import type { InvitationData } from "@/lib/types";
+import { isLibraryPhoto } from "@/lib/mediaLibrary";
+import { SITE } from "@/lib/site";
 
 // Uses the Admin SDK (Node-only APIs), so this must run on the Node runtime
 // rather than the default Edge runtime for metadata image routes.
@@ -58,11 +60,16 @@ export default async function Image({
     ? format.dateTime(day, { weekday: "long", day: "numeric", month: "long", year: "numeric" })
     : "";
   const venue = [data?.ceremonyVenue?.name, data?.travel?.city].filter(Boolean).join(" · ");
-  // Only our own Storage: this URL is fetched by the server to draw the
-  // image, and older invitations saved before lib/sanitize checked hosts.
-  const photo = data?.photos?.find(
-    (u) => typeof u === "string" && u.startsWith("https://firebasestorage.googleapis.com/")
+  // Only our own Storage or library JPEGs: this URL is fetched by the
+  // server to draw the image, and older invitations saved before
+  // lib/sanitize checked hosts. (Library WebPs are skipped — the renderer
+  // only reads JPEG/PNG.)
+  const first = data?.photos?.find(
+    (u) =>
+      typeof u === "string" &&
+      (u.startsWith("https://firebasestorage.googleapis.com/") || (isLibraryPhoto(u) && u.endsWith(".jpg")))
   );
+  const photo = first?.startsWith("/") ? `${SITE.url}${first}` : first;
 
   // Every string drawn goes through v() — Tamil needs visual reordering.
   const eyebrow = v(t("youreInvited"));

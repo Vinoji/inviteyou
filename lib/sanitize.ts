@@ -13,9 +13,11 @@ import type {
 } from "./types";
 import { withDefaultSections, PLACE_SCENES, FAMILY_RELATIONS, MAX_FAMILY_MEMBERS } from "./types";
 import { FONT_PAIRINGS } from "./fontPairings";
+import { isLibraryPhoto, isLibraryTrack } from "./mediaLibrary";
 
 /** A download URL from this app's Firebase Storage — the only place photos
- * and music are uploaded to. Anything else is dropped: photo URLs are
+ * and music are uploaded to (lib/mediaLibrary paths are allowed separately).
+ * Anything else is dropped: photo URLs are
  * fetched server-side (share preview images), so an arbitrary address
  * would let anyone make the server request it. */
 function isStorageUrl(v: string): boolean {
@@ -71,16 +73,16 @@ export function sanitizeAccentColor(c: unknown): string {
 
 export function sanitizePhotos(p: unknown): string[] {
   if (!Array.isArray(p)) return [];
-  return p.filter((x): x is string => typeof x === "string" && x.length <= 1000 && isStorageUrl(x)).slice(0, 6);
+  return p.filter((x): x is string => typeof x === "string" && x.length <= 1000 && (isStorageUrl(x) || isLibraryPhoto(x))).slice(0, 6);
 }
 
 export function sanitizeParentsLine(v: unknown): string {
   return typeof v === "string" ? v.slice(0, 150) : "";
 }
 
-/** A Storage download URL, or "" for no background track. */
+/** A Storage download URL or a library track, or "" for no background track. */
 export function sanitizeBackgroundMusic(v: unknown): string {
-  return typeof v === "string" && v.length <= 1000 && isStorageUrl(v) ? v : "";
+  return typeof v === "string" && v.length <= 1000 && (isStorageUrl(v) || isLibraryTrack(v)) ? v : "";
 }
 
 export function sanitizeAttendingSide(v: unknown): "groom" | "bride" | "friend" | undefined {

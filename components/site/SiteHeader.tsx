@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Menu, Sparkles, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import SettingsMenu from "./SettingsMenu";
+import SiteMusic from "./SiteMusic";
 import AppToolbar from "../AppToolbar";
 import useSafeReducedMotion from "../invite/useSafeReducedMotion";
 import s from "./site.module.css";
@@ -175,10 +176,12 @@ export default function SiteHeader() {
           </Link>
         </div>
 
+        <SiteMusic className="ml-auto md:ml-2" />
+
         <button
           type="button"
           onClick={() => setOpenFor(open ? null : pathname)}
-          className="ml-auto flex h-10 w-10 items-center justify-center rounded-full border border-[#e8b04a]/50 text-[#ffe9b8] md:hidden"
+          className="ml-2 flex h-10 w-10 items-center justify-center rounded-full border border-[#e8b04a]/50 text-[#ffe9b8] md:hidden"
           aria-expanded={open}
           aria-controls="site-menu"
           aria-label={open ? t("closeMenu") : t("openMenu")}

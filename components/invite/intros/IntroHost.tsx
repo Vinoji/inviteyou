@@ -109,13 +109,14 @@ export default function IntroHost({
 
   const onOpen = useCallback(() => {
     setOpen(true);
+    // The music starts on this tap — in the editor preview too.
+    window.dispatchEvent(new Event(INTRO_OPENED_EVENT));
     if (preview) return;
     try {
       sessionStorage.setItem(storageKey, "1");
     } catch {
       // Ignore — worst case the intro plays again on the next load.
     }
-    window.dispatchEvent(new Event(INTRO_OPENED_EVENT));
   }, [preview, storageKey]);
 
   const onDone = useCallback(() => {

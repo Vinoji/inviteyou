@@ -108,3 +108,63 @@ fireworks) is added in code.
 | baby-shower-balloons | `shoes-hand` | [Pexels photo 37621032](https://www.pexels.com/photo/close-up-of-baby-pink-shoes-with-bows-37621032/) | Opening and hero |
 | baby-shower-balloons | `nursery` | [Pexels photo 19015553](https://www.pexels.com/photo/hand-holding-baby-shoes-19015553/) | Behind the shower details |
 | baby-shower-balloons | `booties` | [Adorable Baby Booties on Nature Background](https://www.pexels.com/photo/adorable-baby-booties-on-nature-background-31769696/) | Closing |
+
+## Editor library (lib/mediaLibrary.ts)
+
+Ready-made photos and songs offered in the editor. Photos are stored as
+1800px JPEG in `public/library/photos/` with 360px WebP thumbnails in
+`public/library/thumbs/`; songs are re-encoded to 128 kbps MP3 in
+`public/music/` (loudness-normalised, capped at 3 minutes, faded out).
+Downloaded 2026-10-02.
+
+### Photos — Pexels (Pexels License: free commercial use, no attribution required)
+
+| File | Pexels photo |
+|---|---|
+| wedding-henna-ritual | https://www.pexels.com/photo/38259809/ |
+| wedding-henna-hands | https://www.pexels.com/photo/34479816/ |
+| wedding-jasmine-bride | https://www.pexels.com/photo/39616288/ |
+| wedding-ring-ceremony | https://www.pexels.com/photo/18706408/ |
+| engagement-rings-hands | https://www.pexels.com/photo/38274758/ |
+| engagement-holding-hands | https://www.pexels.com/photo/35218299/ |
+| engagement-ring-box | https://www.pexels.com/photo/30649703/ |
+| engagement-candlelit | https://www.pexels.com/photo/35315663/ |
+| love-red-roses | https://www.pexels.com/photo/38485139/ |
+| love-hands | https://www.pexels.com/photo/15686909/ |
+| love-rose-petal-rings | https://www.pexels.com/photo/25052917/ |
+| love-wedding-rings | https://www.pexels.com/photo/10689262/ |
+| love-ring-box | https://www.pexels.com/photo/19525067/ |
+| birthday-balloons | https://www.pexels.com/photo/16651566/ |
+| birthday-letters | https://www.pexels.com/photo/25956380/ |
+| home-diyas | https://www.pexels.com/photo/34431714/ |
+| home-diya-close | https://www.pexels.com/photo/13689170/ |
+| home-new-keys | https://www.pexels.com/photo/27522902/ |
+| home-diya-row | https://www.pexels.com/photo/37650548/ |
+| baby-newborn-foot | https://www.pexels.com/photo/28680700/ |
+| baby-yellow-shoes | https://www.pexels.com/photo/35753260/ |
+| baby-feet | https://www.pexels.com/photo/29709894/ |
+| baby-booties | https://www.pexels.com/photo/35119986/ |
+| corporate-keynote | https://www.pexels.com/photo/34774347/ |
+| corporate-office-party | https://www.pexels.com/photo/36713384/ |
+| corporate-auditorium | https://www.pexels.com/photo/9275222/ |
+
+The template photos in `public/art/` (credited above) are offered too.
+
+### Music — Pixabay Music (Pixabay Content License: free commercial use, no attribution required; not to be redistributed as standalone files)
+
+| File | Track | Artist | Source |
+|---|---|---|---|
+| nadaswaram.mp3 | Energetic Nadaswaram Solo Performance | ASTERHERE | https://pixabay.com/music/world-energetic-nadaswaram-solo-performance-447454/ |
+| shehnai.mp3 | Traditional wedding ceremonial vibe with shehnai | DesiFreeMusic | https://pixabay.com/music/wedding-traditional-wedding-ceremonial-vibe-with-shehna-376293/ |
+| veena.mp3 | Hameer Kalyan Veena Tabla | Saseendran | https://pixabay.com/music/india-hameer-kalyan-veena-tabla-378029/ |
+| krishna-flute.mp3 | Hindu Krishna Flute | Krasnoshchok | https://pixabay.com/music/religious-theme-hindu-krishna-flute-607253/ |
+| indian-wedding.mp3 | Indian Wedding | JonasBlakewood | https://pixabay.com/music/upbeat-indian-wedding-indian-wedding-music-350631/ |
+| bollywood-wedding.mp3 | Grand Bollywood Wedding Anthem | sapan4 | https://pixabay.com/music/wedding-grand-bollywood-wedding-anthem-404795/ |
+| diwali-festive.mp3 | Indian Diwali Hindu Background Music | SigmaMusicArt | https://pixabay.com/music/india-indian-diwali-hindu-background-music-425897/ |
+| love-guitar.mp3 | Love Acoustic Romantic Hindi Guitar | echoes_of_lumen | https://pixabay.com/music/india-love-acoustic-romantic-hindi-guitar-589284/ |
+| romantic-piano.mp3 | Romantic Piano | leberch | https://pixabay.com/music/modern-classical-romantic-piano-512030/ |
+| happy-birthday.mp3 | Happy Birthday | Sub_Clair | https://pixabay.com/music/instrumental-happy-birthday-592177/ |
+| celebration.mp3 | Celebration | NastelBom | https://pixabay.com/music/upbeat-celebration-437422/ |
+| lullaby.mp3 | Music Box Sleep Lullaby | Tunetank | https://pixabay.com/music/lullabies-music-box-sleep-lullaby-349471/ |
+| morning-serenity.mp3 | Nature Forest Morning Serenity | alex-morgan | https://pixabay.com/music/modern-classical-nature-forest-morning-serenity-573941/ |
+| corporate-uplifting.mp3 | Corporate Uplifting | leberch | https://pixabay.com/music/corporate-corporate-uplifting-578413/ |

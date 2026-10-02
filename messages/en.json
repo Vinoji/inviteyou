@@ -158,7 +158,6 @@
     "brideParentsPlaceholder": "Mr. & Mrs. Suresh Rao",
     "familyHint": "Also hides automatically if both are left blank.",
     "photoGallery": "Photo gallery",
-    "photoGalleryHint": "The first photo always becomes your hero background, even if the gallery below is hidden.",
     "guestPhotosTitle": "Guest photos",
     "guestPhotosHint": "Lets guests upload their own photos from the published page — a shared carousel everyone can add to and see. Turn this off if you'd rather keep photos to just what you upload above.",
     "thingsToKnowTitle": "Things to know",
@@ -170,10 +169,10 @@
     "guestRsvpTitle": "Guest RSVP",
     "guestRsvpHint": "Lets guests confirm attendance and leave a message from the published page. Turn this off if you're collecting RSVPs another way.",
     "musicTitle": "Background music (optional)",
-    "removeTrack": "Remove track",
-    "uploadAudio": "Upload an audio file (MP3, WAV)",
+    "uploadAudio": "Upload your own song (MP3, WAV, M4A)",
     "uploading": "Uploading…",
-    "musicHint": "Plays only if a guest taps the music button — never auto-plays with sound.",
+    "optimizingAudio": "Optimising song… {percent}%",
+    "musicHint": "Pick a song from our list or upload your own. It plays on a loop once the guest taps the invitation.",
     "accentColorTitle": "Accent color",
     "accentColorAria": "Use accent color {color}",
     "customAccentAria": "Custom accent color",
@@ -192,7 +191,7 @@
     "errImageSize": "Image must be under 8MB.",
     "errPhotoUpload": "Photo upload failed. Please try again.",
     "errAudioFile": "Please choose an audio file (MP3, WAV, etc.).",
-    "errAudioSize": "Audio file must be under 15MB.",
+    "errAudioSize": "This song is too long to upload. Please choose one under about 12 minutes.",
     "errAudioUpload": "Audio upload failed. Please try again.",
     "errEditLinkInvalid": "This edit link is invalid or has expired.",
     "errLoadFailed": "Failed to load invitation.",
@@ -290,10 +289,8 @@
     "switchTemplate": "Switch design",
     "switchTemplateHint": "Your names, dates, story and photos stay — only the design changes.",
     "currentTemplate": "Current",
-    "photoOrderHint": "Use the arrows to change the order.",
     "moveEarlier": "Move photo {n} earlier",
     "moveLater": "Move photo {n} later",
-    "coverBadge": "Cover",
     "cropTitle": "Crop photo",
     "aspectOriginal": "Original",
     "aspectSquare": "Square",
@@ -354,7 +351,6 @@
     "fontSample": "Together with our families",
     "extrasTitle": "Extra sections",
     "extrasHint": "Switch on what guests should see — tap a card to fill it in.",
-    "musicAdded": "Track added — plays when guests open the invitation",
     "questionCount": "{count, plural, =0 {No questions yet} one {# question} other {# questions}}",
     "venueFind": "Find this venue on the map",
     "venuePinned": "Pinned on the map",
@@ -391,7 +387,122 @@
       "dontClose": "Please don't close or refresh this page — it only takes a few seconds."
     },
     "motionForced": "Full animations shown here",
-    "motionForcedHint": "You chose Reduce motion for browsing; the preview still plays in full so you can see your design."
+    "motionForcedHint": "You chose Reduce motion for browsing; the preview still plays in full so you can see your design.",
+    "photoPlanHint": "The order decides where each photo appears in this design. Drag the handle or use the arrows to reorder, and tap the crop button to resize or reposition a photo after uploading. Photo 1 also appears on the link preview when you share.",
+    "dragToReorder": "Drag to reorder",
+    "adjustPhoto": "Crop or resize photo {n}",
+    "bestShape": "Best shape: {shape}.",
+    "photoGalleryOff": "Not shown — the gallery is turned off.",
+    "addPhotos": "Add photos — one or several ({left} left)",
+    "photosFull": "All {max} photos added — remove one to add another",
+    "uploadingPhotos": "Uploading {done} of {total}…",
+    "errTooManyPhotos": "You can add up to {max} photos — only the ones that fit were added.",
+    "errSomePhotos": "{count, plural, one {# photo} other {# photos}} couldn't be uploaded. Please try again.",
+    "errPhotoLoad": "Couldn't open this photo to adjust it. Please try again.",
+    "photoRoles": {
+      "hero": {
+        "label": "Top of the page",
+        "where": "Full-screen background behind your names."
+      },
+      "magazineCover": {
+        "label": "Magazine cover",
+        "where": "Full-screen cover under your names."
+      },
+      "story": {
+        "label": "Beside your story",
+        "where": "Shown with your story section."
+      },
+      "letter": {
+        "label": "In the story letter",
+        "where": "Tucked into the letter with your story."
+      },
+      "feature": {
+        "label": "Feature photo",
+        "where": "Shown with the feature story inside the magazine."
+      },
+      "gallery": {
+        "label": "Gallery",
+        "where": "One of the photos in your gallery section."
+      }
+    },
+    "anyShape": "Any shape works.",
+    "musicLibrary": {
+      "hint": "Pick a song — it plays in the preview right away, just as guests will hear it. It loops, and starts on the guest's first tap (browsers don't allow sound before that).",
+      "none": "No music",
+      "yourSong": "Your song",
+      "suggested": "Suggested for this occasion",
+      "more": "More music",
+      "showMore": "Show {count} more songs",
+      "credit": "Songs from Pixabay, free to use in your invitation.",
+      "tracks": {
+        "nadaswaram": {
+          "name": "Nadaswaram celebration",
+          "mood": "Temple wedding, festive"
+        },
+        "shehnai": {
+          "name": "Shehnai ceremony",
+          "mood": "Traditional, auspicious"
+        },
+        "veena": {
+          "name": "Veena & tabla",
+          "mood": "Carnatic, graceful"
+        },
+        "krishna-flute": {
+          "name": "Krishna flute",
+          "mood": "Peaceful, devotional"
+        },
+        "indian-wedding": {
+          "name": "Wedding procession",
+          "mood": "Upbeat, joyful"
+        },
+        "bollywood-wedding": {
+          "name": "Grand wedding anthem",
+          "mood": "Cinematic, grand"
+        },
+        "diwali-festive": {
+          "name": "Festival lights",
+          "mood": "Festive, bright"
+        },
+        "love-guitar": {
+          "name": "Love on guitar",
+          "mood": "Romantic, warm"
+        },
+        "romantic-piano": {
+          "name": "Romantic piano",
+          "mood": "Tender, elegant"
+        },
+        "happy-birthday": {
+          "name": "Happy birthday",
+          "mood": "Cheerful, fun"
+        },
+        "celebration": {
+          "name": "Celebration",
+          "mood": "Upbeat, party"
+        },
+        "lullaby": {
+          "name": "Music-box lullaby",
+          "mood": "Soft, sweet"
+        },
+        "morning-serenity": {
+          "name": "Morning serenity",
+          "mood": "Calm, fresh"
+        },
+        "corporate-uplifting": {
+          "name": "Uplifting",
+          "mood": "Confident, positive"
+        }
+      }
+    },
+    "photoLibrary": {
+      "open": "Choose from our photo library",
+      "title": "Photo library",
+      "hint": "Tap photos to pick them, in the order you want (up to {room}).",
+      "suggested": "Suggested for this occasion",
+      "more": "More photos",
+      "add": "{count, plural, =0 {Add photos} one {Add # photo} other {Add # photos}}",
+      "photoN": "Library photo {n}",
+      "credit": "Photos from Pexels."
+    }
   },
   "invite": {
     "hero": {
@@ -3990,6 +4101,12 @@
       "close": "Close",
       "hello": "Hello {brand}, I need some help.",
       "mailSubject": "Help with {brand}"
+    },
+    "music": {
+      "on": "Play music",
+      "off": "Pause music",
+      "controls": "Music and volume",
+      "volume": "Volume"
     }
   },
   "notify": {

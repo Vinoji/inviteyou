@@ -4,8 +4,8 @@
 /** Any "Replay intro" button fires this; IntroHost closes the intro again. */
 export const REPLAY_INTRO_EVENT = "invite:replay-intro";
 
-/** Fired by IntroHost when a guest opens the intro on the public page;
- * AudioToggle starts the couple's track on it. */
+/** Fired by IntroHost when the intro is opened (public page or editor
+ * preview); AudioToggle starts the couple's track on it. */
 export const INTRO_OPENED_EVENT = "invite:intro-opened";
 
 /** Fired by IntroHost when the intro is gone (finished, skipped this
@@ -15,3 +15,9 @@ export const INTRO_DONE_EVENT = "invite:intro-done";
 /** Fired by RsvpForm after a successful submit; `detail.attending` says
  * whether the guest accepted. Templates can celebrate it (RsvpBurst). */
 export const RSVP_SENT_EVENT = "invite:rsvp-sent";
+
+/** Fired by the editor's music list to play/pause the preview's track. */
+export const MUSIC_TOGGLE_EVENT = "invite:music-toggle";
+
+/** Fired by AudioToggle when its track starts or stops; `detail.playing`. */
+export const MUSIC_STATE_EVENT = "invite:music-state";

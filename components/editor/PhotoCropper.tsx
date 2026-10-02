@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { useTranslations } from "next-intl";
+import { canvasToJpeg, drawScaled } from "@/lib/media/compressImage";
 
 const ASPECTS = [
   { id: "original", ratio: null },
@@ -9,17 +10,14 @@ const ASPECTS = [
   { id: "portrait", ratio: 4 / 5 },
   { id: "landscape", ratio: 3 / 2 },
 ] as const;
-type AspectId = (typeof ASPECTS)[number]["id"];
-const ASPECT_LABEL: Record<AspectId, string> = {
+export type AspectId = (typeof ASPECTS)[number]["id"];
+export const ASPECT_LABEL: Record<AspectId, string> = {
   original: "aspectOriginal",
   square: "aspectSquare",
   portrait: "aspectPortrait",
   landscape: "aspectLandscape",
 };
 
-/** Longest side of the uploaded result — plenty for a full-screen photo,
- * and keeps uploads well under the storage size limit. */
-const MAX_OUTPUT = 2000;
 const BOX_MAX_W = 420;
 
 /**
@@ -31,17 +29,20 @@ const BOX_MAX_W = 420;
  */
 export default function PhotoCropper({
   file,
+  initialAspect = "original",
   onCancel,
   onApply,
 }: {
   file: File;
+  /** The shape suggested for where this photo appears (lib/photoPlan). */
+  initialAspect?: AspectId;
   onCancel: () => void;
   /** The cropped JPEG — or the original file when it couldn't be decoded. */
   onApply: (result: Blob) => void;
 }) {
   const t = useTranslations("editor");
   const [img, setImg] = useState<HTMLImageElement | null>(null);
-  const [aspect, setAspect] = useState<AspectId>("original");
+  const [aspect, setAspect] = useState<AspectId>(initialAspect);
   const [zoom, setZoom] = useState(1);
   const [center, setCenter] = useState<{ x: number; y: number } | null>(null);
   const [boxW, setBoxW] = useState(BOX_MAX_W);
@@ -131,18 +132,12 @@ export default function PhotoCropper({
     }
   }
 
-  function apply() {
+  async function apply() {
     const sw = w / scale;
     const sh = h / scale;
-    const k = Math.min(1, MAX_OUTPUT / Math.max(sw, sh));
-    const canvas = document.createElement("canvas");
-    canvas.width = Math.round(sw * k);
-    canvas.height = Math.round(sh * k);
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return onApply(file);
-    ctx.imageSmoothingQuality = "high";
-    ctx.drawImage(img!, c.x - sw / 2, c.y - sh / 2, sw, sh, 0, 0, canvas.width, canvas.height);
-    canvas.toBlob((blob) => onApply(blob ?? file), "image/jpeg", 0.88);
+    // Scaled to at most PHOTO_MAX_SIDE and re-encoded (lib/media/compressImage).
+    const canvas = drawScaled(img!, c.x - sw / 2, c.y - sh / 2, sw, sh);
+    onApply((canvas && (await canvasToJpeg(canvas))) ?? file);
   }
 
   return (

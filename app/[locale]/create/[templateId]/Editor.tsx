@@ -32,6 +32,9 @@ import { useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "@/lib/firebase";
+import { MAX_AUDIO_INPUT, compressAudio } from "@/lib/media/compressAudio";
+import { compressPhoto } from "@/lib/media/compressImage";
+import { MAX_PHOTOS, photoShape, type PhotoShape } from "@/lib/photoPlan";
 import { getTemplateMeta, getTemplatesByCategory } from "@/lib/i18n/templates";
 import { TEMPLATE_STYLE_KEYS, changedFields, clearDraft, loadDraft, saveDraft } from "@/lib/draftStore";
 import { getCategoryMeta } from "@/lib/i18n/categories";
@@ -70,8 +73,12 @@ import NearbyFill, { type NearbyState } from "@/components/editor/NearbyFill";
 import PublishOverlay, { type PublishPhase } from "@/components/editor/PublishOverlay";
 import { pinUrl } from "@/lib/maps";
 import { forceFullMotion, primeFullMotion, useSavedReducedMotion } from "@/lib/motionPref";
-import { AddPhotoTile, PhotoTile } from "@/components/editor/PhotoSlot";
+import { AddPhotos, PhotoList } from "@/components/editor/PhotoSlot";
 import PhotoCropper from "@/components/editor/PhotoCropper";
+import PhotoLibrary from "@/components/editor/PhotoLibrary";
+import MusicPicker from "@/components/editor/MusicPicker";
+import AudioToggle from "@/components/invite/AudioToggle";
+import { findTrack } from "@/lib/mediaLibrary";
 import TravelFields from "@/components/editor/TravelFields";
 import PlacesFields from "@/components/editor/PlacesFields";
 import StoryPicker from "@/components/editor/StoryPicker";
@@ -209,8 +216,9 @@ export default function Editor({
   );
   const [loadingExisting, setLoadingExisting] = useState(isEditMode);
   const [loadError, setLoadError] = useState<string | null>(null);
-  const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
+  const [photoProgress, setPhotoProgress] = useState<{ done: number; total: number } | null>(null);
   const [uploadingMusic, setUploadingMusic] = useState(false);
+  const [musicProgress, setMusicProgress] = useState<number | null>(null);
   const [publishing, setPublishing] = useState(false);
   // The full-screen progress for publish / save / restore (PublishOverlay).
   const [progress, setProgress] = useState<{ phase: PublishPhase; steps?: PublishPhase[] } | null>(null);
@@ -239,7 +247,11 @@ export default function Editor({
   const [draftNotice, setDraftNotice] = useState<
     { kind: "restored" } | { kind: "carried"; from: string } | null
   >(null);
-  const [cropFile, setCropFile] = useState<File | null>(null);
+  // The photo in the cropper: a new pick, or (replace) one already uploaded.
+  const [crop, setCrop] = useState<{ file: File; shape: PhotoShape; replace?: string } | null>(null);
+  // Originals of this session's uploads, so "Adjust" can zoom back out.
+  const photoOriginals = useRef(new Map<string, File>());
+  const [photoLibraryOpen, setPhotoLibraryOpen] = useState(false);
   // The buyer's own number: their edit link is sent there after payment.
   const [ownerPhone, setOwnerPhone] = useState("");
   const ownerPhoneOk = Boolean(waPhone(ownerPhone));
@@ -583,54 +595,117 @@ export default function Editor({
     setData((d) => ({ ...d, faq: d.faq.filter((_, i) => i !== index) }));
   }
 
-  /** A picked photo goes through the cropper first (see uploadPhoto). */
-  function pickPhoto(file: File | null) {
-    if (!file) return;
-    if (!file.type.startsWith("image/")) {
-      alert(t("errImageFile"));
-      return;
+  /** One photo goes through the cropper first; several upload as they are
+   * (compressed) and can be adjusted afterwards. */
+  function pickPhotos(files: File[]) {
+    const images = files.filter((f) => f.type.startsWith("image/"));
+    if (images.length < files.length) alert(t("errImageFile"));
+    const room = MAX_PHOTOS - data.photos.filter(Boolean).length;
+    if (images.length > room) alert(t("errTooManyPhotos", { max: MAX_PHOTOS }));
+    const batch = images.slice(0, room);
+    if (batch.length === 1) {
+      setCrop({ file: batch[0], shape: photoShape(data.templateId, MAX_PHOTOS - room) });
+    } else if (batch.length > 1) {
+      void uploadPhotos(batch);
     }
-    setCropFile(file);
   }
 
-  async function uploadPhoto(blob: Blob) {
-    setCropFile(null);
+  /** Uploads one finished photo and returns its URL. */
+  async function storePhoto(blob: Blob) {
+    // A unique name per upload: slots move around when photos are
+    // reordered or removed, so an index-based name could overwrite a
+    // photo that's still in use.
+    const storageRef = ref(storage, `invitations/${draftId}/photo-${uniqueSuffix()}.jpg`);
+    await uploadBytes(storageRef, blob, { contentType: blob.type || "image/jpeg" });
+    return getDownloadURL(storageRef);
+  }
+
+  function addPhotoUrl(url: string) {
+    setData((d) =>
+      d.photos.length >= MAX_PHOTOS ? d : { ...d, photos: [...d.photos.filter(Boolean), url] }
+    );
+  }
+
+  async function uploadPhotos(files: File[]) {
+    let failed = 0;
+    setPhotoProgress({ done: 0, total: files.length });
+    for (const [i, file] of files.entries()) {
+      try {
+        const blob = await compressPhoto(file);
+        // Only an undecodable original (sent as-is) can be this big.
+        if (blob.size > 8 * 1024 * 1024) throw new Error("too big");
+        const url = await storePhoto(blob);
+        photoOriginals.current.set(url, file);
+        addPhotoUrl(url);
+      } catch (err) {
+        console.error(err);
+        failed++;
+      }
+      setPhotoProgress({ done: i + 1, total: files.length });
+    }
+    setPhotoProgress(null);
+    if (failed) alert(t("errSomePhotos", { count: failed }));
+  }
+
+  async function applyCrop(blob: Blob) {
+    const target = crop;
+    setCrop(null);
+    if (!target) return;
     // Cropped output is a small JPEG; only an undecodable original (sent
     // as-is) can still be over the storage limit.
     if (blob.size > 8 * 1024 * 1024) {
       alert(t("errImageSize"));
       return;
     }
-    const index = data.photos.length;
-    setUploadingIndex(index);
+    setPhotoProgress({ done: 0, total: 1 });
     try {
-      // A unique name per upload: slots move around when photos are
-      // reordered or removed, so an index-based name could overwrite a
-      // photo that's still in use.
-      const name = `photo-${uniqueSuffix()}.jpg`;
-      const storageRef = ref(storage, `invitations/${draftId}/${name}`);
-      await uploadBytes(storageRef, blob, { contentType: blob.type || "image/jpeg" });
-      const url = await getDownloadURL(storageRef);
-      setData((d) => (d.photos.length >= 6 ? d : { ...d, photos: [...d.photos.filter(Boolean), url] }));
+      const url = await storePhoto(blob);
+      photoOriginals.current.set(url, target.file);
+      if (target.replace) {
+        // By URL, not index: the photo may have been moved meanwhile.
+        setData((d) => ({ ...d, photos: d.photos.map((u) => (u === target.replace ? url : u)) }));
+      } else {
+        addPhotoUrl(url);
+      }
     } catch (err) {
       console.error(err);
       alert(t("errPhotoUpload"));
     } finally {
-      setUploadingIndex(null);
+      setPhotoProgress(null);
     }
+  }
+
+  /** Re-crops an uploaded photo — from its original when it was added in
+   * this session, otherwise from the uploaded copy. */
+  async function adjustPhoto(index: number) {
+    const url = data.photos.filter(Boolean)[index];
+    if (!url) return;
+    let file = photoOriginals.current.get(url);
+    if (!file) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(String(res.status));
+        file = new File([await res.blob()], "photo.jpg", { type: "image/jpeg" });
+      } catch (err) {
+        console.error(err);
+        alert(t("errPhotoLoad"));
+        return;
+      }
+    }
+    setCrop({ file, shape: photoShape(data.templateId, index), replace: url });
   }
 
   // Files stay in Storage (the rules don't allow client deletes); the
   // photo just leaves the invitation.
   function removePhoto(index: number) {
-    setData((d) => ({ ...d, photos: d.photos.filter((_, i) => i !== index) }));
+    setData((d) => ({ ...d, photos: d.photos.filter(Boolean).filter((_, i) => i !== index) }));
   }
 
   function movePhoto(index: number, by: -1 | 1) {
     setData((d) => {
       const to = index + by;
-      if (to < 0 || to >= d.photos.length) return d;
-      const photos = [...d.photos];
+      const photos = d.photos.filter(Boolean);
+      if (to < 0 || to >= photos.length) return d;
       [photos[index], photos[to]] = [photos[to], photos[index]];
       return { ...d, photos };
     });
@@ -642,29 +717,32 @@ export default function Editor({
       alert(t("errAudioFile"));
       return;
     }
-    if (file.size > 15 * 1024 * 1024) {
+    if (file.size > MAX_AUDIO_INPUT) {
       alert(t("errAudioSize"));
       return;
     }
     setUploadingMusic(true);
     try {
+      // Re-encoded in the browser when it helps (WAV, FLAC, 320 kbps MP3…).
+      setMusicProgress(0);
+      const song = await compressAudio(file, setMusicProgress);
+      setMusicProgress(null);
+      if (song.size > 15 * 1024 * 1024) {
+        alert(t("errAudioSize"));
+        return;
+      }
       // Unique per upload, like photos: storage rules only allow creating files.
       const storageRef = ref(storage, `invitations/${draftId}/music-${uniqueSuffix()}`);
-      await uploadBytes(storageRef, file, { contentType: file.type });
+      await uploadBytes(storageRef, song, { contentType: song.type || file.type });
       const url = await getDownloadURL(storageRef);
       update("backgroundMusic", url);
     } catch (err) {
       console.error(err);
       alert(t("errAudioUpload"));
     } finally {
+      setMusicProgress(null);
       setUploadingMusic(false);
     }
-  }
-
-  // The file stays in Storage (clients can't delete); the invitation just
-  // stops using it.
-  function removeMusic() {
-    update("backgroundMusic", "");
   }
 
   const initials = resolveMonogram(data.brideName, data.groomName, data.monogram, false);
@@ -1214,26 +1292,48 @@ export default function Editor({
                     onChange: (v) => updateSection("gallery", v),
                   }}
                 >
-                  <div className="grid grid-cols-3 gap-3">
-                    {photos.map((url, i, all) => (
-                      <PhotoTile
-                        key={url}
-                        index={i}
-                        count={all.length}
-                        url={url}
-                        onRemove={removePhoto}
-                        onMove={movePhoto}
-                      />
-                    ))}
-                    {photos.length < 6 && (
-                      <AddPhotoTile index={photos.length} uploading={uploadingIndex !== null} onPick={pickPhoto} />
-                    )}
-                  </div>
-                  <p className="text-xs text-neutral-400 dark:text-neutral-500">
-                    {photos.length > 1 ? t("photoOrderHint") : t("photoGalleryHint")}
+                  <p className="text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">
+                    {t("photoPlanHint")}
                   </p>
-                  {cropFile && (
-                    <PhotoCropper file={cropFile} onCancel={() => setCropFile(null)} onApply={uploadPhoto} />
+                  <PhotoList
+                    templateId={data.templateId}
+                    photos={photos}
+                    galleryShown={data.sections.gallery}
+                    onReorder={(next) => setData((d) => ({ ...d, photos: next }))}
+                    onRemove={removePhoto}
+                    onMove={movePhoto}
+                    onAdjust={(i) => void adjustPhoto(i)}
+                  />
+                  <AddPhotos count={photos.length} progress={photoProgress} onPick={pickPhotos} />
+                  {photos.length < MAX_PHOTOS && (
+                    <button
+                      type="button"
+                      onClick={() => setPhotoLibraryOpen(true)}
+                      className="w-full rounded-xl border border-neutral-200 px-4 py-3 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 dark:border-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-900"
+                    >
+                      {t("photoLibrary.open")}
+                    </button>
+                  )}
+                  {photoLibraryOpen && (
+                    <PhotoLibrary
+                      category={template.category}
+                      room={MAX_PHOTOS - photos.length}
+                      existing={photos}
+                      onClose={() => setPhotoLibraryOpen(false)}
+                      onAdd={(srcs) => {
+                        setPhotoLibraryOpen(false);
+                        srcs.forEach(addPhotoUrl);
+                      }}
+                    />
+                  )}
+                  {crop && (
+                    <PhotoCropper
+                      key={crop.replace ?? crop.file.name}
+                      file={crop.file}
+                      initialAspect={crop.shape}
+                      onCancel={() => setCrop(null)}
+                      onApply={applyCrop}
+                    />
                   )}
                 </FormSection>
 
@@ -1244,31 +1344,28 @@ export default function Editor({
                     <ExtraCard
                       icon={Music}
                       title={t("musicTitle")}
-                      summary={data.backgroundMusic ? t("musicAdded") : t("musicHint")}
+                      summary={
+                        data.backgroundMusic
+                          ? findTrack(data.backgroundMusic)
+                            ? t(`musicLibrary.tracks.${findTrack(data.backgroundMusic)!.id}.name`)
+                            : t("musicLibrary.yourSong")
+                          : t("musicHint")
+                      }
                     >
-                      {data.backgroundMusic ? (
-                        <div className="space-y-2">
-                          <audio controls src={data.backgroundMusic} className="w-full" />
-                          <button
-                            type="button"
-                            onClick={removeMusic}
-                            className="text-xs font-semibold text-red-600 hover:underline"
-                          >
-                            {t("removeTrack")}
-                          </button>
-                        </div>
-                      ) : (
-                        <label className="flex cursor-pointer items-center justify-center rounded-lg border border-dashed border-neutral-300 px-4 py-3 text-sm text-neutral-500 hover:border-amber-400 dark:border-neutral-700">
-                          {uploadingMusic ? t("uploading") : t("uploadAudio")}
-                          <input
-                            type="file"
-                            accept="audio/*"
-                            className="hidden"
-                            disabled={uploadingMusic}
-                            onChange={(e) => handleMusicChange(e.target.files?.[0] ?? null)}
-                          />
-                        </label>
-                      )}
+                      <MusicPicker
+                        category={template.category}
+                        value={data.backgroundMusic}
+                        onChange={(src) => update("backgroundMusic", src)}
+                        uploading={uploadingMusic}
+                        onUpload={handleMusicChange}
+                        uploadLabel={
+                          musicProgress !== null
+                            ? t("optimizingAudio", { percent: Math.round(musicProgress * 100) })
+                            : uploadingMusic
+                              ? t("uploading")
+                              : t("uploadAudio")
+                        }
+                      />
                     </ExtraCard>
 
                     <ExtraCard
@@ -1482,7 +1579,8 @@ export default function Editor({
             ))}
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto">
+        <div className="relative min-h-0 flex-1">
+        <div className="h-full overflow-y-auto" data-preview-root>
           <div
             className={`mx-auto min-h-full bg-white shadow-sm transition-[max-width] duration-300 dark:bg-neutral-900 ${
               previewDevice === "mobile"
@@ -1502,6 +1600,17 @@ export default function Editor({
               </div>
             </NextIntlClientProvider>
           </div>
+        </div>
+        {/* The guests' music button, in the corner of the preview: same
+            track, autoplay on a tap inside the preview, looping. */}
+        <NextIntlClientProvider locale={contentLocale} messages={contentMessages[contentLocale]} timeZone={timeZone}>
+          <AudioToggle
+            preview
+            src={data.backgroundMusic || undefined}
+            templateId={data.templateId}
+            accentColor={data.accentColor}
+          />
+        </NextIntlClientProvider>
         </div>
       </div>
 
