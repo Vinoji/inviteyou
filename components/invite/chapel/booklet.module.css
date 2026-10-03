@@ -25,6 +25,13 @@
   max-height: 780px;
   perspective: 1800px;
   touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* Page text stays selectable inside the page. */
+.book .pageScroll {
+  user-select: text;
+  -webkit-user-select: text;
 }
 /* The edges of the pages still to come, peeking out on the right. */
 .pagesBehind {
@@ -172,10 +179,17 @@
   border: 0;
   border-radius: 999px;
   cursor: pointer;
+  position: relative;
   background: rgba(31, 42, 68, 0.25);
   transition:
     width 0.25s ease,
     background 0.25s ease;
+}
+/* A bigger tap target than the 8px dot itself. */
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: -10px -4px;
 }
 .dotOn {
   width: 22px;

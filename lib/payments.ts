@@ -98,7 +98,9 @@ export async function publishPaidDraft(
       const owner = oSnap.exists ? oSnap.data()! : {};
       const now = Date.now();
       const publishedRef = db.collection("invitations").doc(slug);
-      tx.set(publishedRef, {
+      // create(), not set(): never overwrite another invitation that took
+      // this slug between the check above and now.
+      tx.create(publishedRef, {
         ...d,
         slug,
         status: "published",

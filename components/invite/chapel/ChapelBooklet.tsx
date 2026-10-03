@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
+import { useRef, useState, type KeyboardEvent, type PointerEvent, type WheelEvent, type ReactNode } from "react";
 import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -27,12 +27,12 @@ const FLIP: Variants = {
     rotateY: 0,
     opacity: 1,
     zIndex: 2,
-    transition: { duration: 0.9, ease: [0.3, 0.6, 0.25, 1] },
+    transition: { duration: 0.6, ease: [0.3, 0.6, 0.25, 1] },
   },
   exit: (dir: number) =>
     dir > 0
-      ? { rotateY: -115, opacity: 0.2, zIndex: 3, transition: { duration: 0.9, ease: [0.45, 0, 0.55, 1] } }
-      : { opacity: 0.4, zIndex: 1, transition: { duration: 0.9 } },
+      ? { rotateY: -115, opacity: 0.2, zIndex: 3, transition: { duration: 0.6, ease: [0.45, 0, 0.55, 1] } }
+      : { opacity: 0.4, zIndex: 1, transition: { duration: 0.6 } },
 };
 const FADE: Variants = {
   enter: { opacity: 0 },
@@ -47,6 +47,9 @@ function ownsGesture(target: EventTarget | null, root: HTMLElement | null) {
   let el = target instanceof HTMLElement ? target : null;
   while (el && el !== root) {
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) return true;
+    // The page's own vertical scroller computes overflow-x as "auto" too;
+    // it is not a sideways scroller, so a swipe on it still turns the page.
+    if (el.hasAttribute("data-page-scroll")) return false;
     const ox = getComputedStyle(el).overflowX;
     if ((ox === "auto" || ox === "scroll") && el.scrollWidth > el.clientWidth + 2) return true;
     el = el.parentElement;
@@ -83,6 +86,10 @@ export default function ChapelBooklet({ pages }: { pages: BookPage[] }) {
     e.preventDefault();
   };
   const onPointerDown = (e: PointerEvent) => {
+    // Arrow keys work right after any tap on the book, not only after Tab.
+    if (!(e.target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(e.target.tagName))) {
+      rootRef.current?.focus({ preventScroll: true });
+    }
     swipe.current = ownsGesture(e.target, rootRef.current) ? null : { x: e.clientX, y: e.clientY };
   };
   const onPointerUp = (e: PointerEvent) => {
@@ -92,6 +99,19 @@ export default function ChapelBooklet({ pages }: { pages: BookPage[] }) {
     const dx = e.clientX - start.x;
     const dy = e.clientY - start.y;
     if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(current + (dx < 0 ? 1 : -1));
+  };
+
+  // A sideways trackpad swipe or shift-wheel turns the page too; one turn
+  // per gesture (the wheel keeps firing as it coasts).
+  const wheelLock = useRef(0);
+  const onWheel = (e: WheelEvent) => {
+    const dx = e.shiftKey && !e.deltaX ? e.deltaY : e.deltaX;
+    if (Math.abs(dx) < 30 || Math.abs(dx) < Math.abs(e.deltaY) * 1.2) return;
+    if (ownsGesture(e.target, rootRef.current)) return;
+    const now = Date.now();
+    if (now - wheelLock.current < 700) return;
+    wheelLock.current = now;
+    go(current + (dx > 0 ? 1 : -1));
   };
 
   return (
@@ -104,7 +124,7 @@ export default function ChapelBooklet({ pages }: { pages: BookPage[] }) {
       tabIndex={0}
       onKeyDown={onKeyDown}
     >
-      <div className={b.book} onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
+      <div className={b.book} onPointerDown={onPointerDown} onPointerUp={onPointerUp} onWheel={onWheel}>
         <span className={b.pagesBehind} aria-hidden />
         <AnimatePresence initial={false} custom={dir}>
           <motion.article
@@ -117,7 +137,7 @@ export default function ChapelBooklet({ pages }: { pages: BookPage[] }) {
             exit="exit"
             aria-label={t("pageOf", { n: current + 1, total: pages.length })}
           >
-            <div className={b.pageScroll}>
+            <div className={b.pageScroll} data-page-scroll>
               <div className={`${b.pageInner} ${page.fill ? b.fill : ""}`}>{page.node}</div>
             </div>
             <footer className={b.folio} aria-hidden>
