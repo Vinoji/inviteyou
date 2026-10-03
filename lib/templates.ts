@@ -107,6 +107,8 @@ export const TEMPLATES: TemplateConfig[] = [
     pageLayout: "chapel",
     eventNamesFrom: "church",
     seed: "christian",
+    // TEMPORARY, for payment testing: remove to go back to PRICE_INR.
+    price: 1,
   },
   // ── Premium styles, each with its own layout (lib/layoutStyles.ts) ──
   {
