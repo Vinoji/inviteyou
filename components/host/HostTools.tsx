@@ -173,6 +173,11 @@ export default function HostTools({ slug, messages }: { slug: string; messages: 
             {copied === "personal" ? t("copied") : t("copyLink")}
           </button>
         </div>
+        {/* The same common card for every guest, as a printable PDF. */}
+        <a href={`/invite/${slug}/card`} className={`${ghostBtn} mt-2 w-full`}>
+          <Printer size={15} aria-hidden />
+          {t("printCard")}
+        </a>
       </div>
 
       <div className={card}>
