@@ -4,6 +4,7 @@ import { getTranslations, getFormatter, setRequestLocale } from "next-intl/serve
 import { getAdminDb } from "@/lib/firebase-admin";
 import { NextIntlClientProvider } from "next-intl";
 import InvitationView from "@/components/invite/InvitationView";
+import InspectGuard from "@/components/invite/InspectGuard";
 import { INVITATION_NAMESPACES, getContentMessages } from "@/lib/i18n/contentMessages";
 import ViewTracker from "@/components/invite/ViewTracker";
 import OwnerAccess from "@/components/invite/OwnerAccess";
@@ -158,6 +159,7 @@ export default async function InvitePage({
         sent={sent === "whatsapp" || sent === "sms" ? sent : null}
       />
       <ViewTracker slug={slug} />
+      <InspectGuard />
       <NextIntlClientProvider locale={contentLocale} messages={contentMessages}>
         <div lang={contentLocale}>
           <InvitationView

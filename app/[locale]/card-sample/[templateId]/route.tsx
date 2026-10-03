@@ -23,7 +23,7 @@ export async function GET(
   const tDefaults = await getTranslations({ locale, namespace: "defaultContent" });
   const data = { ...getDefaultInvitationData(templateId, tDefaults), contentLocale: locale } as const;
   const width = Math.min(1800, Math.max(600, Number(req.nextUrl.searchParams.get("w")) || 900));
-  const image = await renderCardImage({ data, locale, inviteUrl: `${req.nextUrl.origin}/`, width });
+  const image = await renderCardImage({ data, locale, inviteUrl: `${req.nextUrl.origin}/`, width, watermark: true });
   const headers = new Headers(image.headers);
   headers.set("Cache-Control", "public, max-age=3600");
   return new Response(image.body, { status: 200, headers });

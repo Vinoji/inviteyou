@@ -57,6 +57,8 @@ import { STORY_PRESETS } from "@/lib/storyPresets";
 import { templatePriceInr } from "@/lib/pricing";
 import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
 import InvitationView from "@/components/invite/InvitationView";
+import PreviewWatermark from "@/components/editor/PreviewWatermark";
+import InspectGuard from "@/components/invite/InspectGuard";
 import { FormSection, Field, inputClass, SectionToggle } from "@/components/editor/FormFields";
 import { StepNav, StepHeader, StepFooter, type EditorStep } from "@/components/editor/StepNav";
 import {
@@ -1602,6 +1604,8 @@ export default function Editor({
             </NextIntlClientProvider>
           </div>
         </div>
+        <PreviewWatermark />
+        <InspectGuard />
         {/* The guests' music button, in the corner of the preview: same
             track, autoplay on a tap inside the preview, looping. */}
         <NextIntlClientProvider locale={contentLocale} messages={contentMessages[contentLocale]} timeZone={timeZone}>
