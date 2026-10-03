@@ -27,11 +27,14 @@ export async function renderCardImage({
   locale,
   inviteUrl,
   width,
+  watermark = false,
 }: {
   data: InvitationData;
   locale: "en" | "ta";
   inviteUrl: string;
   width: number;
+  /** A faint diagonal brand mark, for cards shown before purchase. */
+  watermark?: boolean;
 }): Promise<ImageResponse> {
   const k = width / 1200;
   const height = Math.round(width * CARD_RATIO);
@@ -278,6 +281,33 @@ export async function renderCardImage({
             </div>
           </div>
         </div>
+        {watermark && (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width,
+              height,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                fontSize: px(120),
+                fontWeight: 700,
+                letterSpacing: px(6),
+                color: "rgba(128,128,128,0.16)",
+                transform: "rotate(-30deg)",
+              }}
+            >
+              InviteForYou
+            </div>
+          </div>
+        )}
       </div>
     ),
     { width, height, fonts: fonts.length ? fonts : undefined }
