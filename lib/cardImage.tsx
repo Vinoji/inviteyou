@@ -300,7 +300,7 @@ export async function renderCardImage({
                 fontSize: px(120),
                 fontWeight: 700,
                 letterSpacing: px(6),
-                color: "rgba(128,128,128,0.16)",
+                color: "rgba(128,128,128,0.07)",
                 transform: "rotate(-30deg)",
               }}
             >

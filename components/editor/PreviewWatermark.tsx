@@ -6,7 +6,7 @@ const TILE = encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="260" height="180">` +
     `<text x="130" y="90" text-anchor="middle" transform="rotate(-24 130 90)" ` +
     `font-family="Georgia, serif" font-size="20" font-weight="700" letter-spacing="2" ` +
-    `fill="#808080" fill-opacity="0.16">InviteForYou</text></svg>`
+    `fill="#808080" fill-opacity="0.07">InviteForYou</text></svg>`
 );
 
 export default function PreviewWatermark() {
