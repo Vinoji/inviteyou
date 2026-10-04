@@ -79,10 +79,56 @@
 .wall {
   position: absolute;
   inset: 32% 0 0;
+  /* Moonlit sandstone in coursed blocks */
   background:
     linear-gradient(180deg, transparent 0 3px, #c9a24a 3px 6px, transparent 6px),
-    linear-gradient(180deg, #1c2756 0%, #0b1130 100%);
-  box-shadow: inset 0 -30px 60px rgba(0, 0, 0, 0.5);
+    repeating-linear-gradient(180deg, transparent 0 17px, rgba(20, 10, 4, 0.45) 17px 18px),
+    repeating-linear-gradient(90deg, transparent 0 33px, rgba(20, 10, 4, 0.3) 33px 34px),
+    radial-gradient(120% 90% at 50% 100%, rgba(255, 190, 110, 0.25), transparent 60%),
+    linear-gradient(180deg, #7d6446 0%, #5a4430 45%, #2e2218 100%);
+  box-shadow: inset 0 -40px 60px rgba(0, 0, 0, 0.55), inset 0 20px 40px rgba(20, 30, 70, 0.45);
+}
+/* A carved band of rosettes under the cornice */
+.frieze {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8px;
+  height: 12px;
+  background:
+    radial-gradient(circle, #ebd08a 0 2px, #8a6a24 2.5px 3.5px, transparent 4px) 0 50% / 16px 12px repeat-x,
+    linear-gradient(180deg, #3b2c1c, #241a10);
+  border-bottom: 1px solid #c9a24a;
+}
+.jharokha {
+  position: absolute;
+  bottom: 30%;
+  width: 7%;
+  height: 26%;
+  border-radius: 999px 999px 0 0;
+  background: linear-gradient(180deg, #2a1d10, #120b05);
+  outline: 2px solid #c9a24a;
+  outline-offset: 2px;
+  box-shadow: 0 6px 0 -2px #c9a24a;
+  transition: background 1.2s ease, box-shadow 1.2s ease;
+}
+.jharokha.lit {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 3px, rgba(80, 40, 10, 0.55) 3px 4px),
+    radial-gradient(80% 70% at 50% 80%, #fff0c4, #f2b65a 60%, #9a5a1c);
+  box-shadow: 0 6px 0 -2px #c9a24a, 0 0 18px rgba(255, 190, 90, 0.7);
+}
+.l1 {
+  left: 9%;
+}
+.l2 {
+  left: 22%;
+}
+.r1 {
+  right: 22%;
+}
+.r2 {
+  right: 9%;
 }
 .dome {
   position: absolute;
@@ -91,25 +137,33 @@
   width: 34%;
   height: 34%;
   transform: translateX(-50%);
-  background: linear-gradient(180deg, #24306a, #121a40);
+  /* White marble with gold ribs, moonlit from the left */
+  background:
+    repeating-linear-gradient(90deg, transparent 0 9%, rgba(201, 162, 74, 0.55) 9% 10%),
+    radial-gradient(70% 90% at 30% 30%, #e9e4f2, #9aa0c0 55%, #3a3f62 100%);
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  box-shadow: inset 0 -6px 0 #c9a24a;
 }
 .dome::after {
   content: "";
   position: absolute;
   left: 50%;
   top: -14%;
-  width: 2px;
+  width: 3px;
   height: 18%;
-  background: #c9a24a;
+  transform: translateX(-50%);
+  background: linear-gradient(#f3d27a, #8a6a24);
 }
 .chhatri {
   position: absolute;
   top: 18%;
   width: 12%;
   height: 16%;
-  background: linear-gradient(180deg, #24306a, #121a40);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 18%, rgba(201, 162, 74, 0.5) 18% 21%),
+    radial-gradient(70% 90% at 30% 30%, #dcd7e8, #8a90b0 60%, #33385a);
   border-radius: 50% 50% 0 0 / 70% 70% 0 0;
+  box-shadow: inset 0 -4px 0 #c9a24a;
 }
 .chhatriL {
   left: 4%;
