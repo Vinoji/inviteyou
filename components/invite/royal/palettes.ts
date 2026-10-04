@@ -382,6 +382,22 @@ const PALETTES: Record<string, RoyalPalette> = {
     leaf: "#4E7A3A",
     leafLight: "#8FBD72",
   },
+  // Royal Palace 3D: its own layout; Travel Guide, Places, the RSVP form
+  // and the other shared sections read these.
+  "royal-palace-3d": {
+    deep: "#0B1433",
+    mid: "#123A33",
+    gold: "#C9A24A",
+    goldLight: "#EBD08A",
+    goldDeep: "#8A6A24",
+    ivory: "#FBF6EA",
+    ivory2: "#F1E7D2",
+    text: "#14203F",
+    muted: "#6B6A7A",
+    flowers: ["#F3D27A", "#FFFFFF", "#B5374E"],
+    leaf: "#1F5A4A",
+    leafLight: "#6FA08C",
+  },
   // Chapel Bells: its own layout; Travel Guide, Places and the RSVP form
   // reuse royal components, which read these.
   "chapel-bells": {

@@ -60,6 +60,7 @@ const THEMES: Record<string, CardTheme> = {
   "lotus-peacock": T(["#dff0ea", "#fbe3e9"], "#fbf7f1", "#1f3a38", "#6a7f7b", "#c9a45c", "#0f766e", "floral"),
   "nikah-emerald": T(["#041f14", "#0b4430"], "#062e1e", "#fbf8ef", "#cfd8cc", "#c9a24a", "#e9cf8a", "stars"),
   "walima-moonlit": T(["#050b1c", "#0e1a3a"], "#070f24", "#f5f3ec", "#b9c1d6", "#c9a227", "#ebd27a", "moon"),
+  "royal-palace-3d": T(["#070b1a", "#0f2a2a"], "#0b1433", "#fbf6ea", "#c9cde3", "#c9a24a", "#ebd08a", "deco"),
   "chapel-bells": T(["#dfe6f0", "#fbf7ef"], "#fffdf8", "#1f2a44", "#6b6f86", "#b8975a", "#8e2b3b", "deco"),
   "church-stained-glass": T(["#efe8da", "#fcfaf5"], "#ffffff", "#2a2233", "#6d6475", "#b8913a", "#7a1f3d", "deco"),
   "christian-garden": T(["#e8ebdd", "#fafaf5"], "#ffffff", "#2b3629", "#6b7866", "#b9a36a", "#5b7a5a", "leaves"),

@@ -52,6 +52,15 @@ The other occasions keep the original section layout with the envelope intro.
 
 **Font pairings** ([lib/fontPairings.ts](lib/fontPairings.ts)): `classic-serif`, `modern-clean`, `elegant-script`, `royal-cinzel`, `tamil-calligraphy`, `tamil-classic`.
 
+## Royal Palace 3D (premium, ₹999)
+
+`royal-palace-3d` is the top-tier wedding design: ₹999 (was ₹1499), with a **Premium** badge and a **3D Interactive** chip on its landing card. It has its own page in [components/invite/palace/](components/invite/palace/) (`pageLayout: "palace"`) and uses the usual editor and invitation data. There are no new fields.
+
+- **Opening** (`palaceGate` intro): darkness and gold motes, then the palace gate. Brass lamps light, the doors swing open, the view moves through into a hall of arches, then "You are invited", the names, the date and **Enter the celebration**. About 8 seconds, with **Skip intro** throughout. It's CSS 3D, so it also plays in the landing card.
+- **3D palace behind the page** ([PalaceScene.tsx](components/invite/palace/PalaceScene.tsx), React Three Fiber): a gate in a domed facade, a pillared hall with jali screens and chandeliers, a courtyard fountain with floating diyas, and the inner palace. Each section carries `data-palace-shot`. As the guest scrolls, the camera eases between the poses in [shots.ts](components/invite/palace/shots.ts): entrance, hall, courtyard, and finally back outside to the lit palace.
+- **Sections:** entrance, couple (the first two photos as arched portraits), story timeline (split from the story text), families, event cards with View location, four-column countdown, portrait gallery, then travel, places, FAQ, RSVP, blessings, guest photos and share. The shared sections sit on ivory parchment.
+- **Performance:** instanced geometry, no shadows or post-processing, and capped DPR. A per-device budget (low/mid/high) sets particles, petals and lights. Rendering pauses in a hidden tab or off screen. The scene loads only after the intro. Without WebGL, or if it fails, a CSS/SVG palace ([PalaceArt.tsx](components/invite/palace/PalaceArt.tsx)) is shown instead. The guest's "Reduce motion" choice gives a still scene.
+
 ## Editor: what the user can set
 
 - Names (groom/bride, or one host)
