@@ -889,3 +889,44 @@
 .root[data-world="park"] .hall {
   display: none;
 }
+
+/* ---------------------------------------------------------------- */
+/* Illustrated fronts (IntroFacades.tsx) for palace, temple, church  */
+/* ---------------------------------------------------------------- */
+.root:not([data-world="park"]) .facade {
+  width: min(78cqw, 46cqh);
+  bottom: 18cqh;
+  height: auto;
+  aspect-ratio: 400 / 260;
+}
+/* The art is twice the facade's height, standing on its base. */
+.facadeArt {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 200%;
+  overflow: visible;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.55));
+}
+.root:not([data-world="park"]) .wall {
+  inset: 32% 0 0;
+  background: none;
+  box-shadow: none;
+}
+.root:not([data-world="park"]) .frieze,
+.root:not([data-world="park"]) .jharokha {
+  display: none;
+}
+.root[data-world="palace"] .gate,
+.root:not([data-world]) .gate {
+  outline: none;
+}
+.root[data-world="temple"] .gate {
+  outline: none;
+  width: 26%;
+}
+.root[data-world="cathedral"] .gate {
+  width: 30%;
+  outline: none;
+}
