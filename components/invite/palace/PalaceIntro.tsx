@@ -6,6 +6,7 @@ import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "../intros/types";
 import { playSound, useWarmAudio } from "../intros/audio";
 import { usePalaceT, worldOf } from "./world";
+import IntroFacade from "./IntroFacades";
 import type { WorldId } from "./shots";
 import s from "./intro.module.css";
 
@@ -183,21 +184,7 @@ export default function PalaceIntro({ names, dateLabel, fonts, templateId, onOpe
       )}
       <div className={`${s.world} ${at(6) ? s.push : ""}`} aria-hidden>
         <div className={`${s.facade} ${at(2) ? s.on : ""}`}>
-          {world === "palace" && (
-            <>
-              <span className={s.dome} />
-              <span className={`${s.chhatri} ${s.chhatriL}`} />
-              <span className={`${s.chhatri} ${s.chhatriR}`} />
-            </>
-          )}
-          {world === "temple" && (
-            <span className={s.gopuram}>
-              {[0, 1, 2, 3, 4, 5].map((i) => (
-                <span key={i} className={s.tier} style={{ "--i": i } as CSSProperties} />
-              ))}
-              <span className={s.vault} />
-            </span>
-          )}
+          {world !== "park" && <IntroFacade world={world} lit={at(4)} className={s.facadeArt} />}
           {world === "park" && (
             <>
               <span className={`${s.tree} ${s.treeL}`}>
@@ -209,14 +196,6 @@ export default function PalaceIntro({ names, dateLabel, fonts, templateId, onOpe
                 <span className={s.canopy} />
               </span>
               <span className={s.blossomArch} />
-            </>
-          )}
-          {world === "cathedral" && (
-            <>
-              <span className={`${s.tower} ${s.towerL}`} />
-              <span className={`${s.tower} ${s.towerR}`} />
-              <span className={s.gable} />
-              <span className={`${s.rose} ${at(4) ? s.lit : ""}`} />
             </>
           )}
           <div className={s.wall}>
