@@ -443,6 +443,19 @@ const THEMES: Record<string, MotionTheme> = {
     thread: "vine",
     moments: { family: "doors", events: "diyas", gallery: "arch", mandalaLayer: true },
   },
+  // "Royal Palace 3D": its own layout (components/invite/palace) — the 3D
+  // palace carries the motion, so the shared extras stay quiet: gold dust
+  // over the finale and marigold when a guest says yes.
+  "royal-palace-3d": {
+    sectionEnter: "rise",
+    heading: "goldSweep",
+    divider: "none",
+    ambient: "embers",
+    ambientAt: ["thanks"],
+    rsvpBurst: "marigold",
+    pageBg: "#070B1A",
+    thread: null,
+  },
   // "Chapel Bells": its own layout (components/invite/chapel) — dust motes
   // in the window light, petals when a guest says yes.
   "chapel-bells": {

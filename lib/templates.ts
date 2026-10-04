@@ -25,6 +25,8 @@ export type IntroId =
   | "glasshouse"
   // Chapel Bells' own page (components/invite/chapel).
   | "chapel"
+  // Royal Palace 3D's own page (components/invite/palace).
+  | "palaceGate"
   // Layout-style openings (components/invite/intros/LayoutIntros.tsx).
   | "gopuram"
   | "marigoldCurtain"
@@ -68,7 +70,7 @@ export interface TemplateConfig {
   /** A completely separate page instead of the royal layout (with or
    * without a `layout` style): components/invite/garden or
    * components/invite/chapel. */
-  pageLayout?: "garden" | "chapel";
+  pageLayout?: "garden" | "chapel" | "palace";
   /** Borrow a layout style's event names (e.g. "church" → Holy Matrimony)
    * without using its look — for templates with their own pageLayout. */
   eventNamesFrom?: LayoutStyleId;
@@ -82,9 +84,26 @@ export interface TemplateConfig {
   /** "Was" price in ₹, shown struck through beside the price. Leave out to
    * use the default (LIST_PRICE_INR in lib/pricing.ts). */
   listPrice?: number;
+  /** A ribbon on the landing-page card for top-tier designs. */
+  badge?: "premium";
 }
 
 export const TEMPLATES: TemplateConfig[] = [
+  // ── Top tier: an interactive 3D palace (components/invite/palace) ──
+  {
+    id: "royal-palace-3d",
+    category: "wedding",
+    defaultAccent: "#C9A24A",
+    defaultFont: "luxe-didone",
+    cardGradient: "from-slate-950 via-blue-950 to-emerald-950",
+    cardTextClass: "text-amber-100",
+    intro: "palaceGate",
+    pageLayout: "palace",
+    seed: "hindu-north",
+    price: 999,
+    listPrice: 1499,
+    badge: "premium",
+  },
   // ── Featured: its own page (components/invite/garden), first in the gallery ──
   {
     id: "botanical-garden",

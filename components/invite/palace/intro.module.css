@@ -1,0 +1,355 @@
+/* Palace gate intro (royal-palace-3d). Fills IntroHost's slot; sized in
+   container units so it plays identically full screen and in the small
+   landing-page card. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  background: radial-gradient(120% 80% at 50% 100%, #0d1530 0%, #04060e 55%, #020309 100%);
+  color: #fbf6ea;
+  font-family: var(--intro-caps);
+  transition: opacity 1s ease, filter 1s ease;
+}
+.leaving {
+  opacity: 0;
+  filter: brightness(1.8) blur(4px);
+}
+
+/* Gold motes in the dark */
+.motes {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+.motes span {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #f3d27a;
+  box-shadow: 0 0 8px 2px rgba(243, 210, 122, 0.6);
+  animation: drift 6s ease-in-out infinite;
+}
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-18px);
+    opacity: 1;
+  }
+}
+
+/* The world: zooms through the gate on .push */
+.world {
+  position: absolute;
+  inset: 0;
+  perspective: 900px;
+  transform-origin: 50% 70%;
+  transition: transform 2.4s cubic-bezier(0.55, 0, 0.2, 1);
+}
+.world.push {
+  transform: scale(4.2);
+}
+.world.push .facade {
+  opacity: 0;
+  transition: opacity 1.4s ease 0.9s;
+}
+
+/* Facade */
+.facade {
+  position: absolute;
+  left: 50%;
+  bottom: 22cqh;
+  width: min(86cqw, 78cqh);
+  height: min(56cqw, 50cqh);
+  transform: translateX(-50%) translateY(14px);
+  opacity: 0;
+  transition: opacity 1.8s ease, transform 2.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.facade.on {
+  opacity: 1;
+  transform: translateX(-50%);
+}
+.wall {
+  position: absolute;
+  inset: 32% 0 0;
+  background:
+    linear-gradient(180deg, transparent 0 3px, #c9a24a 3px 6px, transparent 6px),
+    linear-gradient(180deg, #1c2756 0%, #0b1130 100%);
+  box-shadow: inset 0 -30px 60px rgba(0, 0, 0, 0.5);
+}
+.dome {
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  width: 34%;
+  height: 34%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #24306a, #121a40);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.dome::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -14%;
+  width: 2px;
+  height: 18%;
+  background: #c9a24a;
+}
+.chhatri {
+  position: absolute;
+  top: 18%;
+  width: 12%;
+  height: 16%;
+  background: linear-gradient(180deg, #24306a, #121a40);
+  border-radius: 50% 50% 0 0 / 70% 70% 0 0;
+}
+.chhatriL {
+  left: 4%;
+}
+.chhatriR {
+  right: 4%;
+}
+
+/* The gate */
+.gate {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 26%;
+  height: 78%;
+  transform: translateX(-50%);
+  border-radius: 999px 999px 0 0;
+  outline: 3px solid #c9a24a;
+  outline-offset: 3px;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 600px;
+}
+.light {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(80% 70% at 50% 75%, #fff2cc 0%, #f2b65a 45%, #7a3e12 100%);
+  opacity: 0;
+  transition: opacity 1.6s ease 0.4s;
+}
+.door {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 14px),
+    radial-gradient(circle at 50% 50%, #c9a24a 0 3px, transparent 4px) 0 0 / 22px 22px,
+    linear-gradient(180deg, #4a2416, #2c130b);
+  transition: transform 2.6s cubic-bezier(0.45, 0, 0.2, 1);
+  backface-visibility: hidden;
+}
+.doorL {
+  left: 0;
+  transform-origin: 0 50%;
+  border-right: 1px solid #c9a24a;
+}
+.doorR {
+  right: 0;
+  transform-origin: 100% 50%;
+  border-left: 1px solid #c9a24a;
+}
+.open .doorL {
+  transform: rotateY(-105deg);
+}
+.open .doorR {
+  transform: rotateY(105deg);
+}
+.open .light {
+  opacity: 1;
+}
+
+/* Brass lamps */
+.lamp {
+  position: absolute;
+  bottom: -2%;
+  width: 4%;
+  height: 34%;
+  background: linear-gradient(90deg, #8a6a24, #ebd08a 50%, #8a6a24);
+  border-radius: 40% 40% 2px 2px;
+  clip-path: polygon(0 18%, 100% 18%, 70% 26%, 62% 92%, 100% 100%, 0 100%, 38% 92%, 30% 26%);
+}
+.lampL {
+  left: 30%;
+}
+.lampR {
+  right: 30%;
+}
+.flame {
+  position: absolute;
+  left: 50%;
+  top: -20%;
+  width: 70%;
+  height: 26%;
+  transform: translateX(-50%) scale(0);
+  background: radial-gradient(ellipse at 50% 70%, #fff6d6 0%, #ffc24a 45%, transparent 72%);
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  transition: transform 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.lamp.lit .flame {
+  transform: translateX(-50%) scale(1);
+  animation: flicker 1.4s ease-in-out infinite 0.6s;
+}
+.lamp {
+  overflow: visible;
+}
+.lamp.lit {
+  filter: drop-shadow(0 0 14px rgba(255, 190, 90, 0.85));
+}
+@keyframes flicker {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1, 1);
+  }
+  40% {
+    transform: translateX(-50%) scale(0.92, 1.08);
+  }
+  70% {
+    transform: translateX(-50%) scale(1.04, 0.95);
+  }
+}
+
+/* The hall of receding arches beyond the gate */
+.hall {
+  position: absolute;
+  left: 50%;
+  bottom: 18cqh;
+  width: min(60cqw, 44cqh);
+  height: min(90cqw, 68cqh);
+  transform: translateX(-50%) scale(0.6);
+  opacity: 0;
+  transition: opacity 1.6s ease 1s, transform 3.2s cubic-bezier(0.22, 1, 0.36, 1) 0.8s;
+}
+.hall.on {
+  opacity: 0.55;
+  transform: translateX(-50%) scale(1);
+}
+.arch {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(235, 208, 138, 0.8);
+  border-bottom: 0;
+  border-radius: 999px 999px 0 0;
+  transform: scale(calc(1 - var(--i) * 0.17));
+  transform-origin: 50% 100%;
+  opacity: calc(1 - var(--i) * 0.16);
+}
+.hallGlow {
+  position: absolute;
+  inset: 20% 25% 0;
+  background: radial-gradient(50% 60% at 50% 80%, rgba(255, 220, 150, 0.9), transparent);
+}
+
+/* Words */
+.copy {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2cqh;
+  padding: 0 6cqw;
+  text-align: center;
+  pointer-events: none;
+}
+.copy > * {
+  opacity: 0;
+  transform: translateY(12px);
+  filter: blur(6px);
+  transition: opacity 1.2s ease, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1), filter 1.2s ease;
+}
+.copy > .on {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+.invited {
+  font-size: max(11px, 2.2cqmin);
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: #ebd08a;
+}
+.names {
+  font-family: var(--intro-display);
+  font-size: calc(min(12cqw, 9cqh) * var(--name-fit, 1));
+  line-height: 1.05;
+  font-weight: 400;
+  color: #fffaf0;
+  text-shadow: 0 0 30px rgba(255, 200, 110, 0.45), 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+.amp {
+  font-style: italic;
+  color: #ebd08a;
+}
+.date {
+  font-size: max(12px, 2.4cqmin);
+  letter-spacing: 0.32em;
+  color: #ebd08a;
+}
+.enter {
+  pointer-events: auto;
+  margin-top: 2cqh;
+  padding: 14px 30px;
+  border: 1px solid #ebd08a;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(201, 162, 74, 0.25), rgba(201, 162, 74, 0.08));
+  color: #fffaf0;
+  font: inherit;
+  font-size: max(12px, 2cqmin);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 0 0 rgba(235, 208, 138, 0.5);
+  animation: halo 2.6s ease-in-out infinite;
+}
+.enter:not(.on) {
+  pointer-events: none;
+}
+.enter:hover {
+  background: rgba(201, 162, 74, 0.35);
+}
+@keyframes halo {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(235, 208, 138, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(235, 208, 138, 0);
+  }
+}
+.skip {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 8px 14px;
+  border: 1px solid rgba(235, 208, 138, 0.4);
+  border-radius: 999px;
+  background: rgba(4, 6, 14, 0.5);
+  color: #ebd08a;
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* The guest's "Reduce motion" choice (lib/motionPref). */
+:global(html[data-motion="reduced"]) .root,
+:global(html[data-motion="reduced"]) .root * {
+  transition: none !important;
+  animation: none !important;
+}

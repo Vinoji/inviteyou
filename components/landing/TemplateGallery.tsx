@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, Box, ChevronDown, Crown } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { templateListPriceInr, templatePriceInr } from "@/lib/pricing";
+import { getTemplateConfig } from "@/lib/templates";
 import TemplateShowcase, { type ShowcaseProps } from "./TemplateShowcase";
 import f from "./landing.module.css";
 
@@ -93,6 +94,7 @@ export default function TemplateGallery({
       <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
         {shown.map((tpl, i) => {
           const listPrice = templateListPriceInr(tpl.id);
+          const premium = getTemplateConfig(tpl.id).badge === "premium";
           return (
           <li
             key={tpl.id}
@@ -106,7 +108,11 @@ export default function TemplateGallery({
                     : ""
             }
           >
-            <article className={`${f.festiveCard} group flex h-full flex-col transition duration-300 hover:-translate-y-1`}>
+            <article
+              className={`${f.festiveCard} group flex h-full flex-col transition duration-300 hover:-translate-y-1 ${
+                premium ? "ring-2 ring-amber-400/80 shadow-[0_18px_40px_-18px_rgba(201,162,74,0.8)]" : ""
+              }`}
+            >
               <div className="relative overflow-hidden rounded-t-[21px]">
                 <TemplateShowcase {...tpl.showcase} />
                 {/* Top right: the showcase's "Tap to try it" hint owns top left. */}
@@ -121,12 +127,23 @@ export default function TemplateGallery({
                       ₹{templatePriceInr(tpl.id)}
                     </span>
                   </span>
-                  {listPrice && (
+                  {premium ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-neutral-950 uppercase shadow-md sm:text-xs">
+                      <Crown size={11} aria-hidden />
+                      {t("premium")}
+                    </span>
+                  ) : listPrice && (
                     <span className="rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase shadow-md sm:text-xs">
                       {t("offer")}
                     </span>
                   )}
                 </div>
+                {premium && (
+                  <span className="pointer-events-none absolute bottom-2 left-2 z-30 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-semibold text-amber-200 ring-1 ring-amber-300/50 backdrop-blur sm:text-xs">
+                    <Box size={11} aria-hidden />
+                    {t("interactive3d")}
+                  </span>
+                )}
               </div>
               <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
                 <h3 className="truncate font-serif text-base font-bold text-neutral-900 sm:text-lg dark:text-neutral-50">

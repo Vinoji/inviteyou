@@ -119,7 +119,9 @@
       "title": "Your celebration deserves a grand opening",
       "body": "Design for free, preview on any phone, and publish when it feels just right.",
       "button": "Start designing — it's free"
-    }
+    },
+    "premium": "Premium",
+    "interactive3d": "3D Interactive"
   },
   "notFound": {
     "eyebrow": "404",
@@ -1411,6 +1413,93 @@
       "corporate-offsite": {
         "lead": "Pack your bags — a team offsite with"
       }
+    },
+    "palace": {
+      "intro": {
+        "dialogLabel": "Invitation — the palace gate",
+        "invited": "You are invited",
+        "enter": "Enter the celebration",
+        "skip": "Skip intro"
+      },
+      "entrance": {
+        "line1": "Two hearts.",
+        "line2": "One beautiful beginning.",
+        "scroll": "Scroll to enter"
+      },
+      "hero": {
+        "eyebrow": "The royal wedding of",
+        "together": "Together with their families, they invite you to celebrate their union.",
+        "dateTba": "Date to be announced",
+        "portraitAlt": "Portrait of {name}"
+      },
+      "story": {
+        "eyebrow": "Our story",
+        "heading": "A Love Written in Gold",
+        "m1": "Where it began",
+        "m2": "First meeting",
+        "m3": "The journey",
+        "m4": "Forever"
+      },
+      "family": {
+        "eyebrow": "With the blessings of",
+        "heading": "The Royal Families",
+        "sub": "Two families, one celebration",
+        "bride": "The Bride",
+        "groom": "The Groom"
+      },
+      "events": {
+        "eyebrow": "The celebrations",
+        "heading": "In the Palace Courtyard",
+        "date": "Date",
+        "time": "Time",
+        "venue": "Venue",
+        "location": "View location",
+        "tba": "To be announced"
+      },
+      "countdown": {
+        "eyebrow": "The auspicious hour",
+        "heading": "Until We Say Forever",
+        "done": "Today is the day",
+        "aria": "Time until the wedding",
+        "days": "Days",
+        "hours": "Hours",
+        "minutes": "Minutes",
+        "seconds": "Seconds"
+      },
+      "gallery": {
+        "eyebrow": "Royal portraits",
+        "heading": "Our Memories",
+        "alt": "Memory {n}"
+      },
+      "travel": {
+        "eyebrow": "Plan your visit",
+        "heading": "Your Journey to the Palace"
+      },
+      "places": {
+        "eyebrow": "While you are here",
+        "heading": "Beyond the Celebration"
+      },
+      "faq": {
+        "eyebrow": "Good to know",
+        "heading": "Things to Know"
+      },
+      "rsvp": {
+        "eyebrow": "Kindly reply",
+        "heading": "Will You Join Us?",
+        "sub": "Your presence would make our celebration complete."
+      },
+      "blessings": {
+        "eyebrow": "From our guests",
+        "heading": "Messages of Love"
+      },
+      "guests": {
+        "eyebrow": "Through your eyes",
+        "heading": "Captured Moments"
+      },
+      "finale": {
+        "meant": "were meant to meet.",
+        "thanks": "Thank you for celebrating with us"
+      }
     }
   },
   "rsvpsPage": {
@@ -1604,6 +1693,11 @@
     }
   },
   "templates": {
+    "royal-palace-3d": {
+      "name": "Royal Palace 3D",
+      "tagline": "Cinematic 3D palace · Premium",
+      "description": "An immersive royal palace wedding invitation with cinematic 3D interactions."
+    },
     "temple-gopuram": {
       "name": "Temple Gopuram",
       "tagline": "Gopuram, brass lamps & temple gold",
