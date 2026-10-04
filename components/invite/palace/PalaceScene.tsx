@@ -1,9 +1,11 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useRef, type MutableRefObject, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, type MutableRefObject, type ReactNode } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import type { Pose, ShotTrack } from "./shots";
+import { makePalaceTextures } from "./textures";
 
 export type Quality = "low" | "mid" | "high";
 
@@ -21,8 +23,8 @@ const LANTERN_Z = [-5, -13, -21, -29, -37];
 const CHANDELIER_Z = [-9, -25];
 
 const tmp = new THREE.Object3D();
-const WINDOW_DIM = new THREE.Color("#5A3A14");
-const WINDOW_LIT = new THREE.Color("#FFD68C");
+const WINDOW_DIM = new THREE.Color("#6A4A24");
+const WINDOW_LIT = new THREE.Color("#FFFFFF");
 
 /** Seeded random numbers, so the dust and petals are laid out the same on every render. */
 function seeded(seed: number) {
@@ -144,24 +146,26 @@ function useInstances(
 /* Materials shared across the scene                                   */
 /* ------------------------------------------------------------------ */
 
-function useMaterials(gold: string) {
-  return useMemo(
-    () => ({
-      gold: new THREE.MeshStandardMaterial({ color: gold, metalness: 0.85, roughness: 0.3, emissive: gold, emissiveIntensity: 0.12 }),
-      stone: new THREE.MeshStandardMaterial({ color: "#C4AE86", roughness: 0.8, metalness: 0.05 }),
-      marble: new THREE.MeshStandardMaterial({ color: "#EFE8DA", roughness: 0.35, metalness: 0.05 }),
-      floor: new THREE.MeshStandardMaterial({ color: "#121A33", roughness: 0.55, metalness: 0.2 }),
-      carpet: new THREE.MeshStandardMaterial({ color: "#5E1526", roughness: 0.9 }),
-      wood: new THREE.MeshStandardMaterial({ color: "#3B1C12", roughness: 0.6, metalness: 0.1, side: THREE.DoubleSide }),
-      wall: new THREE.MeshStandardMaterial({ color: "#0D1430", roughness: 0.9 }),
-      hedge: new THREE.MeshStandardMaterial({ color: "#123A2C", roughness: 0.95 }),
+function useMaterials(gold: string, quality: Quality) {
+  return useMemo(() => {
+    const tx = makePalaceTextures(quality === "low" ? 256 : 512, gold);
+    return {
+      gold: new THREE.MeshStandardMaterial({ color: gold, metalness: 0.9, roughness: 0.28, emissive: gold, emissiveIntensity: 0.1 }),
+      stone: new THREE.MeshStandardMaterial({ color: "#FFDDB0", map: tx.sandstone.map, bumpMap: tx.sandstone.bump, bumpScale: 3, roughness: 0.85, metalness: 0.02 }),
+      marble: new THREE.MeshStandardMaterial({ map: tx.marble.map, roughness: 0.3, metalness: 0.05 }),
+      pillar: new THREE.MeshStandardMaterial({ color: "#FFF1DC", map: tx.pillar.map, bumpMap: tx.pillar.bump, bumpScale: 4, roughness: 0.32, metalness: 0.05 }),
+      dome: new THREE.MeshStandardMaterial({ map: tx.dome.map, bumpMap: tx.dome.bump, bumpScale: 2, roughness: 0.35, metalness: 0.15 }),
+      floor: new THREE.MeshStandardMaterial({ map: tx.floor.map, bumpMap: tx.floor.bump, bumpScale: 1.5, roughness: 0.3, metalness: 0.15 }),
+      carpet: new THREE.MeshStandardMaterial({ map: tx.carpet.map, roughness: 0.95 }),
+      wood: new THREE.MeshStandardMaterial({ map: tx.door.map, bumpMap: tx.door.bump, bumpScale: 3, roughness: 0.55, metalness: 0.1, side: THREE.DoubleSide }),
+      wall: new THREE.MeshStandardMaterial({ map: tx.wall.map, roughness: 0.8, emissive: "#0B1230", emissiveIntensity: 0.4 }),
+      hedge: new THREE.MeshStandardMaterial({ map: tx.hedge.map, roughness: 0.95 }),
       water: new THREE.MeshStandardMaterial({ color: "#163A55", roughness: 0.1, metalness: 0.6, emissive: "#0E2A44", emissiveIntensity: 0.6 }),
       flame: new THREE.MeshBasicMaterial({ color: "#FFD27A" }),
       lantern: new THREE.MeshStandardMaterial({ color: "#FFC766", emissive: "#FFB347", emissiveIntensity: 1.4, roughness: 0.4 }),
-      window: new THREE.MeshBasicMaterial({ color: "#FFCF7A" }),
-    }),
-    [gold]
-  );
+      window: new THREE.MeshBasicMaterial({ map: tx.window.map, color: "#FFCF7A" }),
+    };
+  }, [gold, quality]);
 }
 type Mats = ReturnType<typeof useMaterials>;
 
@@ -222,7 +226,7 @@ function Facade({
       <mesh material={mats.gold} position={[0, 8.1, 0]}>
         <boxGeometry args={[22.4, 0.25, 1.3]} />
       </mesh>
-      <mesh material={mats.marble} position={[0, 8.2, -1.2]}>
+      <mesh material={mats.dome} position={[0, 8.2, -1.2]}>
         <sphereGeometry args={[2.6, 28, 14, 0, Math.PI * 2, 0, Math.PI / 2]} />
       </mesh>
       <mesh material={mats.gold} position={[0, 11.3, -1.2]}>
@@ -233,7 +237,7 @@ function Facade({
           <mesh material={mats.stone} position={[0, 0.6, 0]}>
             <boxGeometry args={[1.8, 1.2, 1.8]} />
           </mesh>
-          <mesh material={mats.marble} position={[0, 1.2, 0]}>
+          <mesh material={mats.dome} position={[0, 1.2, 0]}>
             <sphereGeometry args={[1, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2]} />
           </mesh>
           <mesh material={mats.gold} position={[0, 2.5, 0]}>
@@ -298,14 +302,37 @@ function Palace({
   gold: string;
 }) {
   const budget = BUDGET[quality];
-  const mats = useMaterials(gold);
+  const mats = useMaterials(gold, quality);
   const glowTex = useMemo(() => glowTexture(), []);
   const jali = useMemo(() => {
     const tex = jaliTexture(gold);
     tex.repeat.set(16, 2);
     return tex;
   }, [gold]);
-  const { scene, camera } = useThree();
+  const { scene, camera, gl } = useThree();
+
+  // Soft studio reflections so gold and marble read as metal and stone
+  // rather than flat paint. Generated, not downloaded; skipped on low-end.
+  const envMap = useMemo(() => {
+    if (quality === "low") return null;
+    const pmrem = new THREE.PMREMGenerator(gl);
+    const tex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    pmrem.dispose();
+    return tex;
+  }, [gl, quality]);
+  useEffect(() => () => envMap?.dispose(), [envMap]);
+
+  // Free the painted textures with their materials.
+  useEffect(
+    () => () =>
+      Object.values(mats).forEach((m) => {
+        const std = m as THREE.MeshStandardMaterial;
+        std.map?.dispose();
+        std.bumpMap?.dispose();
+        m.dispose();
+      }),
+    [mats]
+  );
   // Brightened every frame with the palace's glow (shared by all windows).
   const windowMat = useRef<THREE.MeshBasicMaterial | null>(null);
   useLayoutEffect(() => {
@@ -489,9 +516,10 @@ function Palace({
   return (
     <>
       <color attach="background" args={["#04060E"]} />
+      {envMap && <primitive attach="environment" object={envMap} />}
       <fog attach="fog" args={["#04060E", 12, 52]} />
-      <ambientLight intensity={budget.lights === 0 ? 0.75 : 0.45} color="#8A90C0" />
-      <hemisphereLight args={["#34467F", "#3A2410", 0.6]} />
+      <ambientLight intensity={budget.lights === 0 ? 0.75 : 0.45} color="#A8A2B8" />
+      <hemisphereLight args={["#3A4A80", "#5A3A18", 0.6]} />
       <directionalLight position={[-6, 12, 8]} intensity={0.7} color="#BFCBFF" />
       <directionalLight position={[0, 8, -30]} intensity={0.35} color="#FFC877" />
 
@@ -533,7 +561,7 @@ function Palace({
       )}
 
       {/* The pillared hall */}
-      <instancedMesh ref={pillarRef} args={[undefined, undefined, pillarItems.length]} material={mats.marble}>
+      <instancedMesh ref={pillarRef} args={[undefined, undefined, pillarItems.length]} material={mats.pillar}>
         <cylinderGeometry args={[0.3, 0.34, 4.2, 14]} />
       </instancedMesh>
       <instancedMesh ref={capitalRef} args={[undefined, undefined, capitalItems.length]} material={mats.gold}>
@@ -701,6 +729,7 @@ export default function PalaceScene({
       frameloop={frameloop}
       gl={{ antialias: quality === "high", alpha: false, powerPreference: quality === "low" ? "low-power" : "default" }}
       camera={{ position: [0, 1.7, 13], fov: 55, near: 0.1, far: 120 }}
+      scene={{ environmentIntensity: 0.3 }}
       style={{ position: "absolute", inset: 0 }}
       onCreated={({ invalidate }) => onInvalidate(() => invalidate())}
     >

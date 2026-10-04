@@ -110,6 +110,11 @@ export default function PalaceIntro({ names, dateLabel, fonts, onOpen, onDone, b
           <span className={`${s.chhatri} ${s.chhatriL}`} />
           <span className={`${s.chhatri} ${s.chhatriR}`} />
           <div className={s.wall}>
+            <span className={s.frieze} />
+            {/* Jharokha windows either side of the gate, lit from within */}
+            {["l1", "l2", "r1", "r2"].map((k) => (
+              <span key={k} className={`${s.jharokha} ${s[k]} ${at(4) ? s.lit : ""}`} />
+            ))}
             <div className={`${s.gate} ${at(5) ? s.open : ""}`}>
               <span className={s.light} />
               <span className={`${s.door} ${s.doorL}`} />
