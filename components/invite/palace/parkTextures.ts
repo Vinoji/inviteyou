@@ -114,12 +114,17 @@ function waterfall(size: number) {
     g.lineWidth = 1 + rand() * 3;
     const x = rand() * w;
     const y = rand() * size;
-    g.beginPath();
-    g.moveTo(x, y);
-    g.lineTo(x + (rand() - 0.5) * 3, y + 30 + rand() * 80);
-    g.stroke();
+    const dx = (rand() - 0.5) * 3;
+    const len = 30 + rand() * 80;
+    // Drawn twice, a tile apart, so the texture repeats with no seam.
+    for (const oy of [0, -size]) {
+      g.beginPath();
+      g.moveTo(x, y + oy);
+      g.lineTo(x + dx, y + oy + len);
+      g.stroke();
+    }
   }
-  return { map: toTexture(c, true, [1, 1]) };
+  return { map: toTexture(c, true, [1, 1.5]) };
 }
 
 /** Mossy granite for the cliff. */

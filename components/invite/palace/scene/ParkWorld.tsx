@@ -67,6 +67,8 @@ function useParkMaterials(size: number) {
       water: new THREE.MeshStandardMaterial({ map: tx.water.map, roughness: 0.12, metalness: 0.35, emissive: "#0A2A36", emissiveIntensity: 0.6 }),
       fall: new THREE.MeshBasicMaterial({ map: tx.waterfall.map, transparent: true, depthWrite: false, side: THREE.DoubleSide }),
       rock: new THREE.MeshStandardMaterial({ map: tx.rock.map, roughness: 0.95, flatShading: true }),
+      foliage: new THREE.MeshStandardMaterial({ roughness: 0.9, flatShading: true }),
+      foam: new THREE.MeshStandardMaterial({ color: "#F4FBFF", roughness: 0.4, transparent: true, opacity: 0.75, emissive: "#9FD4EA", emissiveIntensity: 0.35 }),
       hill: new THREE.MeshStandardMaterial({ color: "#3A3858", roughness: 1, flatShading: true }),
       hedge: new THREE.MeshStandardMaterial({ color: "#2E5A2A", roughness: 1, flatShading: true }),
       iron: new THREE.MeshStandardMaterial({ color: "#1E1E26", roughness: 0.4, metalness: 0.7 }),
@@ -121,6 +123,16 @@ function petalShape() {
   return new THREE.ShapeGeometry(s, 6);
 }
 
+/** A swept bird wing, hinged at the body (x = 0) and reaching out along +x. */
+function wingShape() {
+  const s = new THREE.Shape();
+  s.moveTo(0, 0.08);
+  s.quadraticCurveTo(0.25, 0.14, 0.62, -0.06);
+  s.quadraticCurveTo(0.3, -0.02, 0, -0.1);
+  s.closePath();
+  return new THREE.ShapeGeometry(s, 8);
+}
+
 /** A heart, for when someone taps the couple. */
 function heartShape() {
   const s = new THREE.Shape();
@@ -147,6 +159,7 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
   const trees = useMemo(() => plantTrees(), []);
   const ribbon = useMemo(() => pathRibbon(2.4), []);
   const heart = useMemo(() => heartShape(), []);
+  const wing = useMemo(() => wingShape(), []);
   const petalGeo = useMemo(() => petalShape(), []);
 
   /* ---------------- static instances ---------------- */
@@ -202,12 +215,38 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
   const rockItems = useMemo<Item[]>(() => {
     const rand = seeded(209);
     const out: Item[] = [];
-    // Cliff
-    for (let i = 0; i < 46; i++) {
-      const s = 1.4 + rand() * 2.4;
-      const x = -16 + rand() * 32;
-      if (Math.abs(x) < 2.4 && rand() < 0.85) continue; // keep the fall clear
-      out.push({ p: [x, rand() * 10, -63 + rand() * 2], s: [s, s * (0.8 + rand() * 0.4), s], r: [rand() * 3, rand() * 3, rand() * 3] });
+    // The cliff: courses of boulders, smaller towards an uneven top, with
+    // a gap for the fall and wings curving forward round the pool.
+    for (let row = 0; row < 7; row++) {
+      const y = row * 2.1;
+      const size = 3.4 - row * 0.3;
+      for (let x = -24 + rand() * 2; x < 24; x += size * (1.1 + rand() * 0.4)) {
+        if (Math.abs(x) < 3.2 && y < 11.5) continue; // keep the fall clear
+        if (row === 6 && rand() < 0.35) continue; // ragged skyline
+        const s = size * (0.8 + rand() * 0.5);
+        const z = -64 - row * 0.5 + (rand() - 0.5) * 1.2 - Math.abs(x) * 0.02;
+        out.push({ p: [x, y + rand() * 0.8, z], s: [s, s * (0.75 + rand() * 0.4), s * 0.9], r: [rand() * 3, rand() * 3, rand() * 3] });
+      }
+    }
+    // A deeper layer behind, filling the gaps (no flat backdrop edges)
+    for (let row = 0; row < 5; row++) {
+      for (let x = -22 + rand() * 3; x < 22; x += 3.4 + rand()) {
+        const s = 3.2 + rand() * 1.4 - row * 0.2;
+        out.push({ p: [x, row * 2.6 + rand(), -67.5 - rand()], s: [s, s * 0.85, s], r: [rand() * 3, rand() * 3, rand() * 3] });
+      }
+    }
+    // The lip over the fall
+    for (let i = 0; i < 4; i++) {
+      const s = 1.6 + rand();
+      out.push({ p: [-2.2 + i * 1.5, 13 + rand() * 0.8, -63.5], s: [s, s * 0.8, s], r: [rand() * 3, rand() * 3, 0] });
+    }
+    // Wings curving forward round the pool
+    for (const side of [-1, 1]) {
+      for (let i = 0; i < 9; i++) {
+        const t = i / 8;
+        const s = 2.6 - t * 1.4 + rand() * 0.6;
+        out.push({ p: [side * (12 - t * 3 + rand()), s * 0.4 + rand(), -62 + t * 9], s: [s, s * 0.8, s], r: [rand() * 3, rand() * 3, rand() * 3] });
+      }
     }
     // Pool rim and river banks
     for (let i = 0; i < 24; i++) {
@@ -224,6 +263,24 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
     }
     return out;
   }, []);
+  // Moss, ferns and a few blossoms crowning the cliff
+  const crownItems = useMemo<Item[]>(() => {
+    const rand = seeded(215);
+    return Array.from({ length: 34 }, () => {
+      const x = -24 + rand() * 48;
+      const s = 0.9 + rand() * 1.4;
+      return { p: [x, 13.2 + rand() * 1.6 - Math.abs(x) * 0.02, -66 - rand() * 2], s: [s * 1.3, s * 0.8, s] };
+    });
+  }, []);
+  const crownColors = useMemo(() => ["#2E5A2A", "#3D6B34", "#4E7A3A", "#2A4A28", "#F2A7C3", "#3D6B34"], []);
+  const foamItems = useMemo<Item[]>(
+    () =>
+      Array.from({ length: 12 }, (_, i) => {
+        const a = (i / 12) * Math.PI;
+        return { p: [Math.cos(a) * 2.4, 0.25, -59.4 + Math.sin(a) * 0.9], s: [0.7, 0.35, 0.6] };
+      }),
+    []
+  );
   const padItems = useMemo<Item[]>(() => {
     const rand = seeded(211);
     return Array.from({ length: 16 }, () => {
@@ -251,6 +308,8 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
   const plankRef = useRef<THREE.InstancedMesh>(null);
   const postRef = useRef<THREE.InstancedMesh>(null);
   const rockRef = useRef<THREE.InstancedMesh>(null);
+  const crownRef = useRef<THREE.InstancedMesh>(null);
+  const foamRef = useRef<THREE.InstancedMesh>(null);
   const padRef = useRef<THREE.InstancedMesh>(null);
   const lampRef = useRef<THREE.InstancedMesh>(null);
   const globeRef = useRef<THREE.InstancedMesh>(null);
@@ -261,6 +320,8 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
   useInstances(plankRef, plankItems);
   useInstances(postRef, postItems);
   useInstances(rockRef, rockItems);
+  useInstances(crownRef, crownItems, crownColors);
+  useInstances(foamRef, foamItems);
   useInstances(padRef, padItems, ["#3E7A3A", "#4E8A42", "#F2A7C3"]);
   useInstances(lampRef, lampItems);
   useInstances(globeRef, globeItems);
@@ -491,9 +552,23 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
       b.rotation.set(0, -a, Math.sin(t + i) * 0.15);
       const flap = Math.sin(t * (8 + scatter * 10) + i) * 0.7;
       const [wl, wr] = b.children.slice(1);
-      if (wl) wl.rotation.z = flap;
-      if (wr) wr.rotation.z = -flap;
+      if (wl) wl.rotation.z = flap * 0.8;
+      if (wr) wr.rotation.z = flap * 0.8;
     });
+
+    // Foam churns at the foot of the fall.
+    const fm = foamRef.current;
+    if (fm) {
+      foamItems.forEach((it, i) => {
+        const k = 1 + Math.sin(t * 3 + i * 1.3) * 0.18;
+        tmp.position.set(it.p[0], it.p[1] + Math.sin(t * 2.4 + i) * 0.05, it.p[2]);
+        tmp.rotation.set(0, i, 0);
+        tmp.scale.set(0.7 * k, 0.35 * k, 0.6 * k);
+        tmp.updateMatrix();
+        fm.setMatrixAt(i, tmp.matrix);
+      });
+      fm.instanceMatrix.needsUpdate = true;
+    }
 
     // Fireflies drift.
     const fg = fireflyGeo.current;
@@ -612,12 +687,15 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
       <instancedMesh ref={rockRef} args={[undefined, undefined, rockItems.length]} material={pm.rock}>
         <dodecahedronGeometry args={[1, 0]} />
       </instancedMesh>
-      <mesh material={pm.rock} position={[0, 5, -65]}>
-        <boxGeometry args={[40, 12, 2]} />
+      <instancedMesh ref={crownRef} args={[undefined, undefined, crownItems.length]} material={pm.foliage}>
+        <icosahedronGeometry args={[1, 1]} />
+      </instancedMesh>
+      <mesh ref={fallRef} material={pm.fall} position={[0, 6.3, -60.6]}>
+        <planeGeometry args={[5, 12.6]} />
       </mesh>
-      <mesh ref={fallRef} material={pm.fall} position={[0, 5, -61.2]}>
-        <planeGeometry args={[3.6, 10]} />
-      </mesh>
+      <instancedMesh ref={foamRef} args={[undefined, undefined, foamItems.length]} material={pm.foam}>
+        <icosahedronGeometry args={[1, 1]} />
+      </instancedMesh>
       <mesh ref={poolRef} material={pm.water} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.07, POOL_Z]}>
         <circleGeometry args={[5.8, 40]} />
       </mesh>
@@ -633,15 +711,14 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
       <group ref={birdsRef}>
         {birdSeeds.map((_, i) => (
           <group key={i}>
-            <mesh material={pm.bird} rotation={[Math.PI / 2, 0, 0]}>
-              <coneGeometry args={[0.06, 0.4, 4]} />
+            <mesh material={pm.bird} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 0.7]}>
+              <coneGeometry args={[0.07, 0.42, 6]} />
             </mesh>
-            <mesh material={pm.bird} position={[-0.02, 0, 0]}>
-              <planeGeometry args={[0.6, 0.18]} />
-            </mesh>
-            <mesh material={pm.bird} position={[0.02, 0, 0]}>
-              <planeGeometry args={[0.6, 0.18]} />
-            </mesh>
+            {[1, -1].map((side) => (
+              <group key={side} scale={[side, 1, 1]}>
+                <mesh geometry={wing} material={pm.bird} rotation={[-Math.PI / 2, 0, 0]} />
+              </group>
+            ))}
           </group>
         ))}
       </group>
