@@ -1138,6 +1138,8 @@
       "label": "Host tools",
       "edit": "Edit",
       "rsvps": "RSVPs",
+      "share": "Share link",
+      "copied": "Link copied",
       "editLink": "Edit link"
     },
     "styles": {
