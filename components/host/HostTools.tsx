@@ -148,11 +148,11 @@ export default function HostTools({ slug, messages }: { slug: string; messages: 
             {personalUrl}
           </p>
         )}
-        {/* Once there's a name: the card + personal message, or the message alone. */}
-        {guest.trim() && phoneOk ? (
+        {/* Works without a name too: then it's the general message and link. */}
+        {phoneOk ? (
           <WhatsAppShare
             slug={slug}
-            text={fill(messages.personal, personalUrl, guest.trim())}
+            text={guest.trim() ? fill(messages.personal, personalUrl, guest.trim()) : fill(messages.share, inviteUrl)}
             phone={phone}
             className="mt-3"
           />
@@ -163,21 +163,11 @@ export default function HostTools({ slug, messages }: { slug: string; messages: 
           </span>
         )}
         <div className="mt-2 flex">
-          <button
-            type="button"
-            disabled={!guest.trim()}
-            onClick={() => copy("personal", personalUrl)}
-            className={`${ghostBtn} flex-1 disabled:opacity-50`}
-          >
+          <button type="button" onClick={() => copy("personal", personalUrl)} className={`${ghostBtn} flex-1`}>
             {copied === "personal" ? <Check size={15} /> : <Copy size={15} />}
             {copied === "personal" ? t("copied") : t("copyLink")}
           </button>
         </div>
-        {/* The same common card for every guest, as a printable PDF. */}
-        <a href={`/invite/${slug}/card`} className={`${ghostBtn} mt-2 w-full`}>
-          <Printer size={15} aria-hidden />
-          {t("printCard")}
-        </a>
       </div>
 
       <div className={card}>
