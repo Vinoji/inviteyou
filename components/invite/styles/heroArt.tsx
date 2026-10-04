@@ -229,51 +229,134 @@ function Peacocks({ p }: { p: RoyalPalette }) {
   return svg("0 0 400 120", <>{bird(90, 1)}{bird(310, -1)}</>);
 }
 
-/* ---------- Lotus: peacock feather + lotus pond ---------- */
+/* ---------- Lotus: peacock feather + flute, lotus pond ---------- */
+
+/** A peacock feather lying along the top edge with Krishna's bansuri
+ * crossed under it, a silk tassel hanging from the flute. */
 function PeacockFeather({ p }: { p: RoyalPalette }) {
+  // Barbs fan out on both sides of a gently curving quill.
+  const quill = (t: number) => ({ x: 34 + t * 290, y: 112 - t * 74 - Math.sin(t * Math.PI) * 14 });
+  const barbs = Array.from({ length: 34 }, (_, i) => {
+    const t = 0.08 + (i / 33) * 0.78;
+    const q = quill(t);
+    const len = 8 + t * 22;
+    return { q, len, t };
+  });
   return svg(
     "0 0 400 150",
     <>
-      <path d="M70 140 Q200 90 330 20" fill="none" stroke={p.goldDeep} strokeWidth={2.5} />
-      {Array.from({ length: 16 }, (_, i) => {
-        const t = i / 15;
-        const x = 70 + t * 250;
-        const y = 140 - t * 115;
-        return (
-          <g key={i}>
-            <path d={`M${x} ${y} l-10 -18 M${x} ${y} l10 16`} stroke={p.leafLight} strokeWidth={1.2} opacity={0.8} />
-          </g>
-        );
-      })}
-      <ellipse cx={330} cy={22} rx={20} ry={16} fill={p.leaf} />
-      <ellipse cx={330} cy={22} rx={12} ry={10} fill={p.goldLight} />
-      <ellipse cx={330} cy={22} rx={7} ry={6} fill="#1E4FA0" />
-      <path d="M40 120 L150 64" stroke={p.goldDeep} strokeWidth={6} strokeLinecap="round" />
-      {[62, 80, 98, 116].map((x) => (
-        <circle key={x} cx={x} cy={120 - (x - 40) * 0.5} r={2} fill={p.ivory} />
+      <defs>
+        <linearGradient id="lotus-barb" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#7FA35A" />
+          <stop offset="0.6" stopColor="#2E8B6E" />
+          <stop offset="1" stopColor="#1E6F7A" />
+        </linearGradient>
+        <radialGradient id="lotus-eye" cx="0.45" cy="0.5" r="0.6">
+          <stop offset="0" stopColor="#13285E" />
+          <stop offset="0.45" stopColor="#1E4FA0" />
+          <stop offset="0.62" stopColor="#1FA3A0" />
+          <stop offset="0.78" stopColor="#E8C76A" />
+          <stop offset="0.9" stopColor="#8A6A2A" />
+          <stop offset="1" stopColor="#3E7A48" />
+        </radialGradient>
+        <linearGradient id="lotus-bamboo" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#E9C98A" />
+          <stop offset="0.5" stopColor="#C8954A" />
+          <stop offset="1" stopColor="#8E5E28" />
+        </linearGradient>
+      </defs>
+
+      {/* The bansuri: bamboo with gold bands and finger holes, a tassel */}
+      <g transform="rotate(-11 210 120)">
+        <rect x="60" y="114" width="230" height="10" rx="5" fill="url(#lotus-bamboo)" />
+        <rect x="60" y="114" width="230" height="3" rx="1.5" fill="#FFF1D0" opacity="0.5" />
+        {[78, 150, 262].map((x) => (
+          <rect key={x} x={x} y="113" width="6" height="12" rx="1" fill={p.gold} />
+        ))}
+        {[176, 192, 208, 224, 240, 98].map((x) => (
+          <ellipse key={x} cx={x} cy="119" rx="2.4" ry="2" fill="#4A2E12" />
+        ))}
+        <path d="M81 124 q-2 10 -6 16" stroke="#B8323C" strokeWidth="1.4" fill="none" />
+        <circle cx="74" cy="141" r="2.4" fill={p.gold} />
+        <path d="M74 143 l-4 10 h8 Z" fill="#B8323C" />
+        {[-3, -1, 1, 3].map((d) => (
+          <path key={d} d={`M${74 + d} 153 v5`} stroke="#B8323C" strokeWidth="0.8" />
+        ))}
+      </g>
+
+      {/* The feather: quill, soft barbs, and the eye at its tip */}
+      {barbs.map(({ q, len, t }, i) => (
+        <g key={i} opacity={0.55 + t * 0.4}>
+          <path d={`M${q.x} ${q.y} q${-len * 0.25} ${-len * 0.55} ${-len * 0.1} ${-len}`} stroke="url(#lotus-barb)" strokeWidth="1.1" fill="none" />
+          <path d={`M${q.x} ${q.y} q${len * 0.5} ${len * 0.35} ${len * 0.75} ${len * 0.75}`} stroke="url(#lotus-barb)" strokeWidth="1.1" fill="none" />
+        </g>
       ))}
+      <path d={`M34 112 Q180 70 324 38`} stroke="#C9A44A" strokeWidth="1.8" fill="none" />
+      <g transform="translate(330 34) rotate(-22)">
+        {Array.from({ length: 22 }, (_, i) => {
+          const a = (i / 22) * Math.PI * 2;
+          return <path key={i} d={`M0 0 L${Math.round(Math.cos(a) * 34 * 10) / 10} ${Math.round(Math.sin(a) * 25 * 10) / 10}`} stroke="#5E9A4E" strokeWidth="1" opacity="0.7" />;
+        })}
+        <ellipse rx="26" ry="19" fill="url(#lotus-eye)" />
+        <path d="M-9 -1 q5 -9 13 -3 q3 5 -4 11 q-8 -2 -9 -8 Z" fill="#0E1C48" />
+        <ellipse cx="-2" cy="-4" rx="2.4" ry="1.6" fill="#FFFFFF" opacity="0.5" />
+      </g>
     </>
   );
 }
 
 function LotusPond({ p }: { p: RoyalPalette }) {
+  // An open lotus: back petals, front petals, a gold centre.
   const lotus = (x: number, s: number) => (
-    <g transform={`translate(${x} 84) scale(${s})`}>
-      {[-50, -25, 0, 25, 50].map((a) => (
-        <path key={a} d="M0 0 Q-12 -26 0 -44 Q12 -26 0 0Z" fill={a === 0 ? p.flowers[0] : p.flowers[1]} transform={`rotate(${a})`} />
+    <g transform={`translate(${x} 92) scale(${s})`}>
+      {[-62, 62, -38, 38].map((a) => (
+        <path key={a} d="M0 0 Q-13 -24 0 -44 Q13 -24 0 0Z" fill={p.flowers[1]} stroke="#FFFFFF" strokeWidth="0.8" transform={`rotate(${a})`} />
+      ))}
+      {[-16, 16, 0].map((a) => (
+        <path key={a} d="M0 0 Q-14 -28 0 -50 Q14 -28 0 0Z" fill={p.flowers[0]} stroke="#FFFFFF" strokeWidth="0.8" transform={`rotate(${a})`} />
+      ))}
+      {[-16, 0, 16].map((a) => (
+        <path key={a} d="M0 -4 Q-2 -24 0 -42" stroke="#FFFFFF" strokeWidth="0.6" opacity="0.6" fill="none" transform={`rotate(${a})`} />
+      ))}
+      <ellipse cx="0" cy="-6" rx="7" ry="3" fill={p.gold} />
+    </g>
+  );
+  // A lily pad with its notch and veins.
+  const pad = (x: number, y: number, rx: number) => (
+    <g key={x}>
+      <path d={`M${x} ${y} L${x + rx} ${y - 1} A${rx} ${rx * 0.28} 0 1 1 ${x + rx * 0.92} ${y + rx * 0.1} Z`} fill={p.leaf} opacity="0.9" />
+      {[-0.8, -0.3, 0.3, 0.8].map((d) => (
+        <path key={d} d={`M${x} ${y} l${rx * d * 0.9} ${rx * 0.2 * (1 - Math.abs(d))}`} stroke={p.leafLight} strokeWidth="0.6" opacity="0.6" />
       ))}
     </g>
   );
   return svg(
     "0 0 400 120",
     <>
-      <path d="M0 96 Q100 84 200 96 T400 96 V120 H0Z" fill={p.leafLight} opacity={0.35} />
-      {[60, 250, 340].map((x) => (
-        <ellipse key={x} cx={x} cy={100} rx={30} ry={8} fill={p.leaf} opacity={0.8} />
+      <defs>
+        <linearGradient id="lotus-water" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor={p.leafLight} stopOpacity="0" />
+          <stop offset="0.18" stopColor={p.leafLight} stopOpacity="0.4" />
+          <stop offset="0.82" stopColor={p.leafLight} stopOpacity="0.4" />
+          <stop offset="1" stopColor={p.leafLight} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <path d="M0 98 Q100 86 200 98 T400 98 V120 H0Z" fill="url(#lotus-water)" />
+      {[
+        [40, 112],
+        [120, 104],
+        [300, 108],
+        [372, 101],
+      ].map(([x, y]) => (
+        <path key={x} d={`M${x - 26} ${y} q26 -4 52 0`} stroke="#FFFFFF" strokeWidth="0.8" opacity="0.5" fill="none" />
       ))}
-      {lotus(140, 1)}
-      {lotus(200, 1.3)}
-      {lotus(260, 0.9)}
+      {pad(56, 104, 30)}
+      {pad(330, 106, 28)}
+      {pad(236, 110, 20)}
+      {lotus(150, 0.95)}
+      {lotus(208, 1.25)}
+      {lotus(272, 0.85)}
+      <path d="M96 96 q4 -18 0 -30 q8 10 4 30" fill={p.flowers[1]} opacity="0.9" />
     </>
   );
 }

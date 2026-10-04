@@ -174,7 +174,8 @@ function ScrubbedEnter({
   // "wave": page-coloured water over the section's top edge, a tall swell
   // flattening to nothing as the section scrolls in.
   const waveD = useTransform(p, (v) => {
-    const a = 26 * (1 - v);
+    // Progress is NaN for a moment while a hidden pane has no height.
+    const a = 26 * (1 - (Number.isFinite(v) ? v : 0));
     return `M0 0H100V${a * 0.6}C75 ${a * 1.6} 75 ${-a * 0.2} 50 ${a * 0.8}S25 ${a * 1.8} 0 ${a * 0.5}Z`;
   });
 
