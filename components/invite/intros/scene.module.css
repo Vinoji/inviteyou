@@ -120,6 +120,9 @@
   display: block;
   width: 100%;
   height: auto;
+  /* On a wide stage the art would scale with the width and cover the
+     centre; keep it to a band at the edge (it stays centred). */
+  max-height: 24cqh;
 }
 
 .actions {

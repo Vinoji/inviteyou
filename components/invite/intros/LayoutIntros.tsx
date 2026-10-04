@@ -208,21 +208,39 @@ export function LotusBloomIntro(props: IntroProps) {
     // A closed lotus bud standing over the names; its petals fan open from
     // the base and fall away.
     cover: (open, reduce) => (
-      <svg viewBox="-200 -200 400 400" style={{ position: "absolute", left: "50%", top: "50%", width: "min(120cqw, 76cqh)", height: "min(120cqw, 76cqh)", translate: "-50% -46%", overflow: "visible" }}>
+      <svg viewBox="-200 -200 400 400" style={{ position: "absolute", left: "50%", top: "50%", width: "min(100cqw, 54cqh)", height: "min(100cqw, 54cqh)", translate: "-50% -50%", overflow: "visible" }}>
+        <defs>
+          <linearGradient id="lotus-petal" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stopColor="#FFFFFF" />
+            <stop offset="0.45" stopColor={p.flowers[0]} />
+            <stop offset="1" stopColor="#D9577E" />
+          </linearGradient>
+          <linearGradient id="lotus-petal-back" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0" stopColor="#FFF6F8" />
+            <stop offset="0.6" stopColor={p.flowers[1]} />
+            <stop offset="1" stopColor="#E88AA6" />
+          </linearGradient>
+        </defs>
         {petals.map((a, i) => (
-          <motion.path
+          <motion.g
             key={a}
-            d="M0 150 C-150 80 -120 -80 0 -165 C120 -80 150 80 0 150Z"
-            fill={a === 0 ? p.flowers[0] : i % 2 ? p.flowers[1] : p.flowers[0]}
-            stroke="#fff"
-            strokeWidth="2.5"
             initial={false}
             animate={open ? { rotate: a * 2.1, scale: 1.25, opacity: 0 } : { rotate: a * 0.34, scale: 1, opacity: 1 }}
             transition={{ duration: reduce ? 0 : 1.7, delay: reduce ? 0 : (6 - i) * 0.06, ease: "easeInOut" }}
             style={{ transformOrigin: "0px 150px" }}
-          />
+          >
+            <path
+              d="M0 150 C-150 80 -120 -80 0 -165 C120 -80 150 80 0 150Z"
+              fill={a === 0 || i % 2 === 0 ? "url(#lotus-petal)" : "url(#lotus-petal-back)"}
+              stroke="#fff"
+              strokeWidth="2.5"
+            />
+            {[-36, -18, 0, 18, 36].map((d) => (
+              <path key={d} d={`M0 140 Q${d * 1.6} 20 ${d * 0.4} -150`} stroke="#FFFFFF" strokeWidth="1.4" opacity="0.35" fill="none" />
+            ))}
+          </motion.g>
         ))}
-        <path d="M-40 150 Q0 170 40 150" fill="none" stroke={p.leaf} strokeWidth="6" strokeLinecap="round" />
+        <path d="M-46 150 Q0 172 46 150" fill="none" stroke={p.leaf} strokeWidth="7" strokeLinecap="round" />
       </svg>
     ),
     top: art("lotus", p).top,
