@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { makeParkTextures } from "../parkTextures";
 import { seeded } from "../textures";
+import Couple from "./Couple";
 import { tmp, useDisposeMaterials, useInstances, type Item, type V3, type WorldDef, type WorldProps } from "./kit";
 
 /**
@@ -74,10 +75,6 @@ function useParkMaterials(size: number) {
       stonePost: new THREE.MeshStandardMaterial({ color: "#CFC6B4", roughness: 0.8 }),
       pad: new THREE.MeshStandardMaterial({ color: "#3E7A3A", roughness: 0.8, side: THREE.DoubleSide }),
       groundPetal: new THREE.MeshStandardMaterial({ color: "#F7C6D9", roughness: 0.9, side: THREE.DoubleSide }),
-      suit: new THREE.MeshStandardMaterial({ color: "#1F2A44", roughness: 0.6 }),
-      dress: new THREE.MeshStandardMaterial({ color: "#FBEFF2", roughness: 0.55, side: THREE.DoubleSide }),
-      skin: new THREE.MeshStandardMaterial({ color: "#C68A64", roughness: 0.7 }),
-      hair: new THREE.MeshStandardMaterial({ color: "#1A1210", roughness: 0.6 }),
       bird: new THREE.MeshBasicMaterial({ color: "#2A2238", side: THREE.DoubleSide }),
       petal: new THREE.MeshBasicMaterial({ side: THREE.DoubleSide }),
       firefly: new THREE.PointsMaterial({ color: "#F6FF9A", size: 0.12, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }),
@@ -274,8 +271,7 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
   const poolRef = useRef<THREE.Mesh>(null);
   const fallRef = useRef<THREE.Mesh>(null);
   const couple = useRef<THREE.Group>(null);
-  const groomLegs = useRef<THREE.Group>(null);
-  const brideDress = useRef<THREE.Mesh>(null);
+  const stride = useRef(0);
   const birdsRef = useRef<THREE.Group>(null);
   const burstRef = useRef<THREE.InstancedMesh>(null);
   const heartRef = useRef<THREE.InstancedMesh>(null);
@@ -401,10 +397,7 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
       const ahead = z - 0.6;
       cg.position.set(pathX(z), walkY(z), z);
       cg.rotation.y = Math.atan2(pathX(ahead) - pathX(z), ahead - z) + Math.PI;
-      const stride = still ? 0 : Math.sin(s.walk * 2.2);
-      cg.position.y += Math.abs(stride) * 0.035;
-      groomLegs.current?.children.forEach((leg, i) => (leg.rotation.x = stride * 0.35 * (i ? 1 : -1)));
-      if (brideDress.current) brideDress.current.rotation.z = stride * 0.04;
+      stride.current = s.walk * 2.2;
     }
 
     if (still) return;
@@ -634,59 +627,7 @@ function ParkArchitecture({ budget, still, doorL, doorR, addLight, registerTap }
       {budget.lights >= 4 && <pointLight ref={addLight} position={[0, 3, -56]} color="#BFE6FF" distance={14} decay={2} />}
 
       {/* The couple, hand in hand */}
-      <group ref={couple}>
-        {/* Groom (right) */}
-        <group position={[0.32, 0, 0]}>
-          <group ref={groomLegs}>
-            {[-0.1, 0.1].map((x) => (
-              <mesh key={x} material={pm.suit} position={[x, 0.45, 0]}>
-                <cylinderGeometry args={[0.075, 0.07, 0.9, 8]} />
-              </mesh>
-            ))}
-          </group>
-          <mesh material={pm.suit} position={[0, 1.2, 0]}>
-            <cylinderGeometry args={[0.2, 0.17, 0.66, 10]} />
-          </mesh>
-          <mesh material={pm.suit} position={[0.24, 1.08, 0]} rotation={[0, 0, 0.12]}>
-            <cylinderGeometry args={[0.055, 0.05, 0.6, 6]} />
-          </mesh>
-          <mesh material={pm.suit} position={[-0.22, 1.04, 0]} rotation={[0, 0, -0.75]}>
-            <cylinderGeometry args={[0.055, 0.05, 0.6, 6]} />
-          </mesh>
-          <mesh material={pm.skin} position={[0, 1.66, 0]}>
-            <sphereGeometry args={[0.12, 12, 10]} />
-          </mesh>
-          <mesh material={pm.hair} position={[0, 1.72, 0.02]} scale={[1, 0.65, 1]}>
-            <sphereGeometry args={[0.125, 12, 8]} />
-          </mesh>
-        </group>
-        {/* Bride (left) */}
-        <group position={[-0.32, 0, 0]}>
-          <mesh ref={brideDress} material={pm.dress} position={[0, 0.56, 0]}>
-            <coneGeometry args={[0.46, 1.12, 18, 1, true]} />
-          </mesh>
-          <mesh material={pm.dress} position={[0, 1.3, 0]}>
-            <cylinderGeometry args={[0.15, 0.13, 0.46, 10]} />
-          </mesh>
-          <mesh material={pm.skin} position={[0.2, 1.06, 0]} rotation={[0, 0, 0.75]}>
-            <cylinderGeometry args={[0.045, 0.04, 0.55, 6]} />
-          </mesh>
-          <mesh material={pm.skin} position={[0, 1.66, 0]}>
-            <sphereGeometry args={[0.11, 12, 10]} />
-          </mesh>
-          <mesh material={pm.hair} position={[0, 1.7, 0.05]} scale={[1, 0.9, 1]}>
-            <sphereGeometry args={[0.12, 12, 8]} />
-          </mesh>
-          <mesh material={pm.hair} position={[0, 1.66, 0.14]}>
-            <sphereGeometry args={[0.07, 8, 6]} />
-          </mesh>
-          {[-0.08, 0, 0.08].map((x) => (
-            <mesh key={x} material={pm.blossom} position={[x, 1.79, 0.02]} scale={0.04}>
-              <icosahedronGeometry args={[1, 0]} />
-            </mesh>
-          ))}
-        </group>
-      </group>
+      <Couple ref={couple} stride={stride} still={still} />
 
       {/* Birds */}
       <group ref={birdsRef}>
