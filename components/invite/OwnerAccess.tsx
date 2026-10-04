@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { KeyRound, Pencil, Users } from "lucide-react";
+import { Check, KeyRound, Pencil, Share2, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import WelcomeBanner from "./WelcomeBanner";
 
@@ -47,6 +47,7 @@ export default function OwnerAccess({
   const fromUrl = editToken && templateId ? { token: editToken, templateId } : null;
   const [owner, setOwner] = useState<OwnerSession | null>(fromUrl);
   const [popupOpen, setPopupOpen] = useState(welcome && Boolean(fromUrl));
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -72,6 +73,24 @@ export default function OwnerAccess({
   }, [slug]);
 
   if (!owner) return null;
+
+  /** Shares the public guest link (never the edit token): the device share
+   *  sheet when there is one, otherwise copies the link. */
+  async function shareLink() {
+    const url = `${window.location.origin}/invite/${slug}`;
+    try {
+      if (navigator.share) {
+        await navigator.share({ url });
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Share sheet dismissed, or clipboard unavailable.
+    }
+  }
+
   const pill =
     "inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition hover:bg-white/15";
 
@@ -103,6 +122,10 @@ export default function OwnerAccess({
           <Users size={13} aria-hidden />
           {t("rsvps")}
         </Link>
+        <button type="button" onClick={shareLink} className={pill}>
+          {copied ? <Check size={13} aria-hidden /> : <Share2 size={13} aria-hidden />}
+          {copied ? t("copied") : t("share")}
+        </button>
         <button type="button" onClick={() => setPopupOpen(true)} className={pill}>
           <KeyRound size={13} aria-hidden />
           {t("editLink")}
