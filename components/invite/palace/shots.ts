@@ -90,7 +90,7 @@ const WORLD_SHOTS: Record<WorldId, Overrides> = {
     blessings: { pos: [2.58, 2.4, -41], look: [-0.43, 4.2, -59], bg: "#2A2240" },
     guests: { pos: [0.6, 2.4, -42], look: [-0.6, 4.2, -60], bg: "#2A2240" },
     share: { pos: [1.58, 2.6, -41], look: [-0.43, 4.4, -59], bg: "#2A2240" },
-    finale: { pos: [0, 9, -10], look: [0, 3, -60], bg: "#2A2240" },
+    finale: { pos: [0, 13, -19], look: [0, 6, -60], bg: "#2A2240" },
   },
   // Dusk over a South Indian temple: indigo sky warming to saffron.
   temple: {
