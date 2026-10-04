@@ -15,6 +15,7 @@ import s from "./site.module.css";
  */
 export default async function SiteFooter() {
   const t = await getTranslations("site");
+  const tCategories = await getTranslations("categories");
   const year = new Date().getFullYear();
   const years = year > SITE.since ? `${SITE.since}–${year}` : `${year}`;
 
@@ -27,6 +28,14 @@ export default async function SiteFooter() {
         { href: "/demo", label: t("footer.demoVideos") },
         { href: "/#templates", label: t("nav.create") },
       ],
+    },
+    {
+      // Occasion landing pages (app/[locale]/invitations/[category]).
+      title: t("footer.invitations"),
+      links: (["wedding", "engagement", "birthday", "housewarming", "anniversary", "baby"] as const).map((id) => ({
+        href: `/invitations/${id}`,
+        label: tCategories(`${id}.label`),
+      })),
     },
     {
       title: t("footer.help"),

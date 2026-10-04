@@ -23,7 +23,12 @@ const FEATURED = ["temple-gopuram", "nikah-emerald", "church-stained-glass", "ma
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  return { alternates: pageAlternates(locale, "") };
+  const tSeo = await getTranslations({ locale, namespace: "seo" });
+  return {
+    title: { absolute: `${tSeo("homeTitle")} | InviteForYou` },
+    description: tSeo("homeDescription"),
+    alternates: pageAlternates(locale, ""),
+  };
 }
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {

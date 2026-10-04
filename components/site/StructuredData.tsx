@@ -1,7 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo";
-import { LOWEST_PRICE_INR } from "@/lib/pricing";
+import { HIGHEST_PRICE_INR, LOWEST_PRICE_INR } from "@/lib/pricing";
+import { TEMPLATES } from "@/lib/templates";
 
 /**
  * schema.org JSON-LD for the home page: the business, the website (in
@@ -41,11 +42,14 @@ export default async function StructuredData({ locale }: { locale: string }) {
         provider: { "@id": `${SITE_URL}/#org` },
         areaServed: "IN",
         description: t("orgDescription"),
+        // A price range across the designs (standard to premium 3D).
         offers: {
-          "@type": "Offer",
+          "@type": "AggregateOffer",
           name: t("offerName"),
-          price: String(LOWEST_PRICE_INR),
+          lowPrice: String(LOWEST_PRICE_INR),
+          highPrice: String(HIGHEST_PRICE_INR),
           priceCurrency: "INR",
+          offerCount: TEMPLATES.filter((tpl) => !tpl.hidden).length,
           url: `${home}#pricing`,
           availability: "https://schema.org/InStock",
         },

@@ -28,5 +28,7 @@ export function templatePricePaise(templateId: string): number {
 const ALL_PRICES = TEMPLATES.map((tpl) => tpl.price ?? PRICE_INR);
 /** Cheapest template price, for "from ₹…" on the landing page. */
 export const LOWEST_PRICE_INR = Math.min(...ALL_PRICES);
+/** Dearest template price, for the structured-data price range. */
+export const HIGHEST_PRICE_INR = Math.max(...ALL_PRICES);
 /** Whether templates differ in price (so "from" is needed). */
 export const PRICES_VARY = ALL_PRICES.some((p) => p !== LOWEST_PRICE_INR);

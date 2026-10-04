@@ -164,6 +164,15 @@ Each template chooses its own intro, particles and scroll motion. The design bri
 - **Uploads are checked.** [storage.rules](storage.rules) validates upload content type and size.
 - **Input is cleaned and throttled.** Input sanitising is in [lib/sanitize.ts](lib/sanitize.ts) and the in-memory rate limiter is in [lib/rateLimit.ts](lib/rateLimit.ts).
 
+## SEO
+
+- **Occasion landing pages:** `/invitations/<category>`, indexable in English and Tamil, for wedding, engagement, anniversary, valentine, proposal, birthday, housewarming, baby and corporate ([app/[locale]/invitations/[category]/page.tsx](app/[locale]/invitations/[category]/page.tsx)). Each has a keyword-led title, description and H1, an intro, the live designs, an FAQ and links to the other occasions. Structured data covers breadcrumbs, the list of designs, a price range and the FAQ. Copy is in `seoPages.<category>`.
+- **Home:** the title and description lead with "Online Wedding Invitation Maker…" (`seo.homeTitle` / `seo.homeDescription`). Organisation, website and service structured data use a price range (`AggregateOffer`).
+- **Support:** FAQ structured data.
+- **Sitemap:** every public page in both languages, with hreflang alternates and `x-default`. The footer links to the occasion pages.
+- **Verification:** `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` env vars add the verification meta tags.
+- **Not indexed:** invitations, guest lists and the editor (`X-Robots-Tag: noindex`, plus robots.txt for the private paths).
+
 ## Other features
 
 - **i18n**: English and Tamil ([messages/en.json](messages/en.json), [messages/ta.json](messages/ta.json)), plus a LanguageSwitcher
