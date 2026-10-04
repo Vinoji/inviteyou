@@ -4020,7 +4020,8 @@
       "follow": "Follow us",
       "copyright": "© {years} {brand}. All rights reserved.",
       "madeWith": "Made with love in Tamil Nadu",
-      "terms": "Terms & conditions"
+      "terms": "Terms & conditions",
+      "invitations": "Invitations"
     },
     "demo": {
       "metaTitle": "Demos",
@@ -4367,7 +4368,9 @@
     "ogAlt": "InviteForYou — animated invitations for weddings and every celebration",
     "ogLine": "Animated invitations · RSVPs · Tamil & English",
     "orgDescription": "Animated online invitations for weddings, engagements, birthdays and every Indian celebration — in Tamil and English, with RSVPs, maps and WhatsApp sharing.",
-    "offerName": "One invitation, all features"
+    "offerName": "One invitation, all features",
+    "homeTitle": "Online Wedding Invitation Maker — Animated & 3D Digital Invites",
+    "homeDescription": "Create a beautiful digital invitation website for weddings, engagements, birthdays and housewarmings — animated and 3D designs, Tamil & English, RSVPs, maps and WhatsApp sharing. Live in minutes."
   },
   "premium": {
     "pathirikai": {
@@ -4493,6 +4496,152 @@
       "replyTitle": "Will you come?",
       "replySub": "Let us know so we can save you a seat.",
       "closing": "We can't wait to meet our little one"
+    }
+  },
+  "seoPages": {
+    "common": {
+      "eyebrow": "Online invitations",
+      "designsTitle": "Choose your design",
+      "designsSub": "Every design is live — tap a card to play its opening.",
+      "whyTitle": "Everything your guests need, in one link",
+      "why": {
+        "0": "RSVPs with guest counts and messages",
+        "1": "WhatsApp sharing with a printable card and QR code",
+        "2": "Maps, directions, travel guide and countdown",
+        "3": "English and Tamil, edit any time after publishing"
+      },
+      "faqTitle": "Questions",
+      "moreTitle": "More invitations",
+      "start": "Start with a design",
+      "breadcrumbHome": "Home"
+    },
+    "wedding": {
+      "metaTitle": "Wedding Invitation Website & Digital Wedding Card Maker",
+      "metaDescription": "Create an animated wedding invitation website in minutes — Hindu, Christian, Muslim and Tamil designs, 3D palace, temple and cathedral templates, RSVPs, maps and WhatsApp sharing.",
+      "h1": "Digital wedding invitations your guests will remember",
+      "intro": "Pick a wedding design — from kolam and temple gopuram openings to a 3D palace, cathedral or blossom park — add your story, families, events and photos, and share one link on WhatsApp. Guests RSVP, get directions and count down to the muhurtham.",
+      "faq": {
+        "0": {
+          "q": "How do I make a digital wedding invitation?",
+          "a": "Choose a design, fill in your names, date, venues, story and photos, preview it, then pay once to publish. You get a link to share on WhatsApp and a private edit link."
+        },
+        "1": {
+          "q": "Can I make a Tamil wedding invitation?",
+          "a": "Yes. Every design works in Tamil and English, with Tamil fonts, and guests can switch language."
+        },
+        "2": {
+          "q": "Can guests RSVP online?",
+          "a": "Yes. Guests reply on the invitation with how many are coming and a message; you see every response in your guest list."
+        }
+      }
+    },
+    "engagement": {
+      "metaTitle": "Engagement Invitation Online — Animated E-Invite Maker",
+      "metaDescription": "Make an animated engagement invitation with your photos, story, venue map and RSVPs. Share on WhatsApp in English or Tamil.",
+      "h1": "Engagement invitations, beautifully animated",
+      "intro": "Announce your engagement with an invitation that opens like a gift — your names, the date, the venue with directions, your photos, and RSVPs, shared with one link.",
+      "faq": {
+        "0": {
+          "q": "How long does it take?",
+          "a": "Most couples finish in about ten minutes. You can keep editing after you publish."
+        },
+        "1": {
+          "q": "Can I share it on WhatsApp?",
+          "a": "Yes — share the link, or the invitation card image with the message."
+        }
+      }
+    },
+    "anniversary": {
+      "metaTitle": "Anniversary Invitation Online — Digital Anniversary Card",
+      "metaDescription": "Create an animated anniversary invitation with your journey together, photos, venue and RSVPs. English and Tamil.",
+      "h1": "Anniversary invitations that tell your story",
+      "intro": "Celebrate the years together with an invitation that shares your journey, your favourite photos and the party details — with RSVPs and directions for every guest.",
+      "faq": {
+        "0": {
+          "q": "Can I add old photos?",
+          "a": "Yes, add photos to the gallery and to your story."
+        },
+        "1": {
+          "q": "Can family edit it?",
+          "a": "Anyone with your private edit link can make changes."
+        }
+      }
+    },
+    "valentine": {
+      "metaTitle": "Valentine's Day Invitation & Love Letter Online",
+      "metaDescription": "Make an animated Valentine's invitation or love note with your photos and a romantic opening — share it with one link.",
+      "h1": "Valentine's invitations with a romantic opening",
+      "intro": "Plan a surprise dinner or celebration with an invitation that opens with hearts and candlelight, your photos and a message from you.",
+      "faq": {
+        "0": {
+          "q": "Is it only for couples?",
+          "a": "Use it for any Valentine's celebration — a date, a party or a surprise."
+        }
+      }
+    },
+    "proposal": {
+      "metaTitle": "Proposal Invitation & Engagement Announcement Online",
+      "metaDescription": "Share your proposal story with an animated invitation — photos, the moment, and a celebration RSVP.",
+      "h1": "Share the moment you said yes",
+      "intro": "Tell everyone how the proposal happened, with your photos and story, and invite them to celebrate.",
+      "faq": {
+        "0": {
+          "q": "Can the date be in the past?",
+          "a": "Yes — proposal invitations can share a moment that has already happened."
+        }
+      }
+    },
+    "birthday": {
+      "metaTitle": "Birthday Invitation Online — Animated Birthday E-Invite",
+      "metaDescription": "Create an animated birthday invitation with photos, party venue map, countdown and RSVPs. Share on WhatsApp in English or Tamil.",
+      "h1": "Birthday invitations that start the party",
+      "intro": "From a first birthday to a sixtieth, make an invitation with balloons, cake and candles, the party details, directions and RSVPs — shared with one link.",
+      "faq": {
+        "0": {
+          "q": "Can I make a first birthday invitation?",
+          "a": "Yes — add the baby's name, photos and the party details."
+        },
+        "1": {
+          "q": "Will guests see a countdown?",
+          "a": "Yes, a countdown to the party is built in."
+        }
+      }
+    },
+    "housewarming": {
+      "metaTitle": "Housewarming Invitation Online — Griha Pravesh E-Invite",
+      "metaDescription": "Make a housewarming or griha pravesh invitation with the muhurtham time, new home address map and RSVPs, in English or Tamil.",
+      "h1": "Housewarming invitations for your new home",
+      "intro": "Invite family and friends to your griha pravesh with the muhurtham time, your new address with directions, and RSVPs so you know who is coming.",
+      "faq": {
+        "0": {
+          "q": "Can I add the pooja time and the lunch?",
+          "a": "Yes — add two events, each with its own time and venue."
+        }
+      }
+    },
+    "baby": {
+      "metaTitle": "Baby Shower & Naming Ceremony Invitation Online",
+      "metaDescription": "Create an animated baby shower, valaikappu or naming ceremony invitation with photos, venue map and RSVPs.",
+      "h1": "Baby shower and naming ceremony invitations",
+      "intro": "Celebrate the little one with a gentle, animated invitation for a baby shower, valaikappu or naming ceremony — with directions and RSVPs.",
+      "faq": {
+        "0": {
+          "q": "Can I use it for a cradle ceremony?",
+          "a": "Yes — it works for baby showers, valaikappu, cradle and naming ceremonies."
+        }
+      }
+    },
+    "corporate": {
+      "metaTitle": "Corporate Event Invitation Online — Launch & Annual Day E-Invite",
+      "metaDescription": "Make a polished corporate event invitation with agenda, venue map, RSVPs and a QR code — for launches, annual days and conferences.",
+      "h1": "Corporate event invitations, done in minutes",
+      "intro": "Invite guests to a launch, annual day or conference with a clean, animated invitation — event times, venue directions, RSVPs and a QR code for entry.",
+      "faq": {
+        "0": {
+          "q": "Can I get a guest list?",
+          "a": "Yes — every RSVP appears in your private guest list with counts and messages."
+        }
+      }
     }
   }
 }

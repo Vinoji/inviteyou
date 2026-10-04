@@ -169,6 +169,18 @@ export default function PalaceIntro({ names, dateLabel, fonts, templateId, onOpe
         </div>
 
       {/* The gate */}
+      {/* Park: twilight hills, the moon, a lawn and a path to the gate */}
+      {world === "park" && (
+        <div className={`${s.parkLand} ${at(2) ? s.on : ""}`} aria-hidden>
+          <span className={s.moon} />
+          <span className={`${s.hills} ${s.hillsFar}`} />
+          <span className={`${s.hills} ${s.hillsNear}`} />
+          <span className={s.lawn} />
+          <span className={s.path} />
+          <span className={`${s.hedge} ${s.hedgeL}`} />
+          <span className={`${s.hedge} ${s.hedgeR}`} />
+        </div>
+      )}
       <div className={`${s.world} ${at(6) ? s.push : ""}`} aria-hidden>
         <div className={`${s.facade} ${at(2) ? s.on : ""}`}>
           {world === "palace" && (
@@ -188,8 +200,14 @@ export default function PalaceIntro({ names, dateLabel, fonts, templateId, onOpe
           )}
           {world === "park" && (
             <>
-              <span className={`${s.tree} ${s.treeL}`} />
-              <span className={`${s.tree} ${s.treeR}`} />
+              <span className={`${s.tree} ${s.treeL}`}>
+                <span className={s.trunk} />
+                <span className={s.canopy} />
+              </span>
+              <span className={`${s.tree} ${s.treeR}`}>
+                <span className={s.trunk} />
+                <span className={s.canopy} />
+              </span>
               <span className={s.blossomArch} />
             </>
           )}
@@ -221,6 +239,21 @@ export default function PalaceIntro({ names, dateLabel, fonts, templateId, onOpe
           </span>
         </div>
       </div>
+
+      {world === "park" && (
+        <div className={`${s.petalRain} ${at(1) ? s.on : ""}`} aria-hidden>
+          {Array.from({ length: 22 }, (_, i) => (
+            <span
+              key={i}
+              style={{
+                left: `${(i * 37 + 7) % 100}%`,
+                animationDelay: `${(i * 0.55) % 7}s`,
+                animationDuration: `${6 + (i % 5)}s`,
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       <div className={s.copy}>
         <p className={`${s.invited} ${at(7) ? s.on : ""}`}>{t("invited")}</p>

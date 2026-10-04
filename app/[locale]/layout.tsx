@@ -123,7 +123,9 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "landing" });
   const tSeo = await getTranslations({ locale, namespace: "seo" });
-  const title = `${t("eyebrow")} — ${t("heading")}`;
+  // Lead with what people search for ("online wedding invitation…").
+  const title = `${tSeo("homeTitle")} | ${t("eyebrow")}`;
+  const description = tSeo("homeDescription");
   // Defaults for every page; pages add their own title, description and
   // canonical (lib/seo.ts), and the site share image comes from
   // opengraph-image.tsx next to this file.
@@ -131,7 +133,7 @@ export async function generateMetadata({
     metadataBase: new URL(SITE_URL),
     applicationName: SITE.name,
     title: { default: title, template: `%s | ${t("eyebrow")}` },
-    description: t("subheading"),
+    description,
     keywords: tSeo("keywords").split(",").map((k) => k.trim()),
     category: "lifestyle",
     creator: SITE.name,
@@ -141,15 +143,18 @@ export async function generateMetadata({
       type: "website",
       siteName: SITE.name,
       title,
-      description: t("subheading"),
+      description,
       locale: locale === "ta" ? "ta_IN" : "en_IN",
       alternateLocale: locale === "ta" ? ["en_IN"] : ["ta_IN"],
     },
-    twitter: { card: "summary_large_image", title, description: t("subheading") },
+    twitter: { card: "summary_large_image", title, description },
+    robots: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
     // Search Console ownership, once the site is added there.
-    ...(process.env.GOOGLE_SITE_VERIFICATION
-      ? { verification: { google: process.env.GOOGLE_SITE_VERIFICATION } }
-      : {}),
+    // Search Console / Bing Webmaster ownership, once the site is added there.
+    verification: {
+      ...(process.env.GOOGLE_SITE_VERIFICATION ? { google: process.env.GOOGLE_SITE_VERIFICATION } : {}),
+      ...(process.env.BING_SITE_VERIFICATION ? { other: { "msvalidate.01": process.env.BING_SITE_VERIFICATION } } : {}),
+    },
   };
 }
 

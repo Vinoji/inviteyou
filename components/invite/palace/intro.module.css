@@ -594,106 +594,298 @@
 }
 
 /* ---------------------------------------------------------------- */
-/* Park: iron gates under a blossom arch, cherry trees at twilight   */
+/* Park: a blossom garden gate at twilight                           */
 /* ---------------------------------------------------------------- */
 .root[data-world="park"] {
   background:
-    radial-gradient(60% 30% at 50% 62%, rgba(246, 196, 154, 0.55), transparent 70%),
-    linear-gradient(180deg, #1e1838 0%, #3e2a5e 35%, #8a5a8c 55%, #e89a8c 64%, #2a2238 66%, #1a1428 100%);
+    radial-gradient(2px 2px at 12% 14%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 28% 8%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 66% 12%, #fff 50%, transparent 51%),
+    radial-gradient(2px 2px at 84% 20%, #ffe8f0 50%, transparent 51%),
+    radial-gradient(1px 1px at 46% 18%, #fff 50%, transparent 51%),
+    linear-gradient(180deg, #171230 0%, #2e2150 30%, #6a4478 50%, #c97a8a 62%, #f2b59a 68%, #3a2a48 70%, #1c1528 100%);
+}
+
+/* The land: moon, two ranges of hills, lawn, a path and hedges */
+.parkLand {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+}
+.parkLand.on {
+  opacity: 1;
+}
+.moon {
+  position: absolute;
+  left: 50%;
+  top: 46cqh;
+  width: min(30cqw, 24cqh);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff3e2 0 34%, rgba(255, 214, 190, 0.5) 36%, rgba(255, 190, 170, 0.12) 60%, transparent 70%);
+}
+.hills {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+}
+.hillsFar {
+  bottom: 30cqh;
+  height: 12cqh;
+  background:
+    radial-gradient(60% 100% at 18% 100%, #4a3660 98%, transparent 100%),
+    radial-gradient(50% 90% at 62% 100%, #4e3a66 98%, transparent 100%),
+    radial-gradient(40% 80% at 92% 100%, #47345e 98%, transparent 100%);
+}
+.hillsNear {
+  bottom: 24cqh;
+  height: 10cqh;
+  background:
+    radial-gradient(55% 100% at 8% 100%, #2b3a34 98%, transparent 100%),
+    radial-gradient(45% 90% at 46% 100%, #2f4038 98%, transparent 100%),
+    radial-gradient(50% 100% at 88% 100%, #2a3833 98%, transparent 100%);
+}
+.lawn {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 25cqh;
+  background:
+    radial-gradient(1.5px 1.5px at 10% 30%, #f7c6d9 50%, transparent 51%) 0 0 / 46px 30px,
+    radial-gradient(1.5px 1.5px at 60% 70%, #fff 50%, transparent 51%) 0 0 / 38px 26px,
+    radial-gradient(1.5px 1.5px at 30% 50%, #f6e27a 50%, transparent 51%) 0 0 / 54px 34px,
+    linear-gradient(180deg, #2f5a2c, #1b3a1c 60%, #12261a);
+}
+.path {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: min(70cqw, 60cqh);
+  height: 25cqh;
+  transform: translateX(-50%);
+  clip-path: polygon(41% 0, 59% 0, 100% 100%, 0 100%);
+  background:
+    repeating-linear-gradient(180deg, transparent 0 9%, rgba(40, 30, 30, 0.45) 9% 10%),
+    repeating-linear-gradient(90deg, transparent 0 15%, rgba(40, 30, 30, 0.35) 15% 16%),
+    linear-gradient(180deg, #8e8072, #b8a894 60%, #cbbca6);
+  filter: drop-shadow(0 0 20px rgba(255, 200, 150, 0.25));
+}
+.hedge {
+  position: absolute;
+  bottom: 22cqh;
+  width: 34%;
+  height: 7cqh;
+  border-radius: 40% 40% 6px 6px / 70% 70% 6px 6px;
+  background:
+    radial-gradient(3px 3px at 20% 30%, #f2a7c3 50%, transparent 52%) 0 0 / 22px 16px,
+    radial-gradient(2.5px 2.5px at 70% 60%, #fff 50%, transparent 52%) 0 0 / 26px 18px,
+    linear-gradient(180deg, #3f7a3a, #24482a);
+  box-shadow: inset 0 -8px 14px rgba(0, 0, 0, 0.35);
+}
+.hedgeL {
+  left: 0;
+}
+.hedgeR {
+  right: 0;
+}
+
+/* The gate itself sits in the facade, larger than the other worlds' */
+.root[data-world="park"] .facade {
+  width: min(56cqw, 44cqh);
+  height: min(62cqw, 50cqh);
+  bottom: 21cqh;
 }
 .root[data-world="park"] .wall {
-  inset: auto 0 0;
-  height: 22%;
-  background: linear-gradient(180deg, #2e5a2a, #1a3418);
-  border-radius: 40% 40% 0 0 / 30% 30% 0 0;
+  inset: 0;
+  background: none;
   box-shadow: none;
+  overflow: visible;
 }
 .root[data-world="park"] .frieze,
 .root[data-world="park"] .jharokha {
   display: none;
 }
+/* Wrought-iron gates: rails, bars, scrolls and gold finials, arched top */
 .root[data-world="park"] .gate {
-  height: 300%;
-  width: 30%;
+  left: 50%;
+  width: 52%;
+  height: 72%;
   outline: none;
-  border-radius: 0;
+  border-radius: 50% 50% 0 0 / 22% 22% 0 0;
   background: none;
-  overflow: visible;
+  overflow: hidden;
 }
 .root[data-world="park"] .light {
-  background: radial-gradient(60% 50% at 50% 90%, #ffe9c8, rgba(242, 167, 195, 0.6) 50%, transparent 80%);
+  background: radial-gradient(70% 60% at 50% 95%, #fff2d8, rgba(247, 198, 217, 0.75) 45%, rgba(120, 80, 140, 0.25) 75%, transparent);
 }
 .root[data-world="park"] .door {
   background:
-    repeating-linear-gradient(90deg, #1e1e26 0 2px, transparent 2px 13px),
-    linear-gradient(180deg, transparent 0 4%, #1e1e26 4% 6%, transparent 6% 94%, #1e1e26 94% 96%, transparent 96%);
+    radial-gradient(circle at 50% 22%, transparent 0 9%, #1c1a22 9.5% 12%, transparent 12.5%),
+    radial-gradient(circle at 50% 62%, transparent 0 6%, #1c1a22 6.5% 8.5%, transparent 9%),
+    radial-gradient(circle at 50% 2%, #e6c46a 0 3%, transparent 3.5%) 0 0 / 16% 100% repeat-x,
+    linear-gradient(180deg, transparent 0 34%, #1c1a22 34% 36%, transparent 36% 88%, #1c1a22 88% 91%, transparent 91%),
+    repeating-linear-gradient(90deg, #1c1a22 0 2px, transparent 2px 16%);
   border: 0;
+  border-top: 3px solid #1c1a22;
 }
+.root[data-world="park"] .doorL {
+  border-right: 3px solid #1c1a22;
+}
+.root[data-world="park"] .doorR {
+  border-left: 3px solid #1c1a22;
+}
+/* Stone pillars with lanterns (the "lamps" light one after the other) */
 .root[data-world="park"] .lamp {
-  background: linear-gradient(90deg, #1e1e26, #4a4a58 50%, #1e1e26);
+  bottom: 0;
+  width: 12%;
+  height: 80%;
   clip-path: none;
-  width: 1.6%;
-  height: 44%;
-}
-.root[data-world="park"] .flame {
-  width: 360%;
-  height: 12%;
-  top: -10%;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff3c4 0%, #ffc877 45%, transparent 72%);
+  border-radius: 3px 3px 0 0;
+  background:
+    linear-gradient(180deg, transparent 0 8%, #8c8476 8% 11%, transparent 11% 90%, #8c8476 90%),
+    repeating-linear-gradient(180deg, transparent 0 14px, rgba(40, 34, 30, 0.35) 14px 15px),
+    linear-gradient(90deg, #a69c8c, #d6ccb8 45%, #9c9282);
+  box-shadow: inset 0 0 0 2px rgba(60, 50, 40, 0.3);
 }
 .root[data-world="park"] .lampL {
-  left: 26%;
+  left: 13%;
 }
 .root[data-world="park"] .lampR {
-  right: 26%;
+  right: 13%;
 }
+.root[data-world="park"] .flame {
+  top: -13%;
+  width: 90%;
+  height: 13%;
+  border-radius: 40% 40% 10% 10%;
+  background:
+    linear-gradient(90deg, #1c1a22 0 12%, transparent 12% 88%, #1c1a22 88%),
+    radial-gradient(circle at 50% 60%, #fff6d8, #ffc877 55%, #b8742a);
+  box-shadow: 0 -4px 0 -1px #1c1a22;
+}
+.root[data-world="park"] .lamp.lit {
+  filter: drop-shadow(0 -10px 22px rgba(255, 200, 120, 0.8));
+}
+
+/* Cherry trees: a branching trunk under a cloud of blossom */
 .tree {
   position: absolute;
-  bottom: 14%;
-  width: 36%;
-  height: 120%;
-}
-.tree::before {
-  content: "";
-  position: absolute;
-  left: 46%;
-  bottom: 0;
-  width: 7%;
-  height: 52%;
-  background: linear-gradient(90deg, #2a1814, #4a2c26 50%, #2a1814);
-  border-radius: 40% 40% 0 0;
-  transform: rotate(-4deg);
-}
-.tree::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 38%;
-  background:
-    radial-gradient(circle at 30% 55%, #f7c6d9 0 18%, transparent 19%),
-    radial-gradient(circle at 55% 35%, #f2a7c3 0 22%, transparent 23%),
-    radial-gradient(circle at 75% 60%, #fadde8 0 17%, transparent 18%),
-    radial-gradient(circle at 48% 65%, #e88bb0 0 20%, transparent 21%),
-    radial-gradient(circle at 20% 35%, #fadde8 0 13%, transparent 14%),
-    radial-gradient(circle at 82% 35%, #f7c6d9 0 13%, transparent 14%);
-  filter: drop-shadow(0 0 14px rgba(247, 198, 217, 0.45));
+  bottom: 2%;
+  width: 78%;
+  height: 135%;
 }
 .treeL {
-  left: -12%;
+  left: -78%;
 }
 .treeR {
-  right: -12%;
+  right: -78%;
   transform: scaleX(-1);
 }
+.trunk {
+  position: absolute;
+  left: 30%;
+  bottom: 0;
+  width: 46%;
+  height: 62%;
+  background: linear-gradient(90deg, #2a1712, #5a3428 50%, #2a1712);
+  clip-path: polygon(44% 100%, 56% 100%, 55% 60%, 78% 34%, 92% 8%, 88% 6%, 72% 30%, 56% 46%, 58% 22%, 50% 0, 47% 0, 50% 22%, 46% 48%, 30% 28%, 10% 12%, 7% 15%, 26% 34%, 44% 58%);
+}
+.canopy {
+  position: absolute;
+  inset: 0 0 46%;
+  background:
+    radial-gradient(circle at 22% 62%, #f7c6d9 0 10%, #f7c6d9aa 14%, transparent 17%),
+    radial-gradient(circle at 36% 44%, #f2a7c3 0 13%, #f2a7c3aa 17%, transparent 20%),
+    radial-gradient(circle at 52% 30%, #fadde8 0 12%, #fadde8aa 16%, transparent 19%),
+    radial-gradient(circle at 68% 42%, #e88bb0 0 11%, #e88bb0aa 15%, transparent 18%),
+    radial-gradient(circle at 82% 60%, #f7c6d9 0 9%, #f7c6d9aa 13%, transparent 16%),
+    radial-gradient(circle at 50% 62%, #f2a7c3 0 13%, #f2a7c3aa 17%, transparent 20%),
+    radial-gradient(circle at 34% 74%, #fadde8 0 7%, #fadde8aa 11%, transparent 14%),
+    radial-gradient(circle at 66% 76%, #ffe4ee 0 7%, #ffe4eeaa 11%, transparent 14%),
+    radial-gradient(circle at 14% 46%, #ffe4ee 0 4%, #ffe4eeaa 8%, transparent 11%),
+    radial-gradient(circle at 88% 38%, #fadde8 0 4%, #fadde8aa 8%, transparent 11%),
+    radial-gradient(circle at 44% 18%, #f7c6d9 0 5%, #f7c6d9aa 9%, transparent 12%);
+  filter: blur(0.4px) drop-shadow(0 0 18px rgba(247, 198, 217, 0.45)) drop-shadow(0 6px 10px rgba(30, 10, 30, 0.35));
+}
+
+/* The blossom arch over the gate */
 .blossomArch {
   position: absolute;
   left: 50%;
-  bottom: 22%;
-  width: 46%;
-  aspect-ratio: 1;
+  bottom: 52%;
+  width: 82%;
+  height: 46%;
   transform: translateX(-50%);
-  border-radius: 50%;
-  border: 6px solid #1e1e26;
-  clip-path: inset(0 0 50% 0);
-  box-shadow: 0 0 0 8px rgba(247, 198, 217, 0.85), 0 0 24px 10px rgba(242, 167, 195, 0.55);
+  background:
+    radial-gradient(circle at 4% 92%, #f2a7c3 0 7%, transparent 7.5%),
+    radial-gradient(circle at 9% 66%, #fadde8 0 8%, transparent 8.5%),
+    radial-gradient(circle at 18% 40%, #e88bb0 0 8%, transparent 8.5%),
+    radial-gradient(circle at 30% 20%, #f7c6d9 0 9%, transparent 9.5%),
+    radial-gradient(circle at 43% 9%, #ffe4ee 0 9%, transparent 9.5%),
+    radial-gradient(circle at 57% 9%, #f2a7c3 0 9%, transparent 9.5%),
+    radial-gradient(circle at 70% 20%, #fadde8 0 9%, transparent 9.5%),
+    radial-gradient(circle at 82% 40%, #f7c6d9 0 8%, transparent 8.5%),
+    radial-gradient(circle at 91% 66%, #e88bb0 0 8%, transparent 8.5%),
+    radial-gradient(circle at 96% 92%, #fadde8 0 7%, transparent 7.5%),
+    radial-gradient(circle at 24% 30%, #fff 0 3%, transparent 3.5%),
+    radial-gradient(circle at 62% 12%, #fff 0 3%, transparent 3.5%),
+    radial-gradient(circle at 86% 52%, #fff 0 3%, transparent 3.5%);
+  filter: drop-shadow(0 0 16px rgba(242, 167, 195, 0.6));
+}
+.blossomArch::after {
+  content: "";
+  position: absolute;
+  inset: 10% 8% -40%;
+  border: 3px solid #1c1a22;
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0 / 60% 60% 0 0;
+}
+
+/* Petals drifting down across the scene */
+.petalRain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.petalRain.on {
+  opacity: 1;
+}
+.petalRain span {
+  position: absolute;
+  top: -4%;
+  width: 9px;
+  height: 7px;
+  border-radius: 80% 0 80% 0;
+  background: #f7c6d9;
+  animation: petalFall 7s linear infinite;
+}
+.petalRain span:nth-child(3n) {
+  background: #fff;
+}
+.petalRain span:nth-child(4n) {
+  background: #e88bb0;
+}
+@keyframes petalFall {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-60px, 105cqh) rotate(540deg);
+    opacity: 0.8;
+  }
+}
+
+/* No palace hall beyond the gate in the park — just the path and the moon. */
+.root[data-world="park"] .hall {
+  display: none;
 }

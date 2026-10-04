@@ -35,6 +35,21 @@ export default async function SupportPage({ params }: { params: Promise<{ locale
 
   return (
     <main className={`flex-1 ${paper.paper}`}>
+      {/* FAQ rich results */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: FAQ.map((q) => ({
+              "@type": "Question",
+              name: t(`faq.${q}Q`),
+              acceptedAnswer: { "@type": "Answer", text: t(`faq.${q}A`) },
+            })),
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
       <FestiveBanner eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
 
       <section className="mx-auto grid max-w-5xl gap-4 px-6 pb-14 sm:grid-cols-2 lg:grid-cols-4">

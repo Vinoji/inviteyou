@@ -64,6 +64,8 @@ export default function TemplateGallery({
 
   return (
     <div>
+      {/* No tabs on a single-occasion page (/invitations/<category>). */}
+      {categories.length > 0 && (
       <div
         role="tablist"
         aria-label={t("categoriesLabel")}
@@ -90,6 +92,7 @@ export default function TemplateGallery({
           </button>
         ))}
       </div>
+      )}
 
       <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
         {shown.map((tpl, i) => {
