@@ -9,7 +9,7 @@ import * as THREE from "three";
  */
 
 /** Seeded random numbers, so every guest sees the same palace. */
-function seeded(seed: number) {
+export function seeded(seed: number) {
   let a = seed;
   return () => {
     a = (a + 0x6d2b79f5) | 0;
@@ -19,14 +19,14 @@ function seeded(seed: number) {
   };
 }
 
-function canvas(w: number, h = w): [HTMLCanvasElement, CanvasRenderingContext2D] {
+export function canvas(w: number, h = w): [HTMLCanvasElement, CanvasRenderingContext2D] {
   const c = document.createElement("canvas");
   c.width = w;
   c.height = h;
   return [c, c.getContext("2d")!];
 }
 
-function toTexture(c: HTMLCanvasElement, color: boolean, repeat: [number, number] = [1, 1]) {
+export function toTexture(c: HTMLCanvasElement, color: boolean, repeat: [number, number] = [1, 1]) {
   const tex = new THREE.CanvasTexture(c);
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
   tex.repeat.set(...repeat);
@@ -36,7 +36,7 @@ function toTexture(c: HTMLCanvasElement, color: boolean, repeat: [number, number
 }
 
 /** Fine speckle so no surface reads as flat colour. */
-function grain(g: CanvasRenderingContext2D, w: number, h: number, rand: () => number, amount: number, light: string, dark: string) {
+export function grain(g: CanvasRenderingContext2D, w: number, h: number, rand: () => number, amount: number, light: string, dark: string) {
   const n = Math.round((w * h) / 40) * amount;
   for (let i = 0; i < n; i++) {
     g.fillStyle = rand() > 0.5 ? light : dark;
@@ -46,7 +46,7 @@ function grain(g: CanvasRenderingContext2D, w: number, h: number, rand: () => nu
 }
 
 /** Soft marble veins: wandering, blurred strokes. */
-function veins(g: CanvasRenderingContext2D, w: number, h: number, rand: () => number, count: number, color: string) {
+export function veins(g: CanvasRenderingContext2D, w: number, h: number, rand: () => number, count: number, color: string) {
   g.save();
   g.strokeStyle = color;
   g.lineCap = "round";
@@ -70,7 +70,7 @@ function veins(g: CanvasRenderingContext2D, w: number, h: number, rand: () => nu
 }
 
 /** An eight-petal rosette (carved or inlaid). */
-function rosette(g: CanvasRenderingContext2D, cx: number, cy: number, r: number) {
+export function rosette(g: CanvasRenderingContext2D, cx: number, cy: number, r: number) {
   g.beginPath();
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2;
@@ -90,7 +90,7 @@ function rosette(g: CanvasRenderingContext2D, cx: number, cy: number, r: number)
 }
 
 /** An eight-point star (two overlapping squares). */
-function star(g: CanvasRenderingContext2D, cx: number, cy: number, r: number) {
+export function star(g: CanvasRenderingContext2D, cx: number, cy: number, r: number) {
   g.beginPath();
   for (let i = 0; i < 16; i++) {
     const a = (i / 16) * Math.PI * 2 - Math.PI / 2;
@@ -458,6 +458,11 @@ function windowGlow(size: number) {
   return { map: toTexture(c, true) };
 }
 
+/** Shared by every world: the gate doors and lit window glass. */
+export function makeCommonTextures(size: number, gold: string) {
+  return { door: door(size, gold), window: windowGlow(size) };
+}
+
 export function makePalaceTextures(size: number, gold: string) {
   return {
     sandstone: sandstone(size, gold),
@@ -465,12 +470,8 @@ export function makePalaceTextures(size: number, gold: string) {
     pillar: pillar(size),
     floor: floor(size, gold),
     carpet: carpet(size, gold),
-    door: door(size, gold),
     dome: dome(size, gold),
     wall: paintedWall(size, gold),
     hedge: hedge(size),
-    window: windowGlow(size),
   };
 }
-
-export type PalaceTextures = ReturnType<typeof makePalaceTextures>;

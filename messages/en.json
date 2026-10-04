@@ -1499,6 +1499,89 @@
       "finale": {
         "meant": "were meant to meet.",
         "thanks": "Thank you for celebrating with us"
+      },
+      "worlds": {
+        "temple": {
+          "intro": {
+            "invited": "With the blessings of the Almighty",
+            "enter": "Enter the temple",
+            "dialogLabel": "Invitation — the temple gopuram"
+          },
+          "entrance": {
+            "line1": "Two souls.",
+            "line2": "One sacred bond."
+          },
+          "hero": {
+            "eyebrow": "The sacred wedding of"
+          },
+          "story": {
+            "heading": "A Bond Blessed by the Divine"
+          },
+          "family": {
+            "heading": "Our Families",
+            "sub": "Two families, blessed to become one"
+          },
+          "events": {
+            "heading": "In the Temple Mandapam"
+          },
+          "countdown": {
+            "eyebrow": "The auspicious muhurtham",
+            "heading": "Until the Sacred Knot"
+          },
+          "gallery": {
+            "eyebrow": "Moments of grace"
+          },
+          "travel": {
+            "heading": "Your Journey to the Temple"
+          },
+          "rsvp": {
+            "heading": "Will You Bless Us?",
+            "sub": "Your presence and blessings would make our wedding complete."
+          },
+          "finale": {
+            "meant": "bound together by the divine."
+          }
+        },
+        "cathedral": {
+          "intro": {
+            "invited": "Together with their families",
+            "enter": "Enter the cathedral",
+            "dialogLabel": "Invitation — the cathedral doors"
+          },
+          "entrance": {
+            "line1": "Two hearts.",
+            "line2": "One covenant of love."
+          },
+          "hero": {
+            "eyebrow": "The holy matrimony of"
+          },
+          "story": {
+            "heading": "Love Is Patient, Love Is Kind"
+          },
+          "family": {
+            "heading": "Our Families"
+          },
+          "events": {
+            "heading": "Before the Altar"
+          },
+          "countdown": {
+            "eyebrow": "Counting the days",
+            "heading": "Until the Bells Ring"
+          },
+          "gallery": {
+            "eyebrow": "Through stained glass"
+          },
+          "travel": {
+            "heading": "Your Journey to the Cathedral"
+          },
+          "rsvp": {
+            "heading": "Will You Witness Our Vows?",
+            "sub": "It would mean the world to have you with us as we say “I do”."
+          },
+          "finale": {
+            "meant": "joined together by grace."
+          }
+        }
       }
     }
   },
@@ -1697,6 +1780,16 @@
       "name": "Royal Palace 3D",
       "tagline": "Cinematic 3D palace · Premium",
       "description": "An immersive royal palace wedding invitation with cinematic 3D interactions."
+    },
+    "sacred-temple-3d": {
+      "name": "Sacred Temple 3D",
+      "tagline": "3D temple · gopuram & lamps · Premium",
+      "description": "Walk through a painted gopuram into a lamp-lit temple mandapam — marigold garlands, brass bells, a kolam aisle and the glowing sanctum, in cinematic 3D."
+    },
+    "grand-cathedral-3d": {
+      "name": "Grand Cathedral 3D",
+      "tagline": "3D cathedral · stained glass · Premium",
+      "description": "Enter a Gothic cathedral by candlelight — twin spires, a glowing rose window, stained glass, pews and an ivory aisle to the altar, in cinematic 3D."
     },
     "temple-gopuram": {
       "name": "Temple Gopuram",

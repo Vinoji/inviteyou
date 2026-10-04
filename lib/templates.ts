@@ -27,6 +27,9 @@ export type IntroId =
   | "chapel"
   // Royal Palace 3D's own page (components/invite/palace).
   | "palaceGate"
+  // Temple 3D and Cathedral 3D (same component, their own gates).
+  | "templeGate"
+  | "cathedralDoors"
   // Layout-style openings (components/invite/intros/LayoutIntros.tsx).
   | "gopuram"
   | "marigoldCurtain"
@@ -70,7 +73,7 @@ export interface TemplateConfig {
   /** A completely separate page instead of the royal layout (with or
    * without a `layout` style): components/invite/garden or
    * components/invite/chapel. */
-  pageLayout?: "garden" | "chapel" | "palace";
+  pageLayout?: "garden" | "chapel" | "palace" | "temple3d" | "cathedral3d";
   /** Borrow a layout style's event names (e.g. "church" → Holy Matrimony)
    * without using its look — for templates with their own pageLayout. */
   eventNamesFrom?: LayoutStyleId;
@@ -100,6 +103,36 @@ export const TEMPLATES: TemplateConfig[] = [
     intro: "palaceGate",
     pageLayout: "palace",
     seed: "hindu-north",
+    price: 999,
+    listPrice: 1499,
+    badge: "premium",
+  },
+  {
+    id: "sacred-temple-3d",
+    category: "wedding",
+    defaultAccent: "#D4A017",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-stone-950 via-rose-950 to-amber-900",
+    cardTextClass: "text-amber-100",
+    intro: "templeGate",
+    pageLayout: "temple3d",
+    eventNamesFrom: "temple",
+    seed: "traditional-gold",
+    price: 999,
+    listPrice: 1499,
+    badge: "premium",
+  },
+  {
+    id: "grand-cathedral-3d",
+    category: "wedding",
+    defaultAccent: "#C9A24A",
+    defaultFont: "classic-serif",
+    cardGradient: "from-slate-950 via-indigo-950 to-violet-900",
+    cardTextClass: "text-amber-100",
+    intro: "cathedralDoors",
+    pageLayout: "cathedral3d",
+    eventNamesFrom: "church",
+    seed: "christian",
     price: 999,
     listPrice: 1499,
     badge: "premium",

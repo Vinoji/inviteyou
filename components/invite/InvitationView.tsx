@@ -106,7 +106,9 @@ export default function InvitationView({
     const Page =
       template.pageLayout === "chapel"
         ? ChapelInvitation
-        : template.pageLayout === "palace"
+        : template.pageLayout === "palace" ||
+            template.pageLayout === "temple3d" ||
+            template.pageLayout === "cathedral3d"
           ? PalaceInvitation
           : GardenInvitation;
     return (

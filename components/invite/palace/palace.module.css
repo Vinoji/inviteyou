@@ -739,3 +739,34 @@
 :global(html[data-motion="reduced"]) .root :is(.cueLine, .dust span, .canvasWrap) {
   animation: none;
 }
+
+/* Temple: maroon and saffron cards; Cathedral: violet-navy. */
+.root[data-world="temple"] {
+  --pl-panel: rgba(36, 12, 14, 0.78);
+  background: #120a1e;
+}
+.root[data-world="temple"] .eventCard {
+  background:
+    radial-gradient(100% 60% at 50% 0%, rgba(212, 160, 23, 0.2), transparent 70%),
+    linear-gradient(180deg, rgba(64, 18, 18, 0.94), rgba(30, 10, 12, 0.95));
+}
+.root[data-world="temple"] .familyInner {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(242, 140, 27, 0.18), transparent 60%),
+    linear-gradient(180deg, rgba(70, 22, 16, 0.9), rgba(30, 10, 12, 0.92));
+}
+.root[data-world="temple"] .eventSeal {
+  background: radial-gradient(circle at 35% 30%, #f28c1b, #a8442a);
+}
+.root[data-world="cathedral"] {
+  --pl-panel: rgba(14, 16, 44, 0.78);
+  background: #060a1c;
+}
+.root[data-world="cathedral"] .familyInner {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(150, 160, 255, 0.14), transparent 60%),
+    linear-gradient(180deg, rgba(30, 26, 70, 0.9), rgba(12, 12, 36, 0.92));
+}
+.root[data-world="cathedral"] .eventSeal {
+  background: radial-gradient(circle at 35% 30%, #5b2c83, #2a1650);
+}

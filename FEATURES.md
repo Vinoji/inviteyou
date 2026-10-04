@@ -52,7 +52,19 @@ The other occasions keep the original section layout with the envelope intro.
 
 **Font pairings** ([lib/fontPairings.ts](lib/fontPairings.ts)): `classic-serif`, `modern-clean`, `elegant-script`, `royal-cinzel`, `tamil-calligraphy`, `tamil-classic`.
 
-## Royal Palace 3D (premium, ₹999)
+## Premium 3D templates (₹999)
+
+Three top-tier wedding designs share one 3D engine ([components/invite/palace/](components/invite/palace/)), each with its own world, intro gate, textures and wording. All are ₹999 (was ₹1499), with **Premium** and **3D Interactive** badges, and need no new editor fields.
+
+| Template | World | Events named |
+|---|---|---|
+| `royal-palace-3d` | Royal palace: sandstone and marble, jali, chandeliers, a fountain courtyard | Ceremony / Reception |
+| `sacred-temple-3d` | South Indian temple: a painted gopuram, a granite mandapam with carved pillars and a painted ceiling, marigold garlands, bells, a kolam aisle with agal lamps, the flagstaff, lamp towers and a glowing sanctum | Muhurtham / Reception |
+| `grand-cathedral-3d` | Gothic cathedral: twin spires, a rose window, a nave of columns and pointed ribs, stained-glass lancets, pews, candles, an ivory aisle and the altar | Holy Matrimony / Reception |
+
+The engine ([PalaceScene.tsx](components/invite/palace/PalaceScene.tsx)) runs the camera, sky, glow, halos, gold dust and petals. Each world in [scene/](components/invite/palace/scene/) supplies its architecture. Camera poses per world are in [shots.ts](components/invite/palace/shots.ts). Wording differences live in `invite.palace.worlds.<world>`.
+
+### Royal Palace 3D
 
 `royal-palace-3d` is the top-tier wedding design: ₹999 (was ₹1499), with a **Premium** badge and a **3D Interactive** chip on its landing card. It has its own page in [components/invite/palace/](components/invite/palace/) (`pageLayout: "palace"`) and uses the usual editor and invitation data. There are no new fields.
 

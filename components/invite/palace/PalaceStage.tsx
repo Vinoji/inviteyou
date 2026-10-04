@@ -1,13 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, useMotionValue } from "framer-motion";
 import SilentErrorBoundary from "../decor/SilentErrorBoundary";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scrollParent, usePaneHeight } from "../motion/scroll";
 import { INTRO_DONE_EVENT, INTRO_OPENED_EVENT } from "../intros/events";
-import { SHOTS, type Pose, type ShotId, type ShotTrack } from "./shots";
+import { shotsFor, type Pose, type ShotId, type ShotTrack, type WorldId } from "./shots";
 import type { Quality } from "./PalaceScene";
 import { PalaceBackdrop } from "./PalaceArt";
 import p from "./palace.module.css";
@@ -45,11 +45,12 @@ function detectQuality(): Quality {
  * tells the scene where along that list the guest is, so the camera walks
  * from the gate, down the hall, into the courtyard, and back out at the end.
  */
-export default function PalaceStage({ gold, preview }: { gold: string; preview: boolean }) {
+export default function PalaceStage({ world, gold, preview }: { world: WorldId; gold: string; preview: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduceMotion = useSafeReducedMotion();
   const paneHeight = usePaneHeight(ref, preview);
-  const track = useRef<ShotTrack>({ poses: [SHOTS.entrance], at: 0 });
+  const shots = useMemo(() => shotsFor(world), [world]);
+  const track = useRef<ShotTrack>({ poses: [shots.entrance], at: 0 });
   const invalidate = useRef<() => void>(() => {});
   const progress = useMotionValue(0);
   const [gl, setGl] = useState<{ quality: Quality } | null>(null);
@@ -105,11 +106,11 @@ export default function PalaceStage({ gold, preview }: { gold: string; preview: 
       raf = 0;
       const vp = container ? container.getBoundingClientRect() : new DOMRect(0, 0, innerWidth, innerHeight);
       const mid = vp.top + vp.height * 0.55;
-      const shots = Array.from(root.querySelectorAll<HTMLElement>("[data-palace-shot]"));
+      const nodes = Array.from(root.querySelectorAll<HTMLElement>("[data-palace-shot]"));
       const poses: Pose[] = [];
       let at = 0;
-      shots.forEach((el, i) => {
-        poses.push(SHOTS[el.dataset.palaceShot as ShotId] ?? SHOTS.hero);
+      nodes.forEach((el, i) => {
+        poses.push(shots[el.dataset.palaceShot as ShotId] ?? shots.hero);
         const r = el.getBoundingClientRect();
         if (r.top <= mid) at = i + Math.min(1, (mid - r.top) / Math.max(1, r.height));
       });
@@ -134,7 +135,7 @@ export default function PalaceStage({ gold, preview }: { gold: string; preview: 
       target.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
-  }, [progress]);
+  }, [progress, shots]);
 
   const onInvalidate = useCallback((fn: () => void) => {
     invalidate.current = fn;
@@ -148,11 +149,12 @@ export default function PalaceStage({ gold, preview }: { gold: string; preview: 
       style={height ? { height, marginBottom: -height } : undefined}
       aria-hidden
     >
-      <PalaceBackdrop progress={progress} still={reduceMotion} />
+      <PalaceBackdrop world={world} progress={progress} still={reduceMotion} />
       {gl && (
         <div className={p.canvasWrap}>
           <SilentErrorBoundary>
             <PalaceScene
+              world={world}
               track={track}
               quality={gl.quality}
               still={reduceMotion}
