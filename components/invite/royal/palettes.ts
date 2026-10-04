@@ -413,6 +413,21 @@ const PALETTES: Record<string, RoyalPalette> = {
     leaf: "#2E6B3A",
     leafLight: "#7FB069",
   },
+  // Blossom Park 3D: twilight violet, blossom pink and soft gold.
+  "blossom-park-3d": {
+    deep: "#2A2240",
+    mid: "#4A3460",
+    gold: "#E8A0BF",
+    goldLight: "#F7D3E3",
+    goldDeep: "#A05078",
+    ivory: "#FFF8FA",
+    ivory2: "#F6E8EE",
+    text: "#2A2240",
+    muted: "#7A6A80",
+    flowers: ["#F7C6D9", "#FFFFFF", "#F2A7C3"],
+    leaf: "#4E7A3A",
+    leafLight: "#9CC27E",
+  },
   // Grand Cathedral 3D: midnight blue, violet glass, gold and ivory.
   "grand-cathedral-3d": {
     deep: "#101A3A",

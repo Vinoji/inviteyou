@@ -8,7 +8,7 @@ import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scrollParent, usePaneHeight } from "../motion/scroll";
 import { INTRO_DONE_EVENT, INTRO_OPENED_EVENT } from "../intros/events";
 import { shotsFor, type Pose, type ShotId, type ShotTrack, type WorldId } from "./shots";
-import type { Quality } from "./PalaceScene";
+import type { Quality, TapFn } from "./PalaceScene";
 import { PalaceBackdrop } from "./PalaceArt";
 import p from "./palace.module.css";
 
@@ -141,6 +141,28 @@ export default function PalaceStage({ world, gold, preview }: { world: WorldId; 
     invalidate.current = fn;
   }, []);
 
+  // Taps on the scene: a click on the page that lands on bare background
+  // (a section itself, not its text, cards, links or form) goes into the
+  // 3D world, where the park makes blossoms, water and birds respond.
+  const tap = useRef<TapFn | null>(null);
+  const onTapReady = useCallback((fn: TapFn) => {
+    tap.current = fn;
+  }, []);
+  useEffect(() => {
+    const stage = ref.current;
+    const root = stage?.closest<HTMLElement>("[data-invite-root]");
+    if (!stage || !root) return;
+    const onClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target || !tap.current) return;
+      if (!target.matches("[data-palace-shot], [data-palace-content], [data-palace-tap]")) return;
+      const r = stage.getBoundingClientRect();
+      tap.current({ x: ((e.clientX - r.left) / r.width) * 2 - 1, y: -((e.clientY - r.top) / r.height) * 2 + 1 });
+    };
+    root.addEventListener("click", onClick);
+    return () => root.removeEventListener("click", onClick);
+  }, []);
+
   const height = paneHeight ?? undefined;
   return (
     <div
@@ -161,6 +183,7 @@ export default function PalaceStage({ world, gold, preview }: { world: WorldId; 
               frameloop={!active ? "never" : reduceMotion ? "demand" : "always"}
               gold={gold}
               onInvalidate={onInvalidate}
+              onTapReady={onTapReady}
             />
           </SilentErrorBoundary>
         </div>

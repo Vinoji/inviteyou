@@ -172,6 +172,9 @@ export interface WorldProps {
   addLight: (l: THREE.PointLight | null) => void;
   /** Unlit glass (windows, stained glass) brightened with the glow. */
   addGlow: (m: THREE.MeshBasicMaterial | null) => void;
+  /** Taps on the scene (from the page, where no content covers it):
+   * the handler gets a ray from the camera through the tap. */
+  registerTap: (handler: (ray: THREE.Raycaster) => void) => void;
 }
 
 /** A world: its architecture plus what the engine needs to light it. */

@@ -6,6 +6,7 @@ import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "../intros/types";
 import { playSound, useWarmAudio } from "../intros/audio";
 import { usePalaceT, worldOf } from "./world";
+import type { WorldId } from "./shots";
 import s from "./intro.module.css";
 
 /** A soft, rising tanpura-like drone with a bell on top — only after the guest's tap. */
@@ -36,7 +37,7 @@ function entranceChime(_world?: string) {
 
 /** Temple: a bright brass bell rung three times. Cathedral: a peal of
  * three church bells. Only from the guest's tap. */
-function bells(world: "temple" | "cathedral" | "palace") {
+function bells(world: WorldId) {
   const partials =
     world === "temple"
       ? [
@@ -66,6 +67,28 @@ function bells(world: "temple" | "cathedral" | "palace") {
         o.start(t0);
         o.stop(t0 + 2.3);
       });
+    });
+  });
+}
+
+/** Park: a few birds calling — quick rising and falling chirps. */
+function birdsong() {
+  playSound((ac, now) => {
+    [0, 0.18, 0.32, 0.9, 1.05, 1.6].forEach((at, i) => {
+      const o = ac.createOscillator();
+      const g = ac.createGain();
+      const t0 = now + at;
+      const base = 2400 + (i % 3) * 500;
+      o.type = "sine";
+      o.frequency.setValueAtTime(base, t0);
+      o.frequency.exponentialRampToValueAtTime(base * 1.6, t0 + 0.06);
+      o.frequency.exponentialRampToValueAtTime(base * 0.9, t0 + 0.12);
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(0.03, t0 + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.14);
+      o.connect(g).connect(ac.destination);
+      o.start(t0);
+      o.stop(t0 + 0.16);
     });
   });
 }
@@ -111,8 +134,9 @@ export default function PalaceIntro({ names, dateLabel, fonts, templateId, onOpe
       onDone();
       return;
     }
-    if (!preview) (world === "palace" ? entranceChime : bells)(world);
+    if (!preview) (world === "palace" ? entranceChime : world === "park" ? birdsong : bells)(world);
     if (world === "temple") burst({ preset: "marigold", colors: ["#F28C1B", "#F7C531", "#FFF7E6"] });
+    else if (world === "park") burst({ preset: "pastelPetals", colors: ["#F7C6D9", "#F2A7C3", "#FFFFFF"] });
     else if (world === "cathedral") burst({ preset: "pastelPetals", colors: ["#FFFFFF", "#F6D5DC", "#EBD08A"] });
     else burst({ preset: "glitter", colors: ["#FFF3C4", "#EBD08A", "#C9A24A"] });
     timers.current.push(setTimeout(onDone, 1100));
@@ -161,6 +185,13 @@ export default function PalaceIntro({ names, dateLabel, fonts, templateId, onOpe
               ))}
               <span className={s.vault} />
             </span>
+          )}
+          {world === "park" && (
+            <>
+              <span className={`${s.tree} ${s.treeL}`} />
+              <span className={`${s.tree} ${s.treeR}`} />
+              <span className={s.blossomArch} />
+            </>
           )}
           {world === "cathedral" && (
             <>

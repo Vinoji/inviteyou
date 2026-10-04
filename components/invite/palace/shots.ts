@@ -66,7 +66,7 @@ export interface ShotTrack {
 }
 
 /** Which 3D world a premium template walks through. */
-export type WorldId = "palace" | "temple" | "cathedral";
+export type WorldId = "palace" | "temple" | "cathedral" | "park";
 
 type Overrides = Partial<Record<ShotId, Partial<Pose>>>;
 
@@ -74,6 +74,24 @@ type Overrides = Partial<Record<ShotId, Partial<Pose>>>;
  * further back and looking higher, and each world has its own sky. */
 const WORLD_SHOTS: Record<WorldId, Overrides> = {
   palace: {},
+  // Twilight in a blossom park: the camera walks the path behind the couple.
+  park: {
+    entrance: { pos: [0, 2.4, 19], look: [0, 2.6, 0], bg: "#2A2240", gate: 0.05 },
+    hero: { pos: [1.12, 1.9, 7], look: [-0.84, 1.6, -5], bg: "#2A2240" },
+    story: { pos: [0.8, 1.8, 0], look: [-1.56, 1.8, -12], bg: "#2A2240" },
+    family: { pos: [-1.92, 1.9, -7], look: [-1.37, 1.9, -19], bg: "#2A2240" },
+    events: { pos: [-1.59, 2.4, -13], look: [-0.4, 1.2, -26], bg: "#2A2240" },
+    countdown: { pos: [-0.77, 2.6, -19], look: [0.13, 1.4, -29], bg: "#2A2240" },
+    gallery: { pos: [-0.57, 3.4, -25], look: [1.09, 1.6, -35], bg: "#2A2240" },
+    travel: { pos: [0.48, 3.2, -31], look: [1.4, 2.4, -47], bg: "#2A2240" },
+    places: { pos: [2.29, 2.6, -35], look: [1.19, 2.6, -49], bg: "#2A2240" },
+    faq: { pos: [0.21, 2.6, -38], look: [0.77, 2.8, -52], bg: "#2A2240" },
+    rsvp: { pos: [1.54, 2.2, -40], look: [-0.26, 3.8, -58], bg: "#2A2240" },
+    blessings: { pos: [2.58, 2.4, -41], look: [-0.43, 4.2, -59], bg: "#2A2240" },
+    guests: { pos: [0.6, 2.4, -42], look: [-0.6, 4.2, -60], bg: "#2A2240" },
+    share: { pos: [1.58, 2.6, -41], look: [-0.43, 4.4, -59], bg: "#2A2240" },
+    finale: { pos: [0, 9, -10], look: [0, 3, -60], bg: "#2A2240" },
+  },
   // Dusk over a South Indian temple: indigo sky warming to saffron.
   temple: {
     entrance: { pos: [0, 2.4, 23], look: [0, 6.8, 0], bg: "#120A1E" },

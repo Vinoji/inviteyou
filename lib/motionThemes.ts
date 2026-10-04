@@ -468,6 +468,16 @@ const THEMES: Record<string, MotionTheme> = {
     pageBg: "#120A1E",
     thread: null,
   },
+  "blossom-park-3d": {
+    sectionEnter: "rise",
+    heading: "maskUp",
+    divider: "none",
+    ambient: "pastelPetals",
+    ambientAt: ["thanks"],
+    rsvpBurst: "pastelPetals",
+    pageBg: "#2A2240",
+    thread: null,
+  },
   "grand-cathedral-3d": {
     sectionEnter: "rise",
     heading: "maskUp",

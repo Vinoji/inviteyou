@@ -8,7 +8,10 @@ import type { WorldId } from "./shots";
 /** Which 3D world a template walks through (TemplateConfig.pageLayout). */
 export function worldOf(templateId: string): WorldId {
   const layout = getTemplateConfig(templateId).pageLayout;
-  return layout === "temple3d" ? "temple" : layout === "cathedral3d" ? "cathedral" : "palace";
+  if (layout === "temple3d") return "temple";
+  if (layout === "cathedral3d") return "cathedral";
+  if (layout === "park3d") return "park";
+  return "palace";
 }
 
 /** The world of the invitation being shown, for the sections' wording. */

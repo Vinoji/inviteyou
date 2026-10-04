@@ -30,6 +30,8 @@ export type IntroId =
   // Temple 3D and Cathedral 3D (same component, their own gates).
   | "templeGate"
   | "cathedralDoors"
+  // Blossom Park 3D (same component).
+  | "parkGate"
   // Layout-style openings (components/invite/intros/LayoutIntros.tsx).
   | "gopuram"
   | "marigoldCurtain"
@@ -73,7 +75,7 @@ export interface TemplateConfig {
   /** A completely separate page instead of the royal layout (with or
    * without a `layout` style): components/invite/garden or
    * components/invite/chapel. */
-  pageLayout?: "garden" | "chapel" | "palace" | "temple3d" | "cathedral3d";
+  pageLayout?: "garden" | "chapel" | "palace" | "temple3d" | "cathedral3d" | "park3d";
   /** Borrow a layout style's event names (e.g. "church" → Holy Matrimony)
    * without using its look — for templates with their own pageLayout. */
   eventNamesFrom?: LayoutStyleId;
@@ -133,6 +135,20 @@ export const TEMPLATES: TemplateConfig[] = [
     pageLayout: "cathedral3d",
     eventNamesFrom: "church",
     seed: "christian",
+    price: 999,
+    listPrice: 1499,
+    badge: "premium",
+  },
+  {
+    id: "blossom-park-3d",
+    category: "wedding",
+    defaultAccent: "#E8A0BF",
+    defaultFont: "elegant-script",
+    cardGradient: "from-violet-950 via-fuchsia-900 to-rose-300",
+    cardTextClass: "text-rose-50",
+    intro: "parkGate",
+    pageLayout: "park3d",
+    seed: "floral-pastel",
     price: 999,
     listPrice: 1499,
     badge: "premium",
