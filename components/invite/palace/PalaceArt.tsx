@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useTransform, type MotionValue } from "framer-motion";
+import type { WorldId } from "./shots";
 import p from "./palace.module.css";
 
 /**
@@ -55,9 +56,86 @@ function PalaceFront({ className }: { className?: string }) {
   );
 }
 
+/** A gopuram over a granite gateway, painted tiers and gold kalasams. */
+function TempleFront({ className }: { className?: string }) {
+  const tiers = [0, 1, 2, 3, 4, 5];
+  return (
+    <svg viewBox="0 0 400 300" className={className} preserveAspectRatio="xMidYMax meet">
+      <defs>
+        <linearGradient id="tpl-stone" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#4A4038" />
+          <stop offset="1" stopColor="#1E1814" />
+        </linearGradient>
+        <radialGradient id="tpl-door" cx="0.5" cy="0.7" r="0.7">
+          <stop offset="0" stopColor="#FFE3A3" />
+          <stop offset="0.5" stopColor="#F2A65A" />
+          <stop offset="1" stopColor="#7A3012" />
+        </radialGradient>
+      </defs>
+      {tiers.map((i) => {
+        const w = 200 - i * 26;
+        const y = 150 - i * 20;
+        return (
+          <g key={i}>
+            <rect x={200 - w / 2} y={y - 18} width={w} height={18} fill={i % 2 ? "#B5562B" : "#C98A2E"} />
+            {Array.from({ length: Math.max(2, 7 - i) }, (_, k) => (
+              <rect key={k} x={200 - w / 2 + 8 + k * ((w - 16) / Math.max(2, 7 - i))} y={y - 15} width={8} height={12} rx={4} fill={["#1F7A8C", "#B03A2E", "#2E8B57"][k % 3]} />
+            ))}
+            <rect x={200 - w / 2 - 4} y={y - 2} width={w + 8} height={3} fill="#7A1F1A" />
+          </g>
+        );
+      })}
+      <path d="M150 30 Q200 8 250 30 Z" fill="#B03A2E" />
+      {[160, 180, 200, 220, 240].map((x) => (
+        <circle key={x} cx={x} cy={16} r={3} fill="#E3B341" />
+      ))}
+      <rect x="40" y="150" width="320" height="150" fill="url(#tpl-stone)" />
+      <rect x="40" y="148" width="320" height="4" fill="#C9A24A" />
+      <rect x="176" y="190" width="48" height="110" fill="url(#tpl-door)" />
+      <rect x="172" y="186" width="56" height="114" fill="none" stroke="#C9A24A" strokeWidth="3" />
+    </svg>
+  );
+}
+
+/** A Gothic west front: twin spires, rose window, pointed portal. */
+function CathedralFront({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 400 300" className={className} preserveAspectRatio="xMidYMax meet">
+      <defs>
+        <linearGradient id="cth-stone" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#3A4060" />
+          <stop offset="1" stopColor="#141830" />
+        </linearGradient>
+        <radialGradient id="cth-rose" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor="#F2C14E" />
+          <stop offset="0.35" stopColor="#B0202E" />
+          <stop offset="0.7" stopColor="#1B3F8B" />
+          <stop offset="1" stopColor="#5B2C83" />
+        </radialGradient>
+        <radialGradient id="cth-door" cx="0.5" cy="0.7" r="0.7">
+          <stop offset="0" stopColor="#FFF0C8" />
+          <stop offset="1" stopColor="#C98A3A" />
+        </radialGradient>
+      </defs>
+      {[70, 330].map((x) => (
+        <g key={x} fill="url(#cth-stone)">
+          <rect x={x - 30} y="90" width="60" height="210" />
+          <path d={`M${x - 32} 92 L${x} 10 L${x + 32} 92 Z`} />
+          <rect x={x - 8} y="140" width="16" height="40" rx="8" fill="#F2C14E" opacity="0.8" />
+        </g>
+      ))}
+      <path d="M100 300 V110 L200 50 L300 110 V300 Z" fill="url(#cth-stone)" />
+      <circle cx="200" cy="140" r="34" fill="url(#cth-rose)" />
+      <circle cx="200" cy="140" r="34" fill="none" stroke="#D8CFBE" strokeWidth="3" />
+      <path d="M170 300 V240 Q170 205 200 190 Q230 205 230 240 V300 Z" fill="url(#cth-door)" />
+    </svg>
+  );
+}
+
 /** Stand-in for the 3D scene: night sky, palace, gate light and gold dust,
  * drifting a little with the scroll. */
-export function PalaceBackdrop({ progress, still }: { progress: MotionValue<number>; still: boolean }) {
+export function PalaceBackdrop({ world, progress, still }: { world: WorldId; progress: MotionValue<number>; still: boolean }) {
+  const Front = world === "temple" ? TempleFront : world === "cathedral" ? CathedralFront : PalaceFront;
   const palaceY = useTransform(progress, [0, 1], still ? ["0%", "0%"] : ["0%", "18%"]);
   const palaceScale = useTransform(progress, [0, 0.1, 0.9, 1], still ? [1, 1, 1, 1] : [1, 1.35, 1.35, 1]);
   return (
@@ -66,7 +144,7 @@ export function PalaceBackdrop({ progress, still }: { progress: MotionValue<numb
       <div className={p.stars} />
       <motion.div className={p.palaceWrap} style={{ y: palaceY, scale: palaceScale }}>
         <div className={p.gateGlow} />
-        <PalaceFront className={p.palaceSvg} />
+        <Front className={p.palaceSvg} />
       </motion.div>
       <div className={p.floorGlow} />
       {!still && (

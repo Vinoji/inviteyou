@@ -29,6 +29,7 @@ import TravelGuide from "../royal/TravelGuide";
 import PlacesToExplore from "../royal/PlacesToExplore";
 import royal from "../royal/royal.module.css";
 import PalaceStage from "./PalaceStage";
+import { WorldContext, usePalaceT, worldOf } from "./world";
 import {
   Chapter,
   CoupleHero,
@@ -82,7 +83,13 @@ export default function PalaceInvitation({
 }) {
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
-  const t = useTranslations("invite.palace");
+  const world = worldOf(data.templateId);
+  const tTravel = usePalaceT("travel", world);
+  const tPlaces = usePalaceT("places", world);
+  const tFaq = usePalaceT("faq", world);
+  const tRsvp = usePalaceT("rsvp", world);
+  const tBlessings = usePalaceT("blessings", world);
+  const tGuests = usePalaceT("guests", world);
   const palette = getRoyalPalette(data.templateId, data.accentColor);
   const font = getFontPairing(data.fontPairing);
   const sections = withDefaultSections(data.sections);
@@ -123,7 +130,8 @@ export default function PalaceInvitation({
   } as CSSProperties;
 
   return (
-    <div data-invite-root className={`min-h-full w-full ${royal.root} ${p.root}`} style={style}>
+    <WorldContext.Provider value={world}>
+    <div data-invite-root data-world={world} className={`min-h-full w-full ${royal.root} ${p.root}`} style={style}>
       <IntroHost
         introId={getTemplateConfig(data.templateId).intro}
         templateId={data.templateId}
@@ -142,7 +150,7 @@ export default function PalaceInvitation({
         <AudioToggle src={data.backgroundMusic || undefined} templateId={data.templateId} accentColor={data.accentColor} />
       )}
 
-      <PalaceStage gold={palette.gold} preview={mode === "preview"} />
+      <PalaceStage world={world} gold={palette.gold} preview={mode === "preview"} />
 
       <main className={p.content}>
         <Entrance names={{ a: brideName, b: groomName }} />
@@ -173,7 +181,7 @@ export default function PalaceInvitation({
 
         {sections.travel && hasTravel && (
           <Scene shot="travel">
-            <Chapter eyebrow={t("travel.eyebrow")} heading={t("travel.heading")} />
+            <Chapter eyebrow={tTravel("eyebrow")} heading={tTravel("heading")} />
             <Parchment>
               <TravelGuide travel={travel} />
             </Parchment>
@@ -182,7 +190,7 @@ export default function PalaceInvitation({
 
         {sections.places && places.length > 0 && (
           <Scene shot="places">
-            <Chapter eyebrow={t("places.eyebrow")} heading={t("places.heading")} />
+            <Chapter eyebrow={tPlaces("eyebrow")} heading={tPlaces("heading")} />
             <Parchment>
               <PlacesToExplore places={places} city={travel.city} />
             </Parchment>
@@ -191,7 +199,7 @@ export default function PalaceInvitation({
 
         {sections.faq && hasFaq && (
           <Scene shot="faq">
-            <Chapter eyebrow={t("faq.eyebrow")} heading={t("faq.heading")} />
+            <Chapter eyebrow={tFaq("eyebrow")} heading={tFaq("heading")} />
             <Parchment>
               <ThingsToKnow
                 faq={data.faq ?? []}
@@ -216,7 +224,7 @@ export default function PalaceInvitation({
                 mode={mode}
                 initialName={guestGreeting}
                 variant="royal"
-                header={<Chapter key="rsvp-header" eyebrow={t("rsvp.eyebrow")} heading={t("rsvp.heading")} sub={t("rsvp.sub")} />}
+                header={<Chapter key="rsvp-header" eyebrow={tRsvp("eyebrow")} heading={tRsvp("heading")} sub={tRsvp("sub")} />}
               />
             </div>
           </Scene>
@@ -224,7 +232,7 @@ export default function PalaceInvitation({
 
         {sections.rsvp && mode === "public" && rsvpMessages.length > 0 && (
           <Scene shot="blessings">
-            <Chapter eyebrow={t("blessings.eyebrow")} heading={t("blessings.heading")} />
+            <Chapter eyebrow={tBlessings("eyebrow")} heading={tBlessings("heading")} />
             <Parchment>
               <BlessingsWall
                 messages={rsvpMessages}
@@ -238,7 +246,7 @@ export default function PalaceInvitation({
 
         {sections.guestPhotos && (
           <Scene shot="guests">
-            <Chapter eyebrow={t("guests.eyebrow")} heading={t("guests.heading")} />
+            <Chapter eyebrow={tGuests("eyebrow")} heading={tGuests("heading")} />
             <Parchment>
               <GuestGallery
                 slug={slug}
@@ -271,5 +279,6 @@ export default function PalaceInvitation({
         <footer className={p.footer}>{tView("madeWith", { couple: coupleLabel })}</footer>
       </main>
     </div>
+    </WorldContext.Provider>
   );
 }

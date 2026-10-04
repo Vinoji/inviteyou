@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useTransform } from "framer-motion";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter } from "next-intl";
+import { usePalaceT } from "./world";
 import { MapPin } from "lucide-react";
 import FamilyLines from "../FamilyLines";
 import useSafeReducedMotion from "../useSafeReducedMotion";
@@ -86,7 +87,7 @@ export function Parchment({ children }: { children: ReactNode }) {
 /* ------------------------------------------------------------------ */
 
 export function Entrance({ names }: { names: { a: string; b?: string } }) {
-  const t = useTranslations("invite.palace.entrance");
+  const t = usePalaceT("entrance");
   const text = [names.a, names.b].filter(Boolean).join(" ");
   return (
     <Scene shot="entrance" className={p.entrance}>
@@ -155,7 +156,7 @@ export function CoupleHero({
   photos: string[];
   monogram: { a: string; b: string };
 }) {
-  const t = useTranslations("invite.palace.hero");
+  const t = usePalaceT("hero");
   const format = useFormatter();
   const date = parseDate(weddingDate);
   return (
@@ -208,7 +209,7 @@ export function storyMilestones(story: string): string[] {
 const LABELS: Record<number, number[]> = { 1: [0], 2: [0, 3], 3: [0, 1, 3], 4: [0, 1, 2, 3] };
 
 export function StoryTimeline({ story }: { story: string }) {
-  const t = useTranslations("invite.palace.story");
+  const t = usePalaceT("story");
   const ref = useRef<HTMLOListElement>(null);
   const reduce = useSafeReducedMotion();
   const progress = useTraverseProgress(ref);
@@ -252,7 +253,7 @@ export function Families({
   brideFamily: FamilyMember[];
   groomFamily: FamilyMember[];
 }) {
-  const t = useTranslations("invite.palace.family");
+  const t = usePalaceT("family");
   const cards = [
     { side: "bride" as const, role: t("bride"), name: brideName, members: brideFamily },
     { side: "groom" as const, role: t("groom"), name: groomName, members: groomFamily },
@@ -288,7 +289,7 @@ export interface PalaceEvent {
 }
 
 export function Events({ events, weddingDate, children }: { events: PalaceEvent[]; weddingDate: string; children?: ReactNode }) {
-  const t = useTranslations("invite.palace.events");
+  const t = usePalaceT("events");
   const format = useFormatter();
   const date = parseDate(weddingDate);
   const dateText = date ? format.dateTime(date, { weekday: "short", day: "numeric", month: "long", year: "numeric" }) : t("tba");
@@ -354,7 +355,7 @@ function parts(targetMs: number) {
 }
 
 export function Countdown({ weddingDate, ceremonyTime }: { weddingDate: string; ceremonyTime: string }) {
-  const t = useTranslations("invite.palace.countdown");
+  const t = usePalaceT("countdown");
   const reduce = useSafeReducedMotion();
   // The ceremony time when it parses ("10:30 AM"), else the start of the day.
   const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i.exec(ceremonyTime.trim());
@@ -418,7 +419,7 @@ export function Countdown({ weddingDate, ceremonyTime }: { weddingDate: string; 
 /* ------------------------------------------------------------------ */
 
 export function Gallery({ photos }: { photos: string[] }) {
-  const t = useTranslations("invite.palace.gallery");
+  const t = usePalaceT("gallery");
   const reduce = useSafeReducedMotion();
   if (photos.length === 0) return null;
   const styles = [p.framed, p.floating, p.archFrame];
@@ -449,7 +450,7 @@ export function Gallery({ photos }: { photos: string[] }) {
 /* ------------------------------------------------------------------ */
 
 export function Finale({ names, children }: { names: string; children?: ReactNode }) {
-  const t = useTranslations("invite.palace.finale");
+  const t = usePalaceT("finale");
   return (
     <Scene shot="finale" className={p.finale}>
       <Reveal>

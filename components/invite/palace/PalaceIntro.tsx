@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import { useTranslations } from "next-intl";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import type { IntroProps } from "../intros/types";
 import { playSound, useWarmAudio } from "../intros/audio";
+import { usePalaceT, worldOf } from "./world";
 import s from "./intro.module.css";
 
 /** A soft, rising tanpura-like drone with a bell on top — only after the guest's tap. */
-function entranceChime() {
+function entranceChime(_world?: string) {
+  void _world;
   playSound((ac, now) => {
     [
       [146.8, 0.05, 0, 3.2],
@@ -33,6 +34,42 @@ function entranceChime() {
   });
 }
 
+/** Temple: a bright brass bell rung three times. Cathedral: a peal of
+ * three church bells. Only from the guest's tap. */
+function bells(world: "temple" | "cathedral" | "palace") {
+  const partials =
+    world === "temple"
+      ? [
+          [523, 0.06],
+          [1046, 0.03],
+          [1308, 0.025],
+          [1570, 0.015],
+        ]
+      : [
+          [262, 0.06],
+          [524, 0.035],
+          [628, 0.025],
+          [786, 0.015],
+        ];
+  playSound((ac, now) => {
+    [0, 0.5, 1.0].forEach((at, k) => {
+      partials.forEach(([f, gain]) => {
+        const o = ac.createOscillator();
+        const g = ac.createGain();
+        const t0 = now + at;
+        o.type = "sine";
+        o.frequency.value = world === "cathedral" ? f * [1, 0.89, 0.75][k] : f;
+        g.gain.setValueAtTime(0, t0);
+        g.gain.linearRampToValueAtTime(gain, t0 + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
+        o.connect(g).connect(ac.destination);
+        o.start(t0);
+        o.stop(t0 + 2.3);
+      });
+    });
+  });
+}
+
 /** When each beat of the opening lands (ms). The last one shows the button. */
 const BEATS = [400, 1100, 2200, 2700, 3400, 4500, 5900, 6600, 7300, 8000];
 const LAST = BEATS.length;
@@ -47,8 +84,9 @@ const LAST = BEATS.length;
  * and plays the same in the landing-page card. Reduced motion: the final
  * frame, still.
  */
-export default function PalaceIntro({ names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
-  const t = useTranslations("invite.palace.intro");
+export default function PalaceIntro({ names, dateLabel, fonts, templateId, onOpen, onDone, burst, preview }: IntroProps) {
+  const world = worldOf(templateId);
+  const t = usePalaceT("intro", world);
   const reduce = useSafeReducedMotion();
   useWarmAudio(!preview);
   const [beat, setBeat] = useState(0);
@@ -73,8 +111,10 @@ export default function PalaceIntro({ names, dateLabel, fonts, onOpen, onDone, b
       onDone();
       return;
     }
-    if (!preview) entranceChime();
-    burst({ preset: "glitter", colors: ["#FFF3C4", "#EBD08A", "#C9A24A"] });
+    if (!preview) (world === "palace" ? entranceChime : bells)(world);
+    if (world === "temple") burst({ preset: "marigold", colors: ["#F28C1B", "#F7C531", "#FFF7E6"] });
+    else if (world === "cathedral") burst({ preset: "pastelPetals", colors: ["#FFFFFF", "#F6D5DC", "#EBD08A"] });
+    else burst({ preset: "glitter", colors: ["#FFF3C4", "#EBD08A", "#C9A24A"] });
     timers.current.push(setTimeout(onDone, 1100));
   }
 
@@ -85,6 +125,7 @@ export default function PalaceIntro({ names, dateLabel, fonts, onOpen, onDone, b
     <div
       className={`${s.root} ${leaving ? s.leaving : ""}`}
       data-beat={beat}
+      data-world={world}
       role="dialog"
       aria-label={t("dialogLabel")}
       style={{ "--intro-display": fonts.display, "--intro-caps": fonts.caps } as CSSProperties}
@@ -106,9 +147,29 @@ export default function PalaceIntro({ names, dateLabel, fonts, onOpen, onDone, b
       {/* The gate */}
       <div className={`${s.world} ${at(6) ? s.push : ""}`} aria-hidden>
         <div className={`${s.facade} ${at(2) ? s.on : ""}`}>
-          <span className={s.dome} />
-          <span className={`${s.chhatri} ${s.chhatriL}`} />
-          <span className={`${s.chhatri} ${s.chhatriR}`} />
+          {world === "palace" && (
+            <>
+              <span className={s.dome} />
+              <span className={`${s.chhatri} ${s.chhatriL}`} />
+              <span className={`${s.chhatri} ${s.chhatriR}`} />
+            </>
+          )}
+          {world === "temple" && (
+            <span className={s.gopuram}>
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <span key={i} className={s.tier} style={{ "--i": i } as CSSProperties} />
+              ))}
+              <span className={s.vault} />
+            </span>
+          )}
+          {world === "cathedral" && (
+            <>
+              <span className={`${s.tower} ${s.towerL}`} />
+              <span className={`${s.tower} ${s.towerR}`} />
+              <span className={s.gable} />
+              <span className={`${s.rose} ${at(4) ? s.lit : ""}`} />
+            </>
+          )}
           <div className={s.wall}>
             <span className={s.frieze} />
             {/* Jharokha windows either side of the gate, lit from within */}

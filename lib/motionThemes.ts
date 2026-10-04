@@ -456,6 +456,28 @@ const THEMES: Record<string, MotionTheme> = {
     pageBg: "#070B1A",
     thread: null,
   },
+  // "Sacred Temple 3D" and "Grand Cathedral 3D": the same 3D engine as
+  // Royal Palace 3D (components/invite/palace) in their own worlds.
+  "sacred-temple-3d": {
+    sectionEnter: "rise",
+    heading: "goldSweep",
+    divider: "none",
+    ambient: "marigold",
+    ambientAt: ["thanks"],
+    rsvpBurst: "marigold",
+    pageBg: "#120A1E",
+    thread: null,
+  },
+  "grand-cathedral-3d": {
+    sectionEnter: "rise",
+    heading: "maskUp",
+    divider: "none",
+    ambient: "glitter",
+    ambientAt: ["thanks"],
+    rsvpBurst: "pastelPetals",
+    pageBg: "#060A1C",
+    thread: null,
+  },
   // "Chapel Bells": its own layout (components/invite/chapel) — dust motes
   // in the window light, petals when a guest says yes.
   "chapel-bells": {

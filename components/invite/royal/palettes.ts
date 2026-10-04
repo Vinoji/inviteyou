@@ -398,6 +398,36 @@ const PALETTES: Record<string, RoyalPalette> = {
     leaf: "#1F5A4A",
     leafLight: "#6FA08C",
   },
+  // Sacred Temple 3D: maroon, temple gold and jasmine white.
+  "sacred-temple-3d": {
+    deep: "#2A0F12",
+    mid: "#5A1A12",
+    gold: "#D4A017",
+    goldLight: "#F2CF6B",
+    goldDeep: "#8A5A10",
+    ivory: "#FBF4E6",
+    ivory2: "#F2E3C8",
+    text: "#2A0F12",
+    muted: "#7A5E50",
+    flowers: ["#F28C1B", "#F7C531", "#FFF7E6"],
+    leaf: "#2E6B3A",
+    leafLight: "#7FB069",
+  },
+  // Grand Cathedral 3D: midnight blue, violet glass, gold and ivory.
+  "grand-cathedral-3d": {
+    deep: "#101A3A",
+    mid: "#2A2050",
+    gold: "#C9A24A",
+    goldLight: "#EBD08A",
+    goldDeep: "#8A6A24",
+    ivory: "#FBF8F1",
+    ivory2: "#EEE8F2",
+    text: "#141C3A",
+    muted: "#6B6A80",
+    flowers: ["#FFFFFF", "#F6D5DC", "#E9C46A"],
+    leaf: "#6E8B6A",
+    leafLight: "#B8CBB0",
+  },
   // Chapel Bells: its own layout; Travel Guide, Places and the RSVP form
   // reuse royal components, which read these.
   "chapel-bells": {

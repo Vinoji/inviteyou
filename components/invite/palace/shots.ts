@@ -64,3 +64,53 @@ export interface ShotTrack {
   /** Position along `poses`: 2.25 = a quarter of the way from pose 2 to 3. */
   at: number;
 }
+
+/** Which 3D world a premium template walks through. */
+export type WorldId = "palace" | "temple" | "cathedral";
+
+type Overrides = Partial<Record<ShotId, Partial<Pose>>>;
+
+/** Per-world adjustments to the shared path: taller fronts need the camera
+ * further back and looking higher, and each world has its own sky. */
+const WORLD_SHOTS: Record<WorldId, Overrides> = {
+  palace: {},
+  // Dusk over a South Indian temple: indigo sky warming to saffron.
+  temple: {
+    entrance: { pos: [0, 2.4, 23], look: [0, 6.8, 0], bg: "#120A1E" },
+    hero: { bg: "#1A1024" },
+    story: { bg: "#1E1226" },
+    family: { bg: "#22101C" },
+    events: { bg: "#24131A" },
+    countdown: { bg: "#2A1418" },
+    gallery: { bg: "#1E1226" },
+    travel: { pos: [0, 4, -36], bg: "#2C1A28" },
+    places: { bg: "#2A1C30" },
+    faq: { bg: "#1E1430" },
+    rsvp: { bg: "#140C22" },
+    blessings: { bg: "#1A1028" },
+    guests: { bg: "#1E1226" },
+    share: { bg: "#1A1028" },
+    finale: { pos: [0, 3.2, 32], look: [0, 7.5, 0], bg: "#120A1E" },
+  },
+  // A cathedral by night: deep blue, violet where the glass glows.
+  cathedral: {
+    entrance: { pos: [0, 2.6, 25], look: [0, 7.6, 0], bg: "#060A1C" },
+    hero: { pos: [0, 2, 4], look: [0, 3.2, -12], bg: "#0A1028" },
+    story: { pos: [1.3, 2.2, -5], look: [-1.6, 3.4, -16], bg: "#0E0F2C" },
+    family: { pos: [-1.3, 2.3, -13], look: [1.6, 3.6, -24], bg: "#120E2C" },
+    events: { pos: [0, 3.2, -23], look: [0, 2.4, -46], bg: "#0A1028" },
+    countdown: { pos: [0.9, 2, -31], look: [0, 4, -52], bg: "#0E0F2C" },
+    gallery: { bg: "#140C26" },
+    travel: { pos: [0, 4, -37], look: [0, 2, -54], bg: "#0A1028" },
+    rsvp: { pos: [0, 2.2, -42], look: [0, 4.5, -60], bg: "#050816" },
+    finale: { pos: [0, 3.5, 34], look: [0, 9.5, 0], bg: "#060A1C" },
+  },
+};
+
+/** The poses for one world. */
+export function shotsFor(world: WorldId): Record<ShotId, Pose> {
+  const o = WORLD_SHOTS[world];
+  return Object.fromEntries(
+    (Object.keys(SHOTS) as ShotId[]).map((id) => [id, { ...SHOTS[id], ...o[id] }])
+  ) as Record<ShotId, Pose>;
+}
