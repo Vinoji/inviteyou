@@ -1,10 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useTransform } from "framer-motion";
 import { useFormatter } from "next-intl";
-import { usePalaceT } from "./world";
-import { MapPin } from "lucide-react";
+import { Hand, MapPin } from "lucide-react";
 import FamilyLines from "../FamilyLines";
 import useSafeReducedMotion from "../useSafeReducedMotion";
 import { useTraverseProgress } from "../motion/scroll";
@@ -13,6 +12,7 @@ import { directionsUrl } from "@/lib/maps";
 import type { FamilyMember, VenueInfo } from "@/lib/types";
 import type { ShotId } from "./shots";
 import { GoldRule, MilestoneIcon } from "./PalaceArt";
+import { WorldContext, usePalaceT } from "./world";
 import p from "./palace.module.css";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -88,6 +88,7 @@ export function Parchment({ children }: { children: ReactNode }) {
 
 export function Entrance({ names }: { names: { a: string; b?: string } }) {
   const t = usePalaceT("entrance");
+  const world = useContext(WorldContext);
   const text = [names.a, names.b].filter(Boolean).join(" ");
   return (
     <Scene shot="entrance" className={p.entrance}>
@@ -109,6 +110,12 @@ export function Entrance({ names }: { names: { a: string; b?: string } }) {
           )}
         </h1>
       </Reveal>
+      {world === "park" && (
+        <p className={p.tapHint}>
+          <Hand size={14} aria-hidden />
+          {t("tapHint")}
+        </p>
+      )}
       <p className={p.scrollCue}>
         <span>{t("scroll")}</span>
         <span className={p.cueLine} aria-hidden />

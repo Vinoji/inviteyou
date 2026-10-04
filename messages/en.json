@@ -1424,7 +1424,8 @@
       "entrance": {
         "line1": "Two hearts.",
         "line2": "One beautiful beginning.",
-        "scroll": "Scroll to enter"
+        "scroll": "Scroll to enter",
+        "tapHint": "Tap the scene"
       },
       "hero": {
         "eyebrow": "The royal wedding of",
@@ -1580,6 +1581,50 @@
           },
           "finale": {
             "meant": "joined together by grace."
+          }
+        },
+        "park": {
+          "intro": {
+            "invited": "Come walk with us",
+            "enter": "Enter the garden",
+            "dialogLabel": "Invitation — the blossom park gate"
+          },
+          "entrance": {
+            "line1": "Two hearts,",
+            "line2": "one path under the blossoms.",
+            "tapHint": "Tap the blossoms, the water and the birds"
+          },
+          "hero": {
+            "eyebrow": "Hand in hand"
+          },
+          "story": {
+            "heading": "Our Walk Together"
+          },
+          "family": {
+            "heading": "Our Families"
+          },
+          "events": {
+            "heading": "By the River"
+          },
+          "countdown": {
+            "eyebrow": "Every step closer",
+            "heading": "Until We Say I Do"
+          },
+          "gallery": {
+            "eyebrow": "Moments in bloom"
+          },
+          "travel": {
+            "heading": "Your Journey to Us"
+          },
+          "places": {
+            "heading": "Beyond the Garden"
+          },
+          "rsvp": {
+            "heading": "Will You Walk With Us?",
+            "sub": "Join us beneath the blossoms — your presence would make our day complete."
+          },
+          "finale": {
+            "meant": "walking on, together, forever."
           }
         }
       }
@@ -1790,6 +1835,11 @@
       "name": "Grand Cathedral 3D",
       "tagline": "3D cathedral · stained glass · Premium",
       "description": "Enter a Gothic cathedral by candlelight — twin spires, a glowing rose window, stained glass, pews and an ivory aisle to the altar, in cinematic 3D."
+    },
+    "blossom-park-3d": {
+      "name": "Blossom Park 3D",
+      "tagline": "Interactive 3D park · cherry blossoms · Premium",
+      "description": "Walk a winding path through cherry blossoms with the couple — over a red bridge, to a waterfall at twilight. Guests can tap the trees, water and birds."
     },
     "temple-gopuram": {
       "name": "Temple Gopuram",

@@ -10,6 +10,7 @@ import { BUDGET, tmp, useCommonMaterials, type Quality, type WorldDef } from "./
 import { palaceWorld } from "./scene/PalaceWorld";
 import { templeWorld } from "./scene/TempleWorld";
 import { cathedralWorld } from "./scene/CathedralWorld";
+import { parkWorld } from "./scene/ParkWorld";
 
 export type { Quality } from "./scene/kit";
 
@@ -17,7 +18,11 @@ const WORLDS: Record<WorldId, WorldDef> = {
   palace: palaceWorld,
   temple: templeWorld,
   cathedral: cathedralWorld,
+  park: parkWorld,
 };
+
+/** Normalised device coordinates of a tap on the scene. */
+export type TapFn = (ndc: { x: number; y: number }) => void;
 
 const WINDOW_DIM = new THREE.Color("#6A4A24");
 const WINDOW_LIT = new THREE.Color("#FFFFFF");
@@ -74,17 +79,19 @@ function Engine({
   quality,
   still,
   gold,
+  onTapReady,
 }: {
   world: WorldDef;
   track: MutableRefObject<ShotTrack>;
   quality: Quality;
   still: boolean;
   gold: string;
+  onTapReady: (fn: TapFn) => void;
 }) {
   const budget = BUDGET[quality];
   const mats = useCommonMaterials(gold, budget.tex);
   const glowTex = useMemo(() => glowTexture(), []);
-  const { scene, camera, gl } = useThree();
+  const { scene, camera, gl, invalidate } = useThree();
   const { Architecture, light } = world;
 
   // Soft studio reflections so gold and marble read as metal and stone
@@ -119,6 +126,21 @@ function Engine({
     if (m && !glass.current.includes(m)) glass.current.push(m);
   }, []);
   useLayoutEffect(() => addGlow(mats.window), [mats, addGlow]);
+
+  // Taps: a ray from the camera through the tapped point, to the world.
+  const tapHandler = useRef<((ray: THREE.Raycaster) => void) | null>(null);
+  const registerTap = useCallback((h: (ray: THREE.Raycaster) => void) => {
+    tapHandler.current = h;
+  }, []);
+  useEffect(() => {
+    const raycaster = new THREE.Raycaster();
+    onTapReady((ndc) => {
+      if (!tapHandler.current) return;
+      raycaster.setFromCamera(new THREE.Vector2(ndc.x, ndc.y), camera);
+      tapHandler.current(raycaster);
+      invalidate();
+    });
+  }, [camera, invalidate, onTapReady]);
 
   const halos = useMemo(() => new Float32Array(world.halos), [world]);
   const smallHalos = useMemo(() => (world.smallHalos ? new Float32Array(world.smallHalos) : null), [world]);
@@ -241,6 +263,7 @@ function Engine({
         doorR={doorR}
         addLight={addLight}
         addGlow={addGlow}
+        registerTap={registerTap}
       />
 
       {/* Halos for every flame and lantern */}
@@ -296,7 +319,7 @@ function Engine({
           />
         </points>
         {budget.petals > 0 && (
-          <instancedMesh ref={petals} args={[undefined, undefined, budget.petals]}>
+          <instancedMesh ref={petals} args={[undefined, undefined, budget.petals]} frustumCulled={false}>
             <planeGeometry args={[0.12, 0.07]} />
             <meshStandardMaterial side={THREE.DoubleSide} roughness={0.8} />
           </instancedMesh>
@@ -325,6 +348,7 @@ export default function PalaceScene({
   frameloop,
   gold,
   onInvalidate,
+  onTapReady,
 }: {
   world: WorldId;
   track: MutableRefObject<ShotTrack>;
@@ -335,6 +359,8 @@ export default function PalaceScene({
   gold: string;
   /** Hands the parent a way to request a frame in "demand" mode. */
   onInvalidate: (fn: () => void) => void;
+  /** Hands the parent a way to send taps into the scene. */
+  onTapReady: (fn: TapFn) => void;
 }) {
   return (
     <Canvas
@@ -346,7 +372,7 @@ export default function PalaceScene({
       style={{ position: "absolute", inset: 0 }}
       onCreated={({ invalidate }) => onInvalidate(() => invalidate())}
     >
-      <Engine world={WORLDS[world]} track={track} quality={quality} still={still} gold={gold} />
+      <Engine world={WORLDS[world]} track={track} quality={quality} still={still} gold={gold} onTapReady={onTapReady} />
     </Canvas>
   );
 }

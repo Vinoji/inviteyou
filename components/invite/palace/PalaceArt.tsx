@@ -132,10 +132,31 @@ function CathedralFront({ className }: { className?: string }) {
   );
 }
 
+/** A park gate under a blossom arch between cherry trees, at twilight. */
+function ParkFront({ className }: { className?: string }) {
+  const blossoms = ["#F7C6D9", "#F2A7C3", "#FADDE8", "#E88BB0"];
+  return (
+    <svg viewBox="0 0 400 260" className={className} preserveAspectRatio="xMidYMax meet">
+      <path d="M0 200 Q100 170 200 190 T400 185 V260 H0 Z" fill="#2E5A2A" />
+      {[60, 340].map((x, k) => (
+        <g key={x}>
+          <path d={`M${x - 4} 230 Q${x - 6} 180 ${x} 150 L${x + 6} 150 Q${x + 4} 190 ${x + 6} 230 Z`} fill="#4A2C26" />
+          {[[-30, 140, 34], [0, 120, 40], [30, 142, 32], [-12, 160, 26], [18, 165, 24]].map(([dx, y, r], i) => (
+            <circle key={i} cx={x + dx * (k ? -1 : 1)} cy={y} r={r} fill={blossoms[(i + k) % 4]} opacity="0.95" />
+          ))}
+        </g>
+      ))}
+      <path d="M160 230 V160 A40 40 0 0 1 240 160 V230" fill="none" stroke="#F7C6D9" strokeWidth="10" />
+      <path d="M160 230 V160 A40 40 0 0 1 240 160 V230" fill="none" stroke="#1E1E26" strokeWidth="3" />
+      <path d="M200 260 Q190 230 200 205 Q210 230 200 260 Z" fill="#FFE9C8" opacity="0.6" />
+    </svg>
+  );
+}
+
 /** Stand-in for the 3D scene: night sky, palace, gate light and gold dust,
  * drifting a little with the scroll. */
 export function PalaceBackdrop({ world, progress, still }: { world: WorldId; progress: MotionValue<number>; still: boolean }) {
-  const Front = world === "temple" ? TempleFront : world === "cathedral" ? CathedralFront : PalaceFront;
+  const Front = world === "temple" ? TempleFront : world === "cathedral" ? CathedralFront : world === "park" ? ParkFront : PalaceFront;
   const palaceY = useTransform(progress, [0, 1], still ? ["0%", "0%"] : ["0%", "18%"]);
   const palaceScale = useTransform(progress, [0, 0.1, 0.9, 1], still ? [1, 1, 1, 1] : [1, 1.35, 1.35, 1]);
   return (

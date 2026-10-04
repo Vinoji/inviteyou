@@ -770,3 +770,44 @@
 .root[data-world="cathedral"] .eventSeal {
   background: radial-gradient(circle at 35% 30%, #5b2c83, #2a1650);
 }
+
+/* Blossom Park: a hint that the scene responds to taps. */
+.tapHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 22px;
+  padding: 8px 16px;
+  border: 1px solid color-mix(in srgb, var(--pl-gold) 50%, transparent);
+  border-radius: 999px;
+  background: rgba(20, 14, 34, 0.55);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--pl-gold-light);
+  animation: hintPulse 2.8s ease-in-out infinite;
+}
+@keyframes hintPulse {
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--pl-gold) 15%, transparent);
+  }
+}
+.root[data-world="park"] {
+  --pl-panel: rgba(30, 20, 46, 0.72);
+  background: #2a2240;
+}
+.root[data-world="park"] .eventCard {
+  background:
+    radial-gradient(100% 60% at 50% 0%, rgba(242, 167, 195, 0.2), transparent 70%),
+    linear-gradient(180deg, rgba(48, 30, 66, 0.92), rgba(26, 18, 40, 0.94));
+}
+.root[data-world="park"] .familyInner {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(242, 167, 195, 0.18), transparent 60%),
+    linear-gradient(180deg, rgba(48, 30, 66, 0.9), rgba(26, 18, 40, 0.92));
+}
+.root[data-world="park"] .eventSeal {
+  background: radial-gradient(circle at 35% 30%, #f2a7c3, #b0507a);
+}
+.root[data-world="park"] .scene {
+  cursor: pointer;
+}

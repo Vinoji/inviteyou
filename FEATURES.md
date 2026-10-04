@@ -61,6 +61,9 @@ Three top-tier wedding designs share one 3D engine ([components/invite/palace/](
 | `royal-palace-3d` | Royal palace: sandstone and marble, jali, chandeliers, a fountain courtyard | Ceremony / Reception |
 | `sacred-temple-3d` | South Indian temple: a painted gopuram, a granite mandapam with carved pillars and a painted ceiling, marigold garlands, bells, a kolam aisle with agal lamps, the flagstaff, lamp towers and a glowing sanctum | Muhurtham / Reception |
 | `grand-cathedral-3d` | Gothic cathedral: twin spires, a rose window, a nave of columns and pointed ribs, stained-glass lancets, pews, candles, an ivory aisle and the altar | Holy Matrimony / Reception |
+| `blossom-park-3d` | Twilight park: iron gates under a blossom arch, cherry trees along a winding path, a red bridge over a river, a waterfall into a lily pool, lamps, fireflies and birds. The couple walk hand in hand ahead of the camera | Ceremony / Reception |
+
+**Blossom Park 3D is interactive:** a tap on bare scene (not on text, cards or forms) goes into the 3D world. A blossom tree shakes and drops a shower of petals, water ripples and splashes, the birds scatter, the couple send up hearts, and anywhere else puffs petals. The entrance shows a "Tap the blossoms, the water and the birds" hint.
 
 The engine ([PalaceScene.tsx](components/invite/palace/PalaceScene.tsx)) runs the camera, sky, glow, halos, gold dust and petals. Each world in [scene/](components/invite/palace/scene/) supplies its architecture. Camera poses per world are in [shots.ts](components/invite/palace/shots.ts). Wording differences live in `invite.palace.worlds.<world>`.
 

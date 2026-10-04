@@ -152,7 +152,7 @@ export default function PalaceInvitation({
 
       <PalaceStage world={world} gold={palette.gold} preview={mode === "preview"} />
 
-      <main className={p.content}>
+      <main className={p.content} data-palace-content>
         <Entrance names={{ a: brideName, b: groomName }} />
 
         <CoupleHero
