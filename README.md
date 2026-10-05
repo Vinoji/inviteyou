@@ -1,119 +1,125 @@
-# InviteForYou — Wedding Invitation Sites (inviteforyou.in)
+# InviteForYou
 
-Next.js (App Router) + TypeScript + Tailwind CSS + Firebase (Firestore +
-Storage) + Razorpay. No authentication, no user accounts — access to a draft
-is by possessing an unguessable id, and access to edit a published
-invitation is gated by a random `editToken` handed to the creator once.
+**Animated digital invitations for weddings and every Indian celebration — in Tamil and English, shared with one link.**
+
+🌐 **Live:** [inviteforyou.in](https://inviteforyou.in) · 📸 [Instagram](https://www.instagram.com/inviteforyouofficial/) · ▶️ [YouTube](https://www.youtube.com/@InviteForYouOfficial) · 👍 [Facebook](https://www.facebook.com/people/Inviteforyou/61594935339271/)
+
+InviteForYou turns an invitation into a small personal website. A couple picks a design, fills in names, functions, family, story, photos and music, watches a live preview as they type, and publishes it. Guests open one link — usually on WhatsApp — to an animated opening, the event details, directions, a countdown and an RSVP form.
+
+---
+
+## Highlights
+
+- **69 designs across 9 occasions** — wedding, engagement, anniversary, Valentine's, proposal, birthday, housewarming, baby celebrations (valaikappu, seemantham, naming) and corporate events.
+- **Animated openings** — temple bells, silk curtains, a lamp being lit, an opening envelope, cinematic photo openings, and premium **3D** worlds (palace, temple, cathedral, garden).
+- **Tamil and English** — the whole site, and separately the invitation's own language, so the editor can be in English while guests read Tamil.
+- **Everything guests need** — multiple functions with timings, Google Maps directions, add-to-calendar, countdown, family with proper kin wording, story, photo gallery, background music, guest photo wall, blessings, QR code and personalised greetings.
+- **RSVP and guest list** — guests reply in a tap; the owner gets a private, token-gated guest list.
+- **Media handled in the browser** — photos are cropped and compressed (and stripped of GPS data) before upload; songs are re-encoded to compact MP3s. A built-in library of licensed photos and music covers couples without their own.
+- **Pay once to publish** — free to design and preview; ₹399 to publish (premium 3D designs ₹999), via Razorpay. Edits are always free.
+- **Search-ready** — occasion landing pages, bilingual sitemap with `hreflang`, schema.org structured data, Open Graph share cards and [`/llms.txt`](https://inviteforyou.in/llms.txt) for AI assistants.
+
+## Tech stack
+
+| Area | Technology |
+|---|---|
+| Framework | [Next.js 16](https://nextjs.org) (App Router, Turbopack), React 19, TypeScript |
+| Styling & motion | Tailwind CSS v4, CSS Modules, framer-motion, three.js / @react-three/fiber |
+| Internationalisation | next-intl (English unprefixed, Tamil under `/ta`) |
+| Data & files | Firebase Firestore + Storage (client SDK for uploads, Admin SDK on the server) |
+| Payments | Razorpay Checkout + signed webhooks |
+| Hosting | Vercel |
 
 ## How it works
 
-1. **`/`** — pick a template (10 across 6 occasions).
-2. **`/create/[templateId]`** — fill in the form on the left; the actual
-   invitation renders live on the right (same components used on the public
-   page, so what you see is what guests get). Photos upload straight to
-   Firebase Storage under `invitations/{draftId}/photo-{n}.jpg`.
-3. **Publish (₹199)** — `POST /api/draft` saves the form as a
-   `pending_payment` Firestore doc (Admin SDK only — the client never writes
-   to Firestore directly), `POST /api/create-order` creates a Razorpay
-   order, Razorpay Checkout opens, and on success the client posts the
-   payment ids + signature to `POST /api/verify-payment`. That route
-   recomputes the HMAC-SHA256 signature server-side and only *then* mints a
-   slug + `editToken`, moves the doc to `invitations/{slug}`, and returns
-   both. A signature mismatch leaves the draft untouched so the user can
-   retry — a client-reported "success" is never trusted on its own.
-4. **`/invite/[slug]`** — the public page. Server-rendered from Firestore via
-   the Admin SDK, 404s unless `status == "published"`, has a dynamic OG
-   image, live countdown, RSVP form, share box and downloadable QR code.
-5. **Editing** — the one-time post-publish banner shows a link of the form
-   `/create/[templateId]?edit=[slug]&token=[editToken]` — save it, it's the
-   only way back in. `PUT /api/invitation/[slug]` checks the token against a
-   Firestore doc before writing. Editing is always free.
+1. **Choose** — `/` and `/invitations/<occasion>` list the designs; `/demo` plays every opening.
+2. **Create** — `/create/<templateId>` is the editor: a stepped form on the left and the real invitation rendering live on the right (the same components guests see). Drafts autosave to the browser. Photos and music upload directly to Firebase Storage under `invitations/<draftId>/`.
+3. **Publish** — `POST /api/draft` stores the draft as `pending_payment` (Admin SDK only — clients never write to Firestore), `POST /api/create-order` opens a Razorpay order, and `POST /api/verify-payment` recomputes the HMAC signature server-side before minting a slug and a secret `editToken`. A client-reported "success" is never trusted on its own; the Razorpay webhook is a second, independent confirmation.
+4. **Share** — `/invite/<slug>` is server-rendered from Firestore with a dynamic share image, and is `noindex` so private invitations stay out of search results.
+5. **Edit and track** — the owner's private links reopen the editor (`?edit=<slug>&token=…`) and the guest list (`/rsvps/<slug>?token=…`).
+6. **Expiry** — an invitation stays live until 10 days after its date; the owner can restore it for ₹50 per extra 30 days.
 
-### A deliberate deviation from the literal spec
+### Security notes
 
-`editToken` (and the Razorpay payment/order ids) live in
-`invitations/{slug}/private/meta`, **not** as fields directly on
-`invitations/{slug}`. Firestore security rules can't redact individual
-fields on a `get` — an `allow get: if status == 'published'` rule exposes
-the *entire* document to any client that reads it directly, which would leak
-the edit token to anyone poking at the Firestore JS SDK from devtools. The
-private subcollection has `allow read, write: if false` and is only ever
-touched by the Admin SDK. Everything else follows the spec's data model.
+- There are no user accounts. Access to an invitation is by possession of an unguessable id; editing requires the `editToken`, which lives in a private `invitations/<slug>/private/meta` subcollection (`allow read, write: if false`) because Firestore rules can't hide individual fields of a readable document.
+- `storage.rules` allows create-only uploads of images and audio under unique names — nothing can be overwritten or deleted by a client.
+- `/api/media` is a same-origin pass-through limited to the bucket's `invitations/` folder and to image/audio content types (used for re-cropping and iOS volume control, as the bucket sends no CORS headers).
+- Rate limits (`lib/rateLimit.ts`) are best-effort, in-memory guards per serverless instance.
 
-## Setup
+## Project structure
 
-### 1. Firebase
+```
+app/
+  [locale]/            Pages (home, invitations, create, invite, rsvps, demo, support, legal)
+  api/                 Route handlers (draft, payments, RSVP, guest photos, media, views)
+  sitemap.ts, robots.ts, llms.txt/, manifest.ts
+components/
+  editor/              Editor UI (photos, music, family, events, cropper)
+  invite/              Invitation layouts, intros, 3D worlds, music, RSVP
+  landing/, site/      Marketing pages, header, footer, site music
+lib/                   Templates, categories, pricing, SEO, sanitising, media helpers
+messages/              en.json and ta.json — every user-facing string
+public/                Template art, photo library and music library
+docs/                  Template art credits, motion and 3D notes
+firestore.rules, storage.rules
+```
 
-The client config in [`lib/firebase.ts`](lib/firebase.ts) already points at
-the `vinoji-291fa` project. You need a **service account** for the Admin SDK:
+More detail on what's built: [FEATURES.md](FEATURES.md) · Image and music credits: [docs/template-art.md](docs/template-art.md)
 
-Firebase Console → Project Settings → Service Accounts → *Generate new
-private key*. Paste the downloaded JSON as a single line into
-`FIREBASE_ADMIN_KEY` (see `.env.local.example`).
+## Getting started
 
-Deploy the security rules:
+### Requirements
+
+- Node.js 20 or later
+- A Firebase project (Firestore + Storage) and a service-account key
+- Razorpay test keys
+
+### Setup
 
 ```bash
-npm install -g firebase-tools   # if you don't have it
-firebase login
-firebase deploy --only firestore:rules,storage --project vinoji-291fa
-```
-
-(`firestore.rules` and `storage.rules` are at the repo root. You'll need a
-`firebase.json` pointing at them, or paste them into the console's Rules
-tab.)
-
-### 2. Razorpay
-
-Create a key pair in **test mode** first:
-https://dashboard.razorpay.com/app/keys
-
-```
-RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx
-RAZORPAY_KEY_SECRET=xxxxxxxxxxxxxxxxxxxxxxxx
-NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx
-```
-
-Test with card `4111 1111 1111 1111`, any future expiry, any CVV. Switch to
-live keys only after completing KYC on the Razorpay dashboard — test and
-live keys are interchangeable in this codebase, nothing else needs to
-change.
-
-### 3. Environment variables
-
-```bash
-cp .env.local.example .env.local
-# then fill in FIREBASE_ADMIN_KEY, RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET,
-# NEXT_PUBLIC_RAZORPAY_KEY_ID, NEXT_PUBLIC_SITE_URL
-```
-
-### 4. Run
-
-```bash
+git clone https://github.com/Vinoji/inviteyou.git
+cd inviteyou
 npm install
-npm run dev
+cp .env.example .env    # then fill in the values
+npm run dev             # http://localhost:3000
 ```
 
-Open http://localhost:3000.
+### Environment variables
 
-## Deploying to Vercel
+See [`.env.example`](.env.example) for the full list.
 
-Push to a Git repo, import it in Vercel, and set the same env vars from
-`.env.local.example` in the project's Environment Variables settings
-(`FIREBASE_ADMIN_KEY` as one line, `NEXT_PUBLIC_SITE_URL` set to your
-production domain). No other config needed — the API routes are already
-plain Next.js Route Handlers.
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | Public origin for links, share cards and the sitemap (production: `https://inviteforyou.in`) |
+| `NEXT_PUBLIC_FIREBASE_*` | Firebase web config (falls back to the production project) |
+| `FIREBASE_ADMIN_KEY` | Service-account JSON on one line — server only, secret |
+| `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`, `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Razorpay keys (use test keys locally; card `4111 1111 1111 1111`) |
+| `RAZORPAY_WEBHOOK_SECRET` | Secret configured for `/api/razorpay-webhook` |
+| `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` | Optional search-console ownership tags |
 
-## Known limitations (given the no-auth constraint)
+### Firebase rules
 
-- **Storage writes** are open to anyone who knows a draft's folder id
-  (`storage.rules` restricts by content-type/size, not ownership — there's
-  no ownership concept without auth). The id is a random UUID never listed
-  anywhere, so this relies on obscurity plus validation, not a real ACL.
-- **View-count and RSVP rate limiting** are best-effort in-memory guards
-  (`lib/rateLimit.ts`) that reset on a serverless cold start, plus a short
-  Firestore-side duplicate check for RSVPs. Good enough to blunt casual
-  spam/refresh inflation; not a hard guarantee under a real attack.
-- **Abandoned `pending_payment` drafts** (and their uploaded photos) are
-  never cleaned up automatically. A scheduled Cloud Function sweeping old
-  `pending_payment` docs/Storage folders would be the production follow-up.
+```bash
+npx firebase-tools login
+npx firebase-tools deploy --only firestore:rules,storage --project <your-project-id>
+```
+
+## Scripts
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server (regenerates the template-art manifest first) |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint |
+| `npm run art` | Rebuild `lib/artManifest.generated.json` from `public/art` |
+
+Type-check with `npx tsc --noEmit`. English and Tamil message files must keep identical keys.
+
+## Deployment
+
+The site deploys to Vercel from the `main` branch. Set the environment variables above in the Vercel project (`FIREBASE_ADMIN_KEY` as a single line, `NEXT_PUBLIC_SITE_URL` to the production domain), and add the Razorpay webhook pointing at `/api/razorpay-webhook`.
+
+## Licence
+
+© InviteForYou. All rights reserved. Photos and music in `public/` are used under the Pexels and Pixabay licences listed in [docs/template-art.md](docs/template-art.md).
