@@ -38,6 +38,9 @@ export interface ShowcaseProps {
   /** A still card (names on the design's colours) that never plays — for
    * pickers that list many designs at once. */
   still?: boolean;
+  /** Width / height of the card. Shorter than the phone-shaped stage crops
+   * its top and bottom evenly (the gallery uses 4 / 5). */
+  aspect?: number;
 }
 
 /**
@@ -50,6 +53,7 @@ export default function TemplateShowcase(p: ShowcaseProps) {
   const boxRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<ParticleFieldHandle>(null);
   const [scale, setScale] = useState(0);
+  const [boxH, setBoxH] = useState(0);
   const [visible, setVisible] = useState(false);
   const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
   const [run, setRun] = useState(0);
@@ -58,7 +62,10 @@ export default function TemplateShowcase(p: ShowcaseProps) {
   useEffect(() => {
     const el = boxRef.current;
     if (!el) return;
-    const ro = new ResizeObserver(([entry]) => setScale(entry.contentRect.width / STAGE_W));
+    const ro = new ResizeObserver(([entry]) => {
+      setScale(entry.contentRect.width / STAGE_W);
+      setBoxH(entry.contentRect.height);
+    });
     ro.observe(el);
     const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
       rootMargin: "200px 0px",
@@ -95,13 +102,16 @@ export default function TemplateShowcase(p: ShowcaseProps) {
     <div
       ref={boxRef}
       className={`relative w-full overflow-hidden bg-gradient-to-br ${p.gradient}`}
-      style={{ aspectRatio: `${STAGE_W} / ${STAGE_H}`, containerType: "inline-size" }}
+      style={{ aspectRatio: p.aspect ?? `${STAGE_W} / ${STAGE_H}`, containerType: "inline-size" }}
     >
       {live && (
         <div
           className="absolute top-0 left-0 origin-top-left"
           style={
             {
+              // When the card is shorter than the stage, crop mostly from the
+              // top: openings keep their tap button near the bottom.
+              top: p.aspect && boxH ? (boxH - STAGE_H * scale) * 0.85 : 0,
               width: STAGE_W,
               height: STAGE_H,
               transform: `scale(${scale})`,

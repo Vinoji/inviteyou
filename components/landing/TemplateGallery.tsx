@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { ArrowRight, Box, ChevronDown, Crown } from "lucide-react";
+import { ArrowRight, ChevronDown, Crown } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { templateListPriceInr, templatePriceInr } from "@/lib/pricing";
 import { getTemplateConfig } from "@/lib/templates";
 import TemplateShowcase, { type ShowcaseProps } from "./TemplateShowcase";
-import f from "./landing.module.css";
 
 export interface GalleryTemplate {
   id: string;
@@ -111,56 +110,41 @@ export default function TemplateGallery({
                     : ""
             }
           >
+            {/* A short card: the live opening (4:5), one price chip, and a
+                single row with the name and a go-to-editor arrow. */}
             <article
-              className={`${f.festiveCard} group flex h-full flex-col transition duration-300 hover:-translate-y-1 ${
-                premium ? "ring-2 ring-amber-400/80 shadow-[0_18px_40px_-18px_rgba(201,162,74,0.8)]" : ""
+              className={`group relative flex h-full flex-col overflow-hidden rounded-2xl bg-[#fffaf2] shadow-[0_14px_30px_-18px_rgba(61,18,54,0.55)] ring-1 transition duration-300 hover:-translate-y-1 dark:bg-[#1c1220] ${
+                premium ? "ring-[#e8b04a]/80" : "ring-[#3d1236]/10 dark:ring-[#e8b04a]/20"
               }`}
             >
-              <div className="relative overflow-hidden rounded-t-[21px]">
-                <TemplateShowcase {...tpl.showcase} />
-                {/* Top right: the showcase's "Tap to try it" hint owns top left. */}
-                <div className="pointer-events-none absolute top-2 right-2 z-30 flex flex-col items-end gap-1">
-                  <span className="inline-flex items-baseline gap-1 rounded-full bg-white/95 px-2.5 py-1 shadow-md ring-1 ring-amber-200 dark:bg-neutral-900/95 dark:ring-amber-800">
-                    {listPrice && (
-                      <s className="text-[10px] font-medium text-neutral-500 sm:text-xs dark:text-neutral-400">
-                        ₹{listPrice}
-                      </s>
-                    )}
-                    <span className="text-xs font-bold text-amber-800 sm:text-sm dark:text-amber-400">
-                      ₹{templatePriceInr(tpl.id)}
-                    </span>
-                  </span>
-                  {premium ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-amber-300 via-amber-400 to-amber-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-neutral-950 uppercase shadow-md sm:text-xs">
-                      <Crown size={11} aria-hidden />
-                      {t("premium")}
-                    </span>
-                  ) : listPrice && (
-                    <span className="rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-bold tracking-wide text-white uppercase shadow-md sm:text-xs">
-                      {t("offer")}
-                    </span>
+              <div className="relative">
+                <TemplateShowcase {...tpl.showcase} aspect={4 / 5} />
+                <span
+                  className={`pointer-events-none absolute top-2 right-2 z-30 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-bold shadow-md ${
+                    premium
+                      ? "bg-gradient-to-r from-[#ffe08a] via-[#f2c45a] to-[#c98f3a] text-[#2a0c27]"
+                      : "bg-white/95 text-[#3d1236] dark:bg-[#22091f]/90 dark:text-[#ffe9b8]"
+                  }`}
+                >
+                  {premium && <Crown size={11} aria-label={t("premium")} />}
+                  {listPrice && !premium && (
+                    <s className="text-[10px] font-medium opacity-50">₹{listPrice}</s>
                   )}
-                </div>
-                {premium && (
-                  <span className="pointer-events-none absolute bottom-2 left-2 z-30 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-semibold text-amber-200 ring-1 ring-amber-300/50 backdrop-blur sm:text-xs">
-                    <Box size={11} aria-hidden />
-                    {t("interactive3d")}
-                  </span>
-                )}
+                  ₹{templatePriceInr(tpl.id)}
+                </span>
               </div>
-              <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
-                <h3 className="line-clamp-2 font-serif text-base leading-snug font-bold text-neutral-900 sm:text-lg dark:text-neutral-50">
+              <Link
+                href={`/create/${tpl.id}`}
+                aria-label={`${t("useTemplate")} — ${tpl.name}`}
+                className="flex flex-1 items-center justify-between gap-2 px-3 py-2.5"
+              >
+                <h3 className="line-clamp-2 font-serif text-[14px] leading-tight font-bold text-[#2a0c27] sm:text-base dark:text-[#fff6e6]">
                   {tpl.name}
                 </h3>
-                <p className="line-clamp-2 text-xs text-neutral-500 sm:line-clamp-1 dark:text-neutral-400">{tpl.tagline}</p>
-                <Link
-                  href={`/create/${tpl.id}`}
-                  className="mt-2 inline-flex items-center justify-center gap-1 rounded-full bg-neutral-900 px-3 py-2 text-xs font-semibold text-white transition group-hover:bg-amber-700 sm:text-sm dark:bg-neutral-100 dark:text-neutral-900 dark:group-hover:bg-amber-500"
-                >
-                  {t("useShort")}
-                  <ArrowRight size={14} aria-hidden />
-                </Link>
-              </div>
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#ffe08a] via-[#f2c45a] to-[#c98f3a] text-[#2a0c27] shadow-[0_6px_14px_-6px_rgba(201,143,58,0.9)] transition group-hover:scale-110">
+                  <ArrowRight size={15} aria-hidden />
+                </span>
+              </Link>
             </article>
           </li>
           );
