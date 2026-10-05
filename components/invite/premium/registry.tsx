@@ -12,6 +12,8 @@ const Editorial = dynamic(() => import("./editorial/EditorialInvitation"));
 const Party = dynamic(() => import("./cinema/PartyInvitation"));
 const Candlelight = dynamic(() => import("./cinema/CandlelightInvitation"));
 const Fresh = dynamic(() => import("./cinema/FreshInvitation"));
+// Real photos that move in 3D (./living): depth-map parallax.
+const LivingTemple = dynamic(() => import("./living/LivingTempleInvitation"));
 
 const PREMIUM_IDS = new Set([
   "temple-gopuram",
@@ -19,6 +21,7 @@ const PREMIUM_IDS = new Set([
   "birthday-balloon-party",
   "anniversary-wine-roses",
   "baby-shower-balloons",
+  "living-temple",
 ]);
 
 export function hasPremiumLayout(templateId: string): boolean {
@@ -37,6 +40,8 @@ export default function PremiumInvitation(props: PremiumProps) {
       return <Candlelight {...props} />;
     case "baby-shower-balloons":
       return <Fresh {...props} />;
+    case "living-temple":
+      return <LivingTemple {...props} />;
     default:
       return null;
   }

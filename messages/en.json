@@ -1098,6 +1098,12 @@
         "eyebrow": "Something little is coming",
         "open": "Open the invitation",
         "view": "View invitation"
+      },
+      "livingTemple": {
+        "dialogLabel": "Wedding invitation",
+        "eyebrow": "You are invited",
+        "open": "Light the temple",
+        "view": "View invitation"
       }
     },
     "kin": {
@@ -2221,6 +2227,11 @@
       "name": "Team Offsite",
       "tagline": "Sunrise, trails & fresh air",
       "description": "A team offsite at sunrise — a sunlit arch opens onto greens and sky blue for a day outdoors."
+    },
+    "living-temple": {
+      "name": "Living Temple",
+      "tagline": "Real temple photos that move in 3D",
+      "description": "A South Indian temple wedding in real photographs that come alive as guests scroll — the gopuram lit at night, brass lamps, a pillared corridor and the temple tank glide in 3D, with marigold petals and lamp light."
     }
   },
   "defaultContent": {
@@ -4507,6 +4518,23 @@
       "replyTitle": "Will you come?",
       "replySub": "Let us know so we can save you a seat.",
       "closing": "We can't wait to meet our little one"
+    },
+    "living": {
+      "invocation": "With the blessings of the Almighty",
+      "lead": "We joyfully invite you to the wedding of",
+      "storyKicker": "Our story",
+      "storyTitle": "How it began",
+      "signoff": "With love, {names}",
+      "photosKicker": "Memories",
+      "photosTitle": "Moments we treasure",
+      "eventsKicker": "The functions",
+      "eventsTitle": "Muhurtham & celebrations",
+      "guideKicker": "Getting there",
+      "guideTitle": "Finding the temple",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you bless us with your presence?",
+      "replySub": "Your blessings will make our day complete.",
+      "closing": "Thank you for being part of our sacred beginning"
     }
   },
   "seoPages": {

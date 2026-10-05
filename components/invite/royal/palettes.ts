@@ -139,6 +139,11 @@ const PALETTES: Record<string, RoyalPalette> = {
     ivory: "#FBF3E6", ivory2: "#EADBC2", text: "#3B2A1E", muted: "#7F6A55",
     flowers: ["#D9A58A", "#F3E2C8", "#9CB08A"], leaf: "#7C8A5A", leafLight: "#A0AE7A",
   },
+  "living-temple": {
+    deep: "#0E0811", mid: "#1F0D1C", gold: "#F0C25A", goldLight: "#F8DC96", goldDeep: "#A97A1E",
+    ivory: "#FBF1DE", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",
+    flowers: ["#F59E0B", "#FDE68A", "#FFFFFF"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
   "anniversary-wine-roses": {
     deep: "#3A0712", mid: "#5A0E1E", gold: "#D6A15C", goldLight: "#F2CD96", goldDeep: "#9A6A2A",
     ivory: "#FFF6F4", ivory2: "#F6DCD8", text: "#3A0A14", muted: "#85555E",

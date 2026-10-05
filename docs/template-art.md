@@ -168,3 +168,24 @@ The template photos in `public/art/` (credited above) are offered too.
 | lullaby.mp3 | Music Box Sleep Lullaby | Tunetank | https://pixabay.com/music/lullabies-music-box-sleep-lullaby-349471/ |
 | morning-serenity.mp3 | Nature Forest Morning Serenity | alex-morgan | https://pixabay.com/music/modern-classical-nature-forest-morning-serenity-573941/ |
 | corporate-uplifting.mp3 | Corporate Uplifting | leberch | https://pixabay.com/music/corporate-corporate-uplifting-578413/ |
+
+## Living Temple (`living-temple`) — real photos that move in 3D
+
+Each scene is a real photograph plus a depth map (`<slot>-depth.webp`, near
+= bright). `components/invite/premium/living/DepthPhoto.tsx` shifts each
+pixel by its depth in a small WebGL shader, so the photo glides in 3D as
+guests scroll. Depth maps were made offline (2026-10-05) with **Depth
+Anything V2 Small** (Apache-2.0, `onnx-community/depth-anything-v2-small`,
+run through transformers.js) and lightly blurred; the model is not shipped.
+
+To add a scene: put `<slot>.webp` (≤1400px) and `<slot>-depth.webp`
+(~480px, greyscale, lossless) in `public/art/living-temple/`, then run
+`npm run art`.
+
+| Slot | Photo (Pexels License) | Used for |
+|---|---|---|
+| `gopuram-night` | https://www.pexels.com/photo/39356962/ — Meenakshi gopuram lit at night | Opening and hero |
+| `lamps` | https://www.pexels.com/photo/33853980/ — brass oil-lamp stands | Our story |
+| `corridor` | https://www.pexels.com/photo/18049008/ — pillared temple corridor | Functions |
+| `tank` | https://www.pexels.com/photo/38059676/ — temple tank and gopuram | Travel guide |
+| `finale` | https://www.pexels.com/photo/30105006/ — Brihadeeswara temple at night | Closing |

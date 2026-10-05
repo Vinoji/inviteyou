@@ -22,6 +22,7 @@ const PREMIUM: Record<string, Plan> = {
   "birthday-balloon-party": { lead: ["story"] },
   "baby-shower-balloons": { lead: ["story"] },
   "anniversary-wine-roses": { lead: [] },
+  "living-temple": { lead: [] },
 };
 
 const SHAPE: Record<PhotoRole, PhotoShape> = {

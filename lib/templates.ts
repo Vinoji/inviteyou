@@ -49,7 +49,8 @@ export type IntroId =
   | "pathirikaiEnvelope"
   | "photoParty"
   | "photoCandle"
-  | "photoFresh";
+  | "photoFresh"
+  | "livingTemple";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -188,6 +189,17 @@ export const TEMPLATES: TemplateConfig[] = [
     cardTextClass: "text-amber-100",
     intro: "pathirikaiEnvelope",
     layout: "temple",
+    seed: "traditional-gold",
+  },
+  // Real temple photos that move in 3D (depth maps) — premium/living.
+  {
+    id: "living-temple",
+    category: "wedding",
+    defaultAccent: "#C4262E",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-indigo-950 via-purple-950 to-amber-800",
+    cardTextClass: "text-amber-100",
+    intro: "livingTemple",
     seed: "traditional-gold",
   },
   {

@@ -79,6 +79,7 @@ const THEMES: Record<string, CardTheme> = {
   "engagement-mangni": T(["#4A0A2A", "#6B1240"], "#4A0A2A", "#FFF5F2", "#F9DDD5", "#E0A93B", "#F7D27A", "deco"),
   "anniversary-golden-jubilee": T(["#231A06", "#3A2C0E"], "#231A06", "#FFF9EA", "#F2E4C0", "#D4AF37", "#F2DC8A", "curtain"),
   "anniversary-vintage-reel": T(["#EADBC2", "#FBF3E6"], "#FBF3E6", "#3B2A1E", "#7F6A55", "#B08650", "#8B5E3C", "minimal"),
+  "living-temple": T(["#0e0811", "#2a1530"], "#1f0d1c", "#fbf1de", "#f0c25a", "#c9962c", "#f0c25a", "kolam"),
   "anniversary-wine-roses": T(["#3A0712", "#5A0E1E"], "#3A0712", "#FFF6F4", "#F6DCD8", "#D6A15C", "#F2CD96", "floral"),
   "anniversary-silver-jubilee": T(["#E6E9F0", "#F8F9FB"], "#F8F9FB", "#1C2230", "#6A7284", "#9AA3B5", "#8A94A6", "stars"),
   "anniversary-shashtiabdapoorthi": T(["#0E2A17", "#16391F"], "#0E2A17", "#FFF8E8", "#F1E2BE", "#D4A437", "#F2CF73", "kolam"),

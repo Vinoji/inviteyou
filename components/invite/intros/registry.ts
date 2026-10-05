@@ -56,4 +56,5 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   photoParty: dynamic(() => import("../premium/cinema/PhotoIntros").then((m) => m.PartyIntro)),
   photoCandle: dynamic(() => import("../premium/cinema/PhotoIntros").then((m) => m.CandleIntro)),
   photoFresh: dynamic(() => import("../premium/cinema/PhotoIntros").then((m) => m.FreshIntro)),
+  livingTemple: dynamic(() => import("../premium/living/LivingIntro")),
 };
