@@ -2,8 +2,6 @@
  * Site-wide details shown in the header, footer, help menu, Support,
  * Privacy and Terms pages. One place to edit — nothing else hardcodes
  * these. Entries left as "" are hidden rather than rendered as dead links.
- *
- * TODO(owner): the social links below are still placeholders.
  */
 
 export const SITE = {
@@ -19,11 +17,11 @@ export const SITE = {
   },
   /** Profile URLs; "" hides that icon. */
   social: {
-    instagram: "https://www.instagram.com/",
-    facebook: "https://www.facebook.com/",
-    youtube: "https://www.youtube.com/",
-    x: "https://x.com/",
-    pinterest: "https://www.pinterest.com/",
+    instagram: "https://www.instagram.com/inviteforyouofficial/",
+    facebook: "https://www.facebook.com/people/Inviteforyou/61594935339271/",
+    youtube: "https://www.youtube.com/@InviteForYouOfficial",
+    x: "",
+    pinterest: "",
     whatsapp: "",
   },
   /**
