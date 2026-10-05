@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { useTranslations } from "next-intl";
-import { LOWEST_PRICE_INR } from "@/lib/pricing";
+import { lowestPriceInr } from "@/lib/pricing";
 import { Check, Play, Sparkles } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useReducedMotionPref } from "@/lib/motionPref";
@@ -87,7 +87,7 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
             {(["trust1", "trust2", "trust3"] as const).map((k) => (
               <li key={k}>
                 <Check size={15} aria-hidden />
-                {t(k, { price: LOWEST_PRICE_INR })}
+                {t(k, { price: lowestPriceInr() })}
               </li>
             ))}
           </ul>

@@ -120,6 +120,11 @@ Type-check with `npx tsc --noEmit`. English and Tamil message files must keep id
 
 The site deploys to Vercel from the `main` branch. Set the environment variables above in the Vercel project (`FIREBASE_ADMIN_KEY` as a single line, `NEXT_PUBLIC_SITE_URL` to the production domain), and add the Razorpay webhook pointing at `/api/razorpay-webhook`.
 
+## Running the business
+
+- **Launch offer.** Standard designs cost ₹399 until 31 December 2026 (India time), then ₹599 — set by `OFFER_PRICE_INR`, `OFFER_ENDS_AT` and `LIST_PRICE_INR` in [`lib/pricing.ts`](lib/pricing.ts). The site's countdown, every displayed price and the payment check all read from there, so the offer ends on its own; payments started just before the end are honoured for 24 hours.
+- **Approving reviews.** Couples review from their private guest-list page. Reviews land in the Firestore `reviews` collection with `approved: false`; set `approved` to `true` in the Firebase console to show one on the home page ("What families say" appears once at least one is approved). Editing a review hides it again until re-approved.
+
 ## Licence
 
 © InviteForYou. All rights reserved. Photos and music in `public/` are used under the Pexels and Pixabay licences listed in [docs/template-art.md](docs/template-art.md).

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { pageAlternates } from "@/lib/seo";
+import StickyCta from "@/components/landing/StickyCta";
+import OfferCountdown from "@/components/landing/OfferCountdown";
+import Reviews from "@/components/landing/Reviews";
+import { standardPriceInr } from "@/lib/pricing";
 import StructuredData from "@/components/site/StructuredData";
 import { getAllCategoryMeta } from "@/lib/i18n/categories";
 import { getTemplatesByCategory } from "@/lib/i18n/templates";
@@ -20,6 +24,7 @@ import {
 
 /** Openings the hero phone cycles through — one per tradition and style. */
 const FEATURED = ["temple-gopuram", "nikah-emerald", "church-stained-glass", "mandap-marigold", "velvet-gold", "engagement-ring"];
+
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -64,7 +69,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </div>
       <section id="templates" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 pt-14 pb-16 sm:px-6">
         <SectionHeading eyebrow={t("gallery.eyebrow")} title={t("gallery.title")} sub={t("gallery.sub")} />
-        <div className="mt-8">
+        <OfferCountdown className="mt-6" />
+        <div className="mt-6">
           <TemplateGallery
             categories={categories.map((c) => ({ id: c.id, label: c.label }))}
             templates={templates}
@@ -77,8 +83,10 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <KolamDivider />
       <FeatureBento />
       <KolamDivider />
+      <Reviews />
       <Pricing />
       <FinalCta />
+      <StickyCta price={standardPriceInr()} />
     </main>
   );
 }

@@ -18,7 +18,20 @@
     "allDesigns": "All designs",
     "categoriesLabel": "Occasions",
     "useShort": "Use this design",
-    "offer": "Offer",
+    "offer": {
+      "title": "Launch offer",
+      "line": "Publish for <b>₹{price}</b> <s>₹{was}</s> — until {date}",
+      "compact": "Launch price ₹{price} (usual ₹{was}) until {date}",
+      "left": "{d}d {h}h {m}m left",
+      "endsIn": "Offer ends in",
+      "unit": {
+        "d": "days",
+        "h": "hrs",
+        "m": "min",
+        "s": "sec"
+      },
+      "short": "₹{price} launch price ends in {d}d {h}h {m}m"
+    },
     "showAll": "Show all {count} designs",
     "pricing": {
       "eyebrow": "Pricing",
@@ -59,7 +72,8 @@
       "trustNoSub": "No subscription",
       "trustNoHidden": "No hidden fees",
       "trustSecure": "Secure Razorpay payments",
-      "paidFromLabel": "from"
+      "paidFromLabel": "from",
+      "trustValue": "One link for every guest — no printing, no courier"
     },
     "hero": {
       "chip": "Animated invitations · Tamil & English",
@@ -122,7 +136,36 @@
       "button": "Start designing — it's free"
     },
     "premium": "Premium",
-    "interactive3d": "3D Interactive"
+    "interactive3d": "3D Interactive",
+    "quick": {
+      "all": "All",
+      "new": "New",
+      "picks": "Editor's picks",
+      "premium": "Premium 3D",
+      "value": "Best value ₹{price}",
+      "none": "No designs match — try another filter."
+    },
+    "trust": {
+      "free": "Free to design & preview",
+      "once": "Pay once — no subscription",
+      "edits": "Edit anytime, free",
+      "secure": "Secure UPI & card payment"
+    },
+    "save": "Save {percent}%",
+    "badgeNew": "New",
+    "badgePick": "Editor's pick",
+    "badge3d": "3D",
+    "sticky": {
+      "line": "Free to design · from ₹{price}",
+      "cta": "Choose a design"
+    },
+    "reviews": {
+      "eyebrow": "Kind words",
+      "title": "What families say",
+      "summary": "{average} out of 5 from {count, plural, one {# review} other {# reviews}}",
+      "stars": "{n} out of 5 stars",
+      "anonymous": "A happy family"
+    }
   },
   "notFound": {
     "eyebrow": "404",
@@ -4681,6 +4724,23 @@
           "a": "Yes — every RSVP appears in your private guest list with counts and messages."
         }
       }
+    }
+  },
+  "host": {
+    "review": {
+      "titleBefore": "Enjoying InviteForYou?",
+      "titleAfter": "How was your celebration?",
+      "sub": "Tell other families what it was like — a few words help a lot.",
+      "ratingLabel": "Your rating",
+      "stars": "{n, plural, one {# star} other {# stars}}",
+      "placeholder": "What did you and your guests like?",
+      "showNames": "Show our first names with the review",
+      "submit": "Send review",
+      "sending": "Sending…",
+      "thanks": "Thank you! Your review will appear on our site after a quick check.",
+      "edit": "Edit my review",
+      "error": "Couldn't send — please try again.",
+      "note": "Only you can see this box. We show reviews only with your rating and words, never your contact details."
     }
   }
 }

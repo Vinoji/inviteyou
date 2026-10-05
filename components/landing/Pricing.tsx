@@ -1,9 +1,10 @@
 import { getTranslations } from "next-intl/server";
-import { BadgeIndianRupee, Crown, Palette, Repeat, ShieldCheck, Users } from "lucide-react";
+import { BadgeIndianRupee, Crown, Palette, Repeat, Send, ShieldCheck, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { LOWEST_PRICE_INR, PRICES_VARY } from "@/lib/pricing";
+import { lowestPriceInr, pricesVary } from "@/lib/pricing";
 import { Garland, Petals, Stars, Thoranam } from "../site/festive";
 import f from "./landing.module.css";
+import OfferCountdown from "./OfferCountdown";
 
 const FREE_ITEMS = ["free1", "free2", "free3", "free4", "free5"] as const;
 const PAID_ITEMS = ["paid1", "paid2", "paid3", "paid4", "paid5", "paid6", "paid7", "paid8"] as const;
@@ -35,9 +36,9 @@ export default async function Pricing() {
       key: "paid",
       icon: Crown,
       name: t("paidName"),
-      price: `₹${LOWEST_PRICE_INR}`,
+      price: `₹${lowestPriceInr()}`,
       // "from" on its own small line, so the price fits the seal on phones.
-      pre: PRICES_VARY ? t("paidFromLabel") : undefined,
+      pre: pricesVary() ? t("paidFromLabel") : undefined,
       unit: t("paidUnit"),
       blurb: t("paidBlurb"),
       items: PAID_ITEMS.map((k) => t(k)),
@@ -68,6 +69,7 @@ export default async function Pricing() {
           <h2 className={f.h2}>{t("title")}</h2>
           <p className="mt-3 text-[#fff6e6]/80">{t("subtitle")}</p>
         </div>
+        <OfferCountdown className="mx-auto mt-8 max-w-2xl" />
 
         <div className={`mt-16 ${f.pricingGrid}`}>
           {plans.map((plan) => {
@@ -121,6 +123,10 @@ export default async function Pricing() {
           <span className={f.trustChip}>
             <ShieldCheck size={15} aria-hidden />
             {t("trustSecure")}
+          </span>
+          <span className={f.trustChip}>
+            <Send size={15} aria-hidden />
+            {t("trustValue")}
           </span>
         </div>
         <p className="mt-4 text-center text-xs text-[#fff6e6]/60">{t("note")}</p>

@@ -9,6 +9,8 @@ import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
 import type { InvitationData, RsvpContact, RsvpEntry } from "@/lib/types";
 import { parseIsoDate } from "@/lib/calendar";
 import HostTools, { RemindButton } from "@/components/host/HostTools";
+import ReviewCard from "@/components/host/ReviewCard";
+import { eventHasPassed, getReview } from "@/lib/reviews";
 import { NAME_TOKEN, URL_TOKEN } from "@/lib/share";
 import { buildWhatsAppMessage } from "@/lib/inviteMessage";
 import festive from "@/components/landing/landing.module.css";
@@ -141,6 +143,8 @@ export default async function RsvpsPage({
   const category = getCategoryMeta(template.category, tCategories, template.id);
   const occasionTitle = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
   const hostMessages = await buildHostMessages(data, template.category);
+  const review = await getReview(slug);
+  const eventPassed = eventHasPassed(data.weddingDate);
 
   const attending = rsvps.filter((r) => r.attending);
   const declined = rsvps.filter((r) => !r.attending);
@@ -187,6 +191,13 @@ export default async function RsvpsPage({
       </div>
 
       <HostTools slug={slug} messages={hostMessages} />
+
+      <ReviewCard
+        slug={slug}
+        token={token!}
+        eventPassed={eventPassed}
+        existing={review ? { rating: review.rating, comment: review.comment, showNames: Boolean(review.names) } : null}
+      />
 
       <div className="mt-10 space-y-3">
         {rsvps.length === 0 ? (

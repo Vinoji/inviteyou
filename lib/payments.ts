@@ -6,7 +6,7 @@ import { getTranslations } from "next-intl/server";
 import { getAdminDb } from "./firebase-admin";
 import { generateUniqueSlug } from "./slug";
 import { getRazorpay } from "./razorpay";
-import { templatePricePaise } from "./pricing";
+import { minAcceptedPaise } from "./pricing";
 import { RESTORE_PRICE_PAISE, expiresAt, restoredUntilAfterPayment } from "./expiry";
 import { sendToOwner } from "./notify";
 import { ownerLinks } from "./ownerLinks";
@@ -79,7 +79,7 @@ export async function publishPaidDraft(
     const draft = draftSnap.data()!;
     // The amount must cover this draft's template (so a cheap template's
     // order can't publish a dearer one after switching designs).
-    if (paidPaise < templatePricePaise(draft.templateId ?? "")) {
+    if (paidPaise < minAcceptedPaise(draft.templateId ?? "")) {
       return { ok: false, status: 400, error: "This payment doesn't cover this design's price." };
     }
     const slug = await generateUniqueSlug(draft.groomName ?? "", draft.brideName ?? "");
@@ -94,7 +94,7 @@ export async function publishPaidDraft(
       // The other caller got here first.
       if (paySnap.exists || !dSnap.exists) return null;
       const d = dSnap.data()!;
-      if (paidPaise < templatePricePaise(d.templateId ?? "")) return null;
+      if (paidPaise < minAcceptedPaise(d.templateId ?? "")) return null;
       const owner = oSnap.exists ? oSnap.data()! : {};
       const now = Date.now();
       const publishedRef = db.collection("invitations").doc(slug);

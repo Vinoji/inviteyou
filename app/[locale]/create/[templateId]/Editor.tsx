@@ -59,6 +59,8 @@ import type { NearbySuggestion as NearbyResult } from "@/lib/geo";
 import { getFamily, legacyParentsLine } from "@/lib/family";
 import { STORY_PRESETS } from "@/lib/storyPresets";
 import { templatePriceInr } from "@/lib/pricing";
+import OfferCountdown from "@/components/landing/OfferCountdown";
+import { getTemplateConfig } from "@/lib/templates";
 import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
 import InvitationView from "@/components/invite/InvitationView";
 import PreviewWatermark from "@/components/editor/PreviewWatermark";
@@ -1545,6 +1547,7 @@ export default function Editor({
             </label>
           )}
           {publishError && <p className="mb-2 hidden text-sm text-red-600 lg:block">{publishError}</p>}
+          {!isEditMode && !getTemplateConfig(templateId).price && <OfferCountdown compact className="mb-2 hidden lg:flex" />}
           <div className="hidden lg:block">
           {isEditMode ? (
             <button
@@ -1659,6 +1662,9 @@ export default function Editor({
       {!keyboardOpen && (
         <div className={`px-3 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden ${ed.dock}`}>
           {publishError && <p className="mb-2 px-1 text-sm font-medium text-[#ffb4a8]">{publishError}</p>}
+          {!isEditMode && !getTemplateConfig(templateId).price && (
+            <OfferCountdown compact short className="mb-2 text-[#ffd35c]" />
+          )}
           <div className="flex items-center gap-2.5">
             <div className={`flex shrink-0 rounded-full p-1 ${ed.seg}`} role="tablist">
               {(["edit", "preview"] as const).map((view) => {

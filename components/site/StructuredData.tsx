@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo";
-import { HIGHEST_PRICE_INR, LOWEST_PRICE_INR } from "@/lib/pricing";
+import { highestPriceInr, lowestPriceInr } from "@/lib/pricing";
 import { TEMPLATES } from "@/lib/templates";
 
 /**
@@ -46,8 +46,8 @@ export default async function StructuredData({ locale }: { locale: string }) {
         offers: {
           "@type": "AggregateOffer",
           name: t("offerName"),
-          lowPrice: String(LOWEST_PRICE_INR),
-          highPrice: String(HIGHEST_PRICE_INR),
+          lowPrice: String(lowestPriceInr()),
+          highPrice: String(highestPriceInr()),
           priceCurrency: "INR",
           offerCount: TEMPLATES.filter((tpl) => !tpl.hidden).length,
           url: `${home}#pricing`,

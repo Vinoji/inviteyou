@@ -59,6 +59,9 @@ export type IntroId =
  */
 export interface TemplateConfig {
   id: string;
+  /** Day the design was added (YYYY-MM-DD). Shows a "New" badge for
+   * NEW_FOR_DAYS afterwards — set only for genuinely new designs. */
+  addedAt?: string;
   category: CategoryId;
   defaultAccent: string;
   defaultFont: string;
@@ -84,7 +87,7 @@ export interface TemplateConfig {
    * for new invitations, but kept so ones already made with it still render
    * and can be edited. */
   hidden?: true;
-  /** Publishing price in ₹. Leave out to use the default (PRICE_INR in
+  /** Publishing price in ₹. Leave out to use the standard price (in
    * lib/pricing.ts). */
   price?: number;
   /** "Was" price in ₹, shown struck through beside the price. Leave out to
@@ -98,6 +101,7 @@ export const TEMPLATES: TemplateConfig[] = [
   // ── Top tier: an interactive 3D palace (components/invite/palace) ──
   {
     id: "royal-palace-3d",
+    addedAt: "2026-10-04",
     category: "wedding",
     defaultAccent: "#C9A24A",
     defaultFont: "luxe-didone",
@@ -112,6 +116,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "sacred-temple-3d",
+    addedAt: "2026-10-04",
     category: "wedding",
     defaultAccent: "#D4A017",
     defaultFont: "royal-cinzel",
@@ -127,6 +132,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "grand-cathedral-3d",
+    addedAt: "2026-10-04",
     category: "wedding",
     defaultAccent: "#C9A24A",
     defaultFont: "classic-serif",
@@ -142,6 +148,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "blossom-park-3d",
+    addedAt: "2026-10-04",
     category: "wedding",
     defaultAccent: "#E8A0BF",
     defaultFont: "elegant-script",
@@ -157,6 +164,7 @@ export const TEMPLATES: TemplateConfig[] = [
   // ── Featured: its own page (components/invite/garden), first in the gallery ──
   {
     id: "botanical-garden",
+    addedAt: "2026-09-30",
     category: "wedding",
     defaultAccent: "#2F4A2C",
     defaultFont: "classic-serif",
@@ -167,6 +175,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "chapel-bells",
+    addedAt: "2026-09-30",
     category: "wedding",
     defaultAccent: "#1F2A44",
     defaultFont: "classic-serif",
@@ -176,7 +185,7 @@ export const TEMPLATES: TemplateConfig[] = [
     pageLayout: "chapel",
     eventNamesFrom: "church",
     seed: "christian",
-    // TEMPORARY, for payment testing: remove to go back to PRICE_INR.
+    // TEMPORARY, for payment testing: remove to go back to the standard price.
     price: 1,
   },
   // ── Premium styles, each with its own layout (lib/layoutStyles.ts) ──
@@ -194,6 +203,7 @@ export const TEMPLATES: TemplateConfig[] = [
   // Real temple photos that move in 3D (depth maps) — premium/living.
   {
     id: "living-temple",
+    addedAt: "2026-10-05",
     category: "wedding",
     defaultAccent: "#C4262E",
     defaultFont: "royal-cinzel",
@@ -965,3 +975,22 @@ export function getTemplateConfig(id: string): TemplateConfig {
 }
 
 export const TEMPLATE_IDS = TEMPLATES.map((t) => t.id);
+
+/** Designs we recommend first — shown as "Editor's pick". */
+export const EDITORS_PICKS = [
+  "temple-gopuram",
+  "living-temple",
+  "nikah-emerald",
+  "church-stained-glass",
+  "mandap-marigold",
+  "velvet-gold",
+  "engagement-ring",
+];
+
+const NEW_FOR_DAYS = 30;
+
+/** Added within the last NEW_FOR_DAYS (TemplateConfig.addedAt). */
+export function isNewTemplate(id: string, now = Date.now()): boolean {
+  const added = getTemplateConfig(id).addedAt;
+  return Boolean(added) && now - Date.parse(added!) < NEW_FOR_DAYS * 86_400_000;
+}
