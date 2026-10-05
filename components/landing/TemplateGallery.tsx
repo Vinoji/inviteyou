@@ -149,10 +149,10 @@ export default function TemplateGallery({
                 )}
               </div>
               <div className="flex flex-1 flex-col gap-1 p-3 sm:p-4">
-                <h3 className="truncate font-serif text-base font-bold text-neutral-900 sm:text-lg dark:text-neutral-50">
+                <h3 className="line-clamp-2 font-serif text-base leading-snug font-bold text-neutral-900 sm:text-lg dark:text-neutral-50">
                   {tpl.name}
                 </h3>
-                <p className="line-clamp-1 text-xs text-neutral-500 dark:text-neutral-400">{tpl.tagline}</p>
+                <p className="line-clamp-2 text-xs text-neutral-500 sm:line-clamp-1 dark:text-neutral-400">{tpl.tagline}</p>
                 <Link
                   href={`/create/${tpl.id}`}
                   className="mt-2 inline-flex items-center justify-center gap-1 rounded-full bg-neutral-900 px-3 py-2 text-xs font-semibold text-white transition group-hover:bg-amber-700 sm:text-sm dark:bg-neutral-100 dark:text-neutral-900 dark:group-hover:bg-amber-500"

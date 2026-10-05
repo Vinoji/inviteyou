@@ -58,7 +58,8 @@
       "note": "Payments are processed securely by Razorpay (UPI, cards, net banking).",
       "trustNoSub": "No subscription",
       "trustNoHidden": "No hidden fees",
-      "trustSecure": "Secure Razorpay payments"
+      "trustSecure": "Secure Razorpay payments",
+      "paidFromLabel": "from"
     },
     "hero": {
       "chip": "Animated invitations · Tamil & English",
@@ -504,7 +505,17 @@
       "add": "{count, plural, =0 {Add photos} one {Add # photo} other {Add # photos}}",
       "photoN": "Library photo {n}",
       "credit": "Photos from Pexels."
-    }
+    },
+    "dismiss": "Dismiss",
+    "openingDesign": "Opening {name}…",
+    "previewAndPublish": "Preview & publish",
+    "publishLabel": "Publish",
+    "photoOptions": "Photo {n} options",
+    "cropResize": "Crop or resize",
+    "makeFirst": "Make it photo 1",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "close": "Close"
   },
   "invite": {
     "hero": {

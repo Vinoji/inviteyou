@@ -1,7 +1,8 @@
 "use client";
 
-import { Reorder, useDragControls } from "framer-motion";
-import { ChevronDown, ChevronUp, Crop, GripVertical, ImagePlus, X } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, Reorder, motion, useDragControls } from "framer-motion";
+import { ArrowUpToLine, ChevronDown, ChevronUp, Crop, GripVertical, ImagePlus, MoreHorizontal, Trash2, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { MAX_PHOTOS, photoRole, photoShape } from "@/lib/photoPlan";
 import { ASPECT_LABEL } from "./PhotoCropper";
@@ -32,7 +33,11 @@ export function PhotoList({
   onMove: (index: number, by: -1 | 1) => void;
   onAdjust: (index: number) => void;
 }) {
+  // Phones: a row's actions open in a slide-up panel instead of tiny buttons.
+  const [sheetFor, setSheetFor] = useState<number | null>(null);
+  const sheetIndex = sheetFor !== null && sheetFor < photos.length ? sheetFor : null;
   return (
+    <>
     <Reorder.Group axis="y" values={photos} onReorder={onReorder} className="space-y-2">
       {photos.map((url, i) => (
         <PhotoRow
@@ -45,9 +50,142 @@ export function PhotoList({
           onRemove={onRemove}
           onMove={onMove}
           onAdjust={onAdjust}
+          onOptions={setSheetFor}
         />
       ))}
     </Reorder.Group>
+    <PhotoSheet
+      index={sheetIndex}
+      photos={photos}
+      templateId={templateId}
+      onClose={() => setSheetFor(null)}
+      onAdjust={onAdjust}
+      onMove={onMove}
+      onRemove={onRemove}
+      onMakeFirst={(i) => onReorder([photos[i], ...photos.filter((_, k) => k !== i)])}
+    />
+    </>
+  );
+}
+
+/** The slide-up panel of one photo's actions (phones). */
+function PhotoSheet({
+  index,
+  photos,
+  templateId,
+  onClose,
+  onAdjust,
+  onMove,
+  onRemove,
+  onMakeFirst,
+}: {
+  index: number | null;
+  photos: string[];
+  templateId: string;
+  onClose: () => void;
+  onAdjust: (index: number) => void;
+  onMove: (index: number, by: -1 | 1) => void;
+  onRemove: (index: number) => void;
+  onMakeFirst: (index: number) => void;
+}) {
+  const t = useTranslations("editor");
+  const open = index !== null;
+  const act = (fn: () => void) => () => {
+    fn();
+    onClose();
+  };
+  return (
+    <AnimatePresence>
+      {open && (
+        <div className="fixed inset-0 z-[110] lg:hidden">
+          <motion.button
+            type="button"
+            aria-label={t("close")}
+            className="absolute inset-0 bg-[#22091f]/60 backdrop-blur-[2px]"
+            onClick={onClose}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          />
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={t("photoOptions", { n: index + 1 })}
+            className="absolute inset-x-0 bottom-0 overflow-hidden rounded-t-3xl border-t border-[#e8b04a]/50 bg-[#fffaf2] pb-[max(1rem,env(safe-area-inset-bottom))] shadow-2xl dark:bg-[#1c1220]"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", damping: 30, stiffness: 320 }}
+            drag="y"
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={{ top: 0, bottom: 0.6 }}
+            onDragEnd={(_, info) => info.offset.y > 80 && onClose()}
+          >
+            <div className="flex items-center gap-3 bg-gradient-to-br from-[#3d1236] to-[#22091f] px-4 pt-3 pb-4 text-[#fff6e6]">
+              <span className="absolute top-1.5 left-1/2 h-1 w-9 -translate-x-1/2 rounded-full bg-[#e8b04a]/50" aria-hidden />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={photos[index]} alt="" className="mt-2 h-14 w-14 rounded-xl object-cover ring-2 ring-[#e8b04a]/60" />
+              <div className="mt-2 min-w-0 flex-1">
+                <p className="text-[11px] font-semibold tracking-[0.2em] text-[#e8b04a] uppercase">
+                  {t("photoLabel", { n: index + 1 })}
+                </p>
+                <p className="truncate font-serif text-base font-bold">{t(`photoRoles.${photoRole(templateId, index)}.label`)}</p>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label={t("close")}
+                className="mt-2 flex h-10 w-10 items-center justify-center rounded-full text-[#ffe9b8] hover:bg-white/10"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <ul className="divide-y divide-[#e8b04a]/15 px-2 py-1 text-[15px] font-semibold text-neutral-800 dark:text-neutral-100">
+              <SheetItem icon={Crop} label={t("cropResize")} onClick={act(() => onAdjust(index))} />
+              {index > 0 && <SheetItem icon={ArrowUpToLine} label={t("makeFirst")} onClick={act(() => onMakeFirst(index))} />}
+              {index > 0 && <SheetItem icon={ChevronUp} label={t("moveUp")} onClick={act(() => onMove(index, -1))} />}
+              {index < photos.length - 1 && (
+                <SheetItem icon={ChevronDown} label={t("moveDown")} onClick={act(() => onMove(index, 1))} />
+              )}
+              <SheetItem icon={Trash2} label={t("removePhoto")} danger onClick={act(() => onRemove(index))} />
+            </ul>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+function SheetItem({
+  icon: Icon,
+  label,
+  onClick,
+  danger = false,
+}: {
+  icon: typeof Crop;
+  label: string;
+  onClick: () => void;
+  danger?: boolean;
+}) {
+  return (
+    <li>
+      <button
+        type="button"
+        onClick={onClick}
+        className={`flex h-14 w-full items-center gap-3 rounded-xl px-3 text-left hover:bg-[#e8b04a]/10 ${
+          danger ? "text-red-600 dark:text-red-400" : ""
+        }`}
+      >
+        <span
+          className={`flex h-9 w-9 items-center justify-center rounded-full ${
+            danger ? "bg-red-50 dark:bg-red-950/40" : "bg-[#e8b04a]/15 text-[#9a6418] dark:text-[#ffd35c]"
+          }`}
+        >
+          <Icon size={17} aria-hidden />
+        </span>
+        {label}
+      </button>
+    </li>
   );
 }
 
@@ -60,6 +198,7 @@ function PhotoRow({
   onRemove,
   onMove,
   onAdjust,
+  onOptions,
 }: {
   url: string;
   index: number;
@@ -69,6 +208,7 @@ function PhotoRow({
   onRemove: (index: number) => void;
   onMove: (index: number, by: -1 | 1) => void;
   onAdjust: (index: number) => void;
+  onOptions: (index: number) => void;
 }) {
   const t = useTranslations("editor");
   const controls = useDragControls();
@@ -116,6 +256,15 @@ function PhotoRow({
       </div>
       <button
         type="button"
+        onClick={() => onOptions(index)}
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e8b04a]/15 text-[#9a6418] lg:hidden dark:text-[#ffd35c]"
+        aria-label={t("photoOptions", { n })}
+      >
+        <MoreHorizontal size={20} />
+      </button>
+      <div className="hidden items-center lg:flex">
+      <button
+        type="button"
         onClick={() => onAdjust(index)}
         className={iconBtn}
         aria-label={t("adjustPhoto", { n })}
@@ -146,6 +295,7 @@ function PhotoRow({
       <button type="button" onClick={() => onRemove(index)} className={iconBtn} aria-label={t("removePhoto")}>
         <X size={16} />
       </button>
+      </div>
     </Reorder.Item>
   );
 }

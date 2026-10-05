@@ -65,7 +65,10 @@ export default function PalaceStage({ world, gold, preview }: { world: WorldId; 
       done = true;
       if (hasWebGL()) setGl({ quality: detectQuality() });
     };
-    const fallback = setTimeout(start, preview ? 800 : 6000);
+    // Guests: a fallback in case the intro events never come. The editor
+    // preview waits for its own intro to be opened, so the scene isn't
+    // built (seconds of work on a phone) while someone is just editing.
+    const fallback = preview ? undefined : setTimeout(start, 6000);
     window.addEventListener(INTRO_OPENED_EVENT, start);
     window.addEventListener(INTRO_DONE_EVENT, start);
     return () => {

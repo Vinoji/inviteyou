@@ -106,7 +106,9 @@ export default async function SiteFooter() {
         </div>
 
         <div className={`relative z-10 ${s.footerBottom}`}>
-          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-6 sm:flex-row">
+          {/* Extra room under (phones) or beside (wider) the last row, so the
+              floating help button never covers the social icons. */}
+          <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 pt-6 pb-24 sm:flex-row sm:pr-24 sm:pb-6 2xl:pr-6">
             <p className="text-center text-xs text-[#f6e7d0]/65 sm:text-left">
               {t("footer.copyright", { years, brand: t("brand") })}
               <span className="mx-2 text-[#e8b04a]">✿</span>

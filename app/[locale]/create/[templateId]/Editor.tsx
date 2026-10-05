@@ -13,7 +13,10 @@ import {
   Music,
   Palette,
   Plane,
+  Eye,
+  PenLine,
   RotateCcw,
+  X,
   Smartphone,
   Sparkles,
   Tablet,
@@ -28,6 +31,7 @@ import {
   type AbstractIntlMessages,
 } from "next-intl";
 import { useRouter, Link } from "@/i18n/navigation";
+import { useKeyboardOpen } from "@/lib/useKeyboardOpen";
 import { useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -89,6 +93,7 @@ import FamilyFields, { type FamilyUpdate } from "@/components/editor/FamilyField
 import { REPLAY_INTRO_EVENT } from "@/components/invite/intros/events";
 import { Thoranam } from "@/components/site/festive";
 import festive from "@/components/landing/landing.module.css";
+import ed from "@/components/editor/editor.module.css";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -228,6 +233,8 @@ export default function Editor({
   const showProgress = (phase: PublishPhase, steps?: PublishPhase[]) => setProgress({ phase, steps });
   const [publishError, setPublishError] = useState<string | null>(null);
   const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
+  // Phones: the bottom bar steps aside while the keyboard is up.
+  const keyboardOpen = useKeyboardOpen();
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [razorpayReady, setRazorpayReady] = useState(false);
   // Which ready-made story (if any) is in the story box, and the seed story a
@@ -807,6 +814,7 @@ export default function Editor({
     if (!editSlug || !editToken) return;
     if (!dateOk) {
       // The message is already shown under the date field; take them there.
+      setMobileView("edit");
       showNamesField(() => dateRef.current);
       return;
     }
@@ -897,6 +905,7 @@ export default function Editor({
     setPublishError(null);
     if (!data.brideName.trim() || (!category.singlePerson && !data.groomName.trim())) {
       setPublishError(t("errNamesRequired"));
+      setMobileView("edit");
       goTo("names");
       return;
     }
@@ -1011,6 +1020,11 @@ export default function Editor({
     }
   }
 
+  const phoneFieldShown = !isEditMode && (stepIndex === steps.length - 1 || phoneTouched || Boolean(ownerPhone));
+  // On phones the button lives in the bottom bar, so this footer shows only
+  // when it has something else: the phone field or the expiry notices.
+  const formFooterOnPhone = phoneFieldShown || Boolean(isEditMode && expiry && (expiry.expired || expiry.expiresAt));
+
   return (
     // The screen below the 44px (h-11) app toolbar, so the publish bar and
     // the phone's Edit / Preview tabs stay in view.
@@ -1031,13 +1045,18 @@ export default function Editor({
           mobileView === "preview" ? "hidden lg:flex" : "flex"
         }`}
       >
-        <Thoranam compact />
-        <header className="-mt-3 flex items-center justify-between gap-3 px-5 pt-1 pb-2">
+        {/* The plum band: design name, title and the step bar. */}
+        <div className={ed.band}>
+        {/* Decoration only on wide screens — phones need the room for the form. */}
+        <div className="hidden lg:block">
+          <Thoranam compact />
+        </div>
+        <header className="flex items-center justify-between gap-3 px-4 pt-2 pb-1 lg:-mt-3 lg:px-5 lg:pt-1 lg:pb-2">
           <div className="min-w-0">
-            <p className="truncate text-xs font-semibold tracking-widest text-amber-700 uppercase">
+            <p className={`truncate text-[11px] font-semibold tracking-[0.2em] uppercase ${ed.eyebrow}`}>
               {template.name}
             </p>
-            <h1 className="font-serif text-base leading-tight font-bold sm:text-lg text-neutral-900 dark:text-neutral-50">
+            <h1 className={`font-serif text-lg leading-tight font-bold ${ed.title}`}>
               {isEditMode ? t("editHeading") : t("createHeading")}
             </h1>
           </div>
@@ -1045,8 +1064,7 @@ export default function Editor({
             {isEditMode && editSlug && editToken && (
               <Link
                 href={`/rsvps/${editSlug}?token=${editToken}`}
-                className="text-xs font-semibold hover:underline"
-                style={{ color: data.accentColor }}
+                className="text-xs font-semibold text-[#ffe9b8] hover:underline"
               >
                 {t("viewRsvps")}
               </Link>
@@ -1055,7 +1073,7 @@ export default function Editor({
               <button
                 type="button"
                 onClick={() => goTo("design")}
-                className="inline-flex items-center gap-1 rounded-full border border-amber-300 px-2.5 py-1 text-xs font-semibold text-amber-800 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-400 dark:hover:bg-amber-950"
+                className={`inline-flex h-8 items-center gap-1 rounded-full px-3 text-xs font-semibold transition ${ed.switch}`}
               >
                 <Palette size={13} aria-hidden />
                 {t("switchTemplate")}
@@ -1065,25 +1083,36 @@ export default function Editor({
         </header>
 
         {!loadingExisting && !loadError && <StepNav steps={steps} current={step} onSelect={goTo} />}
+        </div>
 
         {loadingExisting ? (
           <div className="p-6 text-sm text-neutral-500">{t("loading")}</div>
         ) : loadError ? (
           <div className="p-6 text-sm text-red-600">{loadError}</div>
         ) : (
-          <div ref={formScrollRef} className="flex-1 overflow-y-auto px-5 py-5">
+          <div ref={formScrollRef} className="flex-1 overflow-y-auto px-4 py-4 lg:px-5 lg:py-5">
             {draftNotice && (
-              <div className="mb-5 flex items-start justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-900 dark:bg-amber-950/50 dark:text-amber-200">
+              <div className="mb-5 flex items-start justify-between gap-3 rounded-2xl border border-[#e8b04a]/40 bg-[#fff6e0] px-3.5 py-2.5 text-xs text-[#5a3a12] shadow-sm dark:border-[#e8b04a]/30 dark:bg-[#2a0c27] dark:text-[#ffe9b8]">
                 <p>
                   {draftNotice.kind === "restored"
                     ? t("draftRestored")
                     : t("draftCarried", { template: draftNotice.from })}
                 </p>
-                {!isEditMode && (
-                  <button type="button" onClick={startFresh} className="shrink-0 font-semibold underline">
-                    {t("startFresh")}
+                <div className="flex shrink-0 items-center gap-2">
+                  {!isEditMode && (
+                    <button type="button" onClick={startFresh} className="font-semibold underline">
+                      {t("startFresh")}
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setDraftNotice(null)}
+                    aria-label={t("dismiss")}
+                    className="-m-1.5 rounded p-1.5 hover:bg-amber-100 dark:hover:bg-amber-900/40"
+                  >
+                    <X size={14} aria-hidden />
                   </button>
-                )}
+                </div>
               </div>
             )}
 
@@ -1443,11 +1472,18 @@ export default function Editor({
               </div>
             )}
 
-            <StepFooter prev={steps[stepIndex - 1]} next={steps[stepIndex + 1]} onSelect={goTo} />
+            <StepFooter
+              prev={steps[stepIndex - 1]}
+              next={steps[stepIndex + 1]}
+              onSelect={goTo}
+              onFinish={() => setMobileView("preview")}
+            />
           </div>
         )}
 
-        <div className="border-t border-neutral-200 p-4 dark:border-neutral-800">
+        <div
+          className={`border-t border-neutral-200 p-4 dark:border-neutral-800 ${formFooterOnPhone ? "" : "hidden lg:block"}`}
+        >
           {isEditMode && expiry?.expired && (
             <div className="mb-3 rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
               <p className="font-semibold">{t("expiredBannerTitle")}</p>
@@ -1476,7 +1512,7 @@ export default function Editor({
           )}
           {/* Asked for on the last step (or when Publish needs it), so the
               bar stays small while filling in the rest. */}
-          {!isEditMode && (stepIndex === steps.length - 1 || phoneTouched || ownerPhone) && (
+          {phoneFieldShown && (
             <label className="mb-3 block">
               <span className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
                 {t("ownerPhoneLabel")}
@@ -1508,13 +1544,13 @@ export default function Editor({
               </span>
             </label>
           )}
-          {publishError && <p className="mb-2 text-sm text-red-600">{publishError}</p>}
+          {publishError && <p className="mb-2 hidden text-sm text-red-600 lg:block">{publishError}</p>}
+          <div className="hidden lg:block">
           {isEditMode ? (
             <button
               onClick={handleSaveEdit}
               disabled={!canSubmit}
-              style={{ backgroundColor: data.accentColor }}
-              className={`w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50 ${festive.shine}`}
+              className={`h-12 w-full rounded-full text-sm font-bold ${ed.gold}`}
             >
               {publishing ? t("saving") : t("saveChanges")}
             </button>
@@ -1522,12 +1558,13 @@ export default function Editor({
             <button
               onClick={tryPublish}
               disabled={publishing}
-              style={{ backgroundColor: data.accentColor }}
-              className={`w-full rounded-lg py-3 text-sm font-semibold text-white transition disabled:opacity-50 ${festive.shine}`}
+              className={`flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-bold ${ed.gold}`}
             >
+              {!publishing && <Sparkles size={16} aria-hidden />}
               {publishing ? t("processing") : t("publishCta", { price: templatePriceInr(templateId) })}
             </button>
           )}
+          </div>
         </div>
       </div>
 
@@ -1537,15 +1574,15 @@ export default function Editor({
           mobileView === "edit" ? "hidden lg:flex" : "flex"
         }`}
       >
-        <div className="hidden items-center justify-between border-b border-neutral-200 bg-white/90 px-4 py-2 backdrop-blur lg:flex dark:border-neutral-800 dark:bg-neutral-900/90">
+        <div className={`hidden items-center justify-between px-4 py-2 lg:flex ${ed.band}`}>
           <div className="flex items-center gap-3">
-            <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
+            <p className={`text-xs font-semibold tracking-[0.2em] uppercase ${ed.eyebrow}`}>
               {t("previewLabel")}
             </p>
             <button
               type="button"
               onClick={() => window.dispatchEvent(new Event(REPLAY_INTRO_EVENT))}
-              className="inline-flex h-8 items-center gap-1.5 rounded-md px-2 text-xs font-semibold text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+              className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-semibold text-[#ffe9b8]/75 hover:bg-[#ffe9b8]/10 hover:text-[#ffe9b8]"
             >
               <RotateCcw size={13} aria-hidden />
               {t("replayIntro")}
@@ -1559,7 +1596,7 @@ export default function Editor({
               </span>
             )}
           </div>
-          <div className="inline-flex rounded-lg border border-neutral-200 bg-neutral-50 p-1 dark:border-neutral-800 dark:bg-neutral-900">
+          <div className={`inline-flex rounded-full p-1 ${ed.seg}`}>
             {[
               { id: "desktop", label: t("desktop"), icon: Monitor },
               { id: "tablet", label: t("tablet"), icon: Tablet },
@@ -1569,10 +1606,8 @@ export default function Editor({
                 key={id}
                 type="button"
                 onClick={() => setPreviewDevice(id as typeof previewDevice)}
-                className={`inline-flex h-8 items-center gap-1.5 rounded-md px-3 text-xs font-semibold transition ${
-                  previewDevice === id
-                    ? "bg-white text-neutral-900 shadow-sm dark:bg-neutral-700 dark:text-neutral-50"
-                    : "text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+                className={`inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-xs font-semibold transition ${
+                  previewDevice === id ? ed.segOn : ed.segBtn
                 }`}
                 aria-pressed={previewDevice === id}
               >
@@ -1619,25 +1654,54 @@ export default function Editor({
         </div>
       </div>
 
-      {/* Mobile edit/preview toggle */}
-      <div className="flex border-t border-neutral-200 bg-white lg:hidden dark:border-neutral-800 dark:bg-neutral-900">
-        <button
-          onClick={() => setMobileView("edit")}
-          className={`flex-1 py-3 text-sm font-semibold ${
-            mobileView === "edit" ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-500 dark:text-neutral-400"
-          }`}
-        >
-          {t("editTab")}
-        </button>
-        <button
-          onClick={() => setMobileView("preview")}
-          className={`flex-1 py-3 text-sm font-semibold ${
-            mobileView === "preview" ? "text-neutral-900 dark:text-neutral-50" : "text-neutral-500 dark:text-neutral-400"
-          }`}
-        >
-          {t("previewTab")}
-        </button>
-      </div>
+      {/* Phones: one bar for switching Edit / Preview and the main action,
+          clear of the home indicator, and out of the way while typing. */}
+      {!keyboardOpen && (
+        <div className={`px-3 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden ${ed.dock}`}>
+          {publishError && <p className="mb-2 px-1 text-sm font-medium text-[#ffb4a8]">{publishError}</p>}
+          <div className="flex items-center gap-2.5">
+            <div className={`flex shrink-0 rounded-full p-1 ${ed.seg}`} role="tablist">
+              {(["edit", "preview"] as const).map((view) => {
+                const active = mobileView === view;
+                const Icon = view === "edit" ? PenLine : Eye;
+                return (
+                  <button
+                    key={view}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => setMobileView(view)}
+                    className={`flex h-10 items-center gap-1.5 rounded-full px-3 text-[13px] font-semibold transition ${
+                      active ? ed.segOn : ed.segBtn
+                    }`}
+                  >
+                    <Icon size={15} aria-hidden />
+                    {t(view === "edit" ? "editTab" : "previewTab")}
+                  </button>
+                );
+              })}
+            </div>
+            <button
+              type="button"
+              onClick={isEditMode ? handleSaveEdit : tryPublish}
+              disabled={isEditMode ? !canSubmit : publishing}
+              className={`flex h-12 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-sm font-bold ${ed.gold}`}
+            >
+              {isEditMode ? (
+                publishing ? t("saving") : t("saveChanges")
+              ) : publishing ? (
+                t("processing")
+              ) : (
+                <>
+                  <Sparkles size={16} aria-hidden className="shrink-0 max-[389px]:hidden" />
+                  <span className="truncate">{t("publishLabel")}</span>
+                  <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-xs ${ed.price}`}>₹{templatePriceInr(templateId)}</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

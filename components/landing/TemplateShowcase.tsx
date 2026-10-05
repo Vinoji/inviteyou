@@ -16,6 +16,9 @@ const STAGE_W = 390;
 const STAGE_H = 620;
 /** After the opening finishes, the card rests on the names, then replays. */
 const REPLAY_AFTER_MS = 5000;
+/** 3D openings play a timed sequence and build a scene as soon as they
+ * mount — heavy, and distracting in a grid. Their cards wait for a tap. */
+const TAP_TO_START = new Set<IntroId>(["palaceGate", "templeGate", "cathedralDoors", "parkGate"]);
 
 export interface ShowcaseProps {
   introId: IntroId;
@@ -32,6 +35,9 @@ export interface ShowcaseProps {
   gradient: string;
   /** Where the "Tap to try it" chip sits — bottom inside a phone mock-up, clear of the notch. */
   hintAt?: "top" | "bottom";
+  /** A still card (names on the design's colours) that never plays — for
+   * pickers that list many designs at once. */
+  still?: boolean;
 }
 
 /**
@@ -47,6 +53,7 @@ export default function TemplateShowcase(p: ShowcaseProps) {
   const [visible, setVisible] = useState(false);
   const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
   const [run, setRun] = useState(0);
+  const [started, setStarted] = useState(!p.still && !TAP_TO_START.has(p.introId));
 
   useEffect(() => {
     const el = boxRef.current;
@@ -82,7 +89,7 @@ export default function TemplateShowcase(p: ShowcaseProps) {
   const burst = useCallback((opts: BurstOptions) => particlesRef.current?.burst(opts), []);
 
   const Intro = INTROS[p.introId];
-  const live = visible && scale > 0;
+  const live = visible && scale > 0 && started;
 
   return (
     <div
@@ -127,6 +134,39 @@ export default function TemplateShowcase(p: ShowcaseProps) {
         </div>
       )}
 
+      {!started && (
+        <button
+          type="button"
+          onClick={() => !p.still && setStarted(true)}
+          aria-label={p.still ? undefined : t("tryIt")}
+          tabIndex={p.still ? -1 : undefined}
+          className={`absolute inset-0 z-20 flex flex-col items-center justify-center gap-2 p-5 text-center text-white ${p.still ? "cursor-default" : ""}`}
+        >
+          <span className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(232,176,74,0.28),transparent_60%)]" aria-hidden />
+          <span
+            className="relative text-[clamp(15px,8cqw,30px)] leading-tight drop-shadow-md"
+            style={{ fontFamily: p.fonts.display }}
+          >
+            {p.names.a}
+            {p.names.b && (
+              <>
+                <span className="mx-1.5 opacity-80">&</span>
+                {p.names.b}
+              </>
+            )}
+          </span>
+          <span className="relative text-[clamp(9px,3.4cqw,12px)] tracking-[0.3em] text-[#ffe9b8]/80 uppercase">
+            {p.dateLabel}
+          </span>
+          {!p.still && (
+            <span className="relative mt-2 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-3 py-1.5 text-[11px] font-semibold backdrop-blur">
+              <Hand size={12} aria-hidden />
+              {t("tryIt")}
+            </span>
+          )}
+        </button>
+      )}
+
       {phase === "done" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 bg-black/25 p-6 text-center text-white backdrop-blur-[2px]">
           <p
@@ -155,7 +195,8 @@ export default function TemplateShowcase(p: ShowcaseProps) {
       {phase === "closed" && live && (
         <span className={`pointer-events-none absolute ${p.hintAt === "bottom" ? "bottom-3 left-1/2 -translate-x-1/2" : "top-3 left-3"} z-20 inline-flex items-center gap-1.5 rounded-full bg-black/55 px-2.5 py-1 text-[11px] font-semibold whitespace-nowrap text-white backdrop-blur`}>
           <Hand size={12} aria-hidden />
-          {t("tryIt")}
+          {/* Icon only on narrow cards, where the price badge shares the top. */}
+          <span className="sr-only sm:not-sr-only">{t("tryIt")}</span>
         </span>
       )}
     </div>

@@ -1,8 +1,9 @@
 "use client";
 
-import { Check, Palette } from "lucide-react";
+import { useTransition, useState } from "react";
+import { Check, Loader2, Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { FONT_PAIRINGS } from "@/lib/fontPairings";
 import type { ContentLocale } from "@/lib/types";
 import TemplateShowcase, { type ShowcaseProps } from "@/components/landing/TemplateShowcase";
@@ -17,8 +18,9 @@ export interface DesignOption {
 const label = "mb-2 block text-sm font-semibold text-neutral-800 dark:text-neutral-200";
 
 /**
- * The occasion's designs as live cards — each plays its real opening, as on
- * the home page — in a swipeable row with the current design first.
+ * The occasion's designs as still cards (names on each design's colours —
+ * light enough to list twenty) in a swipeable row with the current design
+ * first; the preview beside the form plays the chosen one for real.
  * Choosing another opens the editor on it; the draft (or, when editing, the
  * saved invitation) carries the content across.
  */
@@ -35,9 +37,22 @@ export function TemplatePicker({
   onLeave: () => void;
 }) {
   const t = useTranslations("editor");
+  const router = useRouter();
+  const [pending, startTransition] = useTransition();
+  const [opening, setOpening] = useState<string | null>(null);
   const ordered = [...designs].sort((a, b) => Number(b.id === currentId) - Number(a.id === currentId));
+  const openingName = designs.find((d) => d.id === opening)?.name;
   return (
     <div>
+      {/* Switching loads a whole new design; say so instead of looking stuck. */}
+      {pending && openingName && (
+        <div className="fixed inset-0 z-[120] grid place-items-center bg-[#22091f]/70 backdrop-blur-sm" role="status">
+          <div className="flex items-center gap-3 rounded-2xl border border-[#e8b04a]/40 bg-[#3d1236] px-5 py-4 text-[#ffe9b8] shadow-2xl">
+            <Loader2 size={20} className="animate-spin text-[#e8b04a]" aria-hidden />
+            <span className="text-sm font-semibold">{t("openingDesign", { name: openingName })}</span>
+          </div>
+        </div>
+      )}
       <div className="mb-2 flex items-baseline justify-between gap-3">
         <span className={label.replace("mb-2 ", "")}>{t("designPickTitle")}</span>
         <Link href="/#templates" className="shrink-0 text-xs font-semibold text-amber-700 hover:underline dark:text-amber-500">
@@ -45,7 +60,7 @@ export function TemplatePicker({
         </Link>
       </div>
       <p className="mb-3 text-xs text-neutral-500 dark:text-neutral-400">{t("switchTemplateHint")}</p>
-      <ul className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-3 [scrollbar-width:thin]">
+      <ul className="-mx-4 flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 pb-3 [scrollbar-width:thin] lg:-mx-5 lg:scroll-px-5 lg:px-5">
         {ordered.map((d) => {
           const current = d.id === currentId;
           return (
@@ -55,7 +70,7 @@ export function TemplatePicker({
                   current ? "border-amber-500 shadow-amber-500/20" : "border-transparent ring-1 ring-neutral-200 dark:ring-neutral-800"
                 }`}
               >
-                <TemplateShowcase {...d.showcase} />
+                <TemplateShowcase {...d.showcase} still />
                 <div className="p-2.5">
                   <p className="truncate font-serif text-sm font-bold text-neutral-900 dark:text-neutral-50">{d.name}</p>
                   <p className="truncate text-[11px] text-neutral-500 dark:text-neutral-400">{d.tagline}</p>
@@ -65,13 +80,19 @@ export function TemplatePicker({
                       {t("currentTemplate")}
                     </span>
                   ) : (
-                    <Link
-                      href={hrefFor(d.id)}
-                      onClick={onLeave}
-                      className="mt-2 flex items-center justify-center rounded-full bg-neutral-900 py-1.5 text-xs font-semibold text-white transition hover:bg-amber-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-amber-400"
+                    <button
+                      type="button"
+                      disabled={pending}
+                      onClick={() => {
+                        onLeave();
+                        setOpening(d.id);
+                        startTransition(() => router.push(hrefFor(d.id)));
+                      }}
+                      className="mt-2 flex w-full items-center justify-center gap-1.5 rounded-full bg-[#3d1236] py-1.5 text-xs font-semibold text-[#ffe9b8] transition hover:bg-[#5a1a3c] disabled:opacity-60 dark:bg-[#ffe9b8] dark:text-[#3d1236]"
                     >
+                      {pending && opening === d.id && <Loader2 size={13} className="animate-spin" aria-hidden />}
                       {t("useDesign")}
-                    </Link>
+                    </button>
                   )}
                 </div>
               </div>

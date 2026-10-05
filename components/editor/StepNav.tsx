@@ -1,8 +1,9 @@
 "use client";
 
 import type { LucideIcon } from "lucide-react";
-import { ArrowLeft, ArrowRight, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Eye } from "lucide-react";
 import { useTranslations } from "next-intl";
+import e from "./editor.module.css";
 
 export interface EditorStep {
   id: string;
@@ -32,16 +33,16 @@ export function StepNav({
 }) {
   const index = steps.findIndex((s) => s.id === current);
   return (
-    <nav className="border-b border-amber-900/10 px-3 pt-3 pb-2 dark:border-amber-100/10">
+    <nav className="px-2 pt-1.5 pb-3 lg:px-3 lg:pt-2">
       <ol className="relative flex items-start justify-between">
         {/* track + progress behind the dots */}
         <span
           aria-hidden
-          className="absolute top-[18px] right-[10%] left-[10%] h-0.5 rounded bg-amber-900/10 dark:bg-amber-100/10"
+          className={`absolute top-4 right-[10%] left-[10%] h-0.5 rounded lg:top-[18px] ${e.track}`}
         />
         <span
           aria-hidden
-          className="absolute top-[18px] left-[10%] h-0.5 rounded bg-gradient-to-r from-amber-500 to-rose-500 transition-[width] duration-500"
+          className={`absolute top-4 left-[10%] h-0.5 rounded transition-[width] duration-500 lg:top-[18px] ${e.progress}`}
           style={{ width: `${(Math.max(index, 0) / Math.max(steps.length - 1, 1)) * 80}%` }}
         />
         {steps.map((s, i) => {
@@ -56,24 +57,20 @@ export function StepNav({
                 className="group flex min-w-0 flex-col items-center gap-1 px-0.5"
               >
                 <span
-                  className={`relative flex h-9 w-9 items-center justify-center rounded-full border-2 transition ${
-                    active
-                      ? "scale-110 border-amber-600 bg-gradient-to-br from-amber-500 to-rose-500 text-white shadow-md shadow-amber-600/30"
-                      : s.done
-                        ? "border-amber-500 bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400"
-                        : "border-neutral-300 bg-white text-neutral-400 group-hover:border-amber-400 group-hover:text-amber-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-500"
+                  className={`relative flex h-8 w-8 items-center justify-center rounded-full border-2 transition lg:h-9 lg:w-9 ${
+                    active ? `scale-110 ${e.dotActive}` : s.done ? e.dotDone : e.dot
                   }`}
                 >
                   <Icon size={16} aria-hidden />
                   {s.done && !active && (
-                    <span className="absolute -right-1 -bottom-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-white ring-2 ring-white dark:ring-neutral-900">
+                    <span className="absolute -right-1 -bottom-1 flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-white ring-2 ring-[#2a0c27]">
                       <Check size={10} strokeWidth={3} aria-hidden />
                     </span>
                   )}
                 </span>
                 <span
                   className={`max-w-full truncate text-[11px] leading-tight font-semibold ${
-                    active ? "text-amber-800 dark:text-amber-400" : "text-neutral-500 dark:text-neutral-400"
+                    active ? e.stepLabelActive : e.stepLabel
                   }`}
                 >
                   <span className="sr-only">{i + 1}. </span>
@@ -107,10 +104,13 @@ export function StepFooter({
   prev,
   next,
   onSelect,
+  onFinish,
 }: {
   prev?: EditorStep;
   next?: EditorStep;
   onSelect: (id: string) => void;
+  /** Last step on a phone: jump to the preview to check and publish. */
+  onFinish?: () => void;
 }) {
   const t = useTranslations("editor");
   return (
@@ -119,7 +119,7 @@ export function StepFooter({
         <button
           type="button"
           onClick={() => onSelect(prev.id)}
-          className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
+          className="inline-flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100"
         >
           <ArrowLeft size={15} aria-hidden />
           {t("back")}
@@ -131,11 +131,23 @@ export function StepFooter({
         <button
           type="button"
           onClick={() => onSelect(next.id)}
-          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-amber-400"
+          className={`inline-flex h-11 items-center gap-1.5 rounded-full px-5 text-sm font-bold ${e.gold}`}
         >
           {t("nextStep", { step: next.label })}
           <ArrowRight size={15} aria-hidden />
         </button>
+      ) : onFinish ? (
+        <>
+          <button
+            type="button"
+            onClick={onFinish}
+            className={`inline-flex h-11 items-center gap-1.5 rounded-full px-5 text-sm font-bold lg:hidden ${e.gold}`}
+          >
+            <Eye size={15} aria-hidden />
+            {t("previewAndPublish")}
+          </button>
+          <p className="hidden text-right text-sm font-medium text-emerald-700 lg:block dark:text-emerald-400">{t("readyHint")}</p>
+        </>
       ) : (
         <p className="text-right text-sm font-medium text-emerald-700 dark:text-emerald-400">{t("readyHint")}</p>
       )}

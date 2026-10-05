@@ -35,7 +35,9 @@ export default async function Pricing() {
       key: "paid",
       icon: Crown,
       name: t("paidName"),
-      price: PRICES_VARY ? t("paidFrom", { price: LOWEST_PRICE_INR }) : `₹${LOWEST_PRICE_INR}`,
+      price: `₹${LOWEST_PRICE_INR}`,
+      // "from" on its own small line, so the price fits the seal on phones.
+      pre: PRICES_VARY ? t("paidFromLabel") : undefined,
       unit: t("paidUnit"),
       blurb: t("paidBlurb"),
       items: PAID_ITEMS.map((k) => t(k)),
@@ -88,7 +90,8 @@ export default async function Pricing() {
                 <div className={`${f.seal} ${plan.featured ? f.sealWax : ""}`}>
                   <div className={f.sealInner}>
                     <div>
-                      <div className={f.sealPrice}>{plan.price}</div>
+                      {"pre" in plan && plan.pre && <div className={f.sealPre}>{plan.pre}</div>}
+                      <div className={`${f.sealPrice} ${plan.price.length > 5 ? f.sealPriceLong : ""}`}>{plan.price}</div>
                       {plan.unit && <div className={f.sealUnit}>{plan.unit}</div>}
                     </div>
                   </div>

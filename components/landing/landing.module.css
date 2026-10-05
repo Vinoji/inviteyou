@@ -1726,8 +1726,8 @@
   --teeth: #c98f3a;
   position: relative;
   isolation: isolate;
-  width: 104px;
-  height: 104px;
+  width: 112px;
+  height: 112px;
   margin: 26px auto 12px;
   display: grid;
   place-items: center;
@@ -1755,8 +1755,8 @@
 .sealInner {
   display: grid;
   place-items: center;
-  width: 86px;
-  height: 86px;
+  width: 94px;
+  height: 94px;
   border-radius: 50%;
   border: 1.5px dashed currentColor;
   opacity: 0.95;
@@ -1771,12 +1771,25 @@
   font-family: var(--font-catamaran), serif;
   font-size: 22px;
 }
+.sealPre {
+  margin-bottom: 2px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+/* Words rather than a figure ("Let's talk") — smaller, and allowed to wrap. */
+.sealPriceLong {
+  max-width: 76px;
+  font-size: 17px !important;
+  line-height: 1.1;
+}
 .sealUnit {
   margin-top: 4px;
   font-size: 10px;
   font-weight: 700;
   line-height: 1.2;
-  max-width: 76px;
+  max-width: 80px;
 }
 .planItems {
   margin-top: 16px;

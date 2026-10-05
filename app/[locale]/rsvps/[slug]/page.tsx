@@ -96,19 +96,25 @@ function StatCard({
   value,
   accentColor,
   icon,
+  sub,
 }: {
   label: string;
   value: string | number;
   accentColor: string;
   icon: React.ReactNode;
+  /** A smaller second line, e.g. the head count under "Attending". */
+  sub?: string;
 }) {
   return (
-    <div className={`p-4 ${festive.festiveCard}`}>
-      <div className="flex items-center gap-2" style={{ color: accentColor }}>
+    <div className={`min-w-0 p-3 sm:p-4 ${festive.festiveCard}`}>
+      <div className="flex items-center gap-1.5" style={{ color: accentColor }}>
         {icon}
-        <span className="text-xs font-semibold tracking-widest uppercase">{label}</span>
+        <span className="truncate text-[10px] font-semibold tracking-wider uppercase sm:text-xs sm:tracking-widest">
+          {label}
+        </span>
       </div>
-      <p className="mt-2 text-2xl font-bold text-neutral-900 dark:text-neutral-50">{value}</p>
+      <p className="mt-1.5 text-2xl font-bold text-neutral-900 sm:mt-2 dark:text-neutral-50">{value}</p>
+      {sub && <p className="text-xs text-neutral-500 dark:text-neutral-400">{sub}</p>}
     </div>
   );
 }
@@ -149,7 +155,7 @@ export default async function RsvpsPage({
   return (
     <main className={`min-h-screen ${festive.paper}`}>
       <Thoranam compact />
-      <div className="mx-auto max-w-3xl px-6 pt-4 pb-12">
+      <div className="mx-auto max-w-3xl px-4 pt-4 pb-12 sm:px-6">
       <p className="text-xs font-semibold tracking-widest text-neutral-400 uppercase dark:text-neutral-500">
         {t("private")}
       </p>
@@ -158,7 +164,7 @@ export default async function RsvpsPage({
       </h1>
       <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">{t("onlyVisible")}</p>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="mt-6 grid grid-cols-3 gap-2 sm:mt-8 sm:gap-4">
         <StatCard
           label={t("responses")}
           value={rsvps.length}
@@ -167,7 +173,8 @@ export default async function RsvpsPage({
         />
         <StatCard
           label={t("attending")}
-          value={`${attending.length} (${totalGuests} ${totalGuests === 1 ? t("guest") : t("guests")})`}
+          value={attending.length}
+          sub={`${totalGuests} ${totalGuests === 1 ? t("guest") : t("guests")}`}
           accentColor={data.accentColor}
           icon={<Check size={16} aria-hidden />}
         />
@@ -190,7 +197,7 @@ export default async function RsvpsPage({
           rsvps.map((r, i) => (
             <div key={i} className={`p-4 ${festive.festiveCard}`}>
               <div className="flex items-center justify-between gap-3">
-                <p className="font-semibold text-neutral-900 dark:text-neutral-50">{r.guestName}</p>
+                <p className="min-w-0 font-semibold break-words text-neutral-900 dark:text-neutral-50">{r.guestName}</p>
                 <span
                   className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold ${
                     r.attending
@@ -217,7 +224,7 @@ export default async function RsvpsPage({
                     <>
                       <a
                         href={`tel:${r.phone.replace(/\s/g, "")}`}
-                        className="text-neutral-600 hover:underline dark:text-neutral-300"
+                        className="inline-flex h-9 items-center text-neutral-600 hover:underline dark:text-neutral-300"
                       >
                         {r.phone}
                       </a>
