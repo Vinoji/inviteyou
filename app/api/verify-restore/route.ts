@@ -6,7 +6,7 @@ import { applyRestorePayment, fetchOrder, isRestoreOrder } from "@/lib/payments"
 /**
  * Completes a restore: checks the Razorpay signature, then confirms with
  * Razorpay that the order really is a ₹50 restore for *this* invitation
- * (so no other payment — e.g. the original ₹199 one — can be reused), and
+ * (so no other payment — e.g. the original ₹49 one — can be reused), and
  * extends it by 30 days. Each payment id is recorded, so replaying the
  * same payment (or the webhook getting there first) can't extend it twice.
  */

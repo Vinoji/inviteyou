@@ -21,6 +21,7 @@ import {
 } from "@/lib/sanitize";
 import { tooMany } from "@/lib/rateLimit";
 import { couponOffInr, normalizeCode } from "@/lib/coupons";
+import { devPriceEnabled } from "@/lib/pricing";
 
 /**
  * Creates or updates a "pending_payment" draft, keyed by a client-generated
@@ -67,6 +68,7 @@ export async function POST(req: NextRequest) {
     ownerLocale,
     coupon,
     fromFreeCard,
+    devOption,
   } = body;
 
   if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
@@ -141,6 +143,8 @@ export async function POST(req: NextRequest) {
     // A discount code, kept only when it applies to this design.
     ...(couponOffInr(coupon, templateId) > 0 ? { coupon: normalizeCode(coupon) } : {}),
     ...(fromFreeCard === true ? { fromFreeCard: true } : {}),
+    // The ?dev_option=1 payment test, kept only while it is switched on.
+    ...(devOption === true && devPriceEnabled() ? { devPrice: true } : {}),
     status: "pending_payment",
     slug: null,
     viewCount: existing.exists ? (existing.data()?.viewCount ?? 0) : 0,

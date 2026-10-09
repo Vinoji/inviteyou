@@ -80,7 +80,7 @@ export async function publishPaidDraft(
     const draft = draftSnap.data()!;
     // The amount must cover this draft's template (so a cheap template's
     // order can't publish a dearer one after switching designs).
-    if (isFreeTemplate(draft.templateId ?? "") || paidPaise < minAcceptedPayablePaise(draft.templateId ?? "", draft.coupon)) {
+    if (isFreeTemplate(draft.templateId ?? "") || paidPaise < minAcceptedPayablePaise(draft.templateId ?? "", draft.coupon, draft.devPrice === true)) {
       return { ok: false, status: 400, error: "This payment doesn't cover this design's price." };
     }
     const slug = await generateUniqueSlug(draft.groomName ?? "", draft.brideName ?? "");
@@ -95,7 +95,7 @@ export async function publishPaidDraft(
       // The other caller got here first.
       if (paySnap.exists || !dSnap.exists) return null;
       const d = dSnap.data()!;
-      if (isFreeTemplate(d.templateId ?? "") || paidPaise < minAcceptedPayablePaise(d.templateId ?? "", d.coupon)) return null;
+      if (isFreeTemplate(d.templateId ?? "") || paidPaise < minAcceptedPayablePaise(d.templateId ?? "", d.coupon, d.devPrice === true)) return null;
       const owner = oSnap.exists ? oSnap.data()! : {};
       const now = Date.now();
       const publishedRef = db.collection("invitations").doc(slug);
@@ -103,7 +103,7 @@ export async function publishPaidDraft(
       // this slug between the check above and now.
       // The discount code stays with the payment record, not on the
       // (publicly rendered) invitation.
-      const { coupon, fromFreeCard, ...published } = d;
+      const { coupon, fromFreeCard, devPrice, ...published } = d;
       tx.create(publishedRef, {
         ...published,
         slug,
@@ -129,6 +129,8 @@ export async function publishPaidDraft(
         ...(coupon ? { coupon } : {}),
         // Funnel: this couple made a free card on this device first.
         ...(fromFreeCard ? { fromFreeCard: true } : {}),
+        // A ?dev_option=1 payment test, not a real sale.
+        ...(devPrice ? { devPrice: true } : {}),
       });
       tx.delete(ownerRef);
       tx.delete(draftRef);

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Lock, Sparkles, X } from "lucide-react";
 import { couponOffInr } from "@/lib/coupons";
-import { templateListPriceInr, templatePriceInr } from "@/lib/pricing";
+import { DEV_PRICE_INR, templateListPriceInr, templatePriceInr } from "@/lib/pricing";
 import { waPhone } from "@/lib/share";
 import CouponField from "./CouponField";
 
@@ -18,6 +18,7 @@ export default function CheckoutSheet({
   designName,
   coupon,
   onCoupon,
+  devPrice = false,
   phone,
   onPhone,
   busy,
@@ -29,6 +30,8 @@ export default function CheckoutSheet({
   designName: string;
   coupon: string;
   onCoupon: (code: string) => void;
+  /** The ?dev_option=1 payment test: ₹1, no discount. */
+  devPrice?: boolean;
   phone: string;
   onPhone: (phone: string) => void;
   busy: boolean;
@@ -41,9 +44,9 @@ export default function CheckoutSheet({
   const tc = useTranslations("editor.checkout");
   const [touched, setTouched] = useState(false);
   const phoneRef = useRef<HTMLInputElement>(null);
-  const price = templatePriceInr(templateId);
-  const was = templateListPriceInr(templateId);
-  const off = couponOffInr(coupon, templateId);
+  const price = devPrice ? DEV_PRICE_INR : templatePriceInr(templateId);
+  const was = devPrice ? null : templateListPriceInr(templateId);
+  const off = devPrice ? 0 : couponOffInr(coupon, templateId);
   const phoneOk = Boolean(waPhone(phone));
   const showError = (touched || Boolean(phone)) && !phoneOk;
 

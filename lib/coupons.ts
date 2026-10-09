@@ -1,4 +1,4 @@
-import { OFFER_GRACE_MS, isFreeTemplate, templatePriceInr } from "./pricing";
+import { DEV_PRICE_INR, OFFER_GRACE_MS, devPriceEnabled, isFreeTemplate, templatePriceInr } from "./pricing";
 
 /**
  * Discount codes. Two kinds:
@@ -49,13 +49,17 @@ export function couponOffInr(code: unknown, templateId: string, now = Date.now()
   return Math.max(0, Math.min(c.offInr, price - FLOOR_INR));
 }
 
-/** What the buyer pays, in ₹. */
-export function payableInr(templateId: string, code: unknown, now = Date.now()): number {
+/** What the buyer pays, in ₹. `devPrice` is the ?dev_option=1 payment test
+ * (lib/pricing.ts), ignored unless that is switched on. */
+export function payableInr(templateId: string, code: unknown, devPrice = false, now = Date.now()): number {
+  if (devPrice && devPriceEnabled() && !isFreeTemplate(templateId)) return DEV_PRICE_INR;
   return templatePriceInr(templateId, now) - couponOffInr(code, templateId, now);
 }
 
 /** The least a confirmed payment must cover, in paise: what's payable now,
  * or just before the launch offer ended (payments started in time). */
-export function minAcceptedPayablePaise(templateId: string, code: unknown, now = Date.now()): number {
-  return Math.min(payableInr(templateId, code, now), payableInr(templateId, code, now - OFFER_GRACE_MS)) * 100;
+export function minAcceptedPayablePaise(templateId: string, code: unknown, devPrice = false, now = Date.now()): number {
+  return (
+    Math.min(payableInr(templateId, code, devPrice, now), payableInr(templateId, code, devPrice, now - OFFER_GRACE_MS)) * 100
+  );
 }

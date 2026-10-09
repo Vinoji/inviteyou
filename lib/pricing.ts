@@ -17,8 +17,8 @@ export type Tier = "free" | "standard" | "premium";
 export const OFFER_ENDS_AT = Date.parse("2026-11-12T23:59:59.999+05:30");
 
 export const TIER_PRICES: Record<Exclude<Tier, "free">, { offer: number; usual: number }> = {
-  standard: { offer: 199, usual: 299 },
-  premium: { offer: 399, usual: 599 },
+  standard: { offer: 49, usual: 299 },
+  premium: { offer: 99, usual: 599 },
 };
 
 /** The standard tier's prices, for copy that names one price. */
@@ -28,6 +28,15 @@ export const LIST_PRICE_INR = TIER_PRICES.standard.usual;
 /** A payment started just before the offer ended may be confirmed just
  * after; the offer price is honoured for this long past the end. */
 export const OFFER_GRACE_MS = 24 * 60 * 60 * 1000;
+
+/** Payment test: opening the editor with ?dev_option=1 makes publishing
+ * cost this much. Honoured in development, and in production only while
+ * NEXT_PUBLIC_DEV_PRICE=1 is set — otherwise anyone could add it. */
+export const DEV_PRICE_INR = 1;
+
+export function devPriceEnabled(): boolean {
+  return process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_DEV_PRICE === "1";
+}
 
 export function offerActive(now = Date.now()): boolean {
   return now <= OFFER_ENDS_AT;

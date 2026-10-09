@@ -59,7 +59,7 @@ import type { NearbySuggestion as NearbyResult } from "@/lib/geo";
 import { getFamily, legacyParentsLine } from "@/lib/family";
 import { STORY_PRESETS } from "@/lib/storyPresets";
 import { followNames } from "@/lib/seedNames";
-import { isFreeTemplate, templateListPriceInr, templatePriceInr } from "@/lib/pricing";
+import { devPriceEnabled, isFreeTemplate, templateListPriceInr, templatePriceInr } from "@/lib/pricing";
 import { payableInr } from "@/lib/coupons";
 import { savedRef } from "@/lib/referral";
 import CheckoutSheet from "@/components/editor/CheckoutSheet";
@@ -938,7 +938,9 @@ export default function Editor({
     // eslint-disable-next-line react-hooks/set-state-in-effect -- read once from this device's storage after mount
     if (ref) setCoupon(ref);
   }, []);
-  const payable = payableInr(templateId, coupon);
+  // Payment test: ?dev_option=1 charges ₹1 (only where lib/pricing.ts allows).
+  const devOption = searchParams.get("dev_option") === "1" && devPriceEnabled();
+  const payable = payableInr(templateId, coupon, devOption);
 
   /** Free designs: the card image, drawn on the server from the details as
    * they are now (nothing saved) — shared straight from the phone where it
@@ -1032,7 +1034,7 @@ export default function Editor({
       const draftRes = await fetch("/api/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ draftId, ...data, ownerPhone, ownerLocale: uiLocale, coupon, fromFreeCard: madeFreeCard() }),
+        body: JSON.stringify({ draftId, ...data, ownerPhone, ownerLocale: uiLocale, coupon, fromFreeCard: madeFreeCard(), devOption }),
       });
       if (!draftRes.ok) {
         const j = await draftRes.json().catch(() => ({}));
@@ -1127,6 +1129,7 @@ export default function Editor({
           designName={template.name}
           coupon={coupon}
           onCoupon={setCoupon}
+          devPrice={devOption}
           phone={ownerPhone}
           onPhone={setOwnerPhone}
           busy={publishing}
@@ -1258,7 +1261,7 @@ export default function Editor({
                   hrefFor={(id) =>
                     isEditMode
                       ? `/create/${id}?edit=${editSlug}&token=${editToken}&step=design`
-                      : `/create/${id}?step=design`
+                      : `/create/${id}?step=design${devOption ? "&dev_option=1" : ""}`
                   }
                   onLeave={persistDraft}
                 />

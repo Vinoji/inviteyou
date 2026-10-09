@@ -125,7 +125,7 @@ Each template chooses its own intro, particles and scroll motion. The design bri
   - Implemented in [components/invite/motion/](components/invite/motion/).
 - **Tested:** every template has a reduced-motion path. At 4× CPU slowdown on a production build, there were no long tasks during the intro or a fast scroll.
 
-## Publish and payment flow (₹199)
+## Publish and payment flow (₹49)
 
 1. The buyer enters their **mobile number** (required) along with the invitation.
 2. `POST /api/draft` saves a `pending_payment` doc (Admin SDK only). The number goes to a private sub-document (`private/owner`), never onto the invitation itself.

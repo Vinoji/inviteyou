@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     // Each template has its own price; verify-payment and the webhook check
     // what was paid covers the draft's template at publish time.
     // The draft's discount code (checked when it was saved) is applied here.
-    amount: payableInr(snap.data()?.templateId ?? "", snap.data()?.coupon) * 100,
+    amount: payableInr(snap.data()?.templateId ?? "", snap.data()?.coupon, snap.data()?.devPrice === true) * 100,
     currency: "INR",
     receipt: draftId,
     notes: { draftId, templateId: snap.data()?.templateId ?? "", coupon: snap.data()?.coupon ?? "" },
