@@ -61,6 +61,7 @@ import { STORY_PRESETS } from "@/lib/storyPresets";
 import { followNames } from "@/lib/seedNames";
 import { devPriceEnabled, isFreeTemplate, templateListPriceInr, templatePriceInr } from "@/lib/pricing";
 import { payableInr } from "@/lib/coupons";
+import { waPhone } from "@/lib/share";
 import { savedRef } from "@/lib/referral";
 import CheckoutSheet from "@/components/editor/CheckoutSheet";
 import UpgradeSheet from "@/components/editor/UpgradeSheet";
@@ -115,6 +116,7 @@ interface RazorpayOptions {
   name: string;
   description?: string;
   theme?: { color?: string };
+  prefill?: { contact?: string };
   handler: (response: RazorpayResponse) => void;
   modal?: { ondismiss?: () => void };
 }
@@ -1066,6 +1068,8 @@ export default function Editor({
           ? `${data.brideName} — ${template.name}`
           : `${data.brideName} & ${data.groomName} — ${template.name}`,
         theme: { color: data.accentColor },
+        // The number from our checkout sheet, so Razorpay doesn't ask again.
+        prefill: { contact: `+${waPhone(ownerPhone)}` },
         handler: async (response) => {
           // Paid: confirming it also publishes and sends the edit link,
           // which can take a few seconds.
