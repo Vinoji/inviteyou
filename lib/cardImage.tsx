@@ -31,7 +31,9 @@ export async function renderCardImage({
 }: {
   data: InvitationData;
   locale: "en" | "ta";
-  inviteUrl: string;
+  /** The invitation's link for the QR code. Leave out for a free card: a
+   * small "Made with InviteForYou" line takes the QR code's place. */
+  inviteUrl?: string;
   width: number;
   /** A faint diagonal brand mark, for cards shown before purchase. */
   watermark?: boolean;
@@ -86,19 +88,19 @@ export async function renderCardImage({
       ? [kinLine("bride"), category.singlePerson ? "" : kinLine("groom")].filter(Boolean)
       : [];
 
-  const qrSvg = await QRCode.toString(inviteUrl, {
-    type: "svg",
-    margin: 0,
-    color: { dark: "#111111", light: "#ffffff" },
-  });
-  const qr = `data:image/svg+xml;utf8,${encodeURIComponent(qrSvg)}`;
+  const qr = inviteUrl
+    ? `data:image/svg+xml;utf8,${encodeURIComponent(
+        await QRCode.toString(inviteUrl, { type: "svg", margin: 0, color: { dark: "#111111", light: "#ffffff" } })
+      )}`
+    : null;
+  const madeWith = "Made with InviteForYou · inviteforyou.in";
 
   const pair = CARD_FONTS[data.fontPairing] ?? CARD_FONTS["classic-serif"];
   const script = pair.display[0] === "Great Vibes";
   const strings = [
     t("invited"), category.heroEyebrow, bride, groom, "&", category.label, t("request"), date, t("scan"),
     ...family, ...events.flatMap((e) => [e.label, e.time, e.venue?.name ?? "", e.venue?.address ?? ""]),
-    monogram.a, monogram.b ?? "", inviteUrl, "·0123456789",
+    monogram.a, monogram.b ?? "", inviteUrl ?? madeWith, "·0123456789",
   ].join("");
   const fonts = await loadFonts(
     [
@@ -260,26 +262,32 @@ export async function renderCardImage({
 
           <div style={{ display: "flex", flex: 1 }} />
 
-          <div style={{ display: "flex", alignItems: "center", gap: px(26), marginBottom: px(30) }}>
-            <div
-              style={{
-                display: "flex",
-                padding: px(12),
-                background: "#ffffff",
-                borderRadius: px(14),
-                border: `${px(2)}px solid ${theme.trim}`,
-              }}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-              <img src={qr} width={px(176)} height={px(176)} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", maxWidth: px(420), textAlign: "left" }}>
-              <div style={{ display: "flex", fontSize: px(24), color: dark ? theme.ink : theme.muted }}>{v(t("scan"))}</div>
-              <div style={{ display: "flex", marginTop: px(8), fontSize: px(20), color: theme.trim }}>
-                {inviteUrl.replace(/^https?:\/\//, "")}
+          {qr && inviteUrl ? (
+            <div style={{ display: "flex", alignItems: "center", gap: px(26), marginBottom: px(30) }}>
+              <div
+                style={{
+                  display: "flex",
+                  padding: px(12),
+                  background: "#ffffff",
+                  borderRadius: px(14),
+                  border: `${px(2)}px solid ${theme.trim}`,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
+                <img src={qr} width={px(176)} height={px(176)} />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", maxWidth: px(420), textAlign: "left" }}>
+                <div style={{ display: "flex", fontSize: px(24), color: dark ? theme.ink : theme.muted }}>{v(t("scan"))}</div>
+                <div style={{ display: "flex", marginTop: px(8), fontSize: px(20), color: theme.trim }}>
+                  {inviteUrl.replace(/^https?:\/\//, "")}
+                </div>
               </div>
             </div>
-          </div>
+          ) : (
+            <div style={{ display: "flex", marginBottom: px(34), fontSize: px(20), letterSpacing: px(1), color: dark ? theme.ink : theme.muted, opacity: 0.75 }}>
+              {madeWith}
+            </div>
+          )}
         </div>
         {watermark && (
           <div

@@ -19,6 +19,8 @@ export interface Review {
   names: string;
   /** Occasion category id, e.g. "wedding". */
   occasion: string;
+  /** The design reviewed — for per-design ratings on the cards. */
+  templateId?: string;
   city: string;
   approved: boolean;
   createdAt: number;
@@ -33,7 +35,7 @@ const first = (name: string | undefined) => (name ?? "").trim().split(/\s+/)[0] 
 export function reviewIdentity(data: InvitationData, showNames: boolean) {
   const occasion = getTemplateConfig(data.templateId).category;
   const names = showNames ? [first(data.brideName), first(data.groomName)].filter(Boolean).join(" & ") : "";
-  return { names, occasion, city: (data.travel?.city ?? "").trim().slice(0, 40) };
+  return { names, occasion, templateId: data.templateId, city: (data.travel?.city ?? "").trim().slice(0, 40) };
 }
 
 export function cleanComment(v: unknown): string {

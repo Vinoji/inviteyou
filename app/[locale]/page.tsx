@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { pageAlternates } from "@/lib/seo";
 import StickyCta from "@/components/landing/StickyCta";
-import OfferCountdown from "@/components/landing/OfferCountdown";
 import Reviews from "@/components/landing/Reviews";
+import Proof from "@/components/landing/Proof";
+import { getSiteStats } from "@/lib/stats";
 import { standardPriceInr } from "@/lib/pricing";
 import StructuredData from "@/components/site/StructuredData";
 import { getAllCategoryMeta } from "@/lib/i18n/categories";
@@ -14,13 +15,7 @@ import Pricing from "@/components/landing/Pricing";
 import Hero from "@/components/landing/Hero";
 import paper from "@/components/landing/landing.module.css";
 import { KolamDivider, SideGarlands } from "@/components/site/festive";
-import {
-  FeatureBento,
-  FinalCta,
-  HowItWorks,
-  OccasionMarquee,
-  SectionHeading,
-} from "@/components/landing/Sections";
+import { FinalCta, HowItWorks, SectionHeading } from "@/components/landing/Sections";
 
 /** Openings the hero phone cycles through — one per tradition and style. */
 const FEATURED = ["temple-gopuram", "nikah-emerald", "church-stained-glass", "mandap-marigold", "velvet-gold", "engagement-ring"];
@@ -57,31 +52,30 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   );
   const featured = FEATURED.flatMap((id) => templates.find((tpl) => tpl.id === id)?.showcase ?? []);
 
+  const stats = await getSiteStats();
+
   return (
     <main className={`flex-1 ${paper.paper}`}>
       <StructuredData locale={locale} />
       <Hero featured={featured} />
-
-      <OccasionMarquee occasions={categories.map((c) => ({ id: c.id, label: c.label }))} />
+      <Proof stats={stats} />
 
       <div className="relative">
         <SideGarlands />
       </div>
       <section id="templates" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 pt-14 pb-16 sm:px-6">
         <SectionHeading eyebrow={t("gallery.eyebrow")} title={t("gallery.title")} sub={t("gallery.sub")} />
-        <OfferCountdown className="mt-6" />
         <div className="mt-6">
           <TemplateGallery
             categories={categories.map((c) => ({ id: c.id, label: c.label }))}
             templates={templates}
+            ratings={stats.designRatings}
           />
         </div>
       </section>
 
       <KolamDivider />
       <HowItWorks />
-      <KolamDivider />
-      <FeatureBento />
       <KolamDivider />
       <Reviews />
       <Pricing />

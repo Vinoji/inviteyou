@@ -6,7 +6,8 @@ import { getTranslations } from "next-intl/server";
 import { getAdminDb } from "./firebase-admin";
 import { generateUniqueSlug } from "./slug";
 import { getRazorpay } from "./razorpay";
-import { minAcceptedPaise } from "./pricing";
+import { isFreeTemplate } from "./pricing";
+import { minAcceptedPayablePaise } from "./coupons";
 import { RESTORE_PRICE_PAISE, expiresAt, restoredUntilAfterPayment } from "./expiry";
 import { sendToOwner } from "./notify";
 import { ownerLinks } from "./ownerLinks";
@@ -79,7 +80,7 @@ export async function publishPaidDraft(
     const draft = draftSnap.data()!;
     // The amount must cover this draft's template (so a cheap template's
     // order can't publish a dearer one after switching designs).
-    if (paidPaise < minAcceptedPaise(draft.templateId ?? "")) {
+    if (isFreeTemplate(draft.templateId ?? "") || paidPaise < minAcceptedPayablePaise(draft.templateId ?? "", draft.coupon)) {
       return { ok: false, status: 400, error: "This payment doesn't cover this design's price." };
     }
     const slug = await generateUniqueSlug(draft.groomName ?? "", draft.brideName ?? "");
@@ -94,14 +95,17 @@ export async function publishPaidDraft(
       // The other caller got here first.
       if (paySnap.exists || !dSnap.exists) return null;
       const d = dSnap.data()!;
-      if (paidPaise < minAcceptedPaise(d.templateId ?? "")) return null;
+      if (isFreeTemplate(d.templateId ?? "") || paidPaise < minAcceptedPayablePaise(d.templateId ?? "", d.coupon)) return null;
       const owner = oSnap.exists ? oSnap.data()! : {};
       const now = Date.now();
       const publishedRef = db.collection("invitations").doc(slug);
       // create(), not set(): never overwrite another invitation that took
       // this slug between the check above and now.
+      // The discount code stays with the payment record, not on the
+      // (publicly rendered) invitation.
+      const { coupon, fromFreeCard, ...published } = d;
       tx.create(publishedRef, {
-        ...d,
+        ...published,
         slug,
         status: "published",
         viewCount: 0,
@@ -114,7 +118,18 @@ export async function publishPaidDraft(
         razorpayOrderId: orderId,
         ...(owner.phone ? { ownerPhone: owner.phone, ownerLocale: owner.locale ?? "en" } : {}),
       });
-      tx.set(paymentRef, { purpose: "publish", draftId, slug, paymentId, at: now });
+      tx.set(paymentRef, {
+        purpose: "publish",
+        draftId,
+        slug,
+        paymentId,
+        at: now,
+        amountPaise: paidPaise,
+        templateId: d.templateId ?? "",
+        ...(coupon ? { coupon } : {}),
+        // Funnel: this couple made a free card on this device first.
+        ...(fromFreeCard ? { fromFreeCard: true } : {}),
+      });
       tx.delete(ownerRef);
       tx.delete(draftRef);
       return { draft: d, owner };

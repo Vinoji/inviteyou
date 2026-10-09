@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { getAdminDb } from "@/lib/firebase-admin";
-import { templatePricePaise } from "@/lib/pricing";
+import { isFreeTemplate } from "@/lib/pricing";
+import { payableInr } from "@/lib/coupons";
 import { tooMany } from "@/lib/rateLimit";
 
 
@@ -30,6 +31,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Free designs are a card download, never a published (paid) invitation.
+  if (isFreeTemplate(snap.data()?.templateId ?? "")) {
+    return NextResponse.json(
+      { error: "This design is free — download your card instead, or pick a paid design for a live link." },
+      { status: 400 }
+    );
+  }
+
   const keyId = process.env.RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   if (!keyId || !keySecret) {
@@ -43,10 +52,11 @@ export async function POST(req: NextRequest) {
   const order = await instance.orders.create({
     // Each template has its own price; verify-payment and the webhook check
     // what was paid covers the draft's template at publish time.
-    amount: templatePricePaise(snap.data()?.templateId ?? ""),
+    // The draft's discount code (checked when it was saved) is applied here.
+    amount: payableInr(snap.data()?.templateId ?? "", snap.data()?.coupon) * 100,
     currency: "INR",
     receipt: draftId,
-    notes: { draftId, templateId: snap.data()?.templateId ?? "" },
+    notes: { draftId, templateId: snap.data()?.templateId ?? "", coupon: snap.data()?.coupon ?? "" },
   });
 
   return NextResponse.json({

@@ -16,6 +16,7 @@ import {
   Eye,
   PenLine,
   RotateCcw,
+  Download,
   X,
   Smartphone,
   Sparkles,
@@ -58,7 +59,11 @@ import {
 import type { NearbySuggestion as NearbyResult } from "@/lib/geo";
 import { getFamily, legacyParentsLine } from "@/lib/family";
 import { STORY_PRESETS } from "@/lib/storyPresets";
-import { templatePriceInr } from "@/lib/pricing";
+import { isFreeTemplate, templateListPriceInr, templatePriceInr } from "@/lib/pricing";
+import { payableInr } from "@/lib/coupons";
+import { savedRef } from "@/lib/referral";
+import CouponField from "@/components/editor/CouponField";
+import UpgradeSheet from "@/components/editor/UpgradeSheet";
 import OfferCountdown from "@/components/landing/OfferCountdown";
 import { getTemplateConfig } from "@/lib/templates";
 import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
@@ -160,6 +165,16 @@ const SEED_KEYS = [
  * (publishing uses PublishOverlay's full list). */
 const SAVE_STEPS: PublishPhase[] = ["saving", "opening"];
 const RESTORE_STEPS: PublishPhase[] = ["checkout", "verifying"];
+
+/** Set once this device has downloaded a free card (see downloadCard). */
+const FREE_CARD_KEY = "namma:freeCard";
+function madeFreeCard(): boolean {
+  try {
+    return Boolean(localStorage.getItem(FREE_CARD_KEY));
+  } catch {
+    return false;
+  }
+}
 
 /** "<time>-<random>" in lowercase base36 — the shape storage.rules expects. */
 function uniqueSuffix() {
@@ -903,6 +918,71 @@ export default function Editor({
 
   /** Checks what Publish needs and says what's missing, instead of a
    * silently disabled button. */
+  const free = isFreeTemplate(templateId);
+  const [downloading, setDownloading] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  // A discount code — from a partner's link (?ref=) or typed in.
+  const [coupon, setCoupon] = useState("");
+  useEffect(() => {
+    const ref = savedRef();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- read once from this device's storage after mount
+    if (ref) setCoupon(ref);
+  }, []);
+  const payable = payableInr(templateId, coupon);
+
+  /** Free designs: the card image, drawn on the server from the details as
+   * they are now (nothing saved) — shared straight from the phone where it
+   * can be, otherwise downloaded. */
+  async function downloadCard() {
+    setPublishError(null);
+    if (!data.brideName.trim() || (!category.singlePerson && !data.groomName.trim())) {
+      setPublishError(t("errNamesRequired"));
+      setMobileView("edit");
+      goTo("names");
+      return;
+    }
+    setDownloading(true);
+    try {
+      // Real funnel numbers (lib/stats.ts): a device's first free card is
+      // counted once, and a later purchase is marked as coming from one.
+      let firstCard = false;
+      try {
+        firstCard = !localStorage.getItem(FREE_CARD_KEY);
+      } catch {
+        // Private mode — not counted.
+      }
+      const res = await fetch("/api/card", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, templateId, firstCard }),
+      });
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? t("errGeneric"));
+      const blob = await res.blob();
+      try {
+        localStorage.setItem(FREE_CARD_KEY, String(Date.now()));
+      } catch {
+        // Private mode.
+      }
+      const file = new File([blob], "invitation-card.png", { type: "image/png" });
+      const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean };
+      if (window.matchMedia("(pointer: coarse)").matches && nav.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] }).catch(() => {});
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "invitation-card.png";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+      }
+      setUpgradeOpen(true);
+    } catch (err) {
+      setPublishError(err instanceof Error ? err.message : t("errGeneric"));
+    } finally {
+      setDownloading(false);
+    }
+  }
+
   function tryPublish() {
     setPublishError(null);
     if (!data.brideName.trim() || (!category.singlePerson && !data.groomName.trim())) {
@@ -942,7 +1022,7 @@ export default function Editor({
       const draftRes = await fetch("/api/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ draftId, ...data, ownerPhone, ownerLocale: uiLocale }),
+        body: JSON.stringify({ draftId, ...data, ownerPhone, ownerLocale: uiLocale, coupon, fromFreeCard: madeFreeCard() }),
       });
       if (!draftRes.ok) {
         const j = await draftRes.json().catch(() => ({}));
@@ -1022,7 +1102,7 @@ export default function Editor({
     }
   }
 
-  const phoneFieldShown = !isEditMode && (stepIndex === steps.length - 1 || phoneTouched || Boolean(ownerPhone));
+  const phoneFieldShown = !isEditMode && !free && (stepIndex === steps.length - 1 || phoneTouched || Boolean(ownerPhone));
   // On phones the button lives in the bottom bar, so this footer shows only
   // when it has something else: the phone field or the expiry notices.
   const formFooterOnPhone = phoneFieldShown || Boolean(isEditMode && expiry && (expiry.expired || expiry.expiresAt));
@@ -1032,6 +1112,7 @@ export default function Editor({
     // the phone's Edit / Preview tabs stay in view.
     <div className="flex h-[calc(100dvh-2.75rem)] flex-col lg:flex-row">
       <PublishOverlay phase={progress?.phase ?? null} steps={progress?.steps} accent={data.accentColor} />
+      {upgradeOpen && <UpgradeSheet designs={designs} onLeave={persistDraft} onClose={() => setUpgradeOpen(false)} />}
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="afterInteractive"
@@ -1514,6 +1595,7 @@ export default function Editor({
           )}
           {/* Asked for on the last step (or when Publish needs it), so the
               bar stays small while filling in the rest. */}
+          {phoneFieldShown && <CouponField templateId={templateId} code={coupon} onChange={setCoupon} className="mb-3 block" />}
           {phoneFieldShown && (
             <label className="mb-3 block">
               <span className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
@@ -1547,7 +1629,15 @@ export default function Editor({
             </label>
           )}
           {publishError && <p className="mb-2 hidden text-sm text-red-600 lg:block">{publishError}</p>}
-          {!isEditMode && !getTemplateConfig(templateId).price && <OfferCountdown compact className="mb-2 hidden lg:flex" />}
+          {!isEditMode && !free && !getTemplateConfig(templateId).price && (
+            <OfferCountdown
+              compact
+              price={templatePriceInr(templateId)}
+              was={templateListPriceInr(templateId) ?? undefined}
+              className="mb-2 hidden lg:flex"
+            />
+          )}
+          {!isEditMode && free && <p className="mb-2 hidden text-center text-xs text-neutral-500 lg:block dark:text-neutral-400">{t("freeUpsell")}</p>}
           <div className="hidden lg:block">
           {isEditMode ? (
             <button
@@ -1559,12 +1649,21 @@ export default function Editor({
             </button>
           ) : (
             <button
-              onClick={tryPublish}
-              disabled={publishing}
+              onClick={free ? downloadCard : tryPublish}
+              disabled={publishing || downloading}
               className={`flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-bold ${ed.gold}`}
             >
-              {!publishing && <Sparkles size={16} aria-hidden />}
-              {publishing ? t("processing") : t("publishCta", { price: templatePriceInr(templateId) })}
+              {free ? (
+                <>
+                  <Download size={16} aria-hidden />
+                  {downloading ? t("preparingCard") : t("downloadCardFree")}
+                </>
+              ) : (
+                <>
+                  {!publishing && <Sparkles size={16} aria-hidden />}
+                  {publishing ? t("processing") : t("publishCta", { price: payable })}
+                </>
+              )}
             </button>
           )}
           </div>
@@ -1662,9 +1761,10 @@ export default function Editor({
       {!keyboardOpen && (
         <div className={`px-3 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden ${ed.dock}`}>
           {publishError && <p className="mb-2 px-1 text-sm font-medium text-[#ffb4a8]">{publishError}</p>}
-          {!isEditMode && !getTemplateConfig(templateId).price && (
-            <OfferCountdown compact short className="mb-2 text-[#ffd35c]" />
+          {!isEditMode && !free && !getTemplateConfig(templateId).price && (
+            <OfferCountdown compact short price={templatePriceInr(templateId)} className="mb-2 text-[#ffd35c]" />
           )}
+          {!isEditMode && free && <p className="mb-2 text-center text-[11px] text-[#ffe9b8]/75">{t("freeUpsellShort")}</p>}
           <div className="flex items-center gap-2.5">
             <div className={`flex shrink-0 rounded-full p-1 ${ed.seg}`} role="tablist">
               {(["edit", "preview"] as const).map((view) => {
@@ -1689,19 +1789,24 @@ export default function Editor({
             </div>
             <button
               type="button"
-              onClick={isEditMode ? handleSaveEdit : tryPublish}
-              disabled={isEditMode ? !canSubmit : publishing}
+              onClick={isEditMode ? handleSaveEdit : free ? downloadCard : tryPublish}
+              disabled={isEditMode ? !canSubmit : publishing || downloading}
               className={`flex h-12 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-sm font-bold ${ed.gold}`}
             >
               {isEditMode ? (
                 publishing ? t("saving") : t("saveChanges")
+              ) : free ? (
+                <>
+                  <Download size={16} aria-hidden className="shrink-0" />
+                  <span className="truncate">{downloading ? t("preparingCard") : t("downloadCardShort")}</span>
+                </>
               ) : publishing ? (
                 t("processing")
               ) : (
                 <>
                   <Sparkles size={16} aria-hidden className="shrink-0 max-[389px]:hidden" />
                   <span className="truncate">{t("publishLabel")}</span>
-                  <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-xs ${ed.price}`}>₹{templatePriceInr(templateId)}</span>
+                  <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-xs ${ed.price}`}>₹{payable}</span>
                 </>
               )}
             </button>

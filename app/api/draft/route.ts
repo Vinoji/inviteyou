@@ -20,6 +20,7 @@ import {
   sanitizeFontPairing,
 } from "@/lib/sanitize";
 import { tooMany } from "@/lib/rateLimit";
+import { couponOffInr, normalizeCode } from "@/lib/coupons";
 
 /**
  * Creates or updates a "pending_payment" draft, keyed by a client-generated
@@ -64,6 +65,8 @@ export async function POST(req: NextRequest) {
     contentLocale,
     ownerPhone,
     ownerLocale,
+    coupon,
+    fromFreeCard,
   } = body;
 
   if (typeof draftId !== "string" || !/^[a-zA-Z0-9-]{8,64}$/.test(draftId)) {
@@ -135,6 +138,9 @@ export async function POST(req: NextRequest) {
     ...(Array.isArray(brideFamily) ? { brideFamily: sanitizeFamily(brideFamily) } : {}),
     ...(Array.isArray(groomFamily) ? { groomFamily: sanitizeFamily(groomFamily) } : {}),
     ...(sanitizeContentLocale(contentLocale) ? { contentLocale: sanitizeContentLocale(contentLocale) } : {}),
+    // A discount code, kept only when it applies to this design.
+    ...(couponOffInr(coupon, templateId) > 0 ? { coupon: normalizeCode(coupon) } : {}),
+    ...(fromFreeCard === true ? { fromFreeCard: true } : {}),
     status: "pending_payment",
     slug: null,
     viewCount: existing.exists ? (existing.data()?.viewCount ?? 0) : 0,

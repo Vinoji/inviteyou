@@ -349,6 +349,48 @@
   color: #7ee2a8;
 }
 
+/* Hero price strip: free · live · 3D, each linking to its designs. */
+.priceStrip {
+  margin-top: 22px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pricePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff6e6;
+  background: rgba(255, 233, 184, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(232, 176, 74, 0.45);
+  transition: background 0.2s, transform 0.2s;
+}
+.pricePill:hover {
+  background: rgba(255, 233, 184, 0.16);
+  transform: translateY(-1px);
+}
+.pricePill svg {
+  color: #ffd35c;
+}
+.pricePillHot {
+  color: #2a0c27;
+  background: linear-gradient(135deg, #ffe08a, #f2c45a 55%, #e8b04a);
+  box-shadow: 0 8px 18px -8px rgba(232, 176, 74, 0.9);
+}
+.pricePillHot svg {
+  color: #2a0c27;
+}
+.priceWas {
+  margin-right: 2px;
+  opacity: 0.55;
+  font-weight: 500;
+}
+
 /* Stage: a paper-cut temple arch with the phone inside. */
 .stage {
   position: relative;
@@ -1588,7 +1630,9 @@
 .pricingStage {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  /* clip, not hidden: still trims the decorations, but lets the
+     comparison header stick while scrolling. */
+  overflow: clip;
   color: #fff6e6;
   background:
     radial-gradient(ellipse 70% 55% at 50% 100%, rgba(201, 86, 58, 0.55), transparent 70%),

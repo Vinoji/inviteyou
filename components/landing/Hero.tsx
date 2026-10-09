@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { useTranslations } from "next-intl";
-import { lowestPriceInr } from "@/lib/pricing";
-import { Check, Play, Sparkles } from "lucide-react";
+import { TIER_PRICES, offerActive, tierPriceInr } from "@/lib/pricing";
+import { Crown, Gift, Play, Sparkles } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useReducedMotionPref } from "@/lib/motionPref";
 import TemplateShowcase, { type ShowcaseProps } from "./TemplateShowcase";
@@ -83,13 +83,31 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
               {t("ctaSecondary")}
             </Link>
           </div>
-          <ul className={s.trust}>
-            {(["trust1", "trust2", "trust3"] as const).map((k) => (
-              <li key={k}>
-                <Check size={15} aria-hidden />
-                {t(k, { price: lowestPriceInr() })}
-              </li>
-            ))}
+          {/* The three ways to buy, each a tap away from its designs. */}
+          <ul className={s.priceStrip}>
+            <li>
+              <Link href="/#free" className={s.pricePill}>
+                <Gift size={15} aria-hidden />
+                <span>{t("priceFree")}</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/#value" className={`${s.pricePill} ${s.pricePillHot}`}>
+                <Sparkles size={15} aria-hidden />
+                <span>
+                  {offerActive() && <s className={s.priceWas}>₹{TIER_PRICES.standard.usual}</s>} ₹{tierPriceInr("standard")}{" "}
+                  {t("priceLive")}
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/#premium" className={s.pricePill}>
+                <Crown size={15} aria-hidden />
+                <span>
+                  ₹{tierPriceInr("premium")} {t("price3d")}
+                </span>
+              </Link>
+            </li>
           </ul>
         </div>
 

@@ -20,7 +20,6 @@
     "useShort": "Use this design",
     "offer": {
       "title": "Launch offer",
-      "line": "Publish for <b>₹{price}</b> <s>₹{was}</s> — until {date}",
       "compact": "Launch price ₹{price} (usual ₹{was}) until {date}",
       "left": "{d}d {h}h {m}m left",
       "endsIn": "Offer ends in",
@@ -30,50 +29,27 @@
         "m": "min",
         "s": "sec"
       },
-      "short": "₹{price} launch price ends in {d}d {h}h {m}m"
+      "short": "₹{price} launch price ends in {d}d {h}h {m}m",
+      "endsLine": "Launch prices end {date} — then ₹{after} and ₹{after3d}.",
+      "live": "Live invitation",
+      "premium3d": "Premium 3D",
+      "cta": "Get the ₹{price} price →",
+      "barLive": "Live invitation",
+      "bar3d": "3D",
+      "barLeft": "{d}d {h}h left"
     },
     "showAll": "Show all {count} designs",
     "pricing": {
       "eyebrow": "Pricing",
       "title": "Simple, one-time pricing",
-      "subtitle": "Design and preview for free. Pay once when you are ready to share — no subscription, no hidden fees.",
-      "popular": "Most loved",
-      "freeName": "Design & preview",
-      "freeUnit": "free",
-      "freeBlurb": "Try every design before you pay anything.",
-      "free1": "Every template and animated opening",
-      "free2": "Live preview on phone, tablet and desktop",
-      "free3": "English and Tamil invitations",
-      "free4": "Switch designs without losing your content",
-      "free5": "Drafts saved automatically on your device",
-      "freeCta": "Start designing",
-      "paidName": "Publish",
-      "paidUnit": "once per invitation",
-      "paidFrom": "from ₹{price}",
-      "paidBlurb": "Your invitation, live with its own link.",
-      "paid1": "Your own invitation link — unlimited guests and views",
-      "paid2": "RSVPs with a private guest list",
-      "paid3": "WhatsApp sharing, personal links and reminders",
-      "paid4": "Add-to-calendar, directions and countdown",
-      "paid5": "QR code and printable card (PDF)",
-      "paid6": "Guest photo wall and blessings",
-      "paid7": "Your own background music",
-      "paid8": "Edit anytime, free",
-      "paidCta": "Choose a design",
-      "teamName": "Planners & bulk",
-      "teamPrice": "Let’s talk",
-      "teamUnit": "",
-      "teamBlurb": "For wedding planners, venues and companies with many events.",
-      "team1": "Several invitations for your clients",
-      "team2": "Help setting up designs and content",
-      "team3": "Priority support",
+      "subtitle": "Free cards, ₹199 live invitations and ₹399 3D designs — pay once, no subscription.",
       "teamCta": "Contact us",
       "note": "Payments are processed securely by Razorpay (UPI, cards, net banking).",
       "trustNoSub": "No subscription",
       "trustNoHidden": "No hidden fees",
       "trustSecure": "Secure Razorpay payments",
-      "paidFromLabel": "from",
-      "trustValue": "One link for every guest — no printing, no courier"
+      "trustValue": "One link for every guest — no printing, no courier",
+      "teamLine": "Wedding planner, venue or company with many events?"
     },
     "hero": {
       "chip": "Animated invitations · Tamil & English",
@@ -81,9 +57,6 @@
       "subtitle": "Pick a design with a real opening animation — a bell that rings, curtains that part, a lamp you light. Add your names, story and photos, and share one beautiful link on WhatsApp.",
       "ctaPrimary": "Create your invitation",
       "ctaSecondary": "Watch the openings",
-      "trust1": "Free to design",
-      "trust2": "From ₹{price} to publish",
-      "trust3": "RSVP & reminders built in",
       "showDesign": "Show design {n}",
       "rsvpTitle": "128 attending",
       "rsvpBody": "RSVPs roll in live",
@@ -91,12 +64,15 @@
       "waBody": "Priya & Arjun's wedding",
       "calMonth": "JAN",
       "calTitle": "Muhurtham · 9 AM",
-      "calBody": "Added to calendar"
+      "calBody": "Added to calendar",
+      "priceFree": "Free cards",
+      "priceLive": "live invitation",
+      "price3d": "3D designs"
     },
     "gallery": {
       "eyebrow": "Designs",
-      "title": "Every design has its own opening",
-      "sub": "Tap any card to try it — exactly what your guests will see."
+      "title": "What are you celebrating?",
+      "sub": "Pick your occasion — every design opens with its own animation. Tap a card to try it."
     },
     "how": {
       "eyebrow": "How it works",
@@ -137,24 +113,7 @@
     },
     "premium": "Premium",
     "interactive3d": "3D Interactive",
-    "quick": {
-      "all": "All",
-      "new": "New",
-      "picks": "Editor's picks",
-      "premium": "Premium 3D",
-      "value": "Best value ₹{price}",
-      "none": "No designs match — try another filter."
-    },
-    "trust": {
-      "free": "Free to design & preview",
-      "once": "Pay once — no subscription",
-      "edits": "Edit anytime, free",
-      "secure": "Secure UPI & card payment"
-    },
-    "save": "Save {percent}%",
     "badgeNew": "New",
-    "badgePick": "Editor's pick",
-    "badge3d": "3D",
     "sticky": {
       "line": "Free to design · from ₹{price}",
       "cta": "Choose a design"
@@ -165,6 +124,81 @@
       "summary": "{average} out of 5 from {count, plural, one {# review} other {# reviews}}",
       "stars": "{n} out of 5 stars",
       "anonymous": "A happy family"
+    },
+    "free": "Free",
+    "savings": {
+      "eyebrow": "Do the maths",
+      "title": "How much you save",
+      "guests": "{n} guests",
+      "printed": "Printed cards",
+      "link": "One InviteForYou link",
+      "saved": "You save about ₹{amount}",
+      "assumption": "Estimate at about ₹{per} a printed card with printing and delivery — your printer's price may differ.",
+      "cta": "Start for ₹{price}",
+      "sample": "See a live sample"
+    },
+    "tiers": {
+      "free": {
+        "name": "Free cards",
+        "gets": "A card image to download and share on WhatsApp — no link."
+      },
+      "standard": {
+        "name": "Live invitations",
+        "gets": "Your own invitation link — animated opening, RSVP, maps, music and more."
+      },
+      "premium": {
+        "name": "Premium 3D",
+        "gets": "Everything in a live invitation, inside an interactive 3D world."
+      },
+      "whatsIncluded": "See everything included"
+    },
+    "compare": {
+      "whatYouGet": "What you get",
+      "popular": "Most loved",
+      "free": "Free",
+      "col": {
+        "free": "Free card",
+        "standard": "Live invitation",
+        "premium": "Premium 3D"
+      },
+      "cta": {
+        "free": "Free designs",
+        "standard": "Choose",
+        "premium": "3D designs"
+      },
+      "rows": {
+        "preview": "Design and preview any design, free",
+        "languages": "English and Tamil",
+        "card": "Invitation card image to download and share",
+        "link": "Your own invitation link — unlimited guests and views",
+        "opening": "Animated opening that guests tap to open",
+        "rsvp": "RSVP with a private guest list (who's coming, how many, their wishes)",
+        "personal": "Personal links that greet each family by name, and WhatsApp reminders",
+        "details": "Event timings, Google Maps directions, add-to-calendar and countdown",
+        "story": "Your story, families and up to 6 photos",
+        "music": "Background music — our songs or your own",
+        "guests": "Guest photo wall and blessings",
+        "qr": "QR code and printable card",
+        "edit": "Edit anytime — guests always see the latest",
+        "live": "Live until 10 days after your event",
+        "world": "Interactive 3D palace, temple, cathedral or garden",
+        "camera": "Cinematic camera that moves as guests scroll"
+      },
+      "notes": {
+        "cardFree": "small brand line",
+        "cardPaid": "with QR code"
+      },
+      "included": "Included",
+      "notIncluded": "Not included",
+      "footnote": "Pay once per invitation — no subscription. Designing and previewing is always free."
+    },
+    "proof": {
+      "label": "InviteForYou by the numbers",
+      "rating": "average from {count, plural, one {# review} other {# reviews}}",
+      "published": "invitations published",
+      "rsvps": "RSVPs received",
+      "upgrade": "of couples who made a free card upgraded to a live invitation",
+      "opens": "times guests opened an invitation"
     }
   },
   "notFound": {
@@ -558,7 +592,32 @@
     "makeFirst": "Make it photo 1",
     "moveUp": "Move up",
     "moveDown": "Move down",
-    "close": "Close"
+    "close": "Close",
+    "downloadCardFree": "Download card — Free",
+    "downloadCardShort": "Download card",
+    "preparingCard": "Preparing card…",
+    "freeUpsell": "Free design: you get the card image to share. Want a live link with RSVP, maps & music? Pick any other design.",
+    "freeUpsellShort": "Free card image · live link with RSVP in other designs",
+    "coupon": {
+      "have": "Have a code?",
+      "placeholder": "Enter code",
+      "apply": "Apply",
+      "invalid": "That code isn't valid. Codes come from our partner studios or your guest-list page.",
+      "applied": "{code}: ₹{off} off · {label}",
+      "remove": "Remove code"
+    },
+    "upgrade": {
+      "ready": "Your card is ready",
+      "title": "Make it a live invitation — from ₹{price}",
+      "b1": "One link for every guest",
+      "b2": "RSVPs & guest list",
+      "b3": "Maps, countdown & music",
+      "b4": "Animated opening",
+      "pick": "Same details, your pick of design",
+      "keeps": "Everything you've typed stays — just pick a design.",
+      "later": "Maybe later",
+      "close": "Close"
+    }
   },
   "invite": {
     "hero": {
@@ -1725,7 +1784,11 @@
     "cardAlt": "Your invitation card",
     "shareCard": "Share card on WhatsApp",
     "downloadCard": "Download card",
-    "sharedHint": "The message is copied too — paste it in WhatsApp if it only shows the card."
+    "sharedHint": "The message is copied too — paste it in WhatsApp if it only shows the card.",
+    "nextWedding": "Planning the wedding next?",
+    "nextEvent": "Another celebration coming up?",
+    "returningCode": "Use code {code} for ₹{off} off your next invitation.",
+    "returningCta": "Choose a design"
   },
   "invitePage": {
     "joinUsWithDate": "Join us in celebrating — {title} on {date}.",

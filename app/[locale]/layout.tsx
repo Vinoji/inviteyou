@@ -21,6 +21,8 @@ import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { routing } from "@/i18n/routing";
 import SiteHeader from "@/components/site/SiteHeader";
+import RefCapture from "@/components/site/RefCapture";
+import OfferBar from "@/components/site/OfferBar";
 import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo";
 import SiteFooter from "@/components/site/SiteFooter";
@@ -214,7 +216,9 @@ export default async function RootLayout({
           <MotionPrefSync />
           <OffscreenPause />
           <EntranceGate />
+          <OfferBar />
           <SiteHeader />
+          <RefCapture />
           {children}
           <SiteFooter />
           <HelpMenu />

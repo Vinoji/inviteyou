@@ -16,7 +16,7 @@ InviteForYou turns an invitation into a small personal website. A couple picks a
 - **Everything guests need** — multiple functions with timings, Google Maps directions, add-to-calendar, countdown, family with proper kin wording, story, photo gallery, background music, guest photo wall, blessings, QR code and personalised greetings.
 - **RSVP and guest list** — guests reply in a tap; the owner gets a private, token-gated guest list.
 - **Media handled in the browser** — photos are cropped and compressed (and stripped of GPS data) before upload; songs are re-encoded to compact MP3s. A built-in library of licensed photos and music covers couples without their own.
-- **Pay once to publish** — free to design and preview; ₹399 to publish (premium 3D designs ₹999), via Razorpay. Edits are always free.
+- **Free cards and one-time pricing** — one free design per occasion gives a downloadable card image; a live invitation website is ₹199 and premium 3D ₹399 at launch (₹299 / ₹599 after 12 Nov 2026), paid once via Razorpay. Designing, previewing and edits are always free.
 - **Search-ready** — occasion landing pages, bilingual sitemap with `hreflang`, schema.org structured data, Open Graph share cards and [`/llms.txt`](https://inviteforyou.in/llms.txt) for AI assistants.
 
 ## Tech stack
@@ -122,7 +122,9 @@ The site deploys to Vercel from the `main` branch. Set the environment variables
 
 ## Running the business
 
-- **Launch offer.** Standard designs cost ₹399 until 31 December 2026 (India time), then ₹599 — set by `OFFER_PRICE_INR`, `OFFER_ENDS_AT` and `LIST_PRICE_INR` in [`lib/pricing.ts`](lib/pricing.ts). The site's countdown, every displayed price and the payment check all read from there, so the offer ends on its own; payments started just before the end are honoured for 24 hours.
+- **Prices and the launch offer.** Three tiers in [`lib/pricing.ts`](lib/pricing.ts): free (designs with `free: true` in `lib/templates.ts` — card image only, never published), standard (₹199 until 12 November 2026, India time, then ₹299) and premium 3D (`badge: "premium"`; ₹399, then ₹599). Change `TIER_PRICES` and `OFFER_ENDS_AT` there. The site's countdown, every displayed price and the payment check all read from there, so the offer ends on its own; payments started just before the end are honoured for 24 hours.
+- **Discount and partner codes.** Codes live in [`lib/coupons.ts`](lib/coupons.ts). `WEDDING50` (₹50 off) is shown to couples on their guest-list page for their next invitation. To add a partner (photographer, mandapam, printer…), add one line such as `{ code: "RAVISTUDIO", offInr: 20, kind: "partner", label: "Ravi Studio" }` and give them the link `https://inviteforyou.in/?ref=RAVISTUDIO` — the code is remembered for 30 days and applied at publish. Each paid publish records `coupon`, `amountPaise` and `templateId` in Firestore `payments/{orderId}`, so a partner's sales can be counted for commission. No invitation goes below ₹49 after a discount.
+- **Real metrics.** The home page's "by the numbers" strip and the ★ ratings on design cards come from [`lib/stats.ts`](lib/stats.ts), counted from Firestore and cached for an hour: invitations published, times guests opened them, RSVPs, average review rating (overall and per design), and the share of free-card makers who later published (the editor counts a device's first free card in `stats/funnel`, and marks a later purchase from that device `fromFreeCard` in `payments/`). Each number appears only once it passes its threshold (e.g. 25 invitations, 5 reviews, 50 free-card makers) — never typed in.
 - **Approving reviews.** Couples review from their private guest-list page. Reviews land in the Firestore `reviews` collection with `approved: false`; set `approved` to `true` in the Firebase console to show one on the home page ("What families say" appears once at least one is approved). Editing a review hides it again until re-approved.
 
 ## Licence

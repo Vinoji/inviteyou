@@ -11,6 +11,8 @@ import { parseIsoDate } from "@/lib/calendar";
 import HostTools, { RemindButton } from "@/components/host/HostTools";
 import ReviewCard from "@/components/host/ReviewCard";
 import { eventHasPassed, getReview } from "@/lib/reviews";
+import { COUPONS } from "@/lib/coupons";
+import { Gift } from "lucide-react";
 import { NAME_TOKEN, URL_TOKEN } from "@/lib/share";
 import { buildWhatsAppMessage } from "@/lib/inviteMessage";
 import festive from "@/components/landing/landing.module.css";
@@ -145,6 +147,7 @@ export default async function RsvpsPage({
   const hostMessages = await buildHostMessages(data, template.category);
   const review = await getReview(slug);
   const eventPassed = eventHasPassed(data.weddingDate);
+  const returning = COUPONS.find((c) => c.kind === "returning");
 
   const attending = rsvps.filter((r) => r.attending);
   const declined = rsvps.filter((r) => !r.attending);
@@ -198,6 +201,22 @@ export default async function RsvpsPage({
         eventPassed={eventPassed}
         existing={review ? { rating: review.rating, comment: review.comment, showNames: Boolean(review.names) } : null}
       />
+
+      {/* A thank-you for returning couples — engagement → wedding, and so on. */}
+      {returning && (
+        <section className="mt-6 flex items-start gap-3 rounded-2xl border border-emerald-600/25 bg-emerald-50 p-4 text-sm text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-200">
+          <Gift size={20} className="mt-0.5 shrink-0" aria-hidden />
+          <div>
+            <p className="font-semibold">
+              {template.category === "engagement" ? t("nextWedding") : t("nextEvent")}
+            </p>
+            <p className="mt-1">{t("returningCode", { code: returning.code, off: returning.offInr })}</p>
+            <Link href={template.category === "engagement" ? "/#wedding" : "/#templates"} className="mt-2 inline-block font-semibold underline">
+              {t("returningCta")}
+            </Link>
+          </div>
+        </section>
+      )}
 
       <div className="mt-10 space-y-3">
         {rsvps.length === 0 ? (

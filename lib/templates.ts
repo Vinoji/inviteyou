@@ -87,13 +87,18 @@ export interface TemplateConfig {
    * for new invitations, but kept so ones already made with it still render
    * and can be edited. */
   hidden?: true;
-  /** Publishing price in ₹. Leave out to use the standard price (in
-   * lib/pricing.ts). */
+  /** Free design: the couple downloads the invitation card image (with a
+   * small "Made with InviteForYou" line) — no published link, RSVP or site.
+   * Prices for everything else come from the tier in lib/pricing.ts. */
+  free?: true;
+  /** Publishing price in ₹, overriding the tier price — only for special
+   * cases (e.g. a payment test). Leave out normally. */
   price?: number;
   /** "Was" price in ₹, shown struck through beside the price. Leave out to
    * use the default (LIST_PRICE_INR in lib/pricing.ts). */
   listPrice?: number;
-  /** A ribbon on the landing-page card for top-tier designs. */
+  /** Premium tier (the 3D designs): its own price in lib/pricing.ts and a
+   * gold crown on the design card. */
   badge?: "premium";
 }
 
@@ -110,8 +115,6 @@ export const TEMPLATES: TemplateConfig[] = [
     intro: "palaceGate",
     pageLayout: "palace",
     seed: "hindu-north",
-    price: 999,
-    listPrice: 1499,
     badge: "premium",
   },
   {
@@ -126,8 +129,6 @@ export const TEMPLATES: TemplateConfig[] = [
     pageLayout: "temple3d",
     eventNamesFrom: "temple",
     seed: "traditional-gold",
-    price: 999,
-    listPrice: 1499,
     badge: "premium",
   },
   {
@@ -142,8 +143,6 @@ export const TEMPLATES: TemplateConfig[] = [
     pageLayout: "cathedral3d",
     eventNamesFrom: "church",
     seed: "christian",
-    price: 999,
-    listPrice: 1499,
     badge: "premium",
   },
   {
@@ -157,8 +156,6 @@ export const TEMPLATES: TemplateConfig[] = [
     intro: "parkGate",
     pageLayout: "park3d",
     seed: "floral-pastel",
-    price: 999,
-    listPrice: 1499,
     badge: "premium",
   },
   // ── Featured: its own page (components/invite/garden), first in the gallery ──
@@ -185,8 +182,6 @@ export const TEMPLATES: TemplateConfig[] = [
     pageLayout: "chapel",
     eventNamesFrom: "church",
     seed: "christian",
-    // TEMPORARY, for payment testing: remove to go back to the standard price.
-    price: 1,
   },
   // ── Premium styles, each with its own layout (lib/layoutStyles.ts) ──
   {
@@ -314,6 +309,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "boho-arch",
+    free: true,
     category: "wedding",
     defaultAccent: "#B5552E",
     defaultFont: "classic-serif",
@@ -453,6 +449,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "anniversary-emerald",
+    free: true,
     category: "anniversary",
     defaultAccent: "#0f6e4f",
     defaultFont: "royal-cinzel",
@@ -462,6 +459,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "valentine-blush",
+    free: true,
     category: "valentine",
     defaultAccent: "#c2185b",
     defaultFont: "elegant-script",
@@ -471,6 +469,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "proposal-starlit",
+    free: true,
     category: "proposal",
     defaultAccent: "#c9a227",
     defaultFont: "elegant-script",
@@ -480,6 +479,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "birthday-confetti",
+    free: true,
     category: "birthday",
     defaultAccent: "#e0409a",
     defaultFont: "modern-clean",
@@ -489,6 +489,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "housewarming-terracotta",
+    free: true,
     category: "housewarming",
     defaultAccent: "#b5622a",
     defaultFont: "classic-serif",
@@ -507,6 +508,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "baby-moon",
+    free: true,
     category: "baby",
     defaultAccent: "#8a6cc2",
     defaultFont: "classic-serif",
@@ -516,14 +518,13 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "corporate-ticket",
+    free: true,
     category: "corporate",
     defaultAccent: "#2563eb",
     defaultFont: "modern-clean",
     cardGradient: "from-slate-900 via-blue-900 to-sky-700",
     cardTextClass: "text-sky-50",
     intro: "ticket",
-    // TEMP: ₹1 for live-payment testing.
-    // price: 1,
   },
   // ── Premium styles for the other occasions ──
   {
@@ -561,6 +562,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "engagement-save-the-date",
+    free: true,
     category: "engagement",
     defaultAccent: "#111111",
     defaultFont: "luxe-didone",
