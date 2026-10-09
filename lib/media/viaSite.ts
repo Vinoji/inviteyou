@@ -5,8 +5,10 @@
  * the same-origin /api/media proxy, which only serves files under this
  * bucket's invitations/ folder — files that are public anyway.
  */
-export const STORAGE_BUCKET =
-  process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "vinoji-291fa.firebasestorage.app";
+// Accepts the bare bucket name or the gs:// form the Firebase console shows.
+export const STORAGE_BUCKET = (
+  process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "gs://vinoji-291fa.firebasestorage.app"
+).replace(/^gs:\/\//, "");
 
 export function isOurStorageFile(url: string): boolean {
   try {
