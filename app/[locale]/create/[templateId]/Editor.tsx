@@ -46,7 +46,6 @@ import { TEMPLATE_STYLE_KEYS, changedFields, clearDraft, loadDraft, saveDraft } 
 import { getCategoryMeta } from "@/lib/i18n/categories";
 import { getDefaultInvitationData } from "@/lib/i18n/defaultContent";
 import { SITE } from "@/lib/site";
-import { waPhone } from "@/lib/share";
 import { isDateAllowed, todayIso } from "@/lib/dates";
 import { OWNER_PHONE_KEY } from "@/components/invite/WelcomeBanner";
 import {
@@ -59,10 +58,11 @@ import {
 import type { NearbySuggestion as NearbyResult } from "@/lib/geo";
 import { getFamily, legacyParentsLine } from "@/lib/family";
 import { STORY_PRESETS } from "@/lib/storyPresets";
+import { followNames } from "@/lib/seedNames";
 import { isFreeTemplate, templateListPriceInr, templatePriceInr } from "@/lib/pricing";
 import { payableInr } from "@/lib/coupons";
 import { savedRef } from "@/lib/referral";
-import CouponField from "@/components/editor/CouponField";
+import CheckoutSheet from "@/components/editor/CheckoutSheet";
 import UpgradeSheet from "@/components/editor/UpgradeSheet";
 import OfferCountdown from "@/components/landing/OfferCountdown";
 import { getTemplateConfig } from "@/lib/templates";
@@ -281,15 +281,13 @@ export default function Editor({
   const [photoLibraryOpen, setPhotoLibraryOpen] = useState(false);
   // The buyer's own number: their edit link is sent there after payment.
   const [ownerPhone, setOwnerPhone] = useState("");
-  const ownerPhoneOk = Boolean(waPhone(ownerPhone));
-  const [phoneTouched, setPhoneTouched] = useState(false);
+  // Publish opens the checkout sheet (price, code, number, Pay).
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   // No past event dates (lib/dates.ts). "Today" is read after mount, from
   // the visitor's clock, so server and client render the same HTML.
   const [today, setToday] = useState("");
   const [savedDate, setSavedDate] = useState<string | undefined>(undefined);
   const dateRef = useRef<HTMLInputElement>(null);
-  const phoneRef = useRef<HTMLInputElement>(null);
-  const showPhoneError = (phoneTouched || Boolean(ownerPhone)) && !ownerPhoneOk;
   // Edit mode: whether the invitation has expired (lib/expiry.ts).
   const [expiry, setExpiry] = useState<{ expiresAt: number | null; expired: boolean } | null>(null);
   const [restoring, setRestoring] = useState(false);
@@ -300,9 +298,12 @@ export default function Editor({
   const searchParams = useSearchParams();
   const [step, setStep] = useState(() => (searchParams.get("step") === "design" ? "design" : "names"));
   const formScrollRef = useRef<HTMLDivElement>(null);
+  // Phones scroll the whole form panel (the step bar stays pinned).
+  const panelRef = useRef<HTMLDivElement>(null);
   function goTo(id: string) {
     setStep(id);
     formScrollRef.current?.scrollTo({ top: 0 });
+    panelRef.current?.scrollTo({ top: 0 });
   }
 
   useEffect(() => {
@@ -362,7 +363,9 @@ export default function Editor({
         if (draft.templateId !== templateId) {
           for (const k of TEMPLATE_STYLE_KEYS) delete fields[k];
         }
-        setData({ ...base, ...fields, templateId });
+        const restored = { ...base, ...fields, templateId };
+        // Drafts from before sample texts followed the names catch up here.
+        setData(followNames(base, restored, restored));
         setDraftId(draft.draftId);
         setStoryPreset(draft.storyPreset);
         setDraftNotice(
@@ -404,13 +407,17 @@ export default function Editor({
     return () => window.removeEventListener("pagehide", flush);
   }, []);
 
+  // "Start fresh" asks in the notice itself — a window.confirm() is
+  // silently blocked by some phone in-app browsers, so the tap did nothing.
+  const [confirmFresh, setConfirmFresh] = useState(false);
   function startFresh() {
-    if (!window.confirm(t("startFreshConfirm"))) return;
+    setConfirmFresh(false);
     clearDraft(template.category);
     setData({ ...seed, contentLocale: uiLocale });
     setStoryPreset(null);
     setDraftId(generateDraftId());
     setDraftNotice(null);
+    goTo("names");
   }
 
   function update<K extends keyof InvitationData>(key: K, value: InvitationData[K]) {
@@ -457,7 +464,8 @@ export default function Editor({
    * story before typing the names still ends up with the right names in it. */
   function updateName(key: "brideName" | "groomName", value: string) {
     setData((d) => {
-      const next = { ...d, [key]: value };
+      // Sample texts nobody has rewritten yet (the seed story…) follow the names.
+      const next = followNames(seed, d, { ...d, [key]: value });
       if (storyPreset && d.story === fillStory(storyPreset, d.brideName, d.groomName)) {
         next.story = fillStory(storyPreset, next.brideName, next.groomName);
       }
@@ -468,6 +476,8 @@ export default function Editor({
   function storyIsOwnWords() {
     const current = data.story.trim();
     if (!current || data.story === seedStory) return false;
+    // The sample story with the couple's names put in is still the sample.
+    if (data.story === followNames(seed, seed, { ...seed, brideName: data.brideName, groomName: data.groomName }).story) return false;
     return !(storyPreset && data.story === fillStory(storyPreset, data.brideName, data.groomName));
   }
 
@@ -996,16 +1006,16 @@ export default function Editor({
       showNamesField(() => dateRef.current);
       return;
     }
-    if (!ownerPhoneOk) {
-      setPhoneTouched(true);
-      setMobileView("edit");
-      setTimeout(() => phoneRef.current?.focus(), 50);
-      return;
-    }
+    setCheckoutOpen(true);
+  }
+
+  /** Pay from the checkout sheet (it has checked the number). */
+  function payNow() {
     if (!razorpayReady || !window.Razorpay) {
       setPublishError(t("errPaymentLoading"));
       return;
     }
+    setCheckoutOpen(false);
     handlePublish();
   }
 
@@ -1102,16 +1112,29 @@ export default function Editor({
     }
   }
 
-  const phoneFieldShown = !isEditMode && !free && (stepIndex === steps.length - 1 || phoneTouched || Boolean(ownerPhone));
   // On phones the button lives in the bottom bar, so this footer shows only
   // when it has something else: the phone field or the expiry notices.
-  const formFooterOnPhone = phoneFieldShown || Boolean(isEditMode && expiry && (expiry.expired || expiry.expiresAt));
+  const formFooterOnPhone = Boolean(isEditMode && expiry && (expiry.expired || expiry.expiresAt));
 
   return (
     // The screen below the 44px (h-11) app toolbar, so the publish bar and
     // the phone's Edit / Preview tabs stay in view.
     <div className="flex h-[calc(100dvh-2.75rem)] flex-col lg:flex-row">
       <PublishOverlay phase={progress?.phase ?? null} steps={progress?.steps} accent={data.accentColor} />
+      {checkoutOpen && (
+        <CheckoutSheet
+          templateId={templateId}
+          designName={template.name}
+          coupon={coupon}
+          onCoupon={setCoupon}
+          phone={ownerPhone}
+          onPhone={setOwnerPhone}
+          busy={publishing}
+          error={publishError}
+          onPay={payNow}
+          onClose={() => setCheckoutOpen(false)}
+        />
+      )}
       {upgradeOpen && <UpgradeSheet designs={designs} onLeave={persistDraft} onClose={() => setUpgradeOpen(false)} />}
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
@@ -1124,17 +1147,19 @@ export default function Editor({
 
       {/* Form panel */}
       <div
-        className={`flex-1 flex-col overflow-hidden lg:flex lg:w-[440px] lg:flex-none lg:border-r lg:border-neutral-200 dark:lg:border-neutral-800 ${festive.formPaper} ${
+        ref={panelRef}
+        className={`flex-1 flex-col overflow-y-auto overscroll-contain lg:flex lg:w-[440px] lg:overflow-hidden lg:flex-none lg:border-r lg:border-neutral-200 dark:lg:border-neutral-800 ${festive.formPaper} ${
           mobileView === "preview" ? "hidden lg:flex" : "flex"
         }`}
       >
         {/* The plum band: design name, title and the step bar. */}
-        <div className={ed.band}>
+        {/* Phones: pinned while the form scrolls, out of the way while typing. */}
+        <div className={`${ed.band} ${keyboardOpen ? "max-lg:hidden" : ""}`}>
         {/* Decoration only on wide screens — phones need the room for the form. */}
         <div className="hidden lg:block">
           <Thoranam compact />
         </div>
-        <header className="flex items-center justify-between gap-3 px-4 pt-2 pb-1 lg:-mt-3 lg:px-5 lg:pt-1 lg:pb-2">
+        <header className={`items-center justify-between gap-3 px-4 pt-2 pb-1 lg:-mt-3 ${isEditMode ? "flex" : "hidden lg:flex"} lg:px-5 lg:pt-1 lg:pb-2`}>
           <div className="min-w-0">
             <p className={`truncate text-[11px] font-semibold tracking-[0.2em] uppercase ${ed.eyebrow}`}>
               {template.name}
@@ -1173,29 +1198,53 @@ export default function Editor({
         ) : loadError ? (
           <div className="p-6 text-sm text-red-600">{loadError}</div>
         ) : (
-          <div ref={formScrollRef} className="flex-1 overflow-y-auto px-4 py-4 lg:px-5 lg:py-5">
+          <div ref={formScrollRef} className="flex-1 px-4 py-4 lg:overflow-y-auto lg:px-5 lg:py-5">
             {draftNotice && (
-              <div className="mb-5 flex items-start justify-between gap-3 rounded-2xl border border-[#e8b04a]/40 bg-[#fff6e0] px-3.5 py-2.5 text-xs text-[#5a3a12] shadow-sm dark:border-[#e8b04a]/30 dark:bg-[#2a0c27] dark:text-[#ffe9b8]">
-                <p>
-                  {draftNotice.kind === "restored"
-                    ? t("draftRestored")
-                    : t("draftCarried", { template: draftNotice.from })}
-                </p>
-                <div className="flex shrink-0 items-center gap-2">
-                  {!isEditMode && (
-                    <button type="button" onClick={startFresh} className="font-semibold underline">
-                      {t("startFresh")}
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => setDraftNotice(null)}
-                    aria-label={t("dismiss")}
-                    className="-m-1.5 rounded p-1.5 hover:bg-amber-100 dark:hover:bg-amber-900/40"
-                  >
-                    <X size={14} aria-hidden />
-                  </button>
-                </div>
+              <div className="mb-5 rounded-2xl border border-[#e8b04a]/40 bg-[#fff6e0] px-3.5 py-2.5 text-xs text-[#5a3a12] shadow-sm dark:border-[#e8b04a]/30 dark:bg-[#2a0c27] dark:text-[#ffe9b8]">
+                {confirmFresh ? (
+                  <>
+                    <p className="font-semibold">{t("startFreshConfirm")}</p>
+                    <div className="mt-2 flex gap-2">
+                      <button
+                        type="button"
+                        onClick={startFresh}
+                        className="rounded-full bg-[#3d1236] px-3.5 py-1.5 font-semibold text-[#ffe9b8] dark:bg-[#ffe9b8] dark:text-[#3d1236]"
+                      >
+                        {t("startFreshYes")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmFresh(false)}
+                        className="rounded-full px-3.5 py-1.5 font-semibold underline"
+                      >
+                        {t("startFreshKeep")}
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="flex items-start justify-between gap-3">
+                    <p>
+                      {draftNotice.kind === "restored"
+                        ? t("draftRestored")
+                        : t("draftCarried", { template: draftNotice.from })}
+                    </p>
+                    <div className="flex shrink-0 items-center gap-2">
+                      {!isEditMode && (
+                        <button type="button" onClick={() => setConfirmFresh(true)} className="font-semibold underline">
+                          {t("startFresh")}
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setDraftNotice(null)}
+                        aria-label={t("dismiss")}
+                        className="-m-1.5 rounded p-1.5 hover:bg-amber-100 dark:hover:bg-amber-900/40"
+                      >
+                        <X size={14} aria-hidden />
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -1593,41 +1642,6 @@ export default function Editor({
               })}
             </p>
           )}
-          {/* Asked for on the last step (or when Publish needs it), so the
-              bar stays small while filling in the rest. */}
-          {phoneFieldShown && <CouponField templateId={templateId} code={coupon} onChange={setCoupon} className="mb-3 block" />}
-          {phoneFieldShown && (
-            <label className="mb-3 block">
-              <span className="mb-1 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                {t("ownerPhoneLabel")}
-              </span>
-              <input
-                type="tel"
-                inputMode="tel"
-                autoComplete="tel"
-                ref={phoneRef}
-                className={`${inputClass} ${showPhoneError ? "border-red-400 dark:border-red-500" : ""}`}
-                value={ownerPhone}
-                onChange={(e) => setOwnerPhone(e.target.value)}
-                onBlur={() => ownerPhone && setPhoneTouched(true)}
-                placeholder={t("ownerPhonePlaceholder")}
-                aria-invalid={showPhoneError}
-                aria-describedby="owner-phone-hint"
-              />
-              <span
-                id="owner-phone-hint"
-                className={`mt-1 block text-xs ${
-                  showPhoneError ? "text-red-600 dark:text-red-400" : "text-neutral-400 dark:text-neutral-500"
-                }`}
-              >
-                {showPhoneError
-                  ? ownerPhone
-                    ? t("ownerPhoneInvalid")
-                    : t("ownerPhoneRequired")
-                  : t("ownerPhoneHint")}
-              </span>
-            </label>
-          )}
           {publishError && <p className="mb-2 hidden text-sm text-red-600 lg:block">{publishError}</p>}
           {!isEditMode && !free && !getTemplateConfig(templateId).price && (
             <OfferCountdown
@@ -1759,11 +1773,8 @@ export default function Editor({
       {/* Phones: one bar for switching Edit / Preview and the main action,
           clear of the home indicator, and out of the way while typing. */}
       {!keyboardOpen && (
-        <div className={`px-3 pt-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] lg:hidden ${ed.dock}`}>
+        <div className={`px-3 pt-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] lg:hidden ${ed.dock}`}>
           {publishError && <p className="mb-2 px-1 text-sm font-medium text-[#ffb4a8]">{publishError}</p>}
-          {!isEditMode && !free && !getTemplateConfig(templateId).price && (
-            <OfferCountdown compact short price={templatePriceInr(templateId)} className="mb-2 text-[#ffd35c]" />
-          )}
           {!isEditMode && free && <p className="mb-2 text-center text-[11px] text-[#ffe9b8]/75">{t("freeUpsellShort")}</p>}
           <div className="flex items-center gap-2.5">
             <div className={`flex shrink-0 rounded-full p-1 ${ed.seg}`} role="tablist">
@@ -1806,7 +1817,12 @@ export default function Editor({
                 <>
                   <Sparkles size={16} aria-hidden className="shrink-0 max-[389px]:hidden" />
                   <span className="truncate">{t("publishLabel")}</span>
-                  <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-xs ${ed.price}`}>₹{payable}</span>
+                  <span className={`shrink-0 rounded-full px-1.5 py-0.5 text-xs ${ed.price}`}>
+                    {templateListPriceInr(templateId) && (
+                      <s className="mr-1 font-medium opacity-60">₹{templateListPriceInr(templateId)}</s>
+                    )}
+                    ₹{payable}
+                  </span>
                 </>
               )}
             </button>

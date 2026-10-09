@@ -33,7 +33,7 @@ export function StepNav({
 }) {
   const index = steps.findIndex((s) => s.id === current);
   return (
-    <nav className="px-2 pt-1.5 pb-3 lg:px-3 lg:pt-2">
+    <nav className="px-2 pt-2 pb-2 lg:px-3 lg:pt-2 lg:pb-3">
       <ol className="relative flex items-start justify-between">
         {/* track + progress behind the dots */}
         <span

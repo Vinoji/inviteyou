@@ -366,6 +366,8 @@
     "draftCarried": "Your details were carried over from {template}.",
     "startFresh": "Start fresh",
     "startFreshConfirm": "Clear everything you've entered and start again from the sample content?",
+    "startFreshYes": "Yes, clear it",
+    "startFreshKeep": "Keep my details",
     "switchTemplate": "Switch design",
     "switchTemplateHint": "Your names, dates, story and photos stay — only the design changes.",
     "currentTemplate": "Current",
@@ -598,6 +600,16 @@
     "preparingCard": "Preparing card…",
     "freeUpsell": "Free design: you get the card image to share. Want a live link with RSVP, maps & music? Pick any other design.",
     "freeUpsellShort": "Free card image · live link with RSVP in other designs",
+    "checkout": {
+      "title": "Almost done",
+      "sub": "Check your price, add a code if you have one, and tell us where to send your private edit link.",
+      "price": "Price",
+      "discount": "Code {code}",
+      "total": "You pay",
+      "pay": "Pay ₹{price} & publish",
+      "secure": "Secure payment by Razorpay · UPI, cards, net banking",
+      "close": "Close"
+    },
     "coupon": {
       "have": "Have a code?",
       "placeholder": "Enter code",
