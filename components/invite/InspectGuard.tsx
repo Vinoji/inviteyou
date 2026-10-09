@@ -10,7 +10,8 @@ export default function InspectGuard() {
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("debug") === "1") return;
     const onKey = (e: KeyboardEvent) => {
-      const k = e.key.toLowerCase();
+      // Browser autofill fires keydown events that carry no key.
+      const k = (e.key ?? "").toLowerCase();
       const mod = e.ctrlKey || e.metaKey;
       if (
         e.key === "F12" ||
