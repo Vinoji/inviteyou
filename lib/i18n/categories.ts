@@ -75,3 +75,16 @@ export function formatOccasionTitle(
     : `${personA || tCommon("unknownName")} & ${personB || tCommon("unknownName")}`;
   return tCommon("occasionTitle", { who, category: category.label });
 }
+
+/** The occasion's labels with the couple's own names for the two
+ * functions, where they gave them. */
+export function withEventLabels<T extends { eventALabel: string; eventBLabel?: string }>(
+  category: T,
+  data: { eventALabel?: string; eventBLabel?: string }
+): T {
+  return {
+    ...category,
+    eventALabel: data.eventALabel?.trim() || category.eventALabel,
+    eventBLabel: data.eventBLabel?.trim() || category.eventBLabel,
+  };
+}

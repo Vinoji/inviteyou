@@ -69,7 +69,7 @@ import { savedRef } from "@/lib/referral";
 import CheckoutSheet from "@/components/editor/CheckoutSheet";
 import UpgradeSheet from "@/components/editor/UpgradeSheet";
 import OfferCountdown from "@/components/landing/OfferCountdown";
-import { getTemplateConfig } from "@/lib/templates";
+import { EVENTS_HEADING, getTemplateConfig } from "@/lib/templates";
 import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
 import InvitationView from "@/components/invite/InvitationView";
 import PreviewWatermark from "@/components/editor/PreviewWatermark";
@@ -522,6 +522,18 @@ export default function Editor({
   ) {
     setData((d) => ({ ...d, [which]: { ...d[which], [field]: value } }));
   }
+  // The design's own wording for the functions heading, as placeholders
+  // for the couple's (only designs that have one: EVENTS_HEADING).
+  const headingDefaults = useMemo(() => {
+    const keys = EVENTS_HEADING[templateId];
+    if (!keys) return null;
+    try {
+      const tt = contentT(contentMessages, contentLocale, keys.ns);
+      return { kicker: tt(keys.kicker), title: tt(keys.title) };
+    } catch {
+      return { kicker: "", title: "" };
+    }
+  }, [templateId, contentMessages, contentLocale]);
   // A function switched off on the Venues step: designs hide one with no
   // time and no venue, so its details are set aside (and come back if it's
   // switched on again). Until switched, a function is on if it has details.
@@ -1424,6 +1436,32 @@ export default function Editor({
                   <SectionToggle enabled={data.sections.schedule} onChange={(v) => updateSection("schedule", v)} />
                 </div>
                 <div className={`space-y-4 transition-opacity ${!data.sections.schedule ? "opacity-45" : ""}`}>
+                  {headingDefaults && (
+                    <section className="rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+                      <h3 className="mb-1 font-serif text-lg font-bold text-neutral-900 dark:text-neutral-50">{t("eventsHeadingTitle")}</h3>
+                      <p className="mb-3 text-xs text-neutral-500 dark:text-neutral-400">{t("eventsHeadingHint")}</p>
+                      <div className="space-y-3">
+                        <Field label={t("eventsKickerLabel")}>
+                          <input
+                            className={inputClass}
+                            value={data.eventsKicker ?? ""}
+                            maxLength={60}
+                            onChange={(e) => update("eventsKicker", e.target.value)}
+                            placeholder={headingDefaults.kicker}
+                          />
+                        </Field>
+                        <Field label={t("eventsTitleLabel")}>
+                          <input
+                            className={inputClass}
+                            value={data.eventsTitle ?? ""}
+                            maxLength={60}
+                            onChange={(e) => update("eventsTitle", e.target.value)}
+                            placeholder={headingDefaults.title}
+                          />
+                        </Field>
+                      </div>
+                    </section>
+                  )}
                   <EventFields
                     title={category.eventALabel}
                     time={data.ceremonyTime}
@@ -1436,6 +1474,8 @@ export default function Editor({
                     onTime={(v) => update("ceremonyTime", v)}
                     onVenue={(f, v) => updateVenue("ceremonyVenue", f, v)}
                     mapSearch={mapSearchFor("ceremonyVenue")}
+                    name={data.eventALabel}
+                    onName={(v) => update("eventALabel", v)}
                     included={eventIncluded("a")}
                     onInclude={category.eventBLabel ? (on) => includeEvent("a", on) : undefined}
                   />
@@ -1452,6 +1492,8 @@ export default function Editor({
                       onTime={(v) => update("receptionTime", v)}
                       onVenue={(f, v) => updateVenue("receptionVenue", f, v)}
                       mapSearch={mapSearchFor("receptionVenue")}
+                      name={data.eventBLabel}
+                      onName={(v) => update("eventBLabel", v)}
                       included={eventIncluded("b")}
                       onInclude={(on) => includeEvent("b", on)}
                     />

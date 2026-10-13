@@ -996,3 +996,14 @@ export function isNewTemplate(id: string, now = Date.now()): boolean {
   const added = getTemplateConfig(id).addedAt;
   return Boolean(added) && now - Date.parse(added!) < NEW_FOR_DAYS * 86_400_000;
 }
+
+/** Designs whose functions section has a kicker + title the couple can
+ * rename (InvitationData.eventsKicker / eventsTitle), with where the
+ * design's own wording lives in the messages. */
+export const EVENTS_HEADING: Record<string, { ns: string; kicker: string; title: string }> = {
+  "temple-gopuram": { ns: "premium.pathirikai", kicker: "functionsKicker", title: "functions" },
+  "birthday-balloon-party": { ns: "premium.party", kicker: "eventsKicker", title: "eventsTitle" },
+  "anniversary-wine-roses": { ns: "premium.candlelight", kicker: "eventsKicker", title: "eventsTitle" },
+  "baby-shower-balloons": { ns: "premium.fresh", kicker: "eventsKicker", title: "eventsTitle" },
+  "living-temple": { ns: "premium.living", kicker: "eventsKicker", title: "eventsTitle" },
+};

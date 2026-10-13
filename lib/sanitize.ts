@@ -184,6 +184,11 @@ export function sanitizeNameSize(v: unknown): number | undefined {
   return Math.round(Math.min(NAME_SIZE_MAX, Math.max(NAME_SIZE_MIN, v)) * 100) / 100;
 }
 
+/** A short custom label (function names, headings); undefined if not text. */
+export function sanitizeLabel(v: unknown): string | undefined {
+  return typeof v === "string" ? str(v, 60).trim() : undefined;
+}
+
 export function sanitizeMonogram(v: unknown): MonogramInitials {
   const obj = v && typeof v === "object" ? (v as Record<string, unknown>) : {};
   return { a: str(obj.a, 8).trim(), b: str(obj.b, 8).trim() };

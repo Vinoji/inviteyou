@@ -109,7 +109,7 @@ export default function PartyInvitation(props: PremiumProps) {
           </PhotoLayer>
           <BurstOnView kind="confetti" palette="party" emitters={CANNONS} />
           <div className={s.inner}>
-            <Heading s={s} kicker={t("eventsKicker")} title={t("eventsTitle")} />
+            <Heading s={s} kicker={data.eventsKicker?.trim() || t("eventsKicker")} title={data.eventsTitle?.trim() || t("eventsTitle")} />
             <EventCards s={s} slug={slug} title={occasionTitle} date={data.weddingDate} events={events} />
           </div>
         </section>

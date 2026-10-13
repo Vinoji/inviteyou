@@ -118,7 +118,7 @@ export default function CandlelightInvitation(props: PremiumProps) {
             <span className={c.grain} />
           </PhotoLayer>
           <div className={s.inner}>
-            <Heading s={s} kicker={t("eventsKicker")} title={t("eventsTitle")} />
+            <Heading s={s} kicker={data.eventsKicker?.trim() || t("eventsKicker")} title={data.eventsTitle?.trim() || t("eventsTitle")} />
             <EventCards s={s} slug={slug} title={occasionTitle} date={data.weddingDate} events={events} />
           </div>
         </section>

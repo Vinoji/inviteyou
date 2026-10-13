@@ -174,6 +174,14 @@ export interface InvitationData {
   monogram?: MonogramInitials;
   /** The couple's size for their names, 1 = the design's own (NAME_SIZES). */
   nameSize?: number;
+  /** Their own names for the two functions ("Muhurtham", "Reception"…);
+   * empty = the occasion's own (see withEventLabels). */
+  eventALabel?: string;
+  eventBLabel?: string;
+  /** Their own heading over the functions, where the design has one
+   * (EVENTS_HEADING in lib/templates); empty = the design's own. */
+  eventsKicker?: string;
+  eventsTitle?: string;
   /** Structured family lines per side. Missing on older docs, which only
    * have brideParents/groomParents — read through getFamily() in lib/family.ts. */
   brideFamily?: FamilyMember[];

@@ -5,7 +5,7 @@ import { getTranslations, getFormatter, setRequestLocale } from "next-intl/serve
 import { Link } from "@/i18n/navigation";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { getTemplateConfig } from "@/lib/templates";
-import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
+import { getCategoryMeta, formatOccasionTitle, withEventLabels } from "@/lib/i18n/categories";
 import type { InvitationData, RsvpContact, RsvpEntry } from "@/lib/types";
 import { parseIsoDate } from "@/lib/calendar";
 import HostTools, { RemindButton } from "@/components/host/HostTools";
@@ -71,7 +71,7 @@ async function buildHostMessages(data: InvitationData, templateCategory: string)
     getTranslations({ locale, namespace: "common" }),
     getFormatter({ locale }),
   ]);
-  const category = getCategoryMeta(templateCategory, tCategories, data.templateId);
+  const category = withEventLabels(getCategoryMeta(templateCategory, tCategories, data.templateId), data);
   const title = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
   const day = parseIsoDate(data.weddingDate);
   const date = day

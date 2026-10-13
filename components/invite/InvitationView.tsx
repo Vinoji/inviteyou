@@ -15,7 +15,7 @@ import {
 import { getThemeClasses } from "./theme";
 import { getFontPairing } from "@/lib/fontPairings";
 import { getTemplateConfig } from "@/lib/templates";
-import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
+import { getCategoryMeta, formatOccasionTitle, withEventLabels } from "@/lib/i18n/categories";
 import Hero from "./Hero";
 import Story from "./Story";
 import Family from "./Family";
@@ -83,7 +83,7 @@ function InvitationBody({
   const theme = getThemeClasses(data.templateId);
   const font = getFontPairing(data.fontPairing);
   const template = getTemplateConfig(data.templateId);
-  const category = getCategoryMeta(template.category, tCategories, template.id);
+  const category = withEventLabels(getCategoryMeta(template.category, tCategories, template.id), data);
   // Safe even for docs published before section toggles existed — missing
   // keys default to shown, matching their original always-on behavior.
   const sections = withDefaultSections(data.sections);

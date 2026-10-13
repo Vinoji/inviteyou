@@ -4,7 +4,7 @@ import QRCode from "qrcode";
 import { getFormatter, getTranslations } from "next-intl/server";
 import type { InvitationData } from "./types";
 import { getTemplateConfig } from "./templates";
-import { getCategoryMeta } from "./i18n/categories";
+import { getCategoryMeta, withEventLabels } from "./i18n/categories";
 import { getFamily } from "./family";
 import { parseIsoDate } from "./calendar";
 import { resolveMonogram } from "./monogram";
@@ -51,7 +51,7 @@ export async function renderCardImage({
     getFormatter({ locale }),
   ]);
   const template = getTemplateConfig(data.templateId);
-  const category = getCategoryMeta(template.category, tCategories, template.id);
+  const category = withEventLabels(getCategoryMeta(template.category, tCategories, template.id), data);
   const theme = getCardTheme(template.id);
   const dark = isDarkPaper(theme);
   // The couple's own accent colour when they changed it from the template's.

@@ -42,6 +42,8 @@ export default function EventFields({
   mapSearch,
   included = true,
   onInclude,
+  name,
+  onName,
 }: {
   title: string;
   time: string;
@@ -54,6 +56,9 @@ export default function EventFields({
   /** Whether this function is on the invitation; with onInclude, a switch. */
   included?: boolean;
   onInclude?: (on: boolean) => void;
+  /** The couple's own name for this function ("" = the title above). */
+  name?: string;
+  onName?: (v: string) => void;
 }) {
   const t = useTranslations("editor");
   const range = parseRange(time);
@@ -65,7 +70,7 @@ export default function EventFields({
       <div className={`flex items-center justify-between gap-3 ${included ? "mb-3" : ""}`}>
         <h3 className="flex items-center gap-2 font-serif text-lg font-bold text-neutral-900 dark:text-neutral-50">
           <span className="h-5 w-1 rounded-full bg-gradient-to-b from-amber-500 to-rose-500" aria-hidden />
-          {title}
+          {name?.trim() || title}
         </h3>
         {onInclude && <SectionToggle enabled={included} onChange={onInclude} />}
       </div>
@@ -73,6 +78,17 @@ export default function EventFields({
         <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">{t("eventOff")}</p>
       ) : (
       <div className="space-y-3">
+        {onName && (
+          <Field label={t("eventNameLabel")}>
+            <input
+              className={inputClass}
+              value={name ?? ""}
+              maxLength={60}
+              onChange={(e) => onName(e.target.value)}
+              placeholder={title}
+            />
+          </Field>
+        )}
         <Field label={t("timeLabel")}>
           {free ? (
             <span className="relative block">

@@ -91,7 +91,7 @@ export default function FreshInvitation(props: PremiumProps) {
         <section className={s.band}>
           <PhotoLayer templateId={id} slot="nursery" s={s} zoom="out" />
           <div className={s.inner}>
-            <Heading s={s} kicker={t("eventsKicker")} title={t("eventsTitle")} />
+            <Heading s={s} kicker={data.eventsKicker?.trim() || t("eventsKicker")} title={data.eventsTitle?.trim() || t("eventsTitle")} />
             <EventCards s={s} slug={slug} title={occasionTitle} date={data.weddingDate} events={events} />
           </div>
         </section>

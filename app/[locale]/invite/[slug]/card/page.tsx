@@ -6,7 +6,7 @@ import { getTranslations, getFormatter, setRequestLocale } from "next-intl/serve
 import { getAdminDb } from "@/lib/firebase-admin";
 import type { ContentLocale, InvitationData } from "@/lib/types";
 import { getTemplateConfig } from "@/lib/templates";
-import { getCategoryMeta, formatOccasionTitle } from "@/lib/i18n/categories";
+import { getCategoryMeta, formatOccasionTitle, withEventLabels } from "@/lib/i18n/categories";
 import { parseIsoDate } from "@/lib/calendar";
 import { buildWhatsAppMessage } from "@/lib/inviteMessage";
 import ShareCardButton from "@/components/invite/ShareCardButton";
@@ -49,7 +49,7 @@ export default async function InvitationCardPage({
     getFormatter({ locale }),
   ]);
   const template = getTemplateConfig(data.templateId);
-  const category = getCategoryMeta(template.category, tCategories, template.id);
+  const category = withEventLabels(getCategoryMeta(template.category, tCategories, template.id), data);
   const title = formatOccasionTitle(category, data.brideName, data.groomName, tCommon);
 
   const h = await headers();

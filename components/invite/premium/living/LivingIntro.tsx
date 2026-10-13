@@ -33,7 +33,7 @@ export default function LivingIntro(props: IntroProps) {
             style={{ position: "absolute", inset: "-4%" }}
             initial={false}
             animate={{ filter: open ? "brightness(1) saturate(1.05)" : "brightness(0.32) saturate(0.6)" }}
-            transition={{ duration: reduce ? 0 : 1.6, ease: "easeOut" }}
+            transition={{ duration: reduce ? 0 : 0.5, ease: "easeOut" }}
           >
             <DepthPhoto templateId={props.templateId} slot="gopuram-night" priority strength={1.1} focus={0.55} />
           </motion.div>
@@ -54,7 +54,10 @@ export default function LivingIntro(props: IntroProps) {
       </>
     ),
     sound: chime,
-    doneAt: 3000,
+    // A quick light-up, then straight to the invitation (its own page has
+    // the same photo, petals and sparks).
+    burstAt: 0,
+    doneAt: 600,
   };
   return <SceneIntro {...props} scene={scene} />;
 }

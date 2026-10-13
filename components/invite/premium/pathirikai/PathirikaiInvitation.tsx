@@ -222,7 +222,7 @@ export default function PathirikaiInvitation({
             <section className={`${s.block} ${s.photoBand}`}>
               <ArtImage templateId={id} slot="lamp-photo" className={`${s.bandPhoto} ${c.kenburnsOut}`} />
               <span className={c.flicker} style={{ ["--x" as string]: "70%", ["--y" as string]: "30%", ["--r" as string]: "280px" }} />
-              <Heading kicker={t("functionsKicker")} title={t("functions")} />
+              <Heading kicker={data.eventsKicker?.trim() || t("functionsKicker")} title={data.eventsTitle?.trim() || t("functions")} />
               <div className={s.inserts}>
                 {shownEvents.map((e, i) => (
                   <EventInsert
