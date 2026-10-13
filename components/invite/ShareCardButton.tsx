@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Loader2, MessageCircle } from "lucide-react";
+import { Download, Loader2, MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { whatsappUrl } from "@/lib/share";
 
 /**
@@ -13,8 +14,13 @@ import { whatsappUrl } from "@/lib/share";
  * from the tap. The message is also copied, since some WhatsApp versions
  * (notably iOS) keep only the image.
  *
- * Elsewhere (desktop browsers can't hand files to WhatsApp): the card is
- * downloaded and WhatsApp opens with the message, ready to attach it.
+ * Computers: the card is downloaded and WhatsApp opens with the message,
+ * ready to attach it. (Desktop browsers may offer a share sheet too — Mac
+ * Chrome/Brave do — but it rarely has WhatsApp, and Brave refuses it, so
+ * it isn't used there.)
+ *
+ * If the phone's share sheet refuses (anything but the guest cancelling),
+ * the two steps are offered as buttons instead of failing silently.
  */
 export default function ShareCardButton({
   imageUrl,
@@ -39,8 +45,11 @@ export default function ShareCardButton({
   phone?: string;
   className?: string;
 }) {
+  const tc = useTranslations("common");
   const fileRef = useRef<File | null>(null);
   const [shared, setShared] = useState(false);
+  // The share sheet refused — offer the card and WhatsApp as two taps.
+  const [fallback, setFallback] = useState(false);
   // A tap before the card has arrived would miss the share sheet, so the
   // button waits for it (or for the download to fail).
   const [ready, setReady] = useState(false);
@@ -74,12 +83,17 @@ export default function ShareCardButton({
     navigator.clipboard?.writeText(text).catch(() => {});
     const file = fileRef.current;
     const nav = navigator as Navigator & { canShare?: (d: ShareData) => boolean };
-    if (file && nav.share && nav.canShare?.({ files: [file] })) {
+    // Phones and tablets only (a touch screen with no mouse).
+    const touch = window.matchMedia("(pointer: coarse)").matches && !window.matchMedia("(any-pointer: fine)").matches;
+    if (touch && file && nav.share && nav.canShare?.({ files: [file] })) {
       nav
         .share({ files: [file], text })
         .then(() => setShared(true))
-        .catch(() => {
-          // Cancelled — nothing to do.
+        .catch((err: unknown) => {
+          // The guest closed the sheet — nothing to do. Anything else
+          // (blocked, unsupported, the app refused the file): two taps.
+          if (err instanceof DOMException && err.name === "AbortError") return;
+          setFallback(true);
         });
       return;
     }
@@ -94,7 +108,28 @@ export default function ShareCardButton({
         {!ready && preparing ? <Loader2 size={15} className="animate-spin" aria-hidden /> : <MessageCircle size={15} aria-hidden />}
         {!ready && preparing ? preparing : label}
       </button>
-      {shared && hint && <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">{hint}</p>}
+      {fallback && (
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={download}
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm font-semibold text-neutral-800"
+          >
+            <Download size={15} aria-hidden />
+            {tc("downloadCard")}
+          </button>
+          <a
+            href={whatsappUrl(text, phone)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#25d366] px-3 py-2 text-sm font-semibold text-[#08331a]"
+          >
+            <MessageCircle size={15} aria-hidden />
+            {tc("openWhatsApp")}
+          </a>
+        </div>
+      )}
+      {(shared || fallback) && hint && <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">{hint}</p>}
     </div>
   );
 }

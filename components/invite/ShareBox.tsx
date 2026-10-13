@@ -99,7 +99,7 @@ export default function ShareBox({
           </button>
         </div>
 
-        <WhatsAppShare slug={slug} text={whatsappText} className="mt-4" />
+        <WhatsAppShare text={whatsappText} className="mt-4" />
 
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
           <button

@@ -114,7 +114,6 @@ export default function HostTools({ slug, messages }: { slug: string; messages: 
         {/* Works without a name too: then it's the general message and link. */}
         {phoneOk ? (
           <WhatsAppShare
-            slug={slug}
             text={guest.trim() ? fill(messages.personal, personalUrl, guest.trim()) : fill(messages.share, inviteUrl)}
             phone={phone}
             className="mt-3"

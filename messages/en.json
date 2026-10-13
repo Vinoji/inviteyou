@@ -1,5 +1,7 @@
 {
   "common": {
+    "downloadCard": "Download card",
+    "openWhatsApp": "Open WhatsApp",
     "occasionTitle": "{who}'s {category}",
     "aFriend": "A friend",
     "unknownName": "?",
@@ -723,19 +725,10 @@
       "shareVia": "Share via...",
       "shareText": "You're invited! {title}:",
       "printCard": "Printable card (PDF)",
-      "formatLabel": "What to send",
-      "withCard": "Card + message",
-      "textOnly": "Message only",
       "previewLabel": "What your guests get",
-      "cardAlt": "Invitation card",
       "readMore": "Read more",
       "showLess": "Show less",
-      "sendWithCard": "Send card on WhatsApp",
-      "sendText": "Send on WhatsApp",
-      "preparingCard": "Preparing card…",
-      "sharedHint": "The message is copied too — paste it in WhatsApp if only the card arrives.",
-      "cardHint": "On a phone, pick WhatsApp and the chat. On a computer the card downloads — attach it in the chat that opens.",
-      "cardHintPhone": "On a phone, pick WhatsApp, then this guest's chat. On a computer the card downloads and their chat opens — attach it there."
+      "sendText": "Send on WhatsApp"
     },
     "story": {
       "defaultTitle": "Our Story"
