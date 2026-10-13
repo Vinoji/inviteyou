@@ -74,7 +74,7 @@
 .name {
   display: block;
   font-family: var(--rp-heading);
-  font-size: calc(48px * var(--name-fit, 1));
+  font-size: calc(48px * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1.06;
   overflow-wrap: anywhere;
 }
@@ -269,7 +269,7 @@
   color: var(--rp-text);
 }
 .hero[data-style="editorial"] .name {
-  font-size: calc(66px * var(--name-fit, 1));
+  font-size: calc(66px * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   font-weight: 500;
   letter-spacing: -0.01em;
   text-transform: uppercase;

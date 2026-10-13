@@ -136,6 +136,10 @@ export interface MonogramInitials {
 
 export const EMPTY_MONOGRAM: MonogramInitials = { a: "", b: "" };
 
+/** Name size choices in the editor; names still shrink to fit on top. */
+export const NAME_SIZE_MIN = 0.7;
+export const NAME_SIZE_MAX = 1.3;
+
 /** Merges possibly-partial/missing toggles over the all-on default — safe
  * for documents published before this field existed (they just show
  * everything, same as their original behavior). */
@@ -168,6 +172,8 @@ export interface InvitationData {
   places: Place[]; // up to 6 — Places to Explore, same layout
   /** Missing on documents saved before this existed — treat as empty. */
   monogram?: MonogramInitials;
+  /** The couple's size for their names, 1 = the design's own (NAME_SIZES). */
+  nameSize?: number;
   /** Structured family lines per side. Missing on older docs, which only
    * have brideParents/groomParents — read through getFamily() in lib/family.ts. */
   brideFamily?: FamilyMember[];

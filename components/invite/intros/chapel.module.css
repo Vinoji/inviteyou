@@ -41,7 +41,7 @@
 }
 .names {
   margin: 8px 0 0;
-  font-size: calc(min(9cqw, 40px) * var(--name-fit, 1));
+  font-size: calc(min(9cqw, 40px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   font-weight: 500;
   line-height: 1.15;
 }

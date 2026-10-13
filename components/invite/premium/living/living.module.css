@@ -59,7 +59,7 @@
   margin-top: 6px;
   font-family: var(--p-display);
   font-weight: 500;
-  font-size: calc(clamp(46px, 14vw, 92px) * var(--name-fit, 1));
+  font-size: calc(clamp(46px, 14vw, 92px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1;
   overflow-wrap: anywhere;
   text-shadow: 0 6px 30px rgba(0, 0, 0, 0.6);

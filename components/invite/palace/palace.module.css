@@ -202,7 +202,7 @@
   column-gap: 0.3em;
   font-family: var(--pl-display);
   font-weight: 400;
-  font-size: calc(clamp(44px, 14vw, 104px) * var(--name-fit, 1));
+  font-size: calc(clamp(44px, 14vw, 104px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1;
   color: #fffaf0;
   text-shadow: 0 0 40px rgba(255, 200, 110, 0.35), 0 4px 30px rgba(0, 0, 0, 0.7);
@@ -271,7 +271,7 @@
 .coupleNames h2 {
   font-family: var(--pl-display);
   font-weight: 400;
-  font-size: calc(clamp(36px, 11vw, 64px) * var(--name-fit, 1));
+  font-size: calc(clamp(36px, 11vw, 64px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1.05;
   color: #fffaf0;
   overflow-wrap: anywhere;
@@ -428,7 +428,7 @@
   margin-top: 8px;
   font-family: var(--pl-display);
   font-weight: 400;
-  font-size: calc(32px * var(--name-fit, 1));
+  font-size: calc(32px * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   overflow-wrap: anywhere;
 }
 .kin {

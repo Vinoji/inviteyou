@@ -67,7 +67,7 @@
   margin-top: 2px;
   font-family: var(--p-display);
   font-weight: 800;
-  font-size: calc(clamp(58px, 20vw, 140px) * var(--name-fit, 1));
+  font-size: calc(clamp(58px, 20vw, 140px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 0.92;
   letter-spacing: -0.03em;
   overflow-wrap: anywhere;

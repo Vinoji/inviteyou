@@ -86,7 +86,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: calc(clamp(28px, 10cqw, 52px) * var(--name-fit, 1));
+  font-size: calc(clamp(28px, 10cqw, 52px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1.1;
   font-weight: 500;
   max-width: 100%;
@@ -152,7 +152,7 @@
 }
 
 .root:lang(ta) .names {
-  font-size: calc(clamp(24px, 8.5cqw, 44px) * var(--name-fit, 1));
+  font-size: calc(clamp(24px, 8.5cqw, 44px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1.3;
 }
 

@@ -422,7 +422,7 @@
 .name {
   display: block;
   font-family: var(--rp-heading);
-  font-size: calc(50px * var(--name-fit, 1));
+  font-size: calc(50px * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1.05;
   overflow-wrap: anywhere;
 }
@@ -773,7 +773,7 @@
 }
 .person h3 {
   font-family: var(--rp-heading);
-  font-size: calc(30px * var(--name-fit, 1));
+  font-size: calc(30px * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   color: #fff;
   margin: 4px 0;
   overflow-wrap: anywhere;
@@ -1818,7 +1818,7 @@
   font-size: 11px;
 }
 .name:lang(ta) {
-  font-size: calc(clamp(32px, 10.5vw, 46px) * var(--name-fit, 1));
+  font-size: calc(clamp(32px, 10.5vw, 46px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1.3;
 }
 .mono:lang(ta) {

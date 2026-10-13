@@ -227,7 +227,7 @@
 }
 .name {
   font-family: var(--p-heading);
-  font-size: calc(clamp(30px, 9vw, 44px) * var(--name-fit, 1));
+  font-size: calc(clamp(30px, 9vw, 44px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   font-weight: 600;
   line-height: 1.12;
   overflow-wrap: anywhere;

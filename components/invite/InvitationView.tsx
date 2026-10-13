@@ -32,6 +32,7 @@ import ThingsToKnow from "./ThingsToKnow";
 import Section from "./motion/Section";
 import MotionThemeProvider from "./motion/MotionThemeProvider";
 import ScrollScene from "./ScrollScene";
+import NameFit from "./NameFit";
 import RoyalInvitation from "./royal/RoyalInvitation";
 import PremiumInvitation, { hasPremiumLayout } from "./premium/registry";
 import GardenInvitation from "./garden/GardenInvitation";
@@ -49,7 +50,17 @@ import PalaceInvitation from "./palace/PalaceInvitation";
  * event or no family section just leaves those fields blank in the editor,
  * and Schedule/Family already hide themselves when empty.
  */
-export default function InvitationView({
+/** The invitation, with its names fitted to their lines (NameFit). */
+export default function InvitationView(props: Parameters<typeof InvitationBody>[0]) {
+  const { data } = props;
+  return (
+    <NameFit names={[data.brideName, data.groomName]} size={data.nameSize ?? 1}>
+      <InvitationBody {...props} />
+    </NameFit>
+  );
+}
+
+function InvitationBody({
   data,
   slug,
   mode,

@@ -46,7 +46,7 @@
   flex-direction: column;
   align-items: center;
   max-width: 100%;
-  font-size: calc(clamp(30px, 10cqw, 54px) * var(--name-fit, 1));
+  font-size: calc(clamp(30px, 10cqw, 54px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   font-weight: 500;
   line-height: 1.1;
   color: var(--sc-ink);

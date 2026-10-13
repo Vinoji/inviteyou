@@ -20,6 +20,7 @@ import {
   X,
   Smartphone,
   Sparkles,
+  Type,
   Tablet,
   UsersRound,
 } from "lucide-react";
@@ -51,6 +52,8 @@ import { OWNER_PHONE_KEY } from "@/components/invite/WelcomeBanner";
 import {
   EMPTY_MONOGRAM,
   EMPTY_TRAVEL,
+  NAME_SIZE_MAX,
+  NAME_SIZE_MIN,
   type ContentLocale,
   type FamilySide,
   type InvitationData,
@@ -1330,6 +1333,40 @@ export default function Editor({
                     {t("errDatePast")}
                   </p>
                 )}
+
+                {/* Names always shrink to fit their line; this is the couple's
+                    own size on top (lib/types NAME_SIZE_*). */}
+                <div className="rounded-2xl border border-neutral-200 px-4 py-3 dark:border-neutral-800">
+                  <div className="flex items-center justify-between gap-3">
+                    <label htmlFor="name-size" className="flex items-center gap-2 text-sm font-medium text-neutral-800 dark:text-neutral-200">
+                      <Type size={16} className="text-[#b0791f] dark:text-[#ffd35c]" aria-hidden />
+                      {t("nameSize")}
+                    </label>
+                    <span className="flex items-center gap-2 text-xs text-neutral-500 tabular-nums dark:text-neutral-400">
+                      {Math.round((data.nameSize ?? 1) * 100)}%
+                      {(data.nameSize ?? 1) !== 1 && (
+                        <button type="button" onClick={() => update("nameSize", 1)} className="font-semibold text-[#b0791f] underline dark:text-[#ffd35c]">
+                          {t("nameSizeReset")}
+                        </button>
+                      )}
+                    </span>
+                  </div>
+                  <div className="mt-2 flex items-center gap-3">
+                    <span aria-hidden className="text-xs font-semibold text-neutral-400">A</span>
+                    <input
+                      id="name-size"
+                      type="range"
+                      min={NAME_SIZE_MIN}
+                      max={NAME_SIZE_MAX}
+                      step={0.05}
+                      value={data.nameSize ?? 1}
+                      onChange={(e) => update("nameSize", Number(e.target.value))}
+                      className="h-2 flex-1 accent-[#c98f3a]"
+                    />
+                    <span aria-hidden className="text-lg font-semibold text-neutral-400">A</span>
+                  </div>
+                  <p className="mt-1.5 text-xs text-neutral-500 dark:text-neutral-400">{t("nameSizeHint")}</p>
+                </div>
 
                 {template.category === "wedding" && (
                   <ExtraCard icon={Sparkles} title={t("monogramTitle")} summary={monogramText}>

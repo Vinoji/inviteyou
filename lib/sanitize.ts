@@ -11,7 +11,7 @@ import type {
   FamilyRelation,
   ContentLocale,
 } from "./types";
-import { withDefaultSections, PLACE_SCENES, FAMILY_RELATIONS, MAX_FAMILY_MEMBERS } from "./types";
+import { withDefaultSections, PLACE_SCENES, FAMILY_RELATIONS, MAX_FAMILY_MEMBERS, NAME_SIZE_MAX, NAME_SIZE_MIN } from "./types";
 import { FONT_PAIRINGS } from "./fontPairings";
 import { isLibraryPhoto, isLibraryTrack } from "./mediaLibrary";
 
@@ -177,6 +177,13 @@ export function sanitizeTravel(v: unknown): TravelInfo {
 
 /** A few characters each — room for a Tamil letter plus vowel sign, or
  * something like "Sr" — not a free-text field. */
+/** The names' size multiplier (1 = the design's own), or undefined if not
+ * a number — 1 is kept, so going back to the default saves on an edit. */
+export function sanitizeNameSize(v: unknown): number | undefined {
+  if (typeof v !== "number" || !Number.isFinite(v)) return undefined;
+  return Math.round(Math.min(NAME_SIZE_MAX, Math.max(NAME_SIZE_MIN, v)) * 100) / 100;
+}
+
 export function sanitizeMonogram(v: unknown): MonogramInitials {
   const obj = v && typeof v === "object" ? (v as Record<string, unknown>) : {};
   return { a: str(obj.a, 8).trim(), b: str(obj.b, 8).trim() };

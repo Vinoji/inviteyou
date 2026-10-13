@@ -58,7 +58,7 @@
 }
 .names {
   margin-top: 10px;
-  font-size: calc(clamp(24px, 7.5cqw, 36px) * var(--name-fit, 1));
+  font-size: calc(clamp(24px, 7.5cqw, 36px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
   line-height: 1.12;
   font-weight: 700;
   overflow-wrap: anywhere;
