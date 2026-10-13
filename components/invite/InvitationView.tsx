@@ -24,7 +24,6 @@ import Gallery from "./Gallery";
 import GuestGallery from "./GuestGallery";
 import RsvpForm from "./RsvpForm";
 import BlessingsWall from "./BlessingsWall";
-import ShareBox from "./ShareBox";
 import AddToCalendar from "./AddToCalendar";
 import IntroHost from "./intros/IntroHost";
 import AudioToggle from "./AudioToggle";
@@ -326,25 +325,6 @@ function InvitationBody({
                 accentColor={data.accentColor}
                 fontPairing={data.fontPairing}
                 templateId={data.templateId}
-              />
-            </Section>
-          </ScrollScene>
-        )}
-        {mode === "public" && (
-          <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="share">
-            <Section delay={0.04}>
-              <ShareBox
-                slug={slug}
-                occasionTitle={occasionTitle}
-                accentColor={data.accentColor}
-                weddingDate={data.weddingDate}
-                hosts={coupleLabel}
-                events={[
-                  { label: category.eventALabel, time: data.ceremonyTime, venue: data.ceremonyVenue },
-                  ...(category.eventBLabel
-                    ? [{ label: category.eventBLabel, time: data.receptionTime, venue: data.receptionVenue }]
-                    : []),
-                ]}
               />
             </Section>
           </ScrollScene>

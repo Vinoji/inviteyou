@@ -15,7 +15,6 @@ import AddToCalendar from "../../AddToCalendar";
 import GuestGallery from "../../GuestGallery";
 import ThingsToKnow from "../../ThingsToKnow";
 import BlessingsWall from "../../BlessingsWall";
-import ShareBox from "../../ShareBox";
 import Section from "../../motion/Section";
 import ArtImage, { artSrc } from "../ArtImage";
 import { parseDate, type PremiumProps } from "../types";
@@ -409,18 +408,6 @@ export default function PathirikaiInvitation({
           </div>
         )}
 
-        {mode === "public" && (
-          <div className={s.shared}>
-            <ShareBox
-              slug={slug}
-              occasionTitle={occasionTitle}
-              accentColor={data.accentColor}
-              weddingDate={data.weddingDate}
-              hosts={coupleLabel}
-              events={events}
-            />
-          </div>
-        )}
       </div>
 
       {/* ── Closing: the welcome at the doorstep ── */}

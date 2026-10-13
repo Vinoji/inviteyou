@@ -364,8 +364,9 @@ function parts(targetMs: number) {
 export function Countdown({ weddingDate, ceremonyTime }: { weddingDate: string; ceremonyTime: string }) {
   const t = usePalaceT("countdown");
   const reduce = useSafeReducedMotion();
-  // The ceremony time when it parses ("10:30 AM"), else the start of the day.
-  const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)?$/i.exec(ceremonyTime.trim());
+  // The ceremony time when it parses ("10:30 AM", or the start of
+  // "7:00 AM – 10:00 AM"), else the start of the day.
+  const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)?(?![\d:])/i.exec(ceremonyTime.trim());
   let h = m ? Number(m[1]) % 12 : 0;
   if (m?.[3]?.toUpperCase() === "PM") h += 12;
   if (m && !m[3]) h = Number(m[1]);

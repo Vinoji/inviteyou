@@ -17,7 +17,6 @@ import GuestGallery from "../GuestGallery";
 import ThingsToKnow from "../ThingsToKnow";
 import RsvpForm from "../RsvpForm";
 import BlessingsWall from "../BlessingsWall";
-import ShareBox from "../ShareBox";
 import AddToCalendar from "../AddToCalendar";
 import AudioToggle from "../AudioToggle";
 import IntroHost from "../intros/IntroHost";
@@ -228,22 +227,6 @@ export default function ChapelInvitation({
           accentColor={data.accentColor}
           fontPairing={data.fontPairing}
           templateId={data.templateId}
-        />
-      ),
-    });
-  }
-  if (mode === "public") {
-    add({
-      key: "share",
-      title: t("pages.share"),
-      node: (
-        <ShareBox
-          slug={slug}
-          occasionTitle={occasionTitle}
-          accentColor={data.accentColor}
-          weddingDate={data.weddingDate}
-          hosts={coupleLabel}
-          events={events.map(({ label, time, venue }) => ({ label, time, venue }))}
         />
       ),
     });

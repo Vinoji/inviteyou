@@ -150,7 +150,6 @@ export default function PartyInvitation(props: PremiumProps) {
           <Working
             s={s}
             props={props}
-            events={events.all}
             replyHead={
               <div key="reply-head" className={s.replyHead}>
                 <p className={s.kicker}>{t("replyKicker")}</p>

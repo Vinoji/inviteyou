@@ -522,6 +522,27 @@ export default function Editor({
   ) {
     setData((d) => ({ ...d, [which]: { ...d[which], [field]: value } }));
   }
+  // A function switched off on the Venues step: designs hide one with no
+  // time and no venue, so its details are set aside (and come back if it's
+  // switched on again). Until switched, a function is on if it has details.
+  const [eventOn, setEventOn] = useState<{ a?: boolean; b?: boolean }>({});
+  const setAside = useRef<{ a?: [string, InvitationData["ceremonyVenue"]]; b?: [string, InvitationData["ceremonyVenue"]] }>({});
+  const eventIncluded = (key: "a" | "b") => {
+    const [time, venue] = key === "a" ? [data.ceremonyTime, data.ceremonyVenue] : [data.receptionTime, data.receptionVenue];
+    return eventOn[key] ?? Boolean(time.trim() || venue?.name?.trim());
+  };
+  function includeEvent(key: "a" | "b", on: boolean) {
+    const [timeKey, venueKey] = key === "a" ? (["ceremonyTime", "ceremonyVenue"] as const) : (["receptionTime", "receptionVenue"] as const);
+    setEventOn((s) => ({ ...s, [key]: on }));
+    setData((d) => {
+      if (!on) {
+        setAside.current[key] = [d[timeKey], d[venueKey]];
+        return { ...d, [timeKey]: "", [venueKey]: { name: "", address: "", mapsLink: "" } };
+      }
+      const back = setAside.current[key];
+      return back ? { ...d, [timeKey]: back[0], [venueKey]: back[1] } : d;
+    });
+  }
   /** A venue picked on the map: its name, address and pin. */
   function pinVenue(which: "ceremonyVenue" | "receptionVenue", hit: VenueHit) {
     setData((d) => ({
@@ -1415,6 +1436,8 @@ export default function Editor({
                     onTime={(v) => update("ceremonyTime", v)}
                     onVenue={(f, v) => updateVenue("ceremonyVenue", f, v)}
                     mapSearch={mapSearchFor("ceremonyVenue")}
+                    included={eventIncluded("a")}
+                    onInclude={category.eventBLabel ? (on) => includeEvent("a", on) : undefined}
                   />
                   {category.eventBLabel && (
                     <EventFields
@@ -1429,6 +1452,8 @@ export default function Editor({
                       onTime={(v) => update("receptionTime", v)}
                       onVenue={(f, v) => updateVenue("receptionVenue", f, v)}
                       mapSearch={mapSearchFor("receptionVenue")}
+                      included={eventIncluded("b")}
+                      onInclude={(on) => includeEvent("b", on)}
                     />
                   )}
                 </div>

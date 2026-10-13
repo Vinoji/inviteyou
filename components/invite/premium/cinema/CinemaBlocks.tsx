@@ -9,7 +9,6 @@ import AddToCalendar from "../../AddToCalendar";
 import GuestGallery from "../../GuestGallery";
 import ThingsToKnow from "../../ThingsToKnow";
 import BlessingsWall from "../../BlessingsWall";
-import ShareBox from "../../ShareBox";
 import ArtImage from "../ArtImage";
 import { parseDate, type PremiumProps } from "../types";
 import Reveal from "./Reveal";
@@ -229,19 +228,17 @@ export function hasGuide(data: PremiumProps["data"]): boolean {
   );
 }
 
-/** FAQ, guest photos, RSVP, blessings and sharing — the working parts. */
+/** FAQ, guest photos, RSVP and blessings — the working parts. */
 export function Working({
   s,
   props,
   replyHead,
-  events,
 }: {
   s: Styles;
   props: PremiumProps;
   replyHead: ReactNode;
-  events: EventRow[];
 }) {
-  const { data, slug, mode, rsvpMessages, guestPhotos, guestGreeting, occasionTitle, coupleLabel } = props;
+  const { data, slug, mode, rsvpMessages, guestPhotos, guestGreeting } = props;
   const sections = withDefaultSections(data.sections);
   const id = data.templateId;
   return (
@@ -290,18 +287,6 @@ export function Working({
       {sections.rsvp && mode === "public" && rsvpMessages.length > 0 && (
         <div className={s.shared}>
           <BlessingsWall messages={rsvpMessages} accentColor={data.accentColor} fontPairing={data.fontPairing} templateId={id} />
-        </div>
-      )}
-      {mode === "public" && (
-        <div className={s.shared}>
-          <ShareBox
-            slug={slug}
-            occasionTitle={occasionTitle}
-            accentColor={data.accentColor}
-            weddingDate={data.weddingDate}
-            hosts={coupleLabel}
-            events={events}
-          />
         </div>
       )}
     </>

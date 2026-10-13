@@ -18,7 +18,6 @@ import GuestGallery from "../GuestGallery";
 import ThingsToKnow from "../ThingsToKnow";
 import RsvpForm from "../RsvpForm";
 import BlessingsWall from "../BlessingsWall";
-import ShareBox from "../ShareBox";
 import AddToCalendar from "../AddToCalendar";
 import AudioToggle from "../AudioToggle";
 import IntroHost from "../intros/IntroHost";
@@ -262,18 +261,6 @@ export default function PalaceInvitation({
 
         <Finale names={`${brideName} & ${groomName}`}>
           <Ambient at="thanks" />
-          {mode === "public" && (
-            <Parchment>
-              <ShareBox
-                slug={slug}
-                occasionTitle={occasionTitle}
-                accentColor={data.accentColor}
-                weddingDate={data.weddingDate}
-                hosts={coupleLabel}
-                events={calendarEvents}
-              />
-            </Parchment>
-          )}
         </Finale>
 
         <footer className={p.footer}>{tView("madeWith", { couple: coupleLabel })}</footer>

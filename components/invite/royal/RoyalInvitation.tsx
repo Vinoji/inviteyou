@@ -14,7 +14,6 @@ import GuestGallery from "../GuestGallery";
 import ThingsToKnow from "../ThingsToKnow";
 import RsvpForm from "../RsvpForm";
 import BlessingsWall from "../BlessingsWall";
-import ShareBox from "../ShareBox";
 import AddToCalendar from "../AddToCalendar";
 import AudioToggle from "../AudioToggle";
 import IntroHost from "../intros/IntroHost";
@@ -97,7 +96,7 @@ export default function RoyalInvitation({
     ...royalCssVars(palette, data.accentColor),
     "--rp-body": font.bodyVar,
     "--rp-heading": font.headingVar,
-    // Read by the shared components used on this page (ShareBox, RsvpForm…).
+    // Read by the shared components used on this page (RsvpForm…).
     "--inv-heading": font.headingVar,
     // Shows between sections (dividers) and behind them while they enter.
     background: recolorForTemplate(data.templateId, theme.pageBg, data.accentColor),
@@ -289,18 +288,6 @@ export default function RoyalInvitation({
         </Section>
       )}
 
-      {mode === "public" && (
-        <div className={s.light}>
-          <ShareBox
-                slug={slug}
-                occasionTitle={occasionTitle}
-                accentColor={data.accentColor}
-                weddingDate={data.weddingDate}
-                hosts={coupleLabel}
-                events={events}
-              />
-        </div>
-      )}
 
       <div className="relative isolate">
         <Sky at="thanks" />
