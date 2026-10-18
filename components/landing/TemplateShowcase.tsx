@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 import { useTranslations } from "next-intl";
 import { Hand, RotateCcw } from "lucide-react";
 import type { IntroId } from "@/lib/templates";
+import { perfTier } from "@/lib/perfTier";
 import { INTROS } from "@/components/invite/intros/registry";
 import ParticleField, {
   type BurstOptions,
@@ -16,9 +17,10 @@ const STAGE_W = 390;
 const STAGE_H = 620;
 /** After the opening finishes, the card rests on the names, then replays. */
 const REPLAY_AFTER_MS = 5000;
-/** 3D openings play a timed sequence and build a scene as soon as they
- * mount — heavy, and distracting in a grid. Their cards wait for a tap. */
-const TAP_TO_START = new Set<IntroId>(["palaceGate", "templeGate", "cathedralDoors", "parkGate"]);
+/** 3D and WebGL openings (a scene, a cloth simulation, a moving photo)
+ * are heavy, and distracting in a grid: their cards wait for a tap. On a
+ * low-tier phone (lib/perfTier.ts) every card does. */
+const TAP_TO_START = new Set<IntroId>(["palaceGate", "templeGate", "cathedralDoors", "parkGate", "pearlCurtain", "livingTemple"]);
 
 export interface ShowcaseProps {
   introId: IntroId;
@@ -58,6 +60,10 @@ export default function TemplateShowcase(p: ShowcaseProps) {
   const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
   const [run, setRun] = useState(0);
   const [started, setStarted] = useState(!p.still && !TAP_TO_START.has(p.introId));
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the phone's tier is only known in the browser
+    if (perfTier() === "low") setStarted(false);
+  }, []);
 
   useEffect(() => {
     const el = boxRef.current;

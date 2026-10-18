@@ -14,6 +14,7 @@ import Reveal from "./Reveal";
 import { EventCards, Guide, Heading, PhotoLayer, Photos, Story, Working, hasGuide, useEvents, useLongDate } from "./CinemaBlocks";
 import c from "./cinema.module.css";
 import s from "./fresh.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * Baby shower — "Fresh morning". Soft light and pastel: baby shoes held in
@@ -108,6 +109,7 @@ export default function FreshInvitation(props: PremiumProps) {
         </section>
       )}
 
+      {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} />}
       {sections.gallery && photos.length > 1 && (
         <section className={s.section}>
           <div className={s.inner}>

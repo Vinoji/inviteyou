@@ -40,6 +40,7 @@ import {
   Hedge,
 } from "./GardenSections";
 import g from "./garden.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * The botanical-garden layout: its own world rather than a palette on the
@@ -135,6 +136,9 @@ export default function GardenInvitation({
   }
   if (category.showCountdown && data.weddingDate) {
     add("countdown", GARDEN.sage, <GardenCountdown weddingDate={data.weddingDate} />);
+  }
+  if (data.videoUrl) {
+    add("video", GARDEN.cream, <InviteVideo url={data.videoUrl} accent={data.accentColor} />);
   }
   // The first photo is the portrait in the story section.
   if (sections.gallery && data.photos.length > 1) {

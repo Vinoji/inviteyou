@@ -17,8 +17,8 @@ import paper from "@/components/landing/landing.module.css";
 import { KolamDivider, SideGarlands } from "@/components/site/festive";
 import { FinalCta, HowItWorks, SectionHeading } from "@/components/landing/Sections";
 
-/** Openings the hero phone cycles through — one per tradition and style. */
-const FEATURED = ["temple-gopuram", "nikah-emerald", "church-stained-glass", "mandap-marigold", "velvet-gold", "engagement-ring"];
+/** Openings the hero phone cycles through — the newest designs first. */
+const FEATURED = ["photo-story", "temple-photo-story", "pearl-curtain", "temple-journey", "living-temple"];
 
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {

@@ -182,6 +182,8 @@ export interface InvitationData {
    * (EVENTS_HEADING in lib/templates); empty = the design's own. */
   eventsKicker?: string;
   eventsTitle?: string;
+  /** A YouTube link shown on the invitation (lib/youtube.ts); "" = none. */
+  videoUrl?: string;
   /** Structured family lines per side. Missing on older docs, which only
    * have brideParents/groomParents — read through getFamily() in lib/family.ts. */
   brideFamily?: FamilyMember[];

@@ -15,6 +15,7 @@ import Reveal from "./Reveal";
 import { EventCards, Guide, Heading, PhotoLayer, Photos, Story, Working, hasGuide, useEvents, useLongDate } from "./CinemaBlocks";
 import c from "./cinema.module.css";
 import s from "./party.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 // Where the sparkler's head is in its photo (fractions of the band).
 const SPARKLER: Emitter[] = [{ x: 0.52, y: 0.4, angle: -90, spread: 180 }];
@@ -126,6 +127,7 @@ export default function PartyInvitation(props: PremiumProps) {
       )}
 
       {/* ── Snapshots, over balloons and confetti ── */}
+      {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} />}
       {sections.gallery && photos.length > 1 && (
         <section className={`${s.band} ${s.light}`}>
           <PhotoLayer templateId={id} slot="balloons" s={s} />

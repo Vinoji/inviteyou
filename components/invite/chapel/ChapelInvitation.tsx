@@ -39,6 +39,7 @@ import {
   StoryPage,
 } from "./ChapelSections";
 import c from "./chapel.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * The chapel layout. Unlike every other template it isn't a long scroll:
@@ -153,6 +154,9 @@ export default function ChapelInvitation({
   }
   if (category.showCountdown && /^\d{4}-\d{2}-\d{2}$/.test(data.weddingDate)) {
     add({ key: "countdown", title: t("countdown.heading"), node: <CountdownPage weddingDate={data.weddingDate} /> });
+  }
+  if (data.videoUrl) {
+    add({ key: "video", title: tView("videoTitle"), node: <InviteVideo url={data.videoUrl} accent={data.accentColor} /> });
   }
   // The first photo is the portrait on the story page.
   if (sections.gallery && data.photos.length > 1) {

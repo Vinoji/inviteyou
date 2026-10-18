@@ -37,6 +37,7 @@ import PremiumInvitation, { hasPremiumLayout } from "./premium/registry";
 import GardenInvitation from "./garden/GardenInvitation";
 import ChapelInvitation from "./chapel/ChapelInvitation";
 import PalaceInvitation from "./palace/PalaceInvitation";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * Composes every section of an invitation. Shared between the editor's live
@@ -260,6 +261,7 @@ function InvitationBody({
             </Section>
           </ScrollScene>
         )}
+        {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} />}
         {sections.gallery && (
           <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="gallery">
             <Section delay={0.09}>

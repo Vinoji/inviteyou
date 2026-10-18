@@ -11,6 +11,7 @@ import {
   sanitizeMonogram,
   sanitizeNameSize,
   sanitizeLabel,
+  sanitizeVideoUrl,
   sanitizeFamily,
   sanitizeContentLocale,
   sanitizeParentsLine,
@@ -23,6 +24,7 @@ import {
 } from "@/lib/sanitize";
 import { tooMany } from "@/lib/rateLimit";
 import { couponOffInr, normalizeCode } from "@/lib/coupons";
+import { couponUsesLeft } from "@/lib/couponUses";
 import { devPriceEnabled } from "@/lib/pricing";
 
 /**
@@ -68,6 +70,7 @@ export async function POST(req: NextRequest) {
     eventBLabel,
     eventsKicker,
     eventsTitle,
+    videoUrl,
     brideFamily,
     groomFamily,
     contentLocale,
@@ -112,6 +115,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Please choose today or a future date." }, { status: 400 });
   }
 
+  // A code for its first N customers only, all used: say so before payment.
+  if (couponOffInr(coupon, templateId) > 0 && (await couponUsesLeft(coupon)) <= 0) {
+    return NextResponse.json({ error: "That code has been fully used." }, { status: 409 });
+  }
+
   const db = getAdminDb();
   const ref = db.collection("invitations").doc(draftId);
   const existing = await ref.get();
@@ -149,6 +157,7 @@ export async function POST(req: NextRequest) {
     ...(sanitizeLabel(eventBLabel) !== undefined ? { eventBLabel: sanitizeLabel(eventBLabel) } : {}),
     ...(sanitizeLabel(eventsKicker) !== undefined ? { eventsKicker: sanitizeLabel(eventsKicker) } : {}),
     ...(sanitizeLabel(eventsTitle) !== undefined ? { eventsTitle: sanitizeLabel(eventsTitle) } : {}),
+    ...(sanitizeVideoUrl(videoUrl) !== undefined ? { videoUrl: sanitizeVideoUrl(videoUrl) } : {}),
     ...(Array.isArray(brideFamily) ? { brideFamily: sanitizeFamily(brideFamily) } : {}),
     ...(Array.isArray(groomFamily) ? { groomFamily: sanitizeFamily(groomFamily) } : {}),
     ...(sanitizeContentLocale(contentLocale) ? { contentLocale: sanitizeContentLocale(contentLocale) } : {}),

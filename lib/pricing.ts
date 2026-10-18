@@ -1,14 +1,16 @@
 import { TEMPLATES, getTemplateConfig } from "./templates";
+import { activeFestival, festivalWindow, type FestivalOffer, type FestivalTheme } from "./festivals";
 
 /**
  * Publishing prices, by tier:
  *   free     — card image download only (TemplateConfig.free); never published
  *   standard — every other design
  *   premium  — the 3D designs (TemplateConfig.badge === "premium")
- * During the launch offer (until OFFER_ENDS_AT) each paid tier costs its
- * offer price; afterwards its usual price — on the site and on the payment
- * routes alike, so the countdown is real. Every price shown or charged
- * reads from here.
+ * During an offer — the launch offer (until OFFER_ENDS_AT) or a festival
+ * offer (lib/festivals.ts) — each paid tier costs that offer's price (the
+ * lower one when both run); otherwise its usual price. On the site and on
+ * the payment routes alike, so every countdown is real. Every price shown
+ * or charged reads from here.
  */
 
 export type Tier = "free" | "standard" | "premium";
@@ -25,6 +27,35 @@ export const TIER_PRICES: Record<Exclude<Tier, "free">, { offer: number; usual: 
 export const OFFER_PRICE_INR = TIER_PRICES.standard.offer;
 export const LIST_PRICE_INR = TIER_PRICES.standard.usual;
 
+/** Each paid tier's price outside any offer. */
+export const USUAL_PRICES = { standard: TIER_PRICES.standard.usual, premium: TIER_PRICES.premium.usual };
+
+export interface ActiveOffer {
+  /** "launch" or the festival's id. */
+  id: string;
+  /** What it looks like: the festival's theme, or the launch offer's. */
+  theme: FestivalTheme | "launch";
+  /** The festival running now, even when the launch offer sets the price. */
+  festival: FestivalOffer | null;
+  /** The prices in force, and when they end. */
+  prices: { standard: number; premium: number };
+  endsAt: number;
+}
+
+/** The offer in force now (the lower-priced one if two overlap), or null. */
+export function currentOffer(now = Date.now()): ActiveOffer | null {
+  const festival = activeFestival(now);
+  const options = [
+    ...(now <= OFFER_ENDS_AT
+      ? [{ id: "launch", prices: { standard: TIER_PRICES.standard.offer, premium: TIER_PRICES.premium.offer }, endsAt: OFFER_ENDS_AT }]
+      : []),
+    ...(festival ? [{ id: festival.id, prices: festival.prices, endsAt: festivalWindow(festival).end }] : []),
+  ].filter((o) => o.prices.standard < USUAL_PRICES.standard);
+  if (!options.length) return null;
+  const best = options.reduce((a, b) => (b.prices.standard < a.prices.standard ? b : a));
+  return { ...best, festival, theme: festival?.theme ?? "launch" };
+}
+
 /** A payment started just before the offer ended may be confirmed just
  * after; the offer price is honoured for this long past the end. */
 export const OFFER_GRACE_MS = 24 * 60 * 60 * 1000;
@@ -39,7 +70,7 @@ export function devPriceEnabled(): boolean {
 }
 
 export function offerActive(now = Date.now()): boolean {
-  return now <= OFFER_ENDS_AT;
+  return currentOffer(now) !== null;
 }
 
 export function templateTier(templateId: string): Tier {
@@ -54,7 +85,7 @@ export function isFreeTemplate(templateId: string): boolean {
 /** A tier's price right now. */
 export function tierPriceInr(tier: Tier, now = Date.now()): number {
   if (tier === "free") return 0;
-  return offerActive(now) ? TIER_PRICES[tier].offer : TIER_PRICES[tier].usual;
+  return currentOffer(now)?.prices[tier] ?? USUAL_PRICES[tier];
 }
 
 /** The standard tier's price right now. */
@@ -71,7 +102,7 @@ export function templatePriceInr(templateId: string, now = Date.now()): number {
 export function templateListPriceInr(templateId: string, now = Date.now()): number | null {
   const tier = templateTier(templateId);
   if (tier === "free") return null;
-  const usual = getTemplateConfig(templateId).listPrice ?? TIER_PRICES[tier].usual;
+  const usual = getTemplateConfig(templateId).listPrice ?? USUAL_PRICES[tier];
   return usual > templatePriceInr(templateId, now) ? usual : null;
 }
 

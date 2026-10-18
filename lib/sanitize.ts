@@ -1,4 +1,5 @@
 import "server-only";
+import { normaliseYouTube } from "./youtube";
 import type {
   VenueInfo,
   SectionToggles,
@@ -185,6 +186,11 @@ export function sanitizeTravel(v: unknown): TravelInfo {
 export function sanitizeNameSize(v: unknown): number | undefined {
   if (typeof v !== "number" || !Number.isFinite(v)) return undefined;
   return Math.round(Math.min(NAME_SIZE_MAX, Math.max(NAME_SIZE_MIN, v)) * 100) / 100;
+}
+
+/** A YouTube link, normalised; "" when it isn't one (lib/youtube.ts). */
+export function sanitizeVideoUrl(v: unknown): string | undefined {
+  return typeof v === "string" ? normaliseYouTube(v) : undefined;
 }
 
 /** A short custom label (function names, headings); undefined if not text. */

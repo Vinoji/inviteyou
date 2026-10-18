@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { perfTier } from "@/lib/perfTier";
 import useSafeReducedMotion from "../../useSafeReducedMotion";
 
 /**
@@ -94,7 +95,10 @@ export default function CinemaParticles({
 
   useEffect(() => {
     const canvas = ref.current;
-    if (!canvas || reduce) return;
+    // Old phones (lib/perfTier.ts): no ambient particles; bursts (a tap's
+    // reward) stay, lighter.
+    const tier = perfTier();
+    if (!canvas || reduce || (tier === "low" && mode !== "burst")) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const cols = colors ?? PALETTES[palette] ?? PALETTES.gold;
@@ -115,7 +119,7 @@ export default function CinemaParticles({
 
     const small = W < 600;
     const base = { petals: 26, grains: 70, confetti: 110, sparks: 60, bokeh: 18, fireworks: 3 }[kind];
-    const target = Math.round(base * density * (small ? 0.7 : 1));
+    const target = Math.round(base * density * (small ? 0.7 : 1) * (tier === "low" ? 0.4 : tier === "mid" ? 0.6 : 1));
     const ps: P[] = [];
 
     const spawn = (e?: Emitter, burst = false): P => {

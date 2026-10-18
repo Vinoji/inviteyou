@@ -21,6 +21,7 @@ import { parseDate, type PremiumProps } from "../types";
 import { isRecolor } from "@/lib/color";
 import m from "../materials.module.css";
 import s from "./editorial.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * Luxe Editorial — the invitation as a fashion magazine's wedding issue.
@@ -276,6 +277,7 @@ export default function EditorialInvitation({
         )}
 
         {/* ── Portfolio ── */}
+        {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} />}
         {sections.gallery && photos.length > 2 && (
           <Section index={4}>
             <section className={s.portfolio}>

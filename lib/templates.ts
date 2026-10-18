@@ -381,6 +381,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "velvet-gold",
+    free: true,
     category: "wedding",
     defaultAccent: "#D4AF37",
     defaultFont: "royal-cinzel",
@@ -589,6 +590,7 @@ export const TEMPLATES: TemplateConfig[] = [
   // ── Premium styles for the other occasions ──
   {
     id: "engagement-sparkle",
+    free: true,
     category: "engagement",
     defaultAccent: "#B8860B",
     defaultFont: "classic-serif",
@@ -854,6 +856,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "birthday-cake-candles",
+    free: true,
     category: "birthday",
     defaultAccent: "#F15BB5",
     defaultFont: "modern-clean",
@@ -920,6 +923,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "baby-twinkle-star",
+    free: true,
     category: "baby",
     defaultAccent: "#E48AB5",
     defaultFont: "elegant-script",
@@ -1048,6 +1052,10 @@ export const EDITORS_PICKS = [
   "velvet-gold",
   "engagement-ring",
 ];
+
+/** Designs pinned to the top of the home page's list, in this order
+ * (ahead of the new-and-picks order below). */
+export const HOME_FIRST = ["photo-story", "temple-photo-story", "pearl-curtain", "temple-journey", "living-temple"];
 
 const NEW_FOR_DAYS = 30;
 

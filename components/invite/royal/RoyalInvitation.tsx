@@ -34,6 +34,7 @@ import ThankYou from "./ThankYou";
 import RsvpHeader from "./RsvpHeader";
 import StyleHero from "../styles/StyleHero";
 import s from "./royal.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * The royal-palace layout shared by every wedding template: palace-door
@@ -209,6 +210,7 @@ export default function RoyalInvitation({
       )}
 
       {/* The first photo is the portrait in the grateful-note section. */}
+      {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} />}
       {sections.gallery && (
         <Section index={nextSection()}>
           <MemoryStack photos={data.photos.slice(1)} />

@@ -47,8 +47,19 @@ export default function EnvelopeOpening(props: IntroProps) {
             transition={{ duration: reduce ? 0 : 0.9, delay: reduce ? 0 : 0.75, ease: [0.3, 0, 0.2, 1] }}
           >
             <span className={s.suzhi}>உ</span>
+            {/* One name per line, so NameFit (components/invite/NameFit)
+                can fit each to the card instead of one long line spilling
+                past its edges. */}
             <span className={`${s.cardNames} ${m.foil}`} style={{ fontFamily: props.fonts.display }}>
-              {[props.names.b, props.names.a].filter(Boolean).join(" ❦ ")}
+              <span>{props.names.b ?? props.names.a}</span>
+              {props.names.b && (
+                <>
+                  <span className={s.cardAmp} aria-hidden>
+                    ❦
+                  </span>
+                  <span>{props.names.a}</span>
+                </>
+              )}
             </span>
           </motion.div>
           <div className={`${s.front} ${m.paper}`}>

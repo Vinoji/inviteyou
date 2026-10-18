@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Users, Check, X as XIcon, MessageSquare } from "lucide-react";
-import { getTranslations, getFormatter, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, getFormatter, setRequestLocale } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { CLIENT_BASE, HOST_EXTRA, pickMessages } from "@/lib/i18n/clientMessages";
 import { Link } from "@/i18n/navigation";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { getTemplateConfig } from "@/lib/templates";
@@ -159,7 +161,10 @@ export default async function RsvpsPage({
     friend: t("friendOfBoth"),
   };
 
+  // The guest-list tools' strings on top of the site's (lib/i18n/clientMessages).
+  const messages = await getMessages();
   return (
+    <NextIntlClientProvider messages={pickMessages(messages, [...CLIENT_BASE, ...HOST_EXTRA])}>
     <main className={`min-h-screen ${festive.paper}`}>
       <Thoranam compact />
       <div className="mx-auto max-w-3xl px-4 pt-4 pb-12 sm:px-6">
@@ -290,5 +295,6 @@ export default async function RsvpsPage({
       </Link>
       </div>
     </main>
+    </NextIntlClientProvider>
   );
 }

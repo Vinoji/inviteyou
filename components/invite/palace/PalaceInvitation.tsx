@@ -44,6 +44,7 @@ import {
   type PalaceEvent,
 } from "./PalaceSections";
 import p from "./palace.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * Royal Palace 3D: the guest walks into a palace. After the gate intro
@@ -176,6 +177,7 @@ export default function PalaceInvitation({
 
         {category.showCountdown && hasDate && <Countdown weddingDate={data.weddingDate} ceremonyTime={data.ceremonyTime} />}
 
+        {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} dark />}
         {sections.gallery && <Gallery photos={memories} />}
 
         {sections.travel && hasTravel && (

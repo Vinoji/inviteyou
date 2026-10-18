@@ -23,6 +23,7 @@ import pearlCss from "../pearl/pearl.module.css";
 
 const FabricCurtains = dynamic(() => import("../pearl/FabricCurtains"), { ssr: false });
 import s from "./album.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /** Stand-in photos (public/library) so the editor preview shows every
  * section before the couple adds their own. */
@@ -218,6 +219,7 @@ export default function AlbumInvitation(props: PremiumProps) {
       )}
 
       {/* 2 · Swipe through our moments */}
+      {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} />}
       {showGallery && photos.length >= 3 && (
         <Part kicker={t("swipeKicker")} title={t("swipeTitle")}>
           <SwipeStack photos={photos.slice(0, temple ? 10 : 8)} captions={captions} />

@@ -1,0 +1,243 @@
+/* Festival offer art: a scene along the top of the offer card and a layer
+ * of drifting particles. Decoration only; still under reduced motion. */
+
+.scene {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 132px;
+  pointer-events: none;
+}
+.scene svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.p {
+  position: absolute;
+  top: 0;
+  left: var(--x);
+  font-size: var(--s);
+  line-height: 1;
+  opacity: 0;
+  animation: var(--anim) var(--d) linear var(--delay) infinite;
+}
+
+/* Particle motions */
+@keyframes fall {
+  0% { transform: translate3d(0, -10%, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.95; }
+  90% { opacity: 0.85; }
+  100% { transform: translate3d(var(--drift), 640px, 0) rotate(260deg); opacity: 0; }
+}
+@keyframes rise {
+  0% { transform: translate3d(0, 620px, 0) scale(0.8); opacity: 0; }
+  15% { opacity: 0.9; }
+  100% { transform: translate3d(var(--drift), -40px, 0) scale(1.1); opacity: 0; }
+}
+@keyframes twinkle {
+  0%, 100% { transform: translate3d(0, var(--y), 0) scale(0.6); opacity: 0.15; }
+  50% { transform: translate3d(0, var(--y), 0) scale(1.15); opacity: 1; }
+}
+@keyframes splash {
+  0% { transform: translate3d(0, var(--y), 0) scale(0.2); opacity: 0; }
+  20% { opacity: 0.75; }
+  70% { transform: translate3d(0, var(--y), 0) scale(1.6); opacity: 0.35; }
+  100% { transform: translate3d(0, var(--y), 0) scale(2); opacity: 0; }
+}
+
+/* Scene motions */
+.flicker {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: flicker 1.1s ease-in-out infinite alternate;
+}
+.flicker:nth-child(2n) { animation-duration: 0.8s; animation-delay: -0.3s; }
+.flicker:nth-child(3n) { animation-duration: 1.4s; animation-delay: -0.6s; }
+@keyframes flicker {
+  0% { transform: scale(0.88, 0.94) skewX(-3deg); opacity: 0.85; }
+  50% { transform: scale(1.05, 1.08) skewX(2deg); opacity: 1; }
+  100% { transform: scale(0.95, 1.12) skewX(-1deg); opacity: 0.92; }
+}
+.glow {
+  animation: glow 2.4s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { opacity: 0.45; }
+  to { opacity: 1; }
+}
+.sway {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: sway 3.2s ease-in-out infinite alternate;
+}
+.sway:nth-child(2n) { animation-delay: -1.2s; }
+@keyframes sway {
+  from { transform: rotate(-6deg); }
+  to { transform: rotate(6deg); }
+}
+.spin {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: spin 9s linear infinite;
+}
+.spinSlow {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: spin 40s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.pulse {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: pulse 1.3s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.12); }
+  30% { transform: scale(0.98); }
+  45% { transform: scale(1.08); }
+}
+.bubble {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: bubble 2.2s ease-out infinite;
+}
+.bubble:nth-child(2) { animation-delay: -0.7s; }
+.bubble:nth-child(3) { animation-delay: -1.4s; }
+@keyframes bubble {
+  0% { transform: translateY(6px) scale(0.6); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(-26px) scale(1.15); opacity: 0; }
+}
+.wave {
+  animation: wave 3.4s ease-in-out infinite alternate;
+}
+@keyframes wave {
+  from { transform: translateX(-12px); }
+  to { transform: translateX(12px); }
+}
+.rise {
+  animation: sunrise 6s ease-in-out infinite alternate;
+}
+@keyframes sunrise {
+  from { transform: translateY(10px); }
+  to { transform: translateY(-4px); }
+}
+.glint {
+  animation: glint 2.6s ease-in-out infinite;
+}
+.glint:nth-child(2n) { animation-delay: -0.9s; }
+.glint:nth-child(3n) { animation-delay: -1.7s; }
+@keyframes glint {
+  0%, 70%, 100% { opacity: 0.2; }
+  80% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p, .flicker, .glow, .sway, .spin, .spinSlow, .pulse, .bubble, .wave, .rise, .glint {
+    animation: none !important;
+  }
+  .p { opacity: 0.6; transform: translate3d(0, var(--y, 40px), 0); }
+}
+:global(html[data-motion="reduced"]) .p,
+:global(html[data-motion="reduced"]) .flicker,
+:global(html[data-motion="reduced"]) .glow,
+:global(html[data-motion="reduced"]) .sway,
+:global(html[data-motion="reduced"]) .spin,
+:global(html[data-motion="reduced"]) .spinSlow,
+:global(html[data-motion="reduced"]) .pulse,
+:global(html[data-motion="reduced"]) .bubble,
+:global(html[data-motion="reduced"]) .wave,
+:global(html[data-motion="reduced"]) .rise,
+:global(html[data-motion="reduced"]) .glint {
+  animation: none !important;
+}
+
+/* ===== Photo offer card ===== */
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: 60% 40%;
+  animation: kenburns 22s ease-in-out infinite alternate;
+}
+@keyframes kenburns {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to { transform: scale(1.14) translate3d(-2%, -2%, 0); }
+}
+/* The greeting in shimmering gold. */
+.shimmer {
+  background: linear-gradient(100deg, var(--gold) 0%, #fff8e1 22%, var(--gold) 40%, var(--gold) 60%, #fff8e1 78%, var(--gold) 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 5s linear infinite;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.45));
+}
+@keyframes shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -150% 0; }
+}
+/* A sweep of light across the button now and then. */
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  inset: -40% auto -40% -60%;
+  width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg);
+  animation: shine 3.6s ease-in-out infinite;
+}
+@keyframes shine {
+  0%, 55% { left: -60%; }
+  100% { left: 130%; }
+}
+.glass {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+/* The slim bar: the festival photo drifting slowly behind its tint. */
+.barPhoto {
+  background-size: cover;
+  background-position: center;
+  animation: barpan 30s linear infinite alternate;
+}
+@keyframes barpan {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo, .shimmer, .shine::after, .barPhoto { animation: none !important; }
+}
+:global(html[data-motion="reduced"]) .photo,
+:global(html[data-motion="reduced"]) .shimmer,
+:global(html[data-motion="reduced"]) .shine::after,
+:global(html[data-motion="reduced"]) .barPhoto {
+  animation: none !important;
+}
+
+/* Old phones (lib/perfTier.ts): the photo and wording stay, the motion goes. */
+:global(html[data-perf="low"]) .particles { display: none; }
+:global(html[data-perf="low"]) .photo,
+:global(html[data-perf="low"]) .shimmer,
+:global(html[data-perf="low"]) .shine::after,
+:global(html[data-perf="low"]) .barPhoto { animation: none !important; }
+:global(html[data-perf="low"]) .glass { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(0, 0, 0, 0.35); }
+:global(html[data-perf="mid"]) .p:nth-child(2n) { display: none; }

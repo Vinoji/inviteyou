@@ -20,6 +20,7 @@ import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Working, hasGuide, useEvents, useLongDate } from "../cinema/CinemaBlocks";
 import { Cloud, Garland, Gopuram, HangingLamp, LotusCorner } from "./JourneyArt";
 import s from "./journey.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /** Stand-ins so the editor preview shows every scene before photos are added. */
 const SAMPLES = [
@@ -304,6 +305,7 @@ export default function JourneyInvitation(props: PremiumProps) {
       </Pin>
 
       {/* 3 · The functions, in temple frames */}
+      {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} dark />}
       {sections.schedule && events.shown.length > 0 && (
         <section className={s.templeBand}>
           <svg className={s.bandGarland} viewBox="0 0 1000 110" preserveAspectRatio="none" aria-hidden>

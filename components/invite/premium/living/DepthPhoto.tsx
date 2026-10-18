@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { perfTier } from "@/lib/perfTier";
 import { artSrc } from "../ArtImage";
 import useSafeReducedMotion from "../../useSafeReducedMotion";
 import c from "../cinema/cinema.module.css";
@@ -81,11 +82,28 @@ export default function DepthPhoto({
   const reduce = useSafeReducedMotion();
   const boxRef = useRef<HTMLDivElement>(null);
   const [live, setLive] = useState(false);
+  // Sections further down start (photo, depth map, WebGL) only once they're
+  // about a screen away — not all five at page load.
+  const [near, setNear] = useState(priority);
   const src = artSrc(templateId, slot);
   const depthSrc = artSrc(templateId, `${slot}-depth`);
 
   useEffect(() => {
-    if (reduce || !src || !depthSrc) return;
+    if (near) return;
+    const box = boxRef.current;
+    if (!box || typeof IntersectionObserver === "undefined") {
+      // No observer: just start.
+      setNear(true);
+      return;
+    }
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && setNear(true), { rootMargin: "900px 0px" });
+    io.observe(box);
+    return () => io.disconnect();
+  }, [near]);
+
+  useEffect(() => {
+    // Old phones (lib/perfTier.ts) keep the plain photo: no WebGL.
+    if (reduce || !near || !src || !depthSrc || perfTier() === "low") return;
     const box = boxRef.current;
     if (!box) return;
     // A fresh canvas per run: a context released in cleanup can't be reused
@@ -225,7 +243,7 @@ export default function DepthPhoto({
       canvas.remove();
       setLive(false);
     };
-  }, [reduce, src, depthSrc, strength, dolly, focus]);
+  }, [reduce, near, src, depthSrc, strength, dolly, focus]);
 
   if (!src) return null;
   return (

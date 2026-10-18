@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowRight, ChevronDown, Crown, Gift, Sparkles, Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { EDITORS_PICKS, isNewTemplate } from "@/lib/templates";
+import { EDITORS_PICKS, HOME_FIRST, isNewTemplate } from "@/lib/templates";
+import { activeFestival } from "@/lib/festivals";
 import { type Tier, templateListPriceInr, templatePriceInr, templateTier, tierPriceInr } from "@/lib/pricing";
 import TemplateShowcase, { type ShowcaseProps } from "./TemplateShowcase";
 
@@ -31,6 +32,15 @@ const OCCASION_ICON: Record<string, string> = {
 const OCCASION_ORDER = Object.keys(OCCASION_ICON);
 // Live invitations lead (what most people want), 3D next, free cards last.
 const TIERS: Tier[] = ["standard", "premium", "free"];
+/** Sort key for the cards within a price group: the running festival's
+ * designs (lib/festivals.ts), then HOME_FIRST, new designs, our picks. */
+function rank(id: string): number {
+  const festive = activeFestival()?.designs ?? [];
+  if (festive.includes(id)) return -festive.length + festive.indexOf(id);
+  const pinned = HOME_FIRST.indexOf(id);
+  if (pinned >= 0) return pinned;
+  return HOME_FIRST.length + (isNewTemplate(id) ? 0 : EDITORS_PICKS.includes(id) ? 1 : 2);
+}
 /** Cards per price group before "Show all" — one or two rows. */
 const FIRST = { phone: 4, desktop: 4 };
 
@@ -89,12 +99,8 @@ export default function TemplateGallery({
     items: inOccasion
       .filter((tpl) => templateTier(tpl.id) === tier)
       .map((tpl, i) => ({ tpl, i }))
-      // New designs, then our picks, then the rest.
-      .sort(
-        (a, b) =>
-          (isNewTemplate(a.tpl.id) ? 0 : EDITORS_PICKS.includes(a.tpl.id) ? 1 : 2) -
-            (isNewTemplate(b.tpl.id) ? 0 : EDITORS_PICKS.includes(b.tpl.id) ? 1 : 2) || a.i - b.i
-      )
+      // Pinned designs (HOME_FIRST, in order), new designs, our picks, the rest.
+      .sort((a, b) => rank(a.tpl.id) - rank(b.tpl.id) || a.i - b.i)
       .map(({ tpl }) => tpl),
   })).filter((g) => g.items.length > 0);
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Tag, X } from "lucide-react";
 import { couponOffInr, findCoupon, normalizeCode } from "@/lib/coupons";
+import { templateTier } from "@/lib/pricing";
 
 /**
  * "Have a code?" next to Publish: a partner's or a returning couple's
@@ -24,7 +25,9 @@ export default function CouponField({
   const t = useTranslations("editor.coupon");
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
-  const [error, setError] = useState(false);
+  // Why the code didn't apply: unknown, 3D-only, or all its uses taken.
+  const [error, setError] = useState<"" | "invalid" | "premiumOnly" | "usedUp">("");
+  const [checking, setChecking] = useState(false);
   const off = couponOffInr(code, templateId);
   const coupon = findCoupon(code);
 
@@ -58,14 +61,23 @@ export default function CouponField({
     );
   }
 
-  function apply() {
+  async function apply() {
     const c = normalizeCode(input);
-    if (couponOffInr(c, templateId) > 0) {
-      setError(false);
-      onChange(c);
-    } else {
-      setError(true);
+    const found = findCoupon(c);
+    if (found?.premium && templateTier(templateId) !== "premium") return setError("premiumOnly");
+    if (couponOffInr(c, templateId) <= 0) return setError("invalid");
+    if (found?.limit) {
+      // First-N-customers codes: ask the server how many are left.
+      setChecking(true);
+      const left = await fetch(`/api/coupon?code=${encodeURIComponent(c)}`)
+        .then((r) => r.json())
+        .then((j: { left?: number | null }) => j.left)
+        .catch(() => null)
+        .finally(() => setChecking(false));
+      if (left === 0) return setError("usedUp");
     }
+    setError("");
+    onChange(c);
   }
 
   return (
@@ -75,18 +87,18 @@ export default function CouponField({
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
-            setError(false);
+            setError("");
           }}
-          onKeyDown={(e) => e.key === "Enter" && apply()}
+          onKeyDown={(e) => e.key === "Enter" && void apply()}
           placeholder={t("placeholder")}
           autoCapitalize="characters"
           className="min-w-0 flex-1 rounded-lg border border-neutral-300 px-3 py-2 text-sm uppercase dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
         />
-        <button type="button" onClick={apply} className="rounded-lg bg-[#3d1236] px-4 text-sm font-semibold text-[#ffe9b8]">
+        <button type="button" onClick={() => void apply()} disabled={checking} className="rounded-lg bg-[#3d1236] px-4 text-sm font-semibold text-[#ffe9b8]">
           {t("apply")}
         </button>
       </div>
-      {error && <p className="mt-1 text-xs text-red-600">{t("invalid")}</p>}
+      {error && <p className="mt-1 text-xs text-red-600">{t(error)}</p>}
     </div>
   );
 }

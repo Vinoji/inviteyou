@@ -16,7 +16,8 @@ import {
   Amiri,
 } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { CLIENT_BASE, pickMessages } from "@/lib/i18n/clientMessages";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { routing } from "@/i18n/routing";
@@ -41,37 +42,47 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  preload: false,
 });
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  preload: false,
 });
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  preload: false,
 });
 const greatVibes = Great_Vibes({
   variable: "--font-greatvibes",
   subsets: ["latin"],
   weight: ["400"],
+  preload: false,
 });
 const lato = Lato({
   variable: "--font-lato",
   subsets: ["latin"],
   weight: ["400", "700"],
+  preload: false,
 });
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+  preload: false,
 });
 const ebGaramond = EB_Garamond({
   variable: "--font-ebgaramond",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  preload: false,
 });
+// Only Playfair (the site's headings) is preloaded: every other face loads
+// when text on the page uses it (font-display: swap), so phones don't
+// download ~300 KB of design fonts up front.
 // Tamil-script fonts — none of the Latin fonts above have Tamil glyphs at
 // all, so Tamil text typed into the editor would silently fall back to a
 // default system font without these.
@@ -79,16 +90,19 @@ const kavivanar = Kavivanar({
   variable: "--font-kavivanar",
   subsets: ["tamil"],
   weight: ["400"],
+  preload: false,
 });
 const meeraInimai = Meera_Inimai({
   variable: "--font-meera-inimai",
   subsets: ["tamil"],
   weight: ["400"],
+  preload: false,
 });
 const catamaran = Catamaran({
   variable: "--font-catamaran",
   subsets: ["tamil", "latin"],
   weight: ["400", "500", "600"],
+  preload: false,
 });
 
 // Only some templates use these (luxe-didone pairing, the Arabic
@@ -194,6 +208,7 @@ export default async function RootLayout({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  const messages = await getMessages();
 
   // Theme is decided server-side from a cookie (written by lib/themePref.ts),
   // not a client-side "flash of wrong theme, then fix it" script — the
@@ -208,11 +223,20 @@ export default async function RootLayout({
 
   return (
     <html
+      // data-perf is set by the inline script below, before hydration.
+      suppressHydrationWarning
       lang={locale}
       className={`${fontVariables} ${themeClass} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
-        <NextIntlClientProvider>
+        {/* The phone's performance tier (lib/perfTier.ts), set before the
+            first paint so old phones never start the heavy effects. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var n=navigator,c=n.hardwareConcurrency||4,m=n.deviceMemory||4,s=n.connection&&n.connection.saveData,r=matchMedia("(prefers-reduced-motion: reduce)").matches;document.documentElement.dataset.perf=s||r||c<=4||m<=2?"low":c<=6||m<=4?"mid":"high"}catch(e){}`,
+          }}
+        />
+        <NextIntlClientProvider messages={pickMessages(messages, CLIENT_BASE)}>
           <MotionPrefSync />
           <OffscreenPause />
           <EntranceGate />

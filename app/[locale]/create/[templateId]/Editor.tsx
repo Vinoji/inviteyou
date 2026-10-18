@@ -20,7 +20,9 @@ import {
   X,
   Smartphone,
   Sparkles,
+  ArrowRight,
   Type,
+  Video,
   Tablet,
   UsersRound,
 } from "lucide-react";
@@ -62,8 +64,9 @@ import type { NearbySuggestion as NearbyResult } from "@/lib/geo";
 import { getFamily, legacyParentsLine } from "@/lib/family";
 import { STORY_PRESETS } from "@/lib/storyPresets";
 import { followNames } from "@/lib/seedNames";
+import { parseYouTube } from "@/lib/youtube";
 import { devPriceEnabled, isFreeTemplate, templateListPriceInr, templatePriceInr } from "@/lib/pricing";
-import { payableInr } from "@/lib/coupons";
+import { autoCoupon, payableInr } from "@/lib/coupons";
 import { waPhone } from "@/lib/share";
 import { savedRef } from "@/lib/referral";
 import CheckoutSheet from "@/components/editor/CheckoutSheet";
@@ -258,6 +261,21 @@ export default function Editor({
   // Phones: the bottom bar steps aside while the keyboard is up.
   const keyboardOpen = useKeyboardOpen();
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  // Phones: the preview at a phone's own width, or a tablet's / computer's
+  // drawn at their width and scaled down to fit (CSS zoom).
+  const [phoneDevice, setPhoneDevice] = useState<"mobile" | "tablet" | "desktop">("mobile");
+  const previewRootRef = useRef<HTMLDivElement>(null);
+  const [previewW, setPreviewW] = useState(0);
+  useEffect(() => {
+    const el = previewRootRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([e]) => setPreviewW(e.contentRect.width));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  const isPhone = previewW > 0 && previewW < 640;
+  const PHONE_DEVICE_W = { mobile: 0, tablet: 768, desktop: 1280 } as const;
+  const zoomW = isPhone ? PHONE_DEVICE_W[phoneDevice] : 0;
   const [razorpayReady, setRazorpayReady] = useState(false);
   // Which ready-made story (if any) is in the story box, and the seed story a
   // fresh editor starts with — both count as "not the user's own words", so
@@ -979,7 +997,11 @@ export default function Editor({
   }, []);
   // Payment test: ?dev_option=1 charges ₹1 (only where lib/pricing.ts allows).
   const devOption = searchParams.get("dev_option") === "1" && devPriceEnabled();
-  const payable = payableInr(templateId, coupon, devOption);
+  // While an offer runs, its code (INVITEFORYOU on 3D designs) applies by
+  // itself unless the buyer typed another or removed it.
+  const [autoOff, setAutoOff] = useState(false);
+  const appliedCoupon = coupon || (autoOff ? "" : autoCoupon(templateId));
+  const payable = payableInr(templateId, appliedCoupon, devOption);
 
   /** Free designs: the card image, drawn on the server from the details as
    * they are now (nothing saved) — shared straight from the phone where it
@@ -1073,7 +1095,7 @@ export default function Editor({
       const draftRes = await fetch("/api/draft", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ draftId, ...data, ownerPhone, ownerLocale: uiLocale, coupon, fromFreeCard: madeFreeCard(), devOption }),
+        body: JSON.stringify({ draftId, ...data, ownerPhone, ownerLocale: uiLocale, coupon: appliedCoupon, fromFreeCard: madeFreeCard(), devOption }),
       });
       if (!draftRes.ok) {
         const j = await draftRes.json().catch(() => ({}));
@@ -1168,8 +1190,11 @@ export default function Editor({
         <CheckoutSheet
           templateId={templateId}
           designName={template.name}
-          coupon={coupon}
-          onCoupon={setCoupon}
+          coupon={appliedCoupon}
+          onCoupon={(code) => {
+            setCoupon(code);
+            if (!code) setAutoOff(true);
+          }}
           devPrice={devOption}
           phone={ownerPhone}
           onPhone={setOwnerPhone}
@@ -1296,6 +1321,18 @@ export default function Editor({
 
             {step === "design" && (
               <div className="space-y-7">
+                {/* Other occasions live on the home page's design list. */}
+                <Link
+                  href="/#templates"
+                  onClick={persistDraft}
+                  className="flex items-center justify-between gap-3 rounded-2xl border border-[#e8b04a]/40 bg-[#fff6e0] px-4 py-3 text-sm text-[#5a3a12] dark:border-[#e8b04a]/30 dark:bg-[#2a0c27] dark:text-[#ffe9b8]"
+                >
+                  <span>{t("browseAllQ")}</span>
+                  <span className="inline-flex shrink-0 items-center gap-1 font-semibold underline underline-offset-2">
+                    {t("browseAll")}
+                    <ArrowRight size={14} aria-hidden />
+                  </span>
+                </Link>
                 <TemplatePicker
                   designs={designs}
                   currentId={templateId}
@@ -1613,6 +1650,27 @@ export default function Editor({
                   )}
                 </FormSection>
 
+                {/* A YouTube video on the invitation (lib/youtube.ts). */}
+                <ExtraCard
+                  icon={Video}
+                  title={t("videoTitle")}
+                  summary={data.videoUrl ? (parseYouTube(data.videoUrl) ? data.videoUrl : t("videoInvalid")) : t("videoHint")}
+                >
+                  <Field label={t("videoLabel")}>
+                    <input
+                      type="url"
+                      inputMode="url"
+                      className={`${inputClass} ${data.videoUrl && !parseYouTube(data.videoUrl) ? "border-red-400 dark:border-red-500" : ""}`}
+                      value={data.videoUrl ?? ""}
+                      onChange={(e) => update("videoUrl", e.target.value)}
+                      placeholder="https://youtu.be/…"
+                    />
+                  </Field>
+                  <p className={`text-xs ${data.videoUrl && !parseYouTube(data.videoUrl) ? "text-red-600 dark:text-red-400" : "text-neutral-500 dark:text-neutral-400"}`}>
+                    {data.videoUrl && !parseYouTube(data.videoUrl) ? t("videoInvalid") : t("videoHint")}
+                  </p>
+                </ExtraCard>
+
                 <div>
                   <h3 className="mb-1 text-sm font-semibold text-neutral-800 dark:text-neutral-200">{t("extrasTitle")}</h3>
                   <p className="mb-3 text-xs text-neutral-500 dark:text-neutral-400">{t("extrasHint")}</p>
@@ -1845,9 +1903,33 @@ export default function Editor({
             ))}
           </div>
         </div>
+        {/* Phones: which screen to preview on. */}
+        <div className={`justify-center px-3 py-1.5 lg:hidden ${isPhone ? "flex" : "hidden"}`}>
+          <div className={`inline-flex rounded-full p-0.5 ${ed.seg}`}>
+            {[
+              { id: "mobile", label: t("mobile"), icon: Smartphone },
+              { id: "tablet", label: t("tablet"), icon: Tablet },
+              { id: "desktop", label: t("desktop"), icon: Monitor },
+            ].map(({ id, label, icon: Icon }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setPhoneDevice(id as typeof phoneDevice)}
+                className={`inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-[11px] font-semibold transition ${
+                  phoneDevice === id ? ed.segOn : ed.segBtn
+                }`}
+                aria-pressed={phoneDevice === id}
+              >
+                <Icon size={12} aria-hidden />
+                {label}
+              </button>
+            ))}
+          </div>
+        </div>
         <div className="relative min-h-0 flex-1">
-        <div className="h-full overflow-y-auto" data-preview-root>
+        <div ref={previewRootRef} className="h-full overflow-y-auto" data-preview-root>
           <div
+            style={zoomW ? { width: zoomW, zoom: previewW / zoomW } : undefined}
             className={`mx-auto min-h-full bg-white shadow-sm transition-[max-width] duration-300 dark:bg-neutral-900 ${
               previewDevice === "mobile"
                 ? "max-w-[390px]"

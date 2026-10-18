@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { isFreeTemplate } from "@/lib/pricing";
-import { payableInr } from "@/lib/coupons";
+import { couponOffInr, payableInr } from "@/lib/coupons";
+import { couponUsesLeft } from "@/lib/couponUses";
 import { tooMany } from "@/lib/rateLimit";
 
 
@@ -37,6 +38,12 @@ export async function POST(req: NextRequest) {
       { error: "This design is free — download your card instead, or pick a paid design for a live link." },
       { status: 400 }
     );
+  }
+
+  // A code for its first N customers only, used up since the draft was saved.
+  const { templateId: tid = "", coupon } = snap.data() ?? {};
+  if (couponOffInr(coupon, tid) > 0 && (await couponUsesLeft(coupon)) <= 0) {
+    return NextResponse.json({ error: "That code has been fully used — remove it to continue." }, { status: 409 });
   }
 
   const keyId = process.env.RAZORPAY_KEY_ID;

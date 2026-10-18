@@ -16,6 +16,7 @@ import m from "../materials.module.css";
 import c from "../cinema/cinema.module.css";
 import DepthPhoto from "./DepthPhoto";
 import s from "./living.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * Wedding — "Living Temple". Real temple photographs that move in 3D as the
@@ -129,6 +130,7 @@ export default function LivingTempleInvitation(props: PremiumProps) {
         </section>
       )}
 
+      {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} dark />}
       {sections.gallery && photos.length > 0 && (
         <section className={s.section}>
           <div className={s.inner}>

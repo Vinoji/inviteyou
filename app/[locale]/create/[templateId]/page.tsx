@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { CLIENT_BASE, EDITOR_EXTRA, pickMessages } from "@/lib/i18n/clientMessages";
 import { TEMPLATE_IDS } from "@/lib/templates";
 import { getTemplateMeta, getTemplatesByCategory } from "@/lib/i18n/templates";
 import { getCategoryMeta } from "@/lib/i18n/categories";
@@ -62,13 +64,17 @@ export default async function CreatePage({
     showcase: showcaseProps(tpl, singlePerson, tDefaults, tCommon),
   }));
 
+  // The editor's own strings on top of the site's (lib/i18n/clientMessages).
+  const messages = await getMessages();
   return (
-    <Editor
-      templateId={templateId}
-      editSlug={edit ?? null}
-      editToken={token ?? null}
-      contentMessages={{ en, ta }}
-      designs={designs}
-    />
+    <NextIntlClientProvider messages={pickMessages(messages, [...CLIENT_BASE, ...EDITOR_EXTRA])}>
+      <Editor
+        templateId={templateId}
+        editSlug={edit ?? null}
+        editToken={token ?? null}
+        contentMessages={{ en, ta }}
+        designs={designs}
+      />
+    </NextIntlClientProvider>
   );
 }

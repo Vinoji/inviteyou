@@ -207,3 +207,22 @@ opening, where they part) are rendered procedurally, not photographed: soft puff
 billowed with noise and lit by tracing sunlight through their density
 (a one-off Node + sharp script; no licence needed). Everything else on the
 page is drawn in code (JourneyArt.tsx).
+
+## Festival offers (`public/art/festivals/`)
+
+Photos from Pexels under the [Pexels License](https://www.pexels.com/license/) (free to use, no attribution required), resized to 1200 px WebP. Shown behind the festival offer bar and card (components/offers).
+
+| File | Source |
+|---|---|
+| diwali.webp | https://www.pexels.com/photo/vibrant-diwali-rangoli-with-oil-lamps-36778018/ |
+| karthigai.webp | https://www.pexels.com/photo/woman-lighting-diya-oil-lamps-4094848/ |
+| christmas.webp | https://www.pexels.com/photo/christmas-tree-in-blur-19969548/ |
+| pongal.webp | https://www.pexels.com/photo/traditional-pongal-festival-ritual-with-pot-30519624/ |
+| republic.webp | https://www.pexels.com/photo/indian-flag-on-sky-background-12367651/ |
+| valentine.webp | https://www.pexels.com/photo/red-rose-flowers-in-bloom-47258/ |
+| shivaratri.webp | https://www.pexels.com/photo/flowers-garland-in-temple-18354294/ |
+| eid.webp | https://www.pexels.com/photo/decorative-lantern-and-crescent-moon-decor-32166678/ |
+| holi.webp | https://www.pexels.com/photo/multicolored-powder-photo-2041707/ |
+| ugadi.webp | https://www.pexels.com/photo/close-up-of-green-mango-leaves-outdoors-30563189/ |
+| puthandu.webp | https://www.pexels.com/photo/traditional-pongal-festival-setup-with-pot-and-decor-35763758/ |
+| akshaya.webp | https://www.pexels.com/photo/coconut-in-a-decorated-vase-13042375/ |

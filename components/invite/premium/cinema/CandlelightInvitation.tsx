@@ -15,6 +15,7 @@ import { EventCards, Guide, Heading, PhotoLayer, Photos, Story, Working, hasGuid
 import m from "../materials.module.css";
 import c from "./cinema.module.css";
 import s from "./candlelight.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 /**
  * Anniversary — "Candlelight". Slow and warm: a candlelit table (the flame
@@ -103,6 +104,7 @@ export default function CandlelightInvitation(props: PremiumProps) {
         </section>
       )}
 
+      {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} dark />}
       {sections.gallery && photos.length > 0 && (
         <section className={s.section}>
           <div className={s.inner}>

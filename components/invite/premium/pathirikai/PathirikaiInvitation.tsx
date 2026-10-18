@@ -24,6 +24,7 @@ import BurstOnView from "../cinema/BurstOnView";
 import c from "../cinema/cinema.module.css";
 import m from "../materials.module.css";
 import s from "./pathirikai.module.css";
+import InviteVideo from "@/components/invite/InviteVideo";
 
 // Akshathai thrown from above the couple's names.
 const SHOWER: Emitter[] = [
@@ -275,6 +276,7 @@ export default function PathirikaiInvitation({
         )}
 
         {/* ── Prints, held with photo corners ── */}
+        {data.videoUrl && <InviteVideo url={data.videoUrl} accent={data.accentColor} />}
         {sections.gallery && photos.length > 1 && (
           <Section index={3}>
             <section className={s.block}>

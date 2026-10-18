@@ -1,4 +1,74 @@
 {
+  "festivals": {
+    "offerName": "{name} offer",
+    "endsLine": "Offer prices end {date} — then ₹{after} and ₹{after3d}.",
+    "cta": "Get the ₹{price} price →",
+    "launch": {
+      "name": "Launch",
+      "greeting": "Launch offer",
+      "line": "Our opening prices, for a short time."
+    },
+    "diwali": {
+      "name": "Diwali",
+      "greeting": "Happy Diwali",
+      "line": "Light up your celebration — invitations that glow like a diya."
+    },
+    "karthigai": {
+      "name": "Karthigai Deepam",
+      "greeting": "Karthigai Deepam wishes",
+      "line": "A thousand lamps for your big day — temple-lit designs on offer."
+    },
+    "christmas": {
+      "name": "Christmas & New Year",
+      "greeting": "Merry Christmas",
+      "line": "Ring in the season — chapel bells, starry nights and save-the-dates for 2027."
+    },
+    "pongal": {
+      "name": "Pongal",
+      "greeting": "Happy Pongal",
+      "line": "Thai pirandhal vazhi pirakkum — begin the wedding season with an invitation overflowing with joy."
+    },
+    "republic": {
+      "name": "Republic Day",
+      "greeting": "Happy Republic Day",
+      "line": "Three days only — celebrate with an invitation your guests will love."
+    },
+    "valentine": {
+      "name": "Valentine's Week",
+      "greeting": "Happy Valentine's Day",
+      "line": "Pop the question or celebrate your love — proposal and anniversary designs on offer."
+    },
+    "shivaratri": {
+      "name": "Maha Shivaratri",
+      "greeting": "Om Namah Shivaya",
+      "line": "On this sacred night, begin your auspicious invitation with a temple design."
+    },
+    "eid": {
+      "name": "Eid",
+      "greeting": "Eid Mubarak",
+      "line": "Celebrate with family — Nikah and walima invitations on offer."
+    },
+    "holi": {
+      "name": "Holi",
+      "greeting": "Happy Holi",
+      "line": "Add colour to your celebration — bright invitations at festive prices."
+    },
+    "ugadi": {
+      "name": "Ugadi",
+      "greeting": "Happy Ugadi",
+      "line": "A new year, a new beginning — invitations for every celebration ahead."
+    },
+    "puthandu": {
+      "name": "Tamil New Year",
+      "greeting": "Puthandu Vazhthukal",
+      "line": "Chithirai begins — welcome the new year with an invitation in Tamil, word for word."
+    },
+    "akshaya": {
+      "name": "Akshaya Tritiya",
+      "greeting": "Happy Akshaya Tritiya",
+      "line": "The most auspicious day to begin — send your wedding invitation now."
+    }
+  },
   "common": {
     "downloadCard": "Download card",
     "openWhatsApp": "Open WhatsApp",
@@ -21,7 +91,6 @@
     "categoriesLabel": "Occasions",
     "useShort": "Use this design",
     "offer": {
-      "title": "Launch offer",
       "compact": "Launch price ₹{price} (usual ₹{was}) until {date}",
       "left": "{d}d {h}h {m}m left",
       "endsIn": "Offer ends in",
@@ -32,10 +101,8 @@
         "s": "sec"
       },
       "short": "₹{price} launch price ends in {d}d {h}h {m}m",
-      "endsLine": "Launch prices end {date} — then ₹{after} and ₹{after3d}.",
       "live": "Live invitation",
       "premium3d": "Premium 3D",
-      "cta": "Get the ₹{price} price →",
       "barLive": "Live invitation",
       "bar3d": "3D",
       "barLeft": "{d}d {h}h left"
@@ -631,6 +698,8 @@
       "placeholder": "Enter code",
       "apply": "Apply",
       "invalid": "That code isn't valid. Codes come from our partner studios or your guest-list page.",
+      "premiumOnly": "This code is for the 3D designs only.",
+      "usedUp": "Sorry — this code has been used by its first customers.",
       "applied": "{code}: ₹{off} off · {label}",
       "remove": "Remove code"
     },
@@ -645,7 +714,13 @@
       "keeps": "Everything you've typed stays — just pick a design.",
       "later": "Maybe later",
       "close": "Close"
-    }
+    },
+    "videoTitle": "YouTube video",
+    "videoHint": "Paste a YouTube link — your pre-wedding shoot, a save-the-date or the live stream. Guests tap to play it on the invitation.",
+    "videoLabel": "YouTube link",
+    "videoInvalid": "That isn't a YouTube link.",
+    "browseAllQ": "Looking for another occasion?",
+    "browseAll": "See all designs"
   },
   "invite": {
     "hero": {
@@ -778,7 +853,9 @@
     },
     "view": {
       "madeWith": "Made with love for {couple} · via InviteForYou",
-      "defaultReception": "Reception"
+      "defaultReception": "Reception",
+      "videoTitle": "Watch our video",
+      "videoPlay": "Play the video"
     },
     "opengraph": {
       "youreInvited": "You're Invited",
@@ -4532,7 +4609,9 @@
       "off": "Pause music",
       "controls": "Music and volume",
       "volume": "Volume"
-    }
+    },
+    "backHome": "Home",
+    "backDesigns": "All designs"
   },
   "notify": {
     "published": "Your invitation for {title} is live! 🎉\n\nShare with guests: {inviteUrl}\n\nYour private edit link (keep it safe, don’t share): {editUrl}",

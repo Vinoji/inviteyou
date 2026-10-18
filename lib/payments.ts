@@ -8,6 +8,7 @@ import { generateUniqueSlug } from "./slug";
 import { getRazorpay } from "./razorpay";
 import { isFreeTemplate } from "./pricing";
 import { minAcceptedPayablePaise } from "./coupons";
+import { countCouponUse } from "./couponUses";
 import { RESTORE_PRICE_PAISE, expiresAt, restoredUntilAfterPayment } from "./expiry";
 import { sendToOwner } from "./notify";
 import { ownerLinks } from "./ownerLinks";
@@ -132,6 +133,7 @@ export async function publishPaidDraft(
         // A ?dev_option=1 payment test, not a real sale.
         ...(devPrice ? { devPrice: true } : {}),
       });
+      countCouponUse(tx, coupon);
       tx.delete(ownerRef);
       tx.delete(draftRef);
       return { draft: d, owner };

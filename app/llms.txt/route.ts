@@ -1,6 +1,6 @@
 import { SITE } from "@/lib/site";
 import { SITE_URL } from "@/lib/seo";
-import { OFFER_ENDS_AT, TIER_PRICES, offerActive, tierPriceInr } from "@/lib/pricing";
+import { USUAL_PRICES, currentOffer, tierPriceInr } from "@/lib/pricing";
 import { CATEGORIES } from "@/lib/categories";
 import en from "@/messages/en.json";
 
@@ -16,6 +16,7 @@ export const revalidate = 86400;
 
 export function GET() {
   const pages = en.seoPages as unknown as Record<string, { metaTitle: string; metaDescription: string }>;
+  const offer = currentOffer();
   const lines = [
     `# ${SITE.name}`,
     "",
@@ -23,8 +24,8 @@ export function GET() {
     "",
     `${SITE.name} (${SITE_URL}) is an Indian online invitation maker. People pick an animated or 3D design, add names, dates, venues, family, story, photos and music in English or Tamil, then share one link on WhatsApp. Each invitation includes RSVP with a guest list, a countdown, Google Maps directions, add-to-calendar, a photo gallery, background music and guest photo sharing.`,
     "",
-    `Pricing: one free design per occasion gives a downloadable invitation card image (no link). A live invitation website with its own link costs ₹${tierPriceInr("standard")} and the premium 3D designs ₹${tierPriceInr("premium")}${
-      offerActive() ? ` (launch prices until ${new Date(OFFER_ENDS_AT).toISOString().slice(0, 10)}, then ₹${TIER_PRICES.standard.usual} and ₹${TIER_PRICES.premium.usual})` : ""
+    `Pricing: free designs for every occasion give a downloadable invitation card image (no link). A live invitation website with its own link costs ₹${tierPriceInr("standard")} and the premium 3D designs ₹${tierPriceInr("premium")}${
+      offer ? ` (${offer.festival ? `${en.festivals[offer.festival.theme].name} offer` : "launch"} prices until ${new Date(offer.endsAt).toISOString().slice(0, 10)}, then ₹${USUAL_PRICES.standard} and ₹${USUAL_PRICES.premium}; festival offers run around major Indian festivals)` : " (festival offers run around major Indian festivals)"
     } — paid once, no subscription. Designing and previewing is always free. Invitations stay live until 10 days after the event date.`,
     "",
     "## Invitations by occasion",
