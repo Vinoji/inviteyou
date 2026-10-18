@@ -18,7 +18,7 @@ import type { PremiumProps } from "../types";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Working, hasGuide, useEvents, useLongDate } from "../cinema/CinemaBlocks";
-import { BananaPlant, Cloud, Garland, Gopuram, HangingLamp, LotusCorner } from "./JourneyArt";
+import { Cloud, Garland, Gopuram, HangingLamp, LotusCorner } from "./JourneyArt";
 import s from "./journey.module.css";
 
 /** Stand-ins so the editor preview shows every scene before photos are added. */
@@ -140,11 +140,11 @@ const CLOUDS = [
  * drives: from a blue sky with the couple's names, a real painted gopuram
  * rises and the camera flies into the window of its crown; down a real
  * temple corridor the invitation card rises as their photos fly in around
- * it as taped prints; the functions in temple frames; their photo in a temple arch
- * between banana plants; a red-and-gold "meet the bride and groom" with
+ * it as taped prints; the functions in temple frames; their photo in a
+ * gold arch before glowing brass temple lamps; a red-and-gold "meet the bride and groom" with
  * hanging lamps; the venue under a row of gold gopurams; and the days
  * counted on embossed paper. Photos: public/art/temple-journey and the
- * living-temple corridor; the rest is drawn in code (JourneyArt).
+ * living-temple corridor and lamps; the rest is drawn in code (JourneyArt).
  */
 export default function JourneyInvitation(props: PremiumProps) {
   const { data, slug, mode, category, occasionTitle, coupleLabel, guestGreeting } = props;
@@ -202,8 +202,7 @@ export default function JourneyInvitation(props: PremiumProps) {
 
   // 4 · their photo in a temple arch, zooming out
   const archS = useTransform(archV, [0, 0.7], [2.3, 1]);
-  const banL = useTransform(archV, [0.15, 0.7], ["-40cqw", "0cqw"]);
-  const banR = useTransform(archV, [0.15, 0.7], ["40cqw", "0cqw"]);
+  const lampsS = useTransform(archV, [0, 1], [1.25, 1.05]);
   const capO = useTransform(archV, [0.6, 0.9], [0, 1]);
 
   const style = {
@@ -319,21 +318,16 @@ export default function JourneyInvitation(props: PremiumProps) {
         </section>
       )}
 
-      {/* 4 · Their photo in a temple arch, between banana plants */}
+      {/* 4 · Their photo in a gold arch, before real temple lamps */}
       {photos.length > 0 && (
         <Pin screens={2} reduce={reduce} pinRef={archRef}>
+          <motion.div className={s.lampsBg} style={{ scale: lampsS }} />
           <div className={s.archFrame}>
             <motion.div className={s.archPhoto} style={{ scale: archS }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={photos[0]} alt="" />
             </motion.div>
           </div>
-          <motion.div className={`${s.banana} ${s.bananaL}`} style={{ x: banL }}>
-            <BananaPlant style={{ width: "100%", height: "100%" }} />
-          </motion.div>
-          <motion.div className={`${s.banana} ${s.bananaR}`} style={{ x: banR }}>
-            <BananaPlant style={{ width: "100%", height: "100%" }} />
-          </motion.div>
           <motion.p className={s.archCaption} style={{ opacity: capO }}>
             {t("archCaption")}
           </motion.p>

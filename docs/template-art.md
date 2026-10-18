@@ -195,14 +195,15 @@ To add a scene: put `<slot>.webp` (≤1400px) and `<slot>-depth.webp`
 | Slot | Photo | Photographer | Where |
 |---|---|---|---|
 | `gopuram` | [View of a Hindu Temple](https://www.pexels.com/photo/view-of-a-hindu-temple-14179203/) (Pexels licence) | Nirmal Dev | The tower the guest scrolls into, and the opening |
+| `lamps` (shared, `living-temple/lamps.webp`) | https://www.pexels.com/photo/33853980/ — brass oil-lamp stands | — | Behind the couple's photo in the gold arch |
 | `corridor` (shared, `living-temple/corridor.webp`) | https://www.pexels.com/photo/18049008/ — pillared temple corridor | — | The invitation card and the couple's prints, down the corridor |
 
 `gopuram.webp` is edited from the same photo as `temple-gopuram/gopuram`: the
 photo shows the tower's right half, so it was mirrored about the crown's
 centre line into a whole tower, the tree in front painted out with the
 neighbouring carvings, the sky cut out to transparency, and the base faded.
-`cloud-1..3.webp` (single cumulus, transparent) and `cloud-bank.webp` (the
-opening's curtains) are rendered procedurally, not photographed: soft puffs
+`cloud-1..3.webp` (single cumulus, transparent; the sky scene and the
+opening, where they part) are rendered procedurally, not photographed: soft puffs
 billowed with noise and lit by tracing sunlight through their density
 (a one-off Node + sharp script; no licence needed). Everything else on the
 page is drawn in code (JourneyArt.tsx).
