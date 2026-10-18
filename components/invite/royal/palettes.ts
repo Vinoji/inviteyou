@@ -139,6 +139,12 @@ const PALETTES: Record<string, RoyalPalette> = {
     ivory: "#FBF3E6", ivory2: "#EADBC2", text: "#3B2A1E", muted: "#7F6A55",
     flowers: ["#D9A58A", "#F3E2C8", "#9CB08A"], leaf: "#7C8A5A", leafLight: "#A0AE7A",
   },
+  // Our Photo Story: the shared travel/places/RSVP pieces read these.
+  "photo-story": {
+    deep: "#2F3A32", mid: "#46564A", gold: "#C2566F", goldLight: "#F2B9C6", goldDeep: "#8E3349",
+    ivory: "#FBF6EE", ivory2: "#F1E6D6", text: "#2F3A32", muted: "#6E6A62",
+    flowers: ["#C2566F", "#F7E1E5", "#8FA58A"], leaf: "#6F8A6A", leafLight: "#A8BCA2",
+  },
   "living-temple": {
     deep: "#0E0811", mid: "#1F0D1C", gold: "#F0C25A", goldLight: "#F8DC96", goldDeep: "#A97A1E",
     ivory: "#FBF1DE", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",

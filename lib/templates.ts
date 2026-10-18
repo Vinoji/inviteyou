@@ -50,7 +50,9 @@ export type IntroId =
   | "photoParty"
   | "photoCandle"
   | "photoFresh"
-  | "livingTemple";
+  | "livingTemple"
+  // Our Photo Story's album (components/invite/premium/album).
+  | "photoAlbum";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -97,6 +99,9 @@ export interface TemplateConfig {
   /** "Was" price in ₹, shown struck through beside the price. Leave out to
    * use the default (LIST_PRICE_INR in lib/pricing.ts). */
   listPrice?: number;
+  /** Photo-led designs take more photos than the usual MAX_PHOTOS
+   * (lib/photoPlan.ts). */
+  maxPhotos?: number;
   /** Premium tier (the 3D designs): its own price in lib/pricing.ts and a
    * gold crown on the design card. */
   badge?: "premium";
@@ -206,6 +211,19 @@ export const TEMPLATES: TemplateConfig[] = [
     cardTextClass: "text-amber-100",
     intro: "livingTemple",
     seed: "traditional-gold",
+  },
+  // A photo-led scrapbook album with an interactive piece in every section.
+  {
+    id: "photo-story",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#C2566F",
+    defaultFont: "elegant-script",
+    cardGradient: "from-rose-100 via-amber-50 to-stone-200",
+    cardTextClass: "text-neutral-900",
+    intro: "photoAlbum",
+    seed: "hindu-north",
+    maxPhotos: 16,
   },
   {
     id: "mandap-marigold",
@@ -1006,4 +1024,5 @@ export const EVENTS_HEADING: Record<string, { ns: string; kicker: string; title:
   "anniversary-wine-roses": { ns: "premium.candlelight", kicker: "eventsKicker", title: "eventsTitle" },
   "baby-shower-balloons": { ns: "premium.fresh", kicker: "eventsKicker", title: "eventsTitle" },
   "living-temple": { ns: "premium.living", kicker: "eventsKicker", title: "eventsTitle" },
+  "photo-story": { ns: "premium.album", kicker: "eventsKicker", title: "eventsTitle" },
 };

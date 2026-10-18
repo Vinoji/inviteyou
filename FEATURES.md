@@ -50,6 +50,8 @@ Six occasion categories ([lib/categories.ts](lib/categories.ts)) relabel the sam
 
 The other occasions keep the original section layout with the envelope intro.
 
+**Our Photo Story (`photo-story`)** is a photo-led wedding album with its own layout ([components/invite/premium/album/](components/invite/premium/album/)). It takes up to 16 photos (other templates take 6, set per template by `maxPhotos` in [lib/templates.ts](lib/templates.ts)). A leather album opens over a table of prints, then every section has something to play with: a slideshow hero, a stack of photos to swipe, story chapters taped in like prints, tiles that flip to reveal a photo, a scratch card hiding the date, a then-and-now slider, a polaroid wall to drag about, a filmstrip with a full-screen viewer, and a heart made of photos. In the editor, sample photos fill the empty spots until the couple adds their own.
+
 **Font pairings** ([lib/fontPairings.ts](lib/fontPairings.ts)): `classic-serif`, `modern-clean`, `elegant-script`, `royal-cinzel`, `tamil-calligraphy`, `tamil-classic`.
 
 ## Premium 3D templates (₹999)
@@ -83,7 +85,7 @@ The engine ([PalaceScene.tsx](components/invite/palace/PalaceScene.tsx)) runs th
 - Story text
 - Groom's and bride's parents (Family section)
 - Accent colour and font pairing
-- Photos, uploaded straight to Firebase Storage ([components/editor/PhotoSlot.tsx](components/editor/PhotoSlot.tsx))
+- Photos (6, or 16 on Our Photo Story), uploaded straight to Firebase Storage ([components/editor/PhotoSlot.tsx](components/editor/PhotoSlot.tsx))
 - Optional background music track
 - Up to 4 FAQ items ("Things to Know": dress code, parking, etc.)
 - **Travel Guide** (wedding only): destination city, up to 3 airports, up to 2 train routes with up to 3 trains each

@@ -1218,6 +1218,12 @@
         "eyebrow": "You are invited",
         "open": "Light the temple",
         "view": "View invitation"
+      },
+      "photoAlbum": {
+        "dialogLabel": "Wedding invitation",
+        "eyebrow": "You are invited",
+        "open": "Open our album",
+        "view": "View invitation"
       }
     },
     "kin": {
@@ -2350,6 +2356,11 @@
       "name": "Living Temple",
       "tagline": "Real temple photos that move in 3D",
       "description": "A South Indian temple wedding in real photographs that come alive as guests scroll — the gopuram lit at night, brass lamps, a pillared corridor and the temple tank glide in 3D, with marigold petals and lamp light."
+    },
+    "photo-story": {
+      "name": "Our Photo Story",
+      "tagline": "Your photos, swipe, scratch & play",
+      "description": "A scrapbook wedding album led by your own photos — up to 16 — with something to play with in every section: a slideshow, a swipe stack, tap-to-reveal tiles, a scratch card for the date, a then-and-now slider, a polaroid wall to drag about and a full-screen photo viewer."
     }
   },
   "defaultContent": {
@@ -4653,6 +4664,67 @@
       "replyTitle": "Will you bless us with your presence?",
       "replySub": "Your blessings will make our day complete.",
       "closing": "Thank you for being part of our sacred beginning"
+    },
+    "album": {
+      "coverTitle": "Our Album",
+      "lead": "Our story, in pictures",
+      "slidesLabel": "Photos",
+      "slideN": "Photo {n}",
+      "previous": "Previous",
+      "next": "Next",
+      "close": "Close",
+      "swipeKicker": "Flip through",
+      "swipeTitle": "Swipe our moments",
+      "swipeHint": "Swipe or tap the arrows",
+      "cap1": "Where it began",
+      "cap2": "Our favourite day",
+      "cap3": "Little adventures",
+      "cap4": "The question",
+      "cap5": "Two families",
+      "cap6": "Forever starts here",
+      "storyKicker": "Our story",
+      "storyTitle": "How we got here",
+      "chapterN": "Chapter {n}",
+      "ch1": "The first hello",
+      "ch2": "Falling for each other",
+      "ch3": "The big question",
+      "ch4": "Forever begins",
+      "tilesKicker": "A little game",
+      "tilesTitle": "Tap to reveal us",
+      "tileN": "Tile {n}",
+      "revealAll": "Reveal the photo",
+      "hideAll": "Hide it again",
+      "scratchKicker": "A surprise for you",
+      "scratchTitle": "Scratch to see the date",
+      "saveTheDate": "Save the date",
+      "scratchHere": "Scratch here",
+      "scratchLabel": "Scratch card hiding the wedding date",
+      "familyKicker": "With love from",
+      "familyTitle": "Our families",
+      "bride": "The Bride",
+      "groom": "The Groom",
+      "eventsKicker": "Join us",
+      "eventsTitle": "The celebrations",
+      "compareKicker": "Then and now",
+      "compareTitle": "How far we've come",
+      "compareHint": "Drag the slider",
+      "compareLabel": "Slide between the old and new photo",
+      "then": "Then",
+      "now": "Now",
+      "wallKicker": "Play with them",
+      "wallTitle": "Our polaroid wall",
+      "wallHint": "Drag the photos around",
+      "stripKicker": "Every frame",
+      "stripTitle": "The full album",
+      "stripHint": "Swipe, then tap to open",
+      "openPhoto": "Open photo {n}",
+      "viewer": "Photo viewer",
+      "guideKicker": "Getting there",
+      "guideTitle": "Finding us",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you be in our next photo?",
+      "replySub": "Join us and be part of the next page of our album.",
+      "closing": "Thank you for being part of our story"
     }
   },
   "seoPages": {

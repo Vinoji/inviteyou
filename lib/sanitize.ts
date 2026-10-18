@@ -14,6 +14,7 @@ import type {
 import { withDefaultSections, PLACE_SCENES, FAMILY_RELATIONS, MAX_FAMILY_MEMBERS, NAME_SIZE_MAX, NAME_SIZE_MIN } from "./types";
 import { FONT_PAIRINGS } from "./fontPairings";
 import { isLibraryPhoto, isLibraryTrack } from "./mediaLibrary";
+import { maxPhotosFor } from "./photoPlan";
 
 /** A download URL from this app's Firebase Storage — the only place photos
  * and music are uploaded to (lib/mediaLibrary paths are allowed separately).
@@ -71,9 +72,11 @@ export function sanitizeAccentColor(c: unknown): string {
   return typeof c === "string" && /^#[0-9a-fA-F]{6}$/.test(c) ? c : "#b8860b";
 }
 
-export function sanitizePhotos(p: unknown): string[] {
+export function sanitizePhotos(p: unknown, templateId: string): string[] {
   if (!Array.isArray(p)) return [];
-  return p.filter((x): x is string => typeof x === "string" && x.length <= 1000 && (isStorageUrl(x) || isLibraryPhoto(x))).slice(0, 6);
+  return p
+    .filter((x): x is string => typeof x === "string" && x.length <= 1000 && (isStorageUrl(x) || isLibraryPhoto(x)))
+    .slice(0, maxPhotosFor(templateId));
 }
 
 export function sanitizeParentsLine(v: unknown): string {

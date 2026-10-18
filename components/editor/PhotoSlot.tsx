@@ -303,16 +303,19 @@ function PhotoRow({
 /** "Add photos": pick one (cropped first) or several at once (uploaded as they are). */
 export function AddPhotos({
   count,
+  max = MAX_PHOTOS,
   progress,
   onPick,
 }: {
   count: number;
+  /** The design's photo limit (maxPhotosFor). */
+  max?: number;
   /** Set while a batch uploads: photos done / total. */
   progress: { done: number; total: number } | null;
   onPick: (files: File[]) => void;
 }) {
   const t = useTranslations("editor");
-  const full = count >= MAX_PHOTOS;
+  const full = count >= max;
   return (
     <label
       className={`flex items-center justify-center gap-2 rounded-xl border border-dashed border-neutral-300 px-4 py-4 text-sm font-semibold dark:border-neutral-700 ${
@@ -325,8 +328,8 @@ export function AddPhotos({
       {progress
         ? t("uploadingPhotos", { done: progress.done, total: progress.total })
         : full
-          ? t("photosFull", { max: MAX_PHOTOS })
-          : t("addPhotos", { left: MAX_PHOTOS - count })}
+          ? t("photosFull", { max })
+          : t("addPhotos", { left: max - count })}
       <input
         type="file"
         accept="image/*"
