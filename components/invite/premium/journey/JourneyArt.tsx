@@ -1,11 +1,11 @@
 import type { CSSProperties, ReactNode } from "react";
 
 /**
- * The drawn art of "Temple Journey" (SVG): soft clouds, gopurams in gold
+ * The drawn art of "Temple Journey" (SVG): gopurams in gold
  * line art, a stucco gateway with a cusped arch and marigold garlands,
  * carved deity pillars, a hanging brass lamp, gold lotus corners and banana
- * plants. The gopuram the guest flies into is a real photograph
- * (public/art/temple-journey/gopuram.webp).
+ * plants. The gopuram the guest flies into is a real photograph and the
+ * clouds are rendered offline (public/art/temple-journey/).
  */
 
 /** Seeded random numbers, so every guest sees the same carvings. */
@@ -26,25 +26,10 @@ const r1 = (n: number) => Math.round(n * 10) / 10;
 /* Clouds                                                              */
 /* ------------------------------------------------------------------ */
 
-export function Cloud({ style, className }: { style?: CSSProperties; className?: string }) {
-  return (
-    <svg viewBox="0 0 240 110" style={style} className={className} aria-hidden>
-      <defs>
-        <linearGradient id="tj-cloud" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="1" stopColor="#dfeaf6" />
-        </linearGradient>
-      </defs>
-      <g fill="url(#tj-cloud)">
-        <circle cx="70" cy="66" r="34" />
-        <circle cx="112" cy="46" r="42" />
-        <circle cx="160" cy="58" r="34" />
-        <circle cx="196" cy="74" r="24" />
-        <circle cx="40" cy="80" r="22" />
-        <rect x="36" y="70" width="180" height="34" rx="17" />
-      </g>
-    </svg>
-  );
+/** Cumulus clouds, rendered offline (public/art/temple-journey/cloud-*). */
+export function Cloud({ n = 1, style, className }: { n?: 1 | 2 | 3; style?: CSSProperties; className?: string }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={`/art/temple-journey/cloud-${n}.webp`} alt="" className={className} style={style} aria-hidden />;
 }
 
 /* ------------------------------------------------------------------ */
@@ -408,26 +393,16 @@ export function BananaPlant({ className, style }: { className?: string; style?: 
   );
 }
 
-/** A wall of clouds, for the curtains of the opening. */
+/** A bank of clouds, for the curtains of the opening. */
 export function CloudWall({ flip }: { flip?: boolean }) {
-  const rand = seeded(flip ? 41 : 31);
-  const puffs = Array.from({ length: 34 }, () => ({ x: rand() * 220, y: rand() * 640, r: 40 + rand() * 60 }));
   return (
-    <svg viewBox="0 0 200 620" preserveAspectRatio="xMidYMid slice" aria-hidden style={{ transform: flip ? "scaleX(-1)" : undefined }}>
-      <defs>
-        <linearGradient id={`tj-wall-sky-${flip ? "r" : "l"}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#5fa2e8" />
-          <stop offset="1" stopColor="#b6dcf8" />
-        </linearGradient>
-        <radialGradient id={`tj-puff-${flip ? "r" : "l"}`} cx="0.4" cy="0.35" r="0.7">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="1" stopColor="#d6e6f6" />
-        </radialGradient>
-      </defs>
-      <rect width="200" height="620" fill={`url(#tj-wall-sky-${flip ? "r" : "l"})`} />
-      {puffs.map((p, i) => (
-        <circle key={i} cx={r1(p.x)} cy={r1(p.y)} r={r1(p.r)} fill={`url(#tj-puff-${flip ? "r" : "l"})`} />
-      ))}
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/art/temple-journey/cloud-bank.webp"
+      alt=""
+      aria-hidden
+      // Each curtain shows a different part of the bank, so they never mirror.
+      style={{ display: "block", width: "100%", height: "100%", objectFit: "cover", objectPosition: flip ? "100% 0%" : "0% 100%" }}
+    />
   );
 }

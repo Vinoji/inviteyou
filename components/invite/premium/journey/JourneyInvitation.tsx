@@ -97,12 +97,12 @@ function Pin({ screens, reduce, pinRef, children }: { screens: number; reduce: b
 }
 
 const CLOUDS = [
-  { x: -6, y: 6, w: 34, d: -1 },
-  { x: 70, y: 10, w: 30, d: 1 },
-  { x: 8, y: 34, w: 22, d: -1 },
-  { x: 76, y: 40, w: 24, d: 1 },
-  { x: 40, y: 2, w: 18, d: 1 },
-];
+  { n: 1, x: -18, y: 2, w: 62 },
+  { n: 2, x: 58, y: 8, w: 56 },
+  { n: 3, x: -10, y: 30, w: 40 },
+  { n: 1, x: 70, y: 36, w: 44 },
+  { n: 3, x: 34, y: -4, w: 34 },
+] as const;
 
 /**
  * Wedding — "Temple Journey". A scroll journey, like a film the guest
@@ -153,7 +153,7 @@ export default function JourneyInvitation(props: PremiumProps) {
   // flies into the window at the heart of its crown.
   const namesY = useTransform(skyV, [0, 0.3], ["0cqh", "-20cqh"]);
   const namesO = useTransform(skyV, [0.1, 0.28], [1, 0]);
-  const gopY = useTransform(skyV, [0, 0.34], ["55%", "0%"]);
+  const gopY = useTransform(skyV, [0, 0.34], ["64%", "0%"]);
   const gopS = useTransform(skyV, [0.5, 0.98], [1, 12]);
   const cloudY = useTransform(skyV, [0, 1], ["0cqh", "-40cqh"]);
   const flash = useTransform(skyV, [0.9, 1], [0, 1]);
@@ -202,7 +202,7 @@ export default function JourneyInvitation(props: PremiumProps) {
         <div className={`${s.layer} ${s.sky}`} />
         <motion.div className={s.layer} style={{ y: cloudY }}>
           {CLOUDS.map((c, i) => (
-            <Cloud key={i} className={s.cloud} style={{ left: `${c.x}%`, top: `${c.y}%`, width: `${c.w}%` }} />
+            <Cloud key={i} n={c.n} className={s.cloud} style={{ left: `${c.x}%`, top: `${c.y}%`, width: `${c.w}%` }} />
           ))}
         </motion.div>
         <motion.div className={s.names} style={{ y: namesY, opacity: namesO }}>

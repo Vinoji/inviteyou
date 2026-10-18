@@ -200,4 +200,8 @@ To add a scene: put `<slot>.webp` (≤1400px) and `<slot>-depth.webp`
 photo shows the tower's right half, so it was mirrored about the crown's
 centre line into a whole tower, the tree in front painted out with the
 neighbouring carvings, the sky cut out to transparency, and the base faded.
-Everything else on the page is drawn in code (JourneyArt.tsx).
+`cloud-1..3.webp` (single cumulus, transparent) and `cloud-bank.webp` (the
+opening's curtains) are rendered procedurally, not photographed: soft puffs
+billowed with noise and lit by tracing sunlight through their density
+(a one-off Node + sharp script; no licence needed). Everything else on the
+page is drawn in code (JourneyArt.tsx).
