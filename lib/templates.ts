@@ -54,7 +54,8 @@ export type IntroId =
   // Our Photo Story's album (components/invite/premium/album).
   | "photoAlbum"
   | "templeAlbum"
-  | "pearlCurtain";
+  | "pearlCurtain"
+  | "templeJourney";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -239,6 +240,18 @@ export const TEMPLATES: TemplateConfig[] = [
     intro: "templeAlbum",
     seed: "traditional-gold",
     maxPhotos: 20,
+  },
+  // A scroll journey: sky, into a gopuram, through a gateway, to the invitation.
+  {
+    id: "temple-journey",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#B5262E",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-sky-500 via-amber-200 to-red-800",
+    cardTextClass: "text-white",
+    intro: "templeJourney",
+    seed: "traditional-gold",
   },
   // A plaque that splits, pearl-strung curtains that tie back, then the album.
   {
@@ -1055,4 +1068,5 @@ export const EVENTS_HEADING: Record<string, { ns: string; kicker: string; title:
   "photo-story": { ns: "premium.album", kicker: "eventsKicker", title: "eventsTitle" },
   "temple-photo-story": { ns: "premium.templeAlbum", kicker: "eventsKicker", title: "eventsTitle" },
   "pearl-curtain": { ns: "premium.pearlAlbum", kicker: "eventsKicker", title: "eventsTitle" },
+  "temple-journey": { ns: "premium.journey", kicker: "eventsKicker", title: "eventsTitle" },
 };

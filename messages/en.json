@@ -1236,6 +1236,12 @@
         "eyebrow": "We're getting married",
         "open": "Tap to open",
         "view": "View invitation"
+      },
+      "templeJourney": {
+        "dialogLabel": "Wedding invitation",
+        "eyebrow": "You are invited",
+        "open": "Begin the journey",
+        "view": "View invitation"
       }
     },
     "kin": {
@@ -2383,6 +2389,11 @@
       "name": "Pearl Curtain",
       "tagline": "Tap the plaque, the pearl curtains part",
       "description": "An elegant sage-and-ivory wedding invitation. Guests tap an ivory plaque with gold scrollwork and pearls; it splits apart on silk curtains strung with pearls, which gather and tie back to show your names on linen between embroidered cypress trees. Then up to 16 of your photos to swipe, flip, scratch, slide and drag about."
+    },
+    "temple-journey": {
+      "name": "Temple Journey",
+      "tagline": "Scroll from the sky into the temple",
+      "description": "An artistic wedding website guests scroll through like a film: from a blue sky with your names, a painted gopuram rises and the camera flies in through its doorway; a stucco gateway hung with marigolds opens its arch on your invitation, framed by carved deity pillars; then the functions in temple frames, your photo between banana plants, a red-and-gold meet-the-bride-and-groom, the venue under gold gopurams and a countdown."
     }
   },
   "defaultContent": {
@@ -4887,6 +4898,28 @@
       "replySub": "Kindly let us know if you can join us.",
       "closing": "Thank you for being part of our story",
       "scroll": "Scroll"
+    },
+    "journey": {
+      "weds": "weds",
+      "lead": "are getting married",
+      "scroll": "Scroll to begin",
+      "invocation": "With the blessings of the Almighty and our beloved elders",
+      "inviteLead": "we request the pleasure of your company at the wedding of",
+      "eventsKicker": "Join us",
+      "eventsTitle": "The celebrations",
+      "archCaption": "Two hearts, one journey",
+      "meetTitle": "Meet the Bride & Groom",
+      "bride": "The Bride",
+      "groom": "The Groom",
+      "venueKicker": "The venue",
+      "venueFallback": "The temple",
+      "countTitle": "Counting the days",
+      "guideKicker": "Getting there",
+      "guideTitle": "Finding us",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you bless us with your presence?",
+      "replySub": "Your blessings will make our day complete.",
+      "closing": "Thank you for being part of our journey"
     }
   },
   "seoPages": {

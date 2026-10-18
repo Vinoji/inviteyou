@@ -16,6 +16,8 @@ const Fresh = dynamic(() => import("./cinema/FreshInvitation"));
 const LivingTemple = dynamic(() => import("./living/LivingTempleInvitation"));
 // A photo-led scrapbook album with interactive pieces (./album).
 const Album = dynamic(() => import("./album/AlbumInvitation"));
+// A scroll journey through a painted temple (./journey).
+const Journey = dynamic(() => import("./journey/JourneyInvitation"));
 
 const PREMIUM_IDS = new Set([
   "temple-gopuram",
@@ -27,6 +29,7 @@ const PREMIUM_IDS = new Set([
   "photo-story",
   "temple-photo-story",
   "pearl-curtain",
+  "temple-journey",
 ]);
 
 export function hasPremiumLayout(templateId: string): boolean {
@@ -51,6 +54,8 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "temple-photo-story":
     case "pearl-curtain":
       return <Album {...props} />;
+    case "temple-journey":
+      return <Journey {...props} />;
     default:
       return null;
   }

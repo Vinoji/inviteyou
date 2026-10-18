@@ -189,3 +189,15 @@ To add a scene: put `<slot>.webp` (≤1400px) and `<slot>-depth.webp`
 | `corridor` | https://www.pexels.com/photo/18049008/ — pillared temple corridor | Functions |
 | `tank` | https://www.pexels.com/photo/38059676/ — temple tank and gopuram | Travel guide |
 | `finale` | https://www.pexels.com/photo/30105006/ — Brihadeeswara temple at night | Closing |
+
+## temple-journey — Temple Journey
+
+| Slot | Photo | Photographer | Where |
+|---|---|---|---|
+| `gopuram` | [View of a Hindu Temple](https://www.pexels.com/photo/view-of-a-hindu-temple-14179203/) (Pexels licence) | Nirmal Dev | The tower the guest scrolls into, and the opening |
+
+`gopuram.webp` is edited from the same photo as `temple-gopuram/gopuram`: the
+photo shows the tower's right half, so it was mirrored about the crown's
+centre line into a whole tower, the tree in front painted out with the
+neighbouring carvings, the sky cut out to transparency, and the base faded.
+Everything else on the page is drawn in code (JourneyArt.tsx).
