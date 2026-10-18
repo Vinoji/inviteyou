@@ -55,7 +55,15 @@ export type IntroId =
   | "photoAlbum"
   | "templeAlbum"
   | "pearlCurtain"
-  | "templeJourney";
+  | "templeJourney"
+  // Trending, simple and elegant (components/invite/premium/lilac …).
+  | "lilacSeal"
+  | "pastelPalace"
+  | "meenakshiDoors"
+  // The printed cards of each tradition (components/invite/premium/printed).
+  | "printedEnvelope"
+  // A film title sequence in type (components/invite/premium/film).
+  | "filmLeader";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -266,6 +274,205 @@ export const TEMPLATES: TemplateConfig[] = [
     intro: "pearlCurtain",
     seed: "christian",
     maxPhotos: 16,
+  },
+  // A lilac envelope embossed with roses and a wax seal; the card inside
+  // in script and gold (components/invite/premium/lilac). Drawn in code.
+  {
+    id: "lilac-seal",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#8A6FB3",
+    defaultFont: "elegant-script",
+    cardGradient: "from-violet-200 via-purple-100 to-stone-100",
+    cardTextClass: "text-violet-900",
+    intro: "lilacSeal",
+    seed: "traditional-gold",
+  },
+  // A watercolour castle in a rose garden between white pillars, blush
+  // roses and gold, a scratch-to-reveal date (components/invite/premium/
+  // pastel; art: public/art/pastel-palace, Pixabay).
+  {
+    id: "pastel-palace",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#C0607F",
+    defaultFont: "elegant-script",
+    cardGradient: "from-rose-100 via-pink-50 to-stone-100",
+    cardTextClass: "text-rose-900",
+    intro: "pastelPalace",
+    seed: "christian",
+  },
+  // The Madurai temple wedding: brass-studded temple doors open onto the
+  // painted gopuram, a marigold thoranam, jasmine, the Nayakkar Mahal and
+  // the temple tank (components/invite/premium/meenakshi; Pexels photos).
+  {
+    id: "madurai-meenakshi",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#8E1B2B",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-red-900 via-rose-800 to-amber-500",
+    cardTextClass: "text-amber-50",
+    intro: "meenakshiDoors",
+    seed: "traditional-gold",
+  },
+  // The wedding as a film's title sequence, in type alone — no photographs
+  // (components/invite/premium/film).
+  {
+    id: "cinematic-film",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#D6A84C",
+    defaultFont: "classic-serif",
+    cardGradient: "from-neutral-950 via-stone-900 to-amber-700",
+    cardTextClass: "text-stone-100",
+    intro: "filmLeader",
+    seed: "traditional-gold",
+  },
+  // The printed invitation card of each tradition, as printers make them —
+  // paper, foil, border and invocation (components/invite/premium/printed).
+  {
+    id: "kalyanam-rituals",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#7A1424",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-amber-50 via-amber-100 to-red-900",
+    cardTextClass: "text-red-950",
+    intro: "printedEnvelope",
+    seed: "traditional-gold",
+  },
+  {
+    id: "kerala-sadya",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#2F6B2A",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-stone-50 via-amber-100 to-green-800",
+    cardTextClass: "text-green-950",
+    intro: "printedEnvelope",
+    seed: "kerala-kasavu",
+  },
+  {
+    id: "manjal-pathirikai",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#B3121F",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-yellow-300 via-amber-300 to-red-600",
+    cardTextClass: "text-red-900",
+    intro: "printedEnvelope",
+    seed: "traditional-gold",
+  },
+  {
+    id: "maroon-pathirikai",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#F3CF73",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-red-950 via-rose-900 to-amber-500",
+    cardTextClass: "text-amber-100",
+    intro: "printedEnvelope",
+    seed: "traditional-gold",
+  },
+  {
+    id: "kerala-sumuhurtham",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#8A1620",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-stone-100 via-amber-100 to-yellow-500",
+    cardTextClass: "text-red-900",
+    intro: "printedEnvelope",
+    seed: "kerala-kasavu",
+  },
+  {
+    id: "emerald-nikah",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#F0CF7E",
+    defaultFont: "classic-serif",
+    cardGradient: "from-emerald-950 via-emerald-800 to-amber-400",
+    cardTextClass: "text-amber-100",
+    intro: "printedEnvelope",
+    seed: "muslim",
+  },
+  {
+    id: "ivory-nikah",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#1F3A6B",
+    defaultFont: "classic-serif",
+    cardGradient: "from-stone-50 via-amber-50 to-blue-900",
+    cardTextClass: "text-blue-950",
+    intro: "printedEnvelope",
+    seed: "muslim",
+  },
+  {
+    id: "ivory-holy-matrimony",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#7A5A22",
+    defaultFont: "classic-serif",
+    cardGradient: "from-stone-50 via-stone-100 to-amber-200",
+    cardTextClass: "text-stone-800",
+    intro: "printedEnvelope",
+    seed: "christian",
+  },
+  {
+    id: "royal-blue-matrimony",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#FFFFFF",
+    defaultFont: "classic-serif",
+    cardGradient: "from-blue-950 via-blue-800 to-slate-300",
+    cardTextClass: "text-white",
+    intro: "printedEnvelope",
+    seed: "christian",
+  },
+  {
+    id: "anand-karaj-ivory",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#B8560A",
+    defaultFont: "classic-serif",
+    cardGradient: "from-orange-100 via-amber-50 to-orange-500",
+    cardTextClass: "text-orange-900",
+    intro: "printedEnvelope",
+    seed: "sikh",
+  },
+  {
+    id: "phulkari-anand-karaj",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#C2185B",
+    defaultFont: "classic-serif",
+    cardGradient: "from-orange-500 via-pink-600 to-amber-300",
+    cardTextClass: "text-white",
+    intro: "printedEnvelope",
+    seed: "sikh",
+  },
+  {
+    id: "jain-namokar-maroon",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#F3CF73",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-rose-950 via-red-900 to-amber-500",
+    cardTextClass: "text-amber-100",
+    intro: "printedEnvelope",
+    seed: "jain",
+  },
+  {
+    id: "jain-kesar-ivory",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#C45A12",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-amber-50 via-orange-100 to-orange-500",
+    cardTextClass: "text-orange-900",
+    intro: "printedEnvelope",
+    seed: "jain",
   },
   {
     id: "mandap-marigold",
@@ -1055,7 +1262,7 @@ export const EDITORS_PICKS = [
 
 /** Designs pinned to the top of the home page's list, in this order
  * (ahead of the new-and-picks order below). */
-export const HOME_FIRST = ["photo-story", "temple-photo-story", "pearl-curtain", "temple-journey", "living-temple"];
+export const HOME_FIRST = ["kalyanam-rituals", "kerala-sadya", "cinematic-film", "manjal-pathirikai", "emerald-nikah", "ivory-holy-matrimony", "anand-karaj-ivory", "jain-namokar-maroon", "madurai-meenakshi", "lilac-seal", "pastel-palace", "photo-story", "temple-photo-story", "pearl-curtain", "temple-journey", "living-temple"];
 
 const NEW_FOR_DAYS = 30;
 
@@ -1074,6 +1281,23 @@ export const EVENTS_HEADING: Record<string, { ns: string; kicker: string; title:
   "anniversary-wine-roses": { ns: "premium.candlelight", kicker: "eventsKicker", title: "eventsTitle" },
   "baby-shower-balloons": { ns: "premium.fresh", kicker: "eventsKicker", title: "eventsTitle" },
   "living-temple": { ns: "premium.living", kicker: "eventsKicker", title: "eventsTitle" },
+  "lilac-seal": { ns: "premium.lilac", kicker: "eventsKicker", title: "eventsTitle" },
+  "pastel-palace": { ns: "premium.pastel", kicker: "eventsKicker", title: "eventsTitle" },
+  "madurai-meenakshi": { ns: "premium.meenakshi", kicker: "eventsKicker", title: "eventsTitle" },
+  "cinematic-film": { ns: "premium.film", kicker: "ticketsKicker", title: "ticketsTitle" },
+  "kalyanam-rituals": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "kerala-sadya": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "manjal-pathirikai": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "maroon-pathirikai": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "kerala-sumuhurtham": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "emerald-nikah": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "ivory-nikah": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "ivory-holy-matrimony": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "royal-blue-matrimony": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "anand-karaj-ivory": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "phulkari-anand-karaj": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "jain-namokar-maroon": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
+  "jain-kesar-ivory": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
   "photo-story": { ns: "premium.album", kicker: "eventsKicker", title: "eventsTitle" },
   "temple-photo-story": { ns: "premium.templeAlbum", kicker: "eventsKicker", title: "eventsTitle" },
   "pearl-curtain": { ns: "premium.pearlAlbum", kicker: "eventsKicker", title: "eventsTitle" },

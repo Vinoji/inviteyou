@@ -1,0 +1,1109 @@
+/* The printed invitation cards (designs.ts sets the colours as variables):
+   a card on a desk, with paper grain, foil that catches the light, the
+   tradition's border, and inserts on the same stock below. */
+
+.root {
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  --edge: color-mix(in srgb, var(--foil) 45%, transparent);
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: clip;
+  color: var(--ink);
+  font-family: var(--p-body);
+  background:
+    radial-gradient(120% 70% at 50% 0%, color-mix(in srgb, var(--desk) 70%, #fff 30%), var(--desk) 70%);
+}
+
+/* ---------- foil ---------- */
+.foilText {
+  background: linear-gradient(105deg, var(--foil) 0%, var(--foil-hi) 22%, var(--foil) 40%, var(--foil) 60%, var(--foil-hi) 78%, var(--foil) 100%);
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: foilSweep 7s linear infinite;
+}
+@keyframes foilSweep {
+  from { background-position: 100% 0; }
+  to { background-position: -160% 0; }
+}
+
+/* ================= the card on the desk ================= */
+.desk {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 34px 14px 30px;
+}
+.print {
+  position: relative;
+  width: min(100%, 480px);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 30px 60px -20px rgba(0, 0, 0, 0.6),
+    0 8px 18px -8px rgba(0, 0, 0, 0.45);
+}
+.patterned {
+  padding: 14px;
+  background: var(--tile) repeat, linear-gradient(180deg, var(--paper-a), var(--paper-b));
+  background-size: 24px 24px, auto;
+  box-shadow:
+    inset 0 0 0 2px var(--foil),
+    inset 0 0 0 4px var(--paper-a),
+    0 30px 60px -20px rgba(0, 0, 0, 0.6),
+    0 8px 18px -8px rgba(0, 0, 0, 0.45);
+}
+.sheet {
+  position: relative;
+  isolation: isolate;
+  padding: 18px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--paper-a), var(--paper-b));
+  overflow: hidden;
+}
+.patterned .sheet {
+  box-shadow: 0 0 0 2px var(--foil);
+}
+.sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--grain);
+  opacity: 0.32;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.dark .sheet::after {
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+}
+/* the sheen of shimmer stock on dark cards */
+.dark .sheet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(125deg, transparent 30%, rgba(255, 255, 255, 0.07) 45%, transparent 60%);
+  pointer-events: none;
+}
+
+/* the printed rules: a heavy and a fine line */
+.frameBox {
+  position: relative;
+  border: 1.6px solid var(--foil);
+  border-radius: 2px;
+  padding: 26px 18px 24px;
+}
+.frameBox::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 0.8px solid var(--foil);
+  pointer-events: none;
+}
+/* temple and Mughal arches: the sides rise into an arch drawn on top */
+.cap_temple,
+.cap_mughal {
+  border-top: 0;
+  padding-top: 10px;
+}
+.cap_temple::before,
+.cap_mughal::before {
+  border-top: 0;
+  top: 0;
+}
+.cap_temple {
+  margin-top: 18.5%;
+}
+.cap_mughal {
+  margin-top: 32.5%;
+}
+.cap {
+  position: absolute;
+  bottom: 100%;
+  left: -1.6px;
+  width: calc(100% + 3.2px);
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.cap_temple .cap {
+  aspect-ratio: 400 / 74;
+}
+.cap_mughal .cap {
+  aspect-ratio: 400 / 130;
+}
+.cap_temple .emblem {
+  margin-top: -7%;
+}
+.cap_mughal .emblem {
+  margin-top: -12%;
+}
+
+/* Kerala: kasavu bands, top and bottom */
+.kasavu {
+  padding-top: 44px;
+  padding-bottom: 44px;
+}
+.kasavu::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg,
+      transparent 6px, var(--foil) 6px 8px, transparent 8px 11px,
+      var(--foil) 11px 25px, transparent 25px 28px, var(--accent) 28px 30px, transparent 30px) top / 100% 34px no-repeat,
+    linear-gradient(0deg,
+      transparent 6px, var(--foil) 6px 8px, transparent 8px 11px,
+      var(--foil) 11px 25px, transparent 25px 28px, var(--accent) 28px 30px, transparent 30px) bottom / 100% 34px no-repeat,
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 1px, transparent 1px 3px) top / 100% 34px no-repeat,
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.35) 0 1px, transparent 1px 3px) bottom / 100% 34px no-repeat;
+}
+.kasavu .frameBox {
+  border-width: 1px;
+}
+
+/* corner flourishes (Christian and Sikh cards) */
+.corner {
+  position: absolute;
+  width: 62px;
+  height: 62px;
+  z-index: 1;
+  pointer-events: none;
+}
+.tl { top: 8px; left: 8px; }
+.tr { top: 8px; right: 8px; transform: scaleX(-1); }
+.bl { bottom: 8px; left: 8px; transform: scaleY(-1); }
+.br { bottom: 8px; right: 8px; transform: scale(-1, -1); }
+
+/* ---------- the printed wording ---------- */
+.content {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.emblem {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+.glyph {
+  display: block;
+  font-size: 46px;
+  line-height: 1.1;
+  font-weight: 700;
+}
+.glyphGurmukhi {
+  font-family: "Noto Sans Gurmukhi", "Mukta Mahee", "Gurmukhi MN", "Raavi", sans-serif;
+  font-size: 50px;
+}
+.bismillah {
+  display: block;
+  padding: 4px 0;
+  font-family: var(--font-amiri), "Amiri", "Noto Naskh Arabic", "Geeza Pro", serif;
+  font-size: clamp(24px, 8.6cqi, 34px);
+  line-height: 1.7;
+}
+.emblemWrap {
+  display: block;
+}
+.emblemSvg {
+  display: block;
+  width: 58px;
+  height: auto;
+}
+.invocation {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+.invocationSub {
+  margin-top: 2px;
+  max-width: 36ch;
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.cardTitle {
+  margin-top: 12px;
+  font-family: var(--p-display);
+  font-size: clamp(24px, 8.4cqi, 34px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0.03em;
+}
+/* on light stock the title is printed in the card's ink colour, as real
+   cards do (gold foil there reads faint); dark stock keeps the foil */
+.root:not(.dark) .cardTitle {
+  background: none;
+  color: var(--accent);
+  -webkit-text-fill-color: currentColor;
+  animation: none;
+}
+.root:not(.dark) .thanksLine {
+  background: none;
+  color: var(--accent);
+  -webkit-text-fill-color: currentColor;
+  animation: none;
+}
+.rule {
+  display: block;
+  width: 64%;
+  height: 10px;
+  margin: 8px auto 4px;
+  background:
+    radial-gradient(circle, var(--foil) 2.2px, transparent 2.6px) center / 10px 10px no-repeat,
+    linear-gradient(var(--foil), var(--foil)) center / 100% 1px no-repeat;
+}
+.leadLine {
+  margin-top: 10px;
+  max-width: 34ch;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.personBlock {
+  margin-top: 16px;
+  max-width: 100%;
+  min-width: 0;
+}
+.joiner {
+  margin: 2px 0 12px;
+  font-family: var(--p-display);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--soft);
+}
+/* a printed ribbon with notched ends for "Groom" / "Bride" */
+.ribbon {
+  display: inline-block;
+  padding: 3px 20px 4px;
+  background: var(--accent);
+  color: var(--ribbon-ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%, 9px 50%);
+}
+.name {
+  margin-top: 6px;
+  font-family: var(--p-display);
+  font-size: calc(clamp(24px, 8.6cqi, 38px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--accent);
+  overflow-wrap: anywhere;
+}
+.kin {
+  margin-top: 4px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.after {
+  margin-top: 14px;
+  max-width: 34ch;
+  font-size: 14px;
+  line-height: 1.65;
+}
+/* the muhurtham panel: a framed date */
+.datePanel {
+  margin-top: 18px;
+  min-width: 190px;
+  padding: 10px 22px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1.4px solid var(--foil);
+  border-bottom: 1.4px solid var(--foil);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+}
+.dpWeek {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.dpDay {
+  font-family: var(--p-display);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--accent);
+}
+.dpMonth {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+.dpTime {
+  margin-top: 6px;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  color: var(--soft);
+}
+.venue {
+  margin-top: 16px;
+}
+.venueLabel {
+  font-size: 10.5px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.venueName {
+  margin-top: 3px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.venueAddress {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--soft);
+}
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.closingWords {
+  margin-top: 16px;
+  max-width: 34ch;
+  font-size: 13.5px;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--soft);
+}
+.hosts {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 0.8px solid var(--edge);
+  width: 80%;
+}
+.hostsLabel {
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.hostName {
+  margin-top: 4px;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.scrollHint {
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  animation: nudge 1.8s ease-in-out infinite;
+}
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); opacity: 0.7; }
+  50% { transform: translateY(5px); opacity: 1; }
+}
+
+/* ================= the inserts ================= */
+.section {
+  position: relative;
+  padding: 22px 14px;
+}
+.section:last-of-type {
+  padding-bottom: 46px;
+}
+.inner {
+  position: relative;
+  max-width: 480px;
+  margin: 0 auto;
+}
+/* a slip of the same stock */
+.slip {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 26px 20px 24px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--paper-a), var(--paper-b));
+  box-shadow: inset 0 0 0 1px var(--edge), inset 0 0 0 5px transparent, 0 18px 36px -18px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+.slip::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--grain);
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+}
+.slip::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 0.8px solid var(--edge);
+  pointer-events: none;
+}
+.heading {
+  container-type: inline-size;
+  margin-bottom: 14px;
+  padding: 16px 12px 14px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--paper-a), var(--paper-b));
+  box-shadow: inset 0 0 0 1px var(--edge), 0 14px 30px -18px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.title {
+  margin-top: 4px;
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: clamp(22px, 7.6cqi, 32px);
+  line-height: 1.15;
+  color: var(--accent);
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.card {
+  position: relative;
+  flex: 1 1 240px;
+  max-width: 480px;
+  padding: 22px 18px 20px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--paper-a), var(--paper-b));
+  box-shadow: inset 0 0 0 1px var(--edge), 0 18px 36px -18px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 0.8px solid var(--edge);
+  pointer-events: none;
+}
+.cardLabel {
+  font-family: var(--p-display);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--accent);
+}
+.cardTime {
+  margin-top: 6px;
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.cardVenue {
+  margin-top: 10px;
+  font-size: 15.5px;
+  font-weight: 700;
+}
+.cardAddress {
+  margin-top: 3px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 9px 18px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: transparent;
+}
+.calendar {
+  margin-top: 16px;
+  text-align: center;
+}
+.calendarRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.calendar .button {
+  margin-top: 0;
+  border-color: rgba(255, 255, 255, 0.7);
+  color: #fff;
+}
+.calendarHint {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
+}
+.countdown {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.unit {
+  padding: 10px 0 8px;
+  border: 1px solid var(--edge);
+}
+.num {
+  display: block;
+  font-family: var(--p-display);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+}
+.label {
+  display: block;
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.countdownDone {
+  margin-top: 12px;
+  font-family: var(--p-display);
+  font-size: 20px;
+  color: var(--accent);
+}
+.story {
+  font-size: 15.5px;
+  line-height: 1.8;
+  text-align: left;
+}
+.story p + p {
+  margin-top: 12px;
+}
+.lead::first-letter {
+  float: left;
+  margin: 4px 8px 0 0;
+  font-family: var(--p-display);
+  font-size: 2.8em;
+  line-height: 0.8;
+  color: var(--accent);
+}
+.signoff {
+  margin-top: 14px;
+  text-align: right;
+  font-family: var(--p-display);
+  font-size: 18px;
+  color: var(--accent);
+}
+.storyPhoto {
+  display: none;
+}
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.photo {
+  overflow: hidden;
+  border: 7px solid var(--paper-a);
+  border-bottom-width: 22px;
+  box-shadow: 0 14px 26px -14px rgba(0, 0, 0, 0.6);
+}
+.photo:nth-child(odd) {
+  transform: rotate(-1.4deg);
+}
+.photo:nth-child(even) {
+  transform: rotate(1.2deg);
+}
+.photo:nth-child(3n + 1) {
+  grid-column: span 2;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.guide {
+  display: grid;
+  gap: 18px;
+  text-align: left;
+}
+.guideHead {
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--edge);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.guideItem {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--edge);
+}
+.guideItem > p:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+.guideItem span {
+  color: var(--soft);
+  white-space: nowrap;
+}
+.guideText {
+  margin-top: 3px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.shared,
+.reply {
+  position: relative;
+  margin-top: 14px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--paper-a), var(--paper-b));
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--edge), 0 18px 36px -18px rgba(0, 0, 0, 0.55);
+}
+.reply {
+  padding: 26px 20px;
+}
+.replyHead {
+  margin-bottom: 16px;
+  text-align: center;
+}
+.replyHead p:last-child {
+  margin-top: 6px;
+  font-style: italic;
+  color: var(--soft);
+}
+.replyForm {
+  max-width: none;
+}
+.formLabel {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.formInput {
+  width: 100%;
+  padding: 9px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--edge);
+  background: transparent;
+  font-size: 16px;
+  color: var(--ink);
+}
+.formInput:focus {
+  outline: none;
+  border-bottom-color: var(--accent);
+}
+.formInput option {
+  color: #222;
+}
+.formButton {
+  width: 100%;
+  padding: 13px 16px;
+  border-radius: 2px;
+  font-size: 11.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.formButton:disabled {
+  opacity: 0.6;
+}
+.formNote {
+  text-align: center;
+  font-size: 12px;
+  color: var(--soft);
+}
+.thanksCard {
+  padding: 16px 0;
+  text-align: center;
+}
+.thanksTitle {
+  font-family: var(--p-display);
+  font-size: 26px;
+  color: var(--accent);
+}
+.thanksBody {
+  margin-top: 6px;
+  color: var(--soft);
+}
+.thanks {
+  padding: 34px 20px;
+}
+.thanksLine {
+  font-family: var(--p-display);
+  font-size: clamp(26px, 8vw, 38px);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.thanksName {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.footer {
+  padding: 16px;
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ================= intro: the envelope ================= */
+.stage {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  overflow: hidden;
+  background: radial-gradient(120% 80% at 50% 30%, color-mix(in srgb, var(--desk) 70%, #fff 30%), var(--desk) 75%);
+}
+.env {
+  --w: min(84cqw, 380px);
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 1.42;
+  perspective: 1400px;
+}
+.envBack,
+.envFront,
+.envFlap,
+.envCard {
+  position: absolute;
+  border-radius: 4px;
+}
+.envBack {
+  inset: 0;
+  background: var(--liner);
+  box-shadow: 0 30px 50px -22px rgba(0, 0, 0, 0.7);
+}
+.envCard {
+  left: 6%;
+  right: 6%;
+  top: 6%;
+  height: 90%;
+  z-index: 2;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 7%;
+  background: linear-gradient(180deg, var(--paper-a), var(--paper-b));
+  box-shadow: inset 0 0 0 1.5px var(--foil), inset 0 0 0 5px transparent, 0 2px 8px rgba(0, 0, 0, 0.3);
+  color: var(--ink);
+  text-align: center;
+}
+.envCardEmblem {
+  transform: scale(0.72);
+  transform-origin: 50% 0;
+  height: 44px;
+}
+.envCardTitle {
+  font-family: var(--p-display);
+  font-size: clamp(14px, 4.6cqw, 20px);
+  font-weight: 700;
+  color: var(--accent);
+}
+.envCardMono {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--ink);
+}
+.envFront {
+  inset: 0;
+  z-index: 3;
+  background: var(--envelope);
+  clip-path: polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+.envFront::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), transparent 40%, rgba(0, 0, 0, 0.12));
+}
+.envFlap {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 58%;
+  z-index: 4;
+  transform-origin: 50% 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--envelope) 88%, #fff 12%), var(--envelope));
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+}
+.envSeal {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 56%;
+  width: clamp(62px, 20cqw, 84px);
+  aspect-ratio: 1;
+  margin: calc(clamp(62px, 20cqw, 84px) / -2) 0 0 calc(clamp(62px, 20cqw, 84px) / -2);
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  background: radial-gradient(circle at 35% 30%, var(--foil-hi), var(--foil) 55%, color-mix(in srgb, var(--foil) 70%, #000 30%));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--foil) 60%, transparent), 0 10px 20px -6px rgba(0, 0, 0, 0.6);
+}
+.envSeal :global(*) {
+  color: color-mix(in srgb, var(--foil) 40%, #000 60%) !important;
+  -webkit-text-fill-color: currentColor;
+  background: none !important;
+  animation: none !important;
+}
+.envSeal svg {
+  width: 60% !important;
+}
+.envSeal svg path,
+.envSeal svg circle,
+.envSeal svg line,
+.envSeal svg rect,
+.envSeal svg ellipse {
+  fill: color-mix(in srgb, var(--foil) 40%, #000 60%);
+  stroke: color-mix(in srgb, var(--foil) 40%, #000 60%);
+}
+.envSeal .glyph {
+  font-size: clamp(28px, 9cqw, 38px);
+}
+.sealArabic {
+  font-family: var(--font-amiri), "Amiri", "Noto Naskh Arabic", serif;
+  font-size: clamp(14px, 4.6cqw, 19px);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+.envSeal:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 5px;
+}
+.envNames {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  bottom: 9%;
+  text-align: center;
+  pointer-events: none;
+}
+.envNames b {
+  font-family: var(--p-display);
+  font-size: clamp(14px, 4.6cqw, 20px);
+  letter-spacing: 0.2em;
+  color: var(--foil-hi);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.envHint {
+  padding: 11px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foilText, .scrollHint { animation: none !important; }
+}
+:global(html[data-motion="reduced"]) .foilText,
+:global(html[data-motion="reduced"]) .scrollHint,
+:global(html[data-perf="low"]) .foilText {
+  animation: none !important;
+}
+
+/* ===== Batch 3 inserts ===== */
+/* the order of ceremonies: numbered foil medallions on a gold thread */
+.programme {
+  padding: 30px 18px 26px;
+}
+.programmeNote {
+  margin: 8px auto 0;
+  max-width: 34ch;
+  font-size: 13.5px;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--soft);
+}
+.rituals {
+  position: relative;
+  margin-top: 22px;
+  display: grid;
+  gap: 16px;
+  text-align: left;
+}
+.rituals::before {
+  content: "";
+  position: absolute;
+  left: 17px;
+  top: 10px;
+  bottom: 10px;
+  width: 1.4px;
+  background: linear-gradient(180deg, transparent, var(--foil) 6%, var(--foil) 94%, transparent);
+}
+.ritual {
+  position: relative;
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.ritualNo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--foil-hi), var(--foil) 60%, color-mix(in srgb, var(--foil) 70%, #000 30%));
+  box-shadow: 0 0 0 3px var(--paper-a), 0 0 0 4px var(--edge);
+  font-family: var(--p-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--paper-a);
+}
+.ritualBody {
+  min-width: 0;
+  padding-top: 4px;
+}
+.ritualName {
+  font-family: var(--p-display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--accent);
+}
+.ritualAlt {
+  display: block;
+  margin-top: 1px;
+  font-family: var(--p-body);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--soft);
+}
+.ritualText {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* the sadya: a banana leaf with the menu printed on a cream card */
+.leaf {
+  position: relative;
+  padding: 18px 14px 18px 22px;
+  border-radius: 6px 90px 6px 90px / 6px 40px 6px 40px;
+  background:
+    linear-gradient(90deg, transparent 49.6%, rgba(240, 250, 200, 0.55) 49.6% 50.4%, transparent 50.4%) center / 100% 100% no-repeat,
+    repeating-linear-gradient(72deg, transparent 0 13px, rgba(255, 255, 255, 0.09) 13px 14px),
+    repeating-linear-gradient(-72deg, transparent 0 13px, rgba(0, 0, 0, 0.08) 13px 14px),
+    linear-gradient(160deg, #4f9a3a, #2f7a2a 45%, #1f5a1f);
+  box-shadow: 0 22px 40px -20px rgba(0, 0, 0, 0.6);
+}
+.leafCard {
+  position: relative;
+  padding: 26px 18px 22px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--paper-a), var(--paper-b));
+  box-shadow: inset 0 0 0 1px var(--edge), 0 10px 20px -12px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+.leafCard::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 0.8px solid var(--edge);
+  pointer-events: none;
+}
+.menu {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 14px;
+  text-align: left;
+}
+.dish {
+  display: flex;
+  flex-direction: column;
+  padding: 7px 0;
+  border-bottom: 1px dotted var(--edge);
+  min-width: 0;
+}
+.dishName {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.dishAlt {
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--soft);
+}
+.menuFoot {
+  margin-top: 14px;
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--accent);
+}

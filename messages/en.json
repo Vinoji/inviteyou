@@ -1319,6 +1319,36 @@
         "eyebrow": "You are invited",
         "open": "Begin the journey",
         "view": "View invitation"
+      },
+      "lilacSeal": {
+        "dialogLabel": "Wedding invitation",
+        "eyebrow": "Wedding invitation",
+        "open": "Tap the seal to open",
+        "view": "View invitation"
+      },
+      "pastelPalace": {
+        "dialogLabel": "Wedding invitation",
+        "eyebrow": "Our wedding day",
+        "hint": "Scratch to reveal the date",
+        "open": "Reveal",
+        "view": "View invitation"
+      },
+      "meenakshiDoors": {
+        "dialogLabel": "Wedding invitation",
+        "deity": "Sri Meenakshi Sundareswarar",
+        "eyebrow": "Our wedding",
+        "open": "Tap to open the temple doors",
+        "view": "View invitation"
+      },
+      "printedEnvelope": {
+        "dialogLabel": "Wedding invitation",
+        "open": "Tap the seal to open",
+        "view": "Open the invitation"
+      },
+      "filmLeader": {
+        "dialogLabel": "Wedding invitation",
+        "play": "Play",
+        "view": "Open the invitation"
       }
     },
     "kin": {
@@ -2471,6 +2501,91 @@
       "name": "Temple Journey",
       "tagline": "Scroll from the sky into the temple",
       "description": "An artistic wedding website guests scroll through like a film: from a blue sky with your names, a painted gopuram rises and the camera flies in through its doorway; a stucco gateway hung with marigolds opens its arch on your invitation, framed by carved deity pillars; then the functions in temple frames, your photo between banana plants, a red-and-gold meet-the-bride-and-groom, the venue under gold gopurams and a countdown."
+    },
+    "lilac-seal": {
+      "name": "Lilac Seal",
+      "tagline": "Embossed lilac envelope with a wax seal",
+      "description": "A lilac envelope embossed with roses opens at the wax seal; the card inside has your monogram in script, a fluttering butterfly, the pillaiyar suzhi over a lotus, your names with your families, and the date in an arched frame with a countdown."
+    },
+    "pastel-palace": {
+      "name": "Pastel Palace",
+      "tagline": "Watercolour castle, roses and a scratch-to-reveal date",
+      "description": "A painted palace in a rose garden between white pillars: scratch the pastel foil to reveal your date, then blush roses and gold frame your names and families, a bow crowns the countdown, and a swan brings a “Dear Guest” scroll to close."
+    },
+    "madurai-meenakshi": {
+      "name": "Madurai Meenakshi",
+      "tagline": "Temple doors, painted gopuram and marigold thoranam",
+      "description": "The Madurai temple wedding card: tap the brass knocker and the temple doors swing open onto the painted gopuram with a bell and falling marigolds — then your names in temple gold, the invitation in a temple arch, the date over jasmine on a banana leaf, the functions under the Nayakkar Mahal arches, and the temple tank to close."
+    },
+    "manjal-pathirikai": {
+      "name": "Manjal Pathirikai",
+      "tagline": "Turmeric-yellow Tamil card with a red temple border",
+      "description": "The classic Tamil wedding pathirikai: turmeric-yellow card stock with a red temple-arch border and gold foil, உ and “Sri Ganeshaya Namah” at the top, the Groom and Bride on red ribbons with their families, the muhurtham date panel, the venue and “With best compliments from” — in its red envelope."
+    },
+    "maroon-pathirikai": {
+      "name": "Maroon Pathirikai",
+      "tagline": "Maroon shimmer card with a gold-foil temple arch",
+      "description": "A rich maroon shimmer card with a gold-foil temple-arch border — உ in foil, the formal Tamil wording, the couple on gold ribbons with their families, the muhurtham date and the families' names, slipped out of a maroon envelope."
+    },
+    "kerala-sumuhurtham": {
+      "name": "Kerala Sumuhurtham",
+      "tagline": "Cream card with gold kasavu bands and a nilavilakku",
+      "description": "The Kerala wedding card: cream stock with gold kasavu bands top and bottom, a brass nilavilakku in foil, “Sumuhurtham”, the couple with their families, the muhurtham date and the venue."
+    },
+    "emerald-nikah": {
+      "name": "Emerald Nikah",
+      "tagline": "Emerald card with a gold Mughal arch and Bismillah",
+      "description": "An emerald Nikah card with a gold-foil Mughal arch, the Bismillah in Arabic calligraphy, the Nikah wording, the couple and their families, the date and venue, and the Walima on the insert."
+    },
+    "ivory-nikah": {
+      "name": "Ivory Nikah",
+      "tagline": "Ivory card in a navy-and-gold geometric border",
+      "description": "An ivory Nikah card framed in a printed band of eight-pointed stars in navy and gold, with the Bismillah in gold calligraphy, the Nikah wording, the couple and their families, and the Walima."
+    },
+    "ivory-holy-matrimony": {
+      "name": "Ivory Holy Matrimony",
+      "tagline": "Ivory church card with a gold cross and verse",
+      "description": "The church wedding card: ivory stock with gold corner flourishes, a cross in a glory of rays, Matthew 19:6, “Holy Matrimony”, the couple and their parents, the service and the reception."
+    },
+    "royal-blue-matrimony": {
+      "name": "Royal Blue Matrimony",
+      "tagline": "Royal-blue card with a silver cross and verse",
+      "description": "A royal-blue Holy Matrimony card printed in silver — corner flourishes, a radiant cross, Matthew 19:6, the couple with their parents, the church and the reception."
+    },
+    "anand-karaj-ivory": {
+      "name": "Anand Karaj Ivory",
+      "tagline": "Ivory card with ੴ in gold and saffron",
+      "description": "The Anand Karaj card: ivory stock with gold corner flourishes, ੴ in foil, “With the blessings of Waheguru Ji”, the couple and their families on saffron ribbons, the date, the Gurdwara and the reception."
+    },
+    "phulkari-anand-karaj": {
+      "name": "Phulkari Anand Karaj",
+      "tagline": "Saffron card framed in phulkari embroidery",
+      "description": "An Anand Karaj card framed in a phulkari border of stitched silk diamonds — orange, pink, gold and green — with ੴ in foil, the couple and their families, the date, the Gurdwara and the reception."
+    },
+    "jain-namokar-maroon": {
+      "name": "Jain Namokar Maroon",
+      "tagline": "Maroon card with the Namokar line and a gold kalash",
+      "description": "A Jain wedding card in maroon and gold: “Namo Arihantanam” and “Jai Jinendra” at the top, a kalash in foil under a temple arch, the couple and their families, the lagna date and the venue."
+    },
+    "jain-kesar-ivory": {
+      "name": "Jain Kesar Ivory",
+      "tagline": "Ivory card in a kesar-and-gold patterned border",
+      "description": "A Jain wedding card on ivory stock in a kesar-and-gold printed border, with “Namo Arihantanam”, a gold kalash, the couple and their families, the lagna date and the venue."
+    },
+    "kalyanam-rituals": {
+      "name": "Kalyanam Rituals",
+      "tagline": "Tamil card with the order of ceremonies",
+      "description": "A Tamil kalyanam card in ivory, maroon and gold under a temple arch — உ, the formal wording, the couple with their families and the muhurtham — with a printed programme of the rituals: Nichayathartham, Kashi Yatra, Maalai Maatral, Oonjal, Kanyadaanam, Mangalya Dharanam, Saptapadi and Arundhati."
+    },
+    "kerala-sadya": {
+      "name": "Kerala Backwaters & Sadya",
+      "tagline": "Kasavu card with a banana-leaf sadya menu",
+      "description": "A Kerala wedding card in cream with gold kasavu bands and a nilavilakku, with the Kalyana Sadya printed on a banana-leaf insert — Upperi to Palada Payasam — and the functions, travel and RSVP."
+    },
+    "cinematic-film": {
+      "name": "Cinematic Film",
+      "tagline": "Your wedding as a film's title sequence",
+      "description": "A film in type alone: a projector countdown leader, then the opening credits — “Two families present… a love story” — your names as the title card with laurels, a poster billing block, “Coming soon”, admit-one tickets for each function, the synopsis, and “The End” with the credits rolling."
     }
   },
   "defaultContent": {
@@ -4050,6 +4165,144 @@
           "scene": "nature"
         }
       ]
+    },
+    "sikh": {
+      "brideName": "Simran Kaur",
+      "groomName": "Navdeep Singh",
+      "ceremonyVenueName": "Gurdwara Sahib, Ranjit Avenue",
+      "ceremonyVenueAddress": "Ranjit Avenue, Amritsar, Punjab",
+      "receptionVenueName": "The Grand Pavilion",
+      "receptionVenueAddress": "GT Road, Amritsar, Punjab",
+      "groomParents": "S. Harjeet Singh & Smt. Manpreet Kaur",
+      "brideParents": "S. Gurcharan Singh & Smt. Jaspreet Kaur",
+      "story": "Simran and Navdeep met at a friend's Lohri bonfire, arguing happily over whose mother made the better sarson da saag. Two winters and many long phone calls later, with the blessings of Waheguru and our families, we are ready to take the four laavan together. Join us for the Anand Karaj and celebrate with us in the evening.",
+      "faq": [
+        {
+          "question": "What should I wear to the Gurdwara?",
+          "answer": "Please cover your head (scarves are available at the entrance), remove your shoes and dress modestly."
+        },
+        {
+          "question": "Will there be langar?",
+          "answer": "Yes — langar will be served at the Gurdwara after the Anand Karaj."
+        }
+      ],
+      "travel": {
+        "city": "Amritsar",
+        "cityCode": "ATQ",
+        "airports": [
+          {
+            "code": "ATQ",
+            "name": "Amritsar",
+            "distance": "12 km"
+          },
+          {
+            "code": "IXC",
+            "name": "Chandigarh",
+            "distance": "230 km"
+          },
+          {
+            "code": "DEL",
+            "name": "Delhi",
+            "distance": "450 km"
+          }
+        ],
+        "routes": []
+      },
+      "places": [
+        {
+          "title": "Sri Harmandir Sahib",
+          "description": "The Golden Temple and its sarovar — most beautiful at dawn and after dark.",
+          "distance": "5 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Jallianwala Bagh",
+          "description": "The memorial garden a short walk from the Golden Temple.",
+          "distance": "5 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Wagah Border",
+          "description": "The evening Beating Retreat ceremony at the border.",
+          "distance": "30 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Hall Bazaar",
+          "description": "Phulkari dupattas, juttis and Amritsari papad for the trip home.",
+          "distance": "4 km from venue",
+          "scene": "heritage"
+        }
+      ]
+    },
+    "jain": {
+      "brideName": "Khushi Shah",
+      "groomName": "Parth Mehta",
+      "ceremonyVenueName": "Shree Vardhaman Vatika",
+      "ceremonyVenueAddress": "Sindhu Bhavan Road, Bodakdev, Ahmedabad",
+      "receptionVenueName": "Rajpath Club Lawns",
+      "receptionVenueAddress": "SG Highway, Ahmedabad",
+      "groomParents": "Shri Rajesh Mehta & Smt. Hetal Mehta",
+      "brideParents": "Shri Nilesh Shah & Smt. Bhavna Shah",
+      "story": "Khushi and Parth first met at a Paryushan pathshala, where he kept losing his place in the pratikraman book and she kept quietly finding it for him. Years later, with the blessings of the Tirthankaras and our elders, we begin our life together. Please join us — and yes, every meal will be pure Jain, before sunset.",
+      "faq": [
+        {
+          "question": "Is the food Jain?",
+          "answer": "Yes — all meals are pure Jain (no onion, garlic or root vegetables), and dinner is served before sunset."
+        },
+        {
+          "question": "Is there parking?",
+          "answer": "Yes, valet parking is available at both venues."
+        }
+      ],
+      "travel": {
+        "city": "Ahmedabad",
+        "cityCode": "AMD",
+        "airports": [
+          {
+            "code": "AMD",
+            "name": "Ahmedabad",
+            "distance": "14 km"
+          },
+          {
+            "code": "BDQ",
+            "name": "Vadodara",
+            "distance": "115 km"
+          },
+          {
+            "code": "UDR",
+            "name": "Udaipur",
+            "distance": "260 km"
+          }
+        ],
+        "routes": []
+      },
+      "places": [
+        {
+          "title": "Hutheesing Jain Temple",
+          "description": "An 1848 temple of carved white marble, dedicated to Dharmanatha.",
+          "distance": "12 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Sabarmati Ashram",
+          "description": "Gandhiji's home on the riverbank, quiet and unhurried.",
+          "distance": "10 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Manek Chowk",
+          "description": "Jewellers by day, a famous food street by night.",
+          "distance": "11 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Sabarmati Riverfront",
+          "description": "A long promenade on the river — lovely at sunset.",
+          "distance": "8 km from venue",
+          "scene": "nature"
+        }
+      ]
     }
   },
   "themeToggle": {
@@ -5003,6 +5256,351 @@
       "cap2": "Our favourite day",
       "cap3": "The mehendi",
       "cap4": "Forever starts here"
+    },
+    "lilac": {
+      "weddingInvitation": "Wedding invitation",
+      "cordially": "Cordially invited",
+      "scroll": "Scroll to reveal",
+      "blessing": "With the blessings of the Almighty and our beloved families, we joyfully invite you to grace the wedding of",
+      "saveTheDate": "Save the date",
+      "eventsKicker": "Join us for",
+      "eventsTitle": "The celebrations",
+      "storyKicker": "How it began",
+      "storyTitle": "Our story",
+      "signoff": "With love, {names}",
+      "photosKicker": "Moments",
+      "photosTitle": "Our photos",
+      "guideKicker": "Getting there",
+      "guideTitle": "Travel & stay",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you join us?",
+      "replySub": "Your presence and blessings will make our day complete.",
+      "thankYou": "Thank you",
+      "closing": "Your presence, blessings and wishes will make our celebration complete."
+    },
+    "pastel": {
+      "invited": "We cordially invite you, with your family, to the wedding ceremony of",
+      "saveTheDate": "Save the date",
+      "eventsKicker": "Join us for",
+      "eventsTitle": "The celebrations",
+      "storyKicker": "How it began",
+      "storyTitle": "Our love story",
+      "signoff": "With love, {names}",
+      "photosKicker": "Moments",
+      "photosTitle": "Photo gallery",
+      "guideKicker": "Getting there",
+      "guideTitle": "Travel & stay",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you join us?",
+      "replySub": "Your presence and blessings will make our day complete.",
+      "dearGuest": "Dear guest",
+      "closing": "Your presence, blessings and wishes will make our celebration complete. We can't wait to see you.",
+      "thankYou": "Thank you"
+    },
+    "meenakshi": {
+      "deity": "With the blessings of Sri Meenakshi Sundareswarar",
+      "weddingOf": "The wedding of",
+      "scroll": "Scroll",
+      "invited": "With the blessings of our elders and Sri Meenakshi Amman, we joyfully invite you and your family to the wedding of",
+      "saveTheDate": "Muhurtham",
+      "eventsKicker": "Join us for",
+      "eventsTitle": "The functions",
+      "storyKicker": "How it began",
+      "storyTitle": "Our story",
+      "signoff": "With love, {names}",
+      "photosKicker": "Moments",
+      "photosTitle": "Photo gallery",
+      "guideKicker": "Getting there",
+      "guideTitle": "Travel & stay",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you join us?",
+      "replySub": "Your presence and blessings will make our day complete.",
+      "closing": "Come with your family and bless the couple — your presence is our greatest gift.",
+      "thankYou": "Thank you"
+    },
+    "printed": {
+      "venue": "Venue",
+      "directions": "Directions",
+      "scroll": "Scroll for the details",
+      "eventsKicker": "You are invited to",
+      "eventsTitle": "The functions",
+      "countdownKicker": "Counting the days",
+      "storyKicker": "How it began",
+      "storyTitle": "Our story",
+      "signoff": "With love, {names}",
+      "photosKicker": "Moments",
+      "photosTitle": "Photographs",
+      "guideKicker": "Getting there",
+      "guideTitle": "Travel & stay",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you join us?",
+      "replySub": "Your presence and blessings will make our day complete.",
+      "tamil": {
+        "invocation": "|| Sri Ganeshaya Namah ||",
+        "invocationSub": "",
+        "title": "Wedding Invitation",
+        "lead": "With the blessings of the Almighty and our elders, we solicit your gracious presence with family and friends at the auspicious marriage of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "on the auspicious muhurtham of",
+        "timeLabel": "Muhurtham",
+        "closing": "We request you to grace the occasion with your family and bless the couple.",
+        "hostsLabel": "With best compliments from",
+        "eventA": "Muhurtham",
+        "eventB": "Reception",
+        "thanks": "Thank you"
+      },
+      "kerala": {
+        "invocation": "|| Om Sree Ganapathaye Namah ||",
+        "invocationSub": "",
+        "title": "Sumuhurtham",
+        "lead": "With the blessings of the Almighty and our elders, we request the pleasure of your company at the wedding of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Muhurtham",
+        "closing": "Your presence and blessings will make the day complete.",
+        "hostsLabel": "With best compliments from",
+        "eventA": "Muhurtham",
+        "eventB": "Reception",
+        "thanks": "Thank you"
+      },
+      "nikah": {
+        "invocation": "In the name of Allah, the Most Gracious, the Most Merciful",
+        "invocationSub": "",
+        "title": "Nikah Ceremony",
+        "lead": "With the blessings of Allah (SWT), we request the honour of your presence at the Nikah of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Nikah",
+        "closing": "Your duas and presence will be our greatest blessing.",
+        "hostsLabel": "Cordially invited by",
+        "eventA": "Nikah",
+        "eventB": "Walima",
+        "thanks": "JazakAllah Khair"
+      },
+      "christian": {
+        "invocation": "“What therefore God hath joined together, let not man put asunder.”",
+        "invocationSub": "Matthew 19:6",
+        "title": "Holy Matrimony",
+        "lead": "By the abundant grace of our Lord Jesus Christ, we joyfully invite you to witness the holy matrimony of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Service",
+        "closing": "Your presence and prayers will make our day complete.",
+        "hostsLabel": "Invited by",
+        "eventA": "Holy Matrimony",
+        "eventB": "Reception",
+        "thanks": "God bless you"
+      },
+      "sikh": {
+        "invocation": "Ik Onkar",
+        "invocationSub": "With the blessings of Waheguru Ji",
+        "title": "Anand Karaj",
+        "lead": "With the grace of Waheguru and the blessings of our elders, we request the pleasure of your company at the Anand Karaj of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Anand Karaj",
+        "closing": "Please join us for the ceremony, followed by Guru ka langar.",
+        "hostsLabel": "With love from",
+        "eventA": "Anand Karaj",
+        "eventB": "Reception",
+        "thanks": "Thank you"
+      },
+      "jain": {
+        "invocation": "॥ णमो अरिहंताणं ॥",
+        "invocationSub": "Jai Jinendra",
+        "title": "Shubh Vivah",
+        "lead": "With the blessings of the Tirthankaras and our elders, we cordially invite you to the auspicious wedding of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Lagna",
+        "closing": "Your gracious presence will bless the couple.",
+        "hostsLabel": "With warm regards from",
+        "eventA": "Lagna",
+        "eventB": "Reception",
+        "thanks": "Thank you"
+      },
+      "rituals": {
+        "kicker": "Order of ceremonies",
+        "title": "The Kalyanam",
+        "note": "What you will witness, from the engagement to the evening the bride is shown Arundhati.",
+        "items": [
+          {
+            "name": "Nichayathartham",
+            "alt": "நிச்சயதார்த்தம்",
+            "text": "The formal engagement: the families exchange thamboolam — betel, fruit and the bride's saree — and fix the muhurtham."
+          },
+          {
+            "name": "Pandhakkal Muhurtham",
+            "alt": "பந்தக்கால் முகூர்த்தம்",
+            "text": "A bamboo post is planted and worshipped to bless the pandal and keep the days ahead free of obstacles."
+          },
+          {
+            "name": "Kashi Yatra",
+            "alt": "காசி யாத்திரை",
+            "text": "The groom sets off for Kashi with an umbrella and a fan; the bride's father stops him and offers his daughter's hand."
+          },
+          {
+            "name": "Maalai Maatral",
+            "alt": "மாலை மாற்றல்",
+            "text": "The couple exchange garlands three times, lifted high on the shoulders of their uncles amid laughter."
+          },
+          {
+            "name": "Oonjal",
+            "alt": "ஊஞ்சல்",
+            "text": "The couple sit on a swing while the women sing, wave coloured rice balls and pour milk on their feet."
+          },
+          {
+            "name": "Kanyadaanam",
+            "alt": "கன்னிகாதானம்",
+            "text": "The bride sits on her father's lap as he places her hand in the groom's, giving her away."
+          },
+          {
+            "name": "Mangalya Dharanam",
+            "alt": "மாங்கல்ய தாரணம்",
+            "text": "To the getti melam of the nadaswaram, the groom ties the thali with three knots and the guests shower akshathai."
+          },
+          {
+            "name": "Saptapadi",
+            "alt": "சப்தபதி",
+            "text": "Hand in hand, the couple take seven steps around the sacred fire — one vow for each step."
+          },
+          {
+            "name": "Ammi Midhithal & Arundhati",
+            "alt": "அம்மி மிதித்தல், அருந்ததி பார்த்தல்",
+            "text": "The bride places her foot on the grinding stone, steady as a rock, and the groom shows her the star Arundhati."
+          }
+        ]
+      },
+      "sadya": {
+        "kicker": "Served on a banana leaf",
+        "title": "Kalyana Sadya",
+        "note": "After the muhurtham, please stay for the wedding feast, served on the leaf from left to right.",
+        "dishes": [
+          {
+            "name": "Upperi",
+            "alt": "Banana chips"
+          },
+          {
+            "name": "Sharkara Varatti",
+            "alt": "Jaggery banana"
+          },
+          {
+            "name": "Inji Puli",
+            "alt": "Ginger-tamarind"
+          },
+          {
+            "name": "Naranga & Manga Achar",
+            "alt": "Lime & mango pickle"
+          },
+          {
+            "name": "Parippu with Ghee",
+            "alt": "Lentils & ghee"
+          },
+          {
+            "name": "Sambar",
+            "alt": "Lentil & vegetable curry"
+          },
+          {
+            "name": "Avial",
+            "alt": "Vegetables in coconut & curd"
+          },
+          {
+            "name": "Thoran",
+            "alt": "Stir-fry with coconut"
+          },
+          {
+            "name": "Olan",
+            "alt": "Ash gourd in coconut milk"
+          },
+          {
+            "name": "Kaalan",
+            "alt": "Yam & plantain in curd"
+          },
+          {
+            "name": "Pachadi",
+            "alt": "Pineapple in mustard curd"
+          },
+          {
+            "name": "Erissery",
+            "alt": "Pumpkin & lentils"
+          },
+          {
+            "name": "Rasam",
+            "alt": "Peppery tamarind broth"
+          },
+          {
+            "name": "Moru",
+            "alt": "Spiced buttermilk"
+          },
+          {
+            "name": "Pappadam",
+            "alt": "Crisp papad"
+          },
+          {
+            "name": "Ada Pradhaman",
+            "alt": "Rice ada payasam"
+          },
+          {
+            "name": "Palada Payasam",
+            "alt": "Milk payasam"
+          }
+        ],
+        "foot": "Pure vegetarian · served before the reception"
+      }
+    },
+    "film": {
+      "present": "Two families present",
+      "aLoveStory": "A love story",
+      "laurel": "Official selection",
+      "laurelSub": "Both our families",
+      "comingSoon": "Coming soon",
+      "starring": "Starring",
+      "and": "and",
+      "producedBy": "Produced by",
+      "musicBy": "Music by",
+      "musicValue": "Nadaswaram & thavil",
+      "blessingsBy": "Blessings by",
+      "blessingsValue": "Our elders",
+      "directedBy": "Directed by",
+      "directedValue": "Destiny",
+      "premiereKicker": "The premiere",
+      "ticketsKicker": "Showtimes",
+      "ticketsTitle": "Book your seats",
+      "date": "Date",
+      "time": "Time",
+      "seat": "Seat",
+      "seatValue": "Front row",
+      "admit": "Admit",
+      "admitValue": "You & family",
+      "directions": "Directions",
+      "synopsisKicker": "Synopsis",
+      "synopsisTitle": "How it began",
+      "signoff": "With love, {names}",
+      "stillsKicker": "Stills",
+      "stillsTitle": "From the film",
+      "locationsKicker": "Locations",
+      "locationsTitle": "Getting there",
+      "replyKicker": "RSVP",
+      "replyTitle": "Will you be at the premiere?",
+      "replySub": "Save your seat — your presence and blessings complete the story.",
+      "theEnd": "The End",
+      "thanks": "is just the beginning",
+      "cast": "Cast",
+      "families": "Families",
+      "special": "Special thanks",
+      "specialValue": "Everyone who made this possible — you."
     }
   },
   "seoPages": {

@@ -226,3 +226,30 @@ Photos from Pexels under the [Pexels License](https://www.pexels.com/license/) (
 | ugadi.webp | https://www.pexels.com/photo/close-up-of-green-mango-leaves-outdoors-30563189/ |
 | puthandu.webp | https://www.pexels.com/photo/traditional-pongal-festival-setup-with-pot-and-decor-35763758/ |
 | akshaya.webp | https://www.pexels.com/photo/coconut-in-a-decorated-vase-13042375/ |
+
+## Pastel Palace (`public/art/pastel-palace/`)
+
+Illustrations from Pixabay under the [Pixabay Content License](https://pixabay.com/service/license-summary/) (free for commercial use, no attribution required), resized to WebP with transparency.
+
+| File | Source |
+|---|---|
+| castle.webp | https://pixabay.com/illustrations/castle-fairy-tale-grass-flowers-8319409/ |
+| rose-frame.webp | https://pixabay.com/illustrations/watercolour-flowers-frame-4610095/ |
+| wreath.webp | https://pixabay.com/illustrations/wreath-watercolor-flowers-3384413/ |
+| swan.webp | https://pixabay.com/illustrations/bird-swan-art-cutout-clipart-7190865/ |
+
+Lilac Seal (`components/invite/premium/lilac`) is drawn entirely in code.
+
+## Madurai Meenakshi (`public/art/madurai-meenakshi/`)
+
+Photos from Pexels under the [Pexels License](https://www.pexels.com/license/) (free for commercial use, no attribution required), resized to WebP. `marigold.webp` has its sky cut out to transparency.
+
+| File | Source | Used for |
+|---|---|---|
+| gopuram.webp | https://www.pexels.com/photo/meenakshi-temple-gopura-madurai-india-10271157/ | Behind the doors, hero |
+| doors.webp | https://www.pexels.com/photo/37388019/ — brass-studded wooden door | Opening (the two doors) |
+| marigold.webp | https://www.pexels.com/photo/36652869/ — marigold garlands | Thoranam over the hero and card |
+| jasmine.webp | https://www.pexels.com/photo/38705730/ — jasmine and marigold on banana leaf | Behind the date |
+| carvings.webp | https://www.pexels.com/photo/vibrant-close-up-of-hindu-temple-architecture-39374780/ | Sculpture band |
+| mahal.webp | https://www.pexels.com/photo/37253291/ — Thirumalai Nayakkar Mahal arches | Over the functions |
+| tank.webp | https://www.pexels.com/photo/majestic-meenakshi-amman-temple-in-madurai-30373182/ | Closing |

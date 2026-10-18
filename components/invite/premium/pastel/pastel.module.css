@@ -1,0 +1,1091 @@
+/* Wedding — "Pastel Palace": a watercolour castle in a rose garden, white
+   pillars, blush roses and gold — the soft painted invitation, on ivory. */
+
+.root {
+  --lilac: #f3c9d4;
+  --lilac-2: #fbe9ee;
+  --lilac-deep: #c0607f;
+  --plum: #4b3a3f;
+  --ink: #5d4a50;
+  --soft: rgba(75, 58, 63, 0.66);
+  --gold: #b8955a;
+  --ivory: #fffaf6;
+  --edge: rgba(192, 96, 127, 0.24);
+  --sage: #9fb59a;
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: clip;
+  background:
+    radial-gradient(120% 60% at 50% 0%, #fff 0%, transparent 60%),
+    var(--ivory);
+  color: var(--plum);
+  font-family: var(--p-body);
+}
+
+/* ---------- embossed florals ---------- */
+.emboss {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.emboss g {
+  fill: none;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.embossLight {
+  stroke: rgba(255, 255, 255, 0.75);
+}
+.embossDark {
+  stroke: rgba(92, 64, 132, 0.22);
+}
+
+/* ---------- butterfly ---------- */
+.butterfly {
+  display: block;
+  width: 56px;
+  height: auto;
+  filter: drop-shadow(0 6px 8px rgba(74, 58, 92, 0.25));
+}
+.wingL,
+.wingR {
+  transform-box: fill-box;
+  animation: beat 0.42s ease-in-out infinite alternate;
+}
+.wingL {
+  transform-origin: 100% 50%;
+}
+.wingR {
+  transform-origin: 0% 50%;
+}
+@keyframes beat {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0.35); }
+}
+/* resting on the page: slow beats, a little drift */
+.resting .wingL,
+.resting .wingR {
+  animation-duration: 1.6s;
+}
+.drift {
+  animation: drift 7s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  from { transform: translate(-8px, 4px) rotate(-6deg); }
+  to { transform: translate(10px, -8px) rotate(5deg); }
+}
+
+/* ================= intro ================= */
+.stage {
+  position: absolute;
+  inset: 0;
+  container-type: size;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 35%, #f4eefa 0%, #f6dde4 55%, #cdbbe3 100%);
+}
+.stage .emboss {
+  opacity: 0.9;
+}
+.envelope {
+  --w: min(84cqw, 360px);
+  position: relative;
+  width: var(--w);
+  aspect-ratio: 0.72;
+  perspective: 1400px;
+}
+.envBack,
+.envFront,
+.envFlap,
+.letter {
+  position: absolute;
+  border-radius: 6px;
+}
+.envBack {
+  inset: 0;
+  background: linear-gradient(160deg, #e6dbf2, #cfbfe5);
+  box-shadow: 0 30px 50px -24px rgba(74, 58, 92, 0.55), 0 2px 6px rgba(74, 58, 92, 0.18);
+}
+.letter {
+  left: 7%;
+  right: 7%;
+  top: 6%;
+  bottom: 6%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4%;
+  padding-top: 12%;
+  background: var(--ivory);
+  box-shadow: 0 2px 10px rgba(74, 58, 92, 0.15);
+  text-align: center;
+}
+.letterMono {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: clamp(34px, 13cqw, 58px);
+  line-height: 1;
+  color: var(--lilac-deep);
+}
+.letterCaps {
+  font-size: clamp(8px, 2.3cqw, 11px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.envFront {
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  background: linear-gradient(170deg, #ebe2f5, #d4c5e8);
+  /* the pocket: sides and bottom folded over, an open V on top */
+  clip-path: polygon(0 0, 50% 46%, 100% 0, 100% 100%, 0 100%);
+}
+.envFront::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top right, transparent calc(50% - 0.6px), rgba(92, 64, 132, 0.22) 50%, transparent calc(50% + 0.6px)) left bottom / 50% 100% no-repeat,
+    linear-gradient(to top left, transparent calc(50% - 0.6px), rgba(92, 64, 132, 0.22) 50%, transparent calc(50% + 0.6px)) right bottom / 50% 100% no-repeat;
+}
+.envFlap {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 54%;
+  z-index: 4;
+  overflow: hidden;
+  transform-origin: 50% 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(180deg, #efe7f7, #d9cbea);
+  backface-visibility: visible;
+}
+.envMono {
+  position: absolute;
+  z-index: 5;
+  top: 9%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  pointer-events: none;
+}
+.envMono b {
+  display: block;
+  font-family: var(--font-greatvibes), cursive;
+  font-weight: 400;
+  font-size: clamp(30px, 11cqw, 50px);
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(92, 64, 132, 0.35), 0 -1px 0 rgba(255, 255, 255, 0.6);
+}
+.envMono span {
+  display: block;
+  margin-top: 4px;
+  font-size: clamp(7px, 2cqw, 10px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 0 rgba(92, 64, 132, 0.35);
+}
+.seal {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: 54%;
+  width: clamp(64px, 22cqw, 92px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  filter: drop-shadow(0 6px 8px rgba(74, 58, 92, 0.35));
+  animation: sealPulse 2.4s ease-in-out infinite;
+}
+.seal svg {
+  width: 100%;
+  height: 100%;
+}
+.seal:focus-visible {
+  outline: 2px solid var(--lilac-deep);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+@keyframes sealPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+}
+.tapHint {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  top: 70%;
+  text-align: center;
+  font-size: clamp(8px, 2.4cqw, 11px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(74, 58, 92, 0.75);
+  pointer-events: none;
+}
+.introFlyer {
+  position: absolute;
+  z-index: 7;
+  left: 50%;
+  top: 40%;
+  width: 54px;
+}
+.viewBtn {
+  position: absolute;
+  z-index: 8;
+  bottom: 9%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 26px;
+  border-radius: 999px;
+  background: var(--lilac-deep);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+/* ================= page ================= */
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 70px 24px 60px;
+  text-align: center;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ece3f6 0%, #f6f1fa 55%, var(--ivory) 100%);
+}
+.hero .emboss {
+  z-index: -1;
+  opacity: 0.85;
+}
+.heroMono {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: calc(clamp(64px, 22cqi, 120px) * var(--name-size, 1));
+  line-height: 1;
+  color: var(--lilac-deep);
+  text-shadow: 0 2px 0 rgba(255, 255, 255, 0.8);
+}
+.heroInner {
+  container-type: inline-size;
+  width: 100%;
+  max-width: 560px;
+}
+.capsLine {
+  font-size: 11px;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.cordially {
+  margin-top: 28px;
+  /* a classic serif in capitals (the script pairing reads badly spaced out) */
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+  font-weight: 500;
+  font-size: clamp(22px, 7cqi, 34px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.scrollHint {
+  position: absolute;
+  bottom: 26px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.scrollHint svg {
+  animation: nudge 1.6s ease-in-out infinite;
+}
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+.heroButterfly {
+  position: absolute;
+  top: 18%;
+  right: 12%;
+  width: 48px;
+}
+
+.section {
+  position: relative;
+  padding: 64px 22px;
+}
+.section.tint {
+  background: linear-gradient(180deg, var(--ivory), #fdf0f3 50%, var(--ivory));
+}
+.inner {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* the invitation card itself */
+.card0 {
+  position: relative;
+  overflow: hidden;
+  padding: 40px 26px 36px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 26px 50px -30px rgba(74, 58, 92, 0.45), 0 0 0 1px rgba(184, 149, 90, 0.25);
+  text-align: center;
+}
+.card0::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(184, 149, 90, 0.45);
+  pointer-events: none;
+}
+.suzhi {
+  font-size: 26px;
+  line-height: 1;
+  color: var(--gold);
+}
+.lotus {
+  display: block;
+  width: 96px;
+  margin: 2px auto 10px;
+  color: var(--gold);
+}
+.tamilTitle {
+  font-size: 15px;
+  color: var(--ink);
+}
+.blessing {
+  margin: 14px auto 0;
+  max-width: 34ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--soft);
+}
+.coupleNames {
+  container-type: inline-size;
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: start;
+  gap: 8px;
+}
+.person {
+  min-width: 0;
+}
+.personName {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: calc(clamp(30px, 10cqi, 46px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
+  line-height: 1.1;
+  color: var(--lilac-deep);
+}
+.personKin {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.ampersand {
+  padding-top: 8px;
+  font-family: var(--font-greatvibes), cursive;
+  font-size: 30px;
+  color: var(--gold);
+}
+.single .coupleNames {
+  grid-template-columns: 1fr;
+}
+.flourish {
+  display: block;
+  width: 180px;
+  margin: 22px auto 0;
+  color: var(--lilac-deep);
+  opacity: 0.6;
+}
+
+/* date block: a framed date and the countdown in boxes */
+.dateBlock {
+  margin: 0 auto;
+  max-width: 340px;
+  padding: 26px 18px 22px;
+  border: 1px solid rgba(184, 149, 90, 0.5);
+  border-radius: 999px 999px 18px 18px;
+  background: linear-gradient(180deg, #fff, #fff6f8);
+  text-align: center;
+  box-shadow: 0 20px 40px -30px rgba(74, 58, 92, 0.5);
+}
+.dateDay {
+  font-family: var(--p-display);
+  font-size: 64px;
+  line-height: 1;
+  color: var(--lilac-deep);
+}
+.dateMonth {
+  margin-top: 6px;
+  font-size: 13px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.dateWeek {
+  margin-top: 4px;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.countdown {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.unit {
+  padding: 10px 0 8px;
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  background: #fff;
+}
+.num {
+  display: block;
+  font-family: var(--p-display);
+  font-size: 24px;
+  line-height: 1;
+  color: var(--plum);
+}
+.label {
+  display: block;
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.countdownDone {
+  margin-top: 18px;
+  font-family: var(--p-display);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--lilac-deep);
+}
+
+/* shared blocks (CinemaBlocks) */
+.heading {
+  container-type: inline-size;
+  margin-bottom: 26px;
+  text-align: center;
+}
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.title {
+  margin-top: 6px;
+  font-family: var(--font-greatvibes), cursive;
+  font-weight: 400;
+  font-size: clamp(34px, 11cqi, 54px);
+  line-height: 1.1;
+  color: var(--lilac-deep);
+}
+.letterCard {
+  padding: 30px 24px 26px;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 20px 40px -30px rgba(74, 58, 92, 0.5), 0 0 0 1px rgba(184, 149, 90, 0.2);
+}
+.story {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+.story p + p {
+  margin-top: 14px;
+}
+.lead::first-letter {
+  float: left;
+  margin: 6px 8px 0 0;
+  font-family: var(--font-greatvibes), cursive;
+  font-size: 3.6em;
+  line-height: 0.7;
+  color: var(--lilac-deep);
+}
+.signoff {
+  margin-top: 18px;
+  text-align: right;
+  font-family: var(--font-greatvibes), cursive;
+  font-size: 26px;
+  color: var(--lilac-deep);
+}
+.storyPhoto {
+  display: none;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+.card {
+  flex: 1 1 260px;
+  max-width: 440px;
+  padding: 26px 20px 22px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 40px -30px rgba(74, 58, 92, 0.5), 0 0 0 1px var(--edge);
+  text-align: center;
+}
+.cardLabel {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: 32px;
+  line-height: 1.1;
+  color: var(--lilac-deep);
+}
+.cardTime {
+  margin-top: 8px;
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--plum);
+}
+.cardVenue {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--plum);
+}
+.cardAddress {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 10px 20px;
+  border: 1px solid var(--lilac-deep);
+  border-radius: 999px;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lilac-deep);
+  background: #fff;
+}
+.calendar {
+  margin-top: 24px;
+  text-align: center;
+}
+.calendarRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.calendar .button {
+  margin-top: 0;
+}
+.calendarHint {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--soft);
+}
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.photo {
+  overflow: hidden;
+  border-radius: 12px;
+  border: 6px solid #fff;
+  box-shadow: 0 16px 30px -22px rgba(74, 58, 92, 0.6);
+}
+.photo:nth-child(3n + 1) {
+  grid-column: span 2;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.guide {
+  display: grid;
+  gap: 22px;
+}
+.guideHead {
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--edge);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.guideItem {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(138, 111, 179, 0.12);
+}
+.guideItem > p:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+.guideItem span {
+  color: var(--soft);
+  white-space: nowrap;
+}
+.guideText {
+  margin-top: 3px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.shared {
+  margin-top: 28px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--plum);
+  box-shadow: 0 0 0 1px var(--edge);
+}
+.reply {
+  margin-top: 28px;
+  padding: 28px 22px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 20px 40px -30px rgba(74, 58, 92, 0.5), 0 0 0 1px var(--edge);
+}
+.replyHead {
+  margin-bottom: 18px;
+  text-align: center;
+}
+.replyHead p:last-child {
+  margin-top: 8px;
+  font-style: italic;
+  color: var(--soft);
+}
+.replyForm {
+  max-width: none;
+}
+.formLabel {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.formInput {
+  width: 100%;
+  padding: 9px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--edge);
+  background: transparent;
+  font-size: 16px;
+  color: var(--plum);
+}
+.formInput:focus {
+  outline: none;
+  border-bottom-color: var(--lilac-deep);
+}
+.formButton {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.formButton:disabled {
+  opacity: 0.6;
+}
+.formNote {
+  text-align: center;
+  font-size: 12px;
+  color: var(--soft);
+}
+.thanksCard {
+  padding: 18px 0;
+  text-align: center;
+}
+.thanksTitle {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: 34px;
+  color: var(--lilac-deep);
+}
+.thanksBody {
+  margin-top: 6px;
+  color: var(--soft);
+}
+.closing {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 70svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--ivory), #f9e3ea);
+}
+.closing .emboss {
+  z-index: -1;
+}
+.closingLine {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: clamp(40px, 12vw, 64px);
+  line-height: 1;
+  color: var(--lilac-deep);
+}
+.closingSub {
+  max-width: 30ch;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--soft);
+}
+.closingName {
+  margin-top: 6px;
+  font-size: 12px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.footer {
+  padding: 18px;
+  text-align: center;
+  font-size: 12px;
+  background: #f6dde4;
+  color: rgba(74, 58, 92, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wingL, .wingR, .drift, .seal, .scrollHint svg { animation: none !important; }
+}
+:global(html[data-motion="reduced"]) .wingL,
+:global(html[data-motion="reduced"]) .wingR,
+:global(html[data-motion="reduced"]) .drift,
+:global(html[data-motion="reduced"]) .seal,
+:global(html[data-motion="reduced"]) .scrollHint svg {
+  animation: none !important;
+}
+:global(html[data-perf="low"]) .drift {
+  animation: none;
+}
+
+
+/* ===== Pastel Palace ===== */
+/* intro: the castle behind a pale wash, a wreath card with the scratch foil */
+.stageCastle {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+  filter: saturate(0.75) brightness(1.08);
+}
+.stageWash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 250, 246, 0.25), rgba(255, 244, 246, 0.72) 55%, rgba(255, 250, 246, 0.95));
+}
+.stageCard {
+  position: relative;
+  width: min(82cqw, 340px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+.stageWreath {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 18px rgba(75, 58, 63, 0.18));
+}
+.stageInner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+.stageMono {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: clamp(30px, 11cqw, 48px);
+  line-height: 1;
+  color: var(--lilac-deep);
+}
+.stageEyebrow {
+  font-size: clamp(8px, 2.3cqw, 11px);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.scratchBox {
+  position: relative;
+  margin-top: 4px;
+  width: clamp(110px, 36cqw, 150px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+.scratchDate {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(184, 149, 90, 0.6);
+  background: #fff;
+  color: var(--plum);
+}
+.scratchDate b {
+  font-family: var(--p-display);
+  font-size: clamp(30px, 11cqw, 44px);
+  line-height: 1;
+  color: var(--lilac-deep);
+}
+.scratchDate span {
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+.scratchDate small {
+  margin-top: 2px;
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.foil {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  touch-action: none;
+  cursor: crosshair;
+}
+.stageActions {
+  position: absolute;
+  bottom: 8%;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.stageHint {
+  font-size: 10.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.revealBtn {
+  padding: 11px 26px;
+  border-radius: 999px;
+  background: var(--lilac-deep);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 20px -10px rgba(192, 96, 127, 0.8);
+}
+
+/* page hero: castle fading into the garden, pillars, the rose frame */
+.palaceHero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 0 0 40px;
+  text-align: center;
+  background: var(--ivory);
+}
+.castleBand {
+  position: relative;
+  height: 46svh;
+  min-height: 280px;
+  overflow: hidden;
+}
+.castleBand img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 32%;
+  filter: saturate(0.8) brightness(1.06);
+  animation: castleDrift 24s ease-in-out infinite alternate;
+}
+.castleBand::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 250, 246, 0) 40%, var(--ivory) 98%);
+}
+@keyframes castleDrift {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.1) translateY(-2%); }
+}
+.pillar {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  width: clamp(26px, 9vw, 54px);
+  background:
+    linear-gradient(90deg, #e9e2da, #fff 30%, #f4efe9 55%, #fff 70%, #ded6cd);
+  box-shadow: inset 0 0 0 1px rgba(184, 149, 90, 0.18);
+}
+.pillar::before,
+.pillar::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  height: 22px;
+  background: linear-gradient(180deg, #fff, #e6ded4);
+  border-radius: 3px;
+}
+.pillar::before { top: 0; }
+.pillar::after { bottom: 0; }
+.pillarL { left: 0; }
+.pillarR { right: 0; }
+.roseFrame {
+  position: relative;
+  z-index: 3;
+  margin: -70px auto 0;
+  width: min(92vw, 520px);
+  padding: 22% 15% 18%;
+  container-type: inline-size;
+}
+.roseFrame > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.frameText {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.invitedLine {
+  max-width: 28ch;
+  font-family: var(--font-cormorant), "Cormorant Garamond", serif;
+  font-size: clamp(13px, 4cqi, 16px);
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink);
+}
+.frameName {
+  margin-top: 6px;
+  font-family: var(--font-greatvibes), cursive;
+  font-size: calc(clamp(30px, 11cqi, 52px) * var(--name-fit, 1) * var(--name-size, 1) * var(--name-auto, 1));
+  line-height: 1.05;
+  color: var(--lilac-deep);
+}
+.frameKin {
+  font-size: clamp(10px, 3cqi, 12px);
+  line-height: 1.45;
+  color: var(--soft);
+}
+.frameAmp {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--gold);
+}
+/* the bow crest over the date */
+.bow {
+  display: block;
+  width: 84px;
+  margin: 0 auto -8px;
+}
+/* Dear Guest scroll with the swan */
+.scroll {
+  position: relative;
+  margin: 0 auto;
+  max-width: 420px;
+  padding: 44px 30px 40px;
+  text-align: center;
+  background: linear-gradient(180deg, #fbf3e4, #f6e9d2);
+  box-shadow: 0 24px 40px -28px rgba(75, 58, 63, 0.6);
+}
+.scroll::before,
+.scroll::after {
+  content: "";
+  position: absolute;
+  left: -10px;
+  right: -10px;
+  height: 22px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #f4e6cc, #e1caa2 60%, #f4e6cc);
+  box-shadow: 0 4px 8px rgba(75, 58, 63, 0.25);
+}
+.scroll::before { top: -10px; }
+.scroll::after { bottom: -10px; }
+.swan {
+  display: block;
+  width: 120px;
+  margin: 0 auto -18px;
+  position: relative;
+  z-index: 2;
+  animation: glide 6s ease-in-out infinite alternate;
+}
+@keyframes glide {
+  from { transform: translateX(-6px); }
+  to { transform: translateX(6px); }
+}
+.dearGuest {
+  font-family: var(--font-greatvibes), cursive;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--lilac-deep);
+}
+:global(html[data-motion="reduced"]) .castleBand img,
+:global(html[data-motion="reduced"]) .swan {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .castleBand img, .swan { animation: none; }
+}

@@ -33,6 +33,23 @@ const PREMIUM: Record<string, Plan> = {
   "photo-story": { lead: ["hero"] },
   "temple-photo-story": { lead: ["hero"] },
   "pearl-curtain": { lead: [] },
+  "lilac-seal": { lead: [] },
+  "pastel-palace": { lead: [] },
+  "madurai-meenakshi": { lead: [] },
+  "cinematic-film": { lead: [] },
+  "kalyanam-rituals": { lead: [] },
+  "kerala-sadya": { lead: [] },
+  "manjal-pathirikai": { lead: [] },
+  "maroon-pathirikai": { lead: [] },
+  "kerala-sumuhurtham": { lead: [] },
+  "emerald-nikah": { lead: [] },
+  "ivory-nikah": { lead: [] },
+  "ivory-holy-matrimony": { lead: [] },
+  "royal-blue-matrimony": { lead: [] },
+  "anand-karaj-ivory": { lead: [] },
+  "phulkari-anand-karaj": { lead: [] },
+  "jain-namokar-maroon": { lead: [] },
+  "jain-kesar-ivory": { lead: [] },
 };
 
 const SHAPE: Record<PhotoRole, PhotoShape> = {

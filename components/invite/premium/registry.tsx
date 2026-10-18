@@ -14,6 +14,12 @@ const Candlelight = dynamic(() => import("./cinema/CandlelightInvitation"));
 const Fresh = dynamic(() => import("./cinema/FreshInvitation"));
 // Real photos that move in 3D (./living): depth-map parallax.
 const LivingTemple = dynamic(() => import("./living/LivingTempleInvitation"));
+// Trending, simple and elegant.
+const LilacSeal = dynamic(() => import("./lilac/LilacSealInvitation"));
+const PastelPalace = dynamic(() => import("./pastel/PastelPalaceInvitation"));
+const MaduraiMeenakshi = dynamic(() => import("./meenakshi/MaduraiMeenakshiInvitation"));
+const PrintedCard = dynamic(() => import("./printed/PrintedCardInvitation"));
+const CinematicFilm = dynamic(() => import("./film/CinematicFilmInvitation"));
 // A photo-led scrapbook album with interactive pieces (./album).
 const Album = dynamic(() => import("./album/AlbumInvitation"));
 // A scroll journey through a painted temple (./journey).
@@ -26,6 +32,23 @@ const PREMIUM_IDS = new Set([
   "anniversary-wine-roses",
   "baby-shower-balloons",
   "living-temple",
+  "lilac-seal",
+  "pastel-palace",
+  "madurai-meenakshi",
+  "cinematic-film",
+  "kalyanam-rituals",
+  "kerala-sadya",
+  "manjal-pathirikai",
+  "maroon-pathirikai",
+  "kerala-sumuhurtham",
+  "emerald-nikah",
+  "ivory-nikah",
+  "ivory-holy-matrimony",
+  "royal-blue-matrimony",
+  "anand-karaj-ivory",
+  "phulkari-anand-karaj",
+  "jain-namokar-maroon",
+  "jain-kesar-ivory",
   "photo-story",
   "temple-photo-story",
   "pearl-curtain",
@@ -48,6 +71,28 @@ export default function PremiumInvitation(props: PremiumProps) {
       return <Candlelight {...props} />;
     case "baby-shower-balloons":
       return <Fresh {...props} />;
+    case "pastel-palace":
+      return <PastelPalace {...props} />;
+    case "madurai-meenakshi":
+      return <MaduraiMeenakshi {...props} />;
+    case "cinematic-film":
+      return <CinematicFilm {...props} />;
+    case "kalyanam-rituals":
+    case "kerala-sadya":
+    case "manjal-pathirikai":
+    case "maroon-pathirikai":
+    case "kerala-sumuhurtham":
+    case "emerald-nikah":
+    case "ivory-nikah":
+    case "ivory-holy-matrimony":
+    case "royal-blue-matrimony":
+    case "anand-karaj-ivory":
+    case "phulkari-anand-karaj":
+    case "jain-namokar-maroon":
+    case "jain-kesar-ivory":
+      return <PrintedCard {...props} />;
+    case "lilac-seal":
+      return <LilacSeal {...props} />;
     case "living-temple":
       return <LivingTemple {...props} />;
     case "photo-story":
