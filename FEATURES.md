@@ -54,6 +54,8 @@ The other occasions keep the original section layout with the envelope intro.
 
 **Temple Photo Story (`temple-photo-story`)** is the same album in temple colours (kumkum, brass and sandal), taking up to 20 photos. Carved teak temple doors open with a bell under a thoranam. On top of the album pieces it adds three of its own ([TemplePieces.tsx](components/invite/premium/album/TemplePieces.tsx)): ring the bell to open the sanctum doors on a photo, light seven lamps one by one to brighten a photo, and a garland of photo medallions that swing when tapped. The prints have brass edges and arched tops, the filmstrip becomes a pillared hall, and it closes with a gopuram made of photos.
 
+**Pearl Curtain (`pearl-curtain`)** opens in three steps ([components/invite/premium/pearl/](components/invite/premium/pearl/)). First, guests see a sage wall of embossed leaves with an ivory plaque (gold scrollwork, pearls, "Tap to open"). The tap splits the plaque and wall in half and slides them apart, showing ivory silk curtains strung with pearls. The curtains then gather and tie back with pearl tassels, showing the names on linen between embroidered cypress trees, all drawn in code. The hero keeps the tied curtains, with the names, each side's family lines, the date and a countdown. After it come the album's interactive photo sections in sage, ivory and gold (up to 16 photos).
+
 **Font pairings** ([lib/fontPairings.ts](lib/fontPairings.ts)): `classic-serif`, `modern-clean`, `elegant-script`, `royal-cinzel`, `tamil-calligraphy`, `tamil-classic`.
 
 ## Premium 3D templates (₹999)

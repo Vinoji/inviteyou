@@ -17,6 +17,8 @@ import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Working, hasGuide, useEvents, useLongDate } from "../cinema/CinemaBlocks";
 import { Filmstrip, PhotoHeart, PolaroidWall, RevealTiles, ScratchCard, Slideshow, SwipeStack, ThenNow } from "./AlbumPieces";
 import { LampLighting, PhotoGarland, SanctumDoors, Thoranam } from "./TemplePieces";
+import { Curtain, PearlNames, Tieback, Trees } from "../pearl/PearlArt";
+import pearlCss from "../pearl/pearl.module.css";
 import s from "./album.module.css";
 
 /** Stand-in photos (public/library) so the editor preview shows every
@@ -97,7 +99,10 @@ export default function AlbumInvitation(props: PremiumProps) {
   // Temple Photo Story: the same album in temple colours, with its own copy
   // and three pieces of its own (doors, lamps, garland).
   const temple = id === "temple-photo-story";
-  const t = useTranslations(temple ? "premium.templeAlbum" : "premium.album");
+  // Pearl Curtain: sage, ivory and pearls; the hero is the linen page the
+  // curtains opened on, with the names and their families.
+  const pearl = id === "pearl-curtain";
+  const t = useTranslations(temple ? "premium.templeAlbum" : pearl ? "premium.pearlAlbum" : "premium.album");
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
   const font = getFontPairing(data.fontPairing);
@@ -126,7 +131,7 @@ export default function AlbumInvitation(props: PremiumProps) {
   } as CSSProperties;
 
   return (
-    <div data-invite-root className={`${s.root} ${temple ? s.temple : ""}`} style={style}>
+    <div data-invite-root className={`${s.root} ${temple ? s.temple : ""} ${pearl ? s.pearl : ""}`} style={style}>
       <IntroHost
         introId={getTemplateConfig(id).intro}
         templateId={id}
@@ -143,7 +148,39 @@ export default function AlbumInvitation(props: PremiumProps) {
       />
       {mode === "public" && <AudioToggle src={data.backgroundMusic || undefined} templateId={id} accentColor={data.accentColor} />}
 
+      {/* 1 · Pearl Curtain: the tied-back curtains and names on linen */}
+      {pearl && (
+        <section className={`${pearlCss.hero} ${pearlCss.linen}`}>
+          <Curtain side="left" open duration={0} />
+          <Curtain side="right" open duration={0} />
+          <Tieback side="left" show />
+          <Tieback side="right" show />
+          <Trees scale={0.75} />
+          <Reveal>
+            <PearlNames
+              kicker={t("lead")}
+              a={a}
+              b={category.singlePerson ? undefined : b}
+              aBelow={sections.family ? <FamilyLines members={brideFamily} side="bride" /> : undefined}
+              bBelow={sections.family && !category.singlePerson ? <FamilyLines members={groomFamily} side="groom" /> : undefined}
+              date={when.long}
+              font={font.headingVar}
+            />
+            {data.weddingDate && category.showCountdown && (
+              <div style={{ position: "relative", zIndex: 2, width: "min(72cqw, 320px)", margin: "18px auto 0" }}>
+                <CinemaCountdown date={data.weddingDate} s={s} />
+              </div>
+            )}
+          </Reveal>
+          <p className={pearlCss.scroll} aria-hidden>
+            {t("scroll")}
+            <span>⌄</span>
+          </p>
+        </section>
+      )}
+
       {/* 1 · Slideshow hero */}
+      {!pearl && (
       <section className={s.hero}>
         {temple && <Thoranam className={s.heroThoranam} />}
         <Slideshow photos={photos.length ? photos.slice(0, temple ? 6 : 5) : samples.slice(0, 1)}>
@@ -166,6 +203,7 @@ export default function AlbumInvitation(props: PremiumProps) {
           )}
         </Slideshow>
       </section>
+      )}
 
       {/* 2 · Swipe through our moments */}
       {showGallery && photos.length >= 3 && (
@@ -208,7 +246,7 @@ export default function AlbumInvitation(props: PremiumProps) {
       {/* 4 · Tap to reveal */}
       {showGallery && photos.length >= 1 && (
         <Part kicker={t("tilesKicker")} title={t("tilesTitle")}>
-          <RevealTiles photo={at(2)} glyphs={temple ? ["❁", "✺"] : undefined} />
+          <RevealTiles photo={at(2)} glyphs={temple ? ["❁", "✺"] : pearl ? ["♥", "❦"] : undefined} />
         </Part>
       )}
 
@@ -233,7 +271,8 @@ export default function AlbumInvitation(props: PremiumProps) {
       )}
 
       {/* 6 · Families */}
-      {sections.family && brideFamily.length + groomFamily.length > 0 && (
+      {/* (Pearl Curtain names the families in its hero.) */}
+      {sections.family && !pearl && brideFamily.length + groomFamily.length > 0 && (
         <Part kicker={t("familyKicker")} title={t("familyTitle")}>
           <div className={s.families}>
             {[
