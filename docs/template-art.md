@@ -195,6 +195,7 @@ To add a scene: put `<slot>.webp` (≤1400px) and `<slot>-depth.webp`
 | Slot | Photo | Photographer | Where |
 |---|---|---|---|
 | `gopuram` | [View of a Hindu Temple](https://www.pexels.com/photo/view-of-a-hindu-temple-14179203/) (Pexels licence) | Nirmal Dev | The tower the guest scrolls into, and the opening |
+| `corridor` (shared, `living-temple/corridor.webp`) | https://www.pexels.com/photo/18049008/ — pillared temple corridor | — | The invitation card and the couple's prints, down the corridor |
 
 `gopuram.webp` is edited from the same photo as `temple-gopuram/gopuram`: the
 photo shows the tower's right half, so it was mirrored about the crown's

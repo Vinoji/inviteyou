@@ -252,6 +252,7 @@ export const TEMPLATES: TemplateConfig[] = [
     cardTextClass: "text-white",
     intro: "templeJourney",
     seed: "traditional-gold",
+    maxPhotos: 8,
   },
   // A plaque that splits, pearl-strung curtains that tie back, then the album.
   {
