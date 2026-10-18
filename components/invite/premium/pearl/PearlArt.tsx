@@ -46,9 +46,9 @@ function Sprig() {
 export function SageWall() {
   return (
     <div className={s.wall}>
-      <svg className={s.wallLeaves} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+      <svg className={s.wallLeaves} viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden>
         {SPRIGS.map((p, i) => (
-          <g key={i} transform={`translate(${p.x} ${p.y}) rotate(${p.r}) scale(${p.s * 0.28} ${p.s * 0.16})`}>
+          <g key={i} transform={`translate(${p.x} ${p.y}) rotate(${p.r}) scale(${p.s * 0.2})`}>
             <Sprig />
           </g>
         ))}

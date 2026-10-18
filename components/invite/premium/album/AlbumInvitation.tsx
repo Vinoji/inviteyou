@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties, ReactNode } from "react";
+import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 import { scriptLang, nameFitScale } from "@/lib/monogram";
 import { getFontPairing } from "@/lib/fontPairings";
@@ -19,6 +20,8 @@ import { Filmstrip, PhotoHeart, PolaroidWall, RevealTiles, ScratchCard, Slidesho
 import { LampLighting, PhotoGarland, SanctumDoors, Thoranam } from "./TemplePieces";
 import { Curtain, PearlNames, Tieback, Trees } from "../pearl/PearlArt";
 import pearlCss from "../pearl/pearl.module.css";
+
+const FabricCurtains = dynamic(() => import("../pearl/FabricCurtains"), { ssr: false });
 import s from "./album.module.css";
 
 /** Stand-in photos (public/library) so the editor preview shows every
@@ -151,10 +154,19 @@ export default function AlbumInvitation(props: PremiumProps) {
       {/* 1 · Pearl Curtain: the tied-back curtains and names on linen */}
       {pearl && (
         <section className={`${pearlCss.hero} ${pearlCss.linen}`}>
-          <Curtain side="left" open duration={0} />
-          <Curtain side="right" open duration={0} />
-          <Tieback side="left" show />
-          <Tieback side="right" show />
+          <FabricCurtains
+            className={pearlCss.fabric}
+            open
+            instant
+            fallback={
+              <>
+                <Curtain side="left" open duration={0} />
+                <Curtain side="right" open duration={0} />
+                <Tieback side="left" show />
+                <Tieback side="right" show />
+              </>
+            }
+          />
           <Trees scale={0.75} />
           <Reveal>
             <PearlNames

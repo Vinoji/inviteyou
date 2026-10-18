@@ -2,12 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { useIntroText } from "../../intros/useIntroText";
 import useSafeReducedMotion from "../../useSafeReducedMotion";
 import { playSound, useWarmAudio } from "../../intros/audio";
 import type { IntroProps } from "../../intros/types";
 import { Curtain, PearlNames, Plaque, SageWall, Tieback, Trees } from "./PearlArt";
 import s from "./pearl.module.css";
+
+// Real fabric (three.js cloth); the drawn curtains stand in without WebGL.
+const FabricCurtains = dynamic(() => import("./FabricCurtains"), { ssr: false });
 
 /** A soft harp run, rising — only ever from the guest's tap. */
 function harp() {
@@ -35,9 +39,10 @@ const EASE = [0.65, 0, 0.3, 1] as const;
  * 1. A sage wall of embossed leaves with an ivory plaque — gold scrollwork,
  *    pearls, "Tap to open".
  * 2. The tap splits wall and plaque down the middle; the halves slide away
- *    on ivory silk curtains strung with pearls.
- * 3. The curtains gather and tie back with pearl tassels, and the names
- *    appear on linen between embroidered cypress trees.
+ *    on ivory satin curtains strung with pearls — real cloth in three.js
+ *    (FabricCurtains), falling in folds from rings on a gold rod.
+ * 3. The rings slide to the sides and pearl tie-backs gather the fabric,
+ *    and the names appear on linen between embroidered cypress trees.
  * Reduced motion: already open, with a "View invitation" button.
  */
 export default function PearlCurtainIntro({ templateId, names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
@@ -58,8 +63,8 @@ export default function PearlCurtainIntro({ templateId, names, dateLabel, fonts,
     onOpen();
     if (!preview) harp();
     const at = (ms: number, fn: () => void) => timers.current.push(setTimeout(fn, ms));
-    at(1900, () => burst({ preset: "glitter", colors: ["#FFFFFF", "#F3ECDD", "#D9C08A"] }));
-    at(3700, onDone);
+    at(2500, () => burst({ preset: "glitter", colors: ["#FFFFFF", "#F3ECDD", "#D9C08A"] }));
+    at(4200, onDone);
   }
 
   function viewStatic() {
@@ -78,16 +83,27 @@ export default function PearlCurtainIntro({ templateId, names, dateLabel, fonts,
         className={s.introNames}
         initial={false}
         animate={{ opacity: opened ? 1 : 0, y: opened ? 0 : 16 }}
-        transition={{ duration: reduce ? 0 : 1, delay: reduce ? 0 : 1.9 }}
+        transition={{ duration: reduce ? 0 : 1.1, delay: reduce ? 0 : 2.1 }}
       >
         <PearlNames kicker={t("eyebrow")} a={names.a} b={names.b} date={dateLabel} font={fonts.display} />
       </motion.div>
 
       {/* 2 · Curtains, which gather and tie back */}
-      <Curtain side="left" open={opened} duration={reduce ? 0 : 1.9} delay={reduce ? 0 : 1.05} />
-      <Curtain side="right" open={opened} duration={reduce ? 0 : 1.9} delay={reduce ? 0 : 1.05} />
-      <Tieback side="left" show={opened} delay={reduce ? 0 : 2.6} />
-      <Tieback side="right" show={opened} delay={reduce ? 0 : 2.6} />
+      <FabricCurtains
+        className={s.fabric}
+        open={opened}
+        instant={reduce}
+        delay={0.85}
+        duration={2.4}
+        fallback={
+          <>
+            <Curtain side="left" open={opened} duration={reduce ? 0 : 1.9} delay={reduce ? 0 : 1.05} />
+            <Curtain side="right" open={opened} duration={reduce ? 0 : 1.9} delay={reduce ? 0 : 1.05} />
+            <Tieback side="left" show={opened} delay={reduce ? 0 : 2.6} />
+            <Tieback side="right" show={opened} delay={reduce ? 0 : 2.6} />
+          </>
+        }
+      />
 
       {/* 1 · Wall and plaque, in two halves that slide apart */}
       {(["left", "right"] as const).map((side) => (
