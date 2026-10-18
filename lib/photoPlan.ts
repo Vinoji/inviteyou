@@ -31,6 +31,7 @@ const PREMIUM: Record<string, Plan> = {
   "living-temple": { lead: [] },
   // The first photo is the cover of the album; the rest fill the album.
   "photo-story": { lead: ["hero"] },
+  "temple-photo-story": { lead: ["hero"] },
 };
 
 const SHAPE: Record<PhotoRole, PhotoShape> = {

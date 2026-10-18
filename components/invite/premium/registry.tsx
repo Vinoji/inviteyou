@@ -25,6 +25,7 @@ const PREMIUM_IDS = new Set([
   "baby-shower-balloons",
   "living-temple",
   "photo-story",
+  "temple-photo-story",
 ]);
 
 export function hasPremiumLayout(templateId: string): boolean {
@@ -46,6 +47,7 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "living-temple":
       return <LivingTemple {...props} />;
     case "photo-story":
+    case "temple-photo-story":
       return <Album {...props} />;
     default:
       return null;

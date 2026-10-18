@@ -16,6 +16,7 @@ import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Working, hasGuide, useEvents, useLongDate } from "../cinema/CinemaBlocks";
 import { Filmstrip, PhotoHeart, PolaroidWall, RevealTiles, ScratchCard, Slideshow, SwipeStack, ThenNow } from "./AlbumPieces";
+import { LampLighting, PhotoGarland, SanctumDoors, Thoranam } from "./TemplePieces";
 import s from "./album.module.css";
 
 /** Stand-in photos (public/library) so the editor preview shows every
@@ -30,6 +31,24 @@ const SAMPLES = [
   "/library/photos/love-red-roses.jpg",
   "/library/photos/wedding-henna-ritual.jpg",
   "/library/photos/love-wedding-rings.jpg",
+];
+
+/** Temple Photo Story's stand-ins: wedding photos among temple scenes. */
+const TEMPLE_SAMPLES = [
+  "/library/photos/wedding-jasmine-bride.jpg",
+  "/art/living-temple/gopuram-night.webp",
+  "/library/photos/wedding-henna-ritual.jpg",
+  "/library/photos/wedding-ring-ceremony.jpg",
+  "/art/temple-gopuram/aarti.webp",
+  "/art/living-temple/lamps.webp",
+  "/library/photos/engagement-holding-hands.jpg",
+  "/art/living-temple/corridor.webp",
+  "/library/photos/wedding-henna-hands.jpg",
+  "/library/photos/engagement-rings-hands.jpg",
+  "/library/photos/home-diya-row.jpg",
+  "/art/living-temple/tank.webp",
+  "/library/photos/love-wedding-rings.jpg",
+  "/art/temple-gopuram/gopuram.webp",
 ];
 
 /** One album page: a heading and its piece. */
@@ -66,13 +85,21 @@ function chapters(story: string): string[] {
  * hiding the date, a then-and-now slider, a wall of polaroids to drag
  * about, a filmstrip with a full-screen viewer and a heart made of photos.
  * In the editor, sample photos fill in until their own are added.
+ *
+ * "Temple Photo Story" (temple-photo-story, up to 20 photos) is the same
+ * album in kumkum, brass and sandal: a thoranam over the hero, sanctum
+ * doors that open with a bell, lamps to light, a swinging garland of
+ * photos, and a gopuram of photos to close.
  */
 export default function AlbumInvitation(props: PremiumProps) {
   const { data, slug, mode, category, occasionTitle, coupleLabel, guestGreeting } = props;
-  const t = useTranslations("premium.album");
+  const id = data.templateId;
+  // Temple Photo Story: the same album in temple colours, with its own copy
+  // and three pieces of its own (doors, lamps, garland).
+  const temple = id === "temple-photo-story";
+  const t = useTranslations(temple ? "premium.templeAlbum" : "premium.album");
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
-  const id = data.templateId;
   const font = getFontPairing(data.fontPairing);
   const sections = withDefaultSections(data.sections);
   const events = useEvents(props);
@@ -82,7 +109,8 @@ export default function AlbumInvitation(props: PremiumProps) {
   const own = (data.photos ?? []).filter(Boolean);
   // Preview: top up with samples so every section shows. Published: only
   // their photos, and each section appears once there are enough of them.
-  const photos = mode === "preview" && own.length < SAMPLES.length ? [...own, ...SAMPLES.slice(own.length)] : own;
+  const samples = temple ? TEMPLE_SAMPLES : SAMPLES;
+  const photos = mode === "preview" && own.length < samples.length ? [...own, ...samples.slice(own.length)] : own;
   const at = (i: number) => photos[i % Math.max(1, photos.length)];
   const captions = [t("cap1"), t("cap2"), t("cap3"), t("cap4"), t("cap5"), t("cap6")];
   const story = sections.story ? chapters(data.story ?? "") : [];
@@ -98,7 +126,7 @@ export default function AlbumInvitation(props: PremiumProps) {
   } as CSSProperties;
 
   return (
-    <div data-invite-root className={s.root} style={style}>
+    <div data-invite-root className={`${s.root} ${temple ? s.temple : ""}`} style={style}>
       <IntroHost
         introId={getTemplateConfig(id).intro}
         templateId={id}
@@ -117,7 +145,8 @@ export default function AlbumInvitation(props: PremiumProps) {
 
       {/* 1 · Slideshow hero */}
       <section className={s.hero}>
-        <Slideshow photos={photos.length ? photos.slice(0, 5) : SAMPLES.slice(0, 1)}>
+        {temple && <Thoranam className={s.heroThoranam} />}
+        <Slideshow photos={photos.length ? photos.slice(0, temple ? 6 : 5) : samples.slice(0, 1)}>
           <Reveal as="p" className={s.heroScript}>
             {t("lead")}
           </Reveal>
@@ -141,7 +170,7 @@ export default function AlbumInvitation(props: PremiumProps) {
       {/* 2 · Swipe through our moments */}
       {showGallery && photos.length >= 3 && (
         <Part kicker={t("swipeKicker")} title={t("swipeTitle")}>
-          <SwipeStack photos={photos.slice(0, 8)} captions={captions} />
+          <SwipeStack photos={photos.slice(0, temple ? 10 : 8)} captions={captions} />
         </Part>
       )}
 
@@ -169,10 +198,17 @@ export default function AlbumInvitation(props: PremiumProps) {
         </Part>
       )}
 
+      {/* Temple · Ring the bell, open the sanctum doors */}
+      {temple && photos.length >= 1 && (
+        <Part kicker={t("doorsKicker")} title={t("doorsTitle")}>
+          <SanctumDoors photo={at(4)} title={`${a} & ${b}`} sub={when.long} />
+        </Part>
+      )}
+
       {/* 4 · Tap to reveal */}
       {showGallery && photos.length >= 1 && (
         <Part kicker={t("tilesKicker")} title={t("tilesTitle")}>
-          <RevealTiles photo={at(2)} />
+          <RevealTiles photo={at(2)} glyphs={temple ? ["❁", "✺"] : undefined} />
         </Part>
       )}
 
@@ -184,7 +220,15 @@ export default function AlbumInvitation(props: PremiumProps) {
             kicker={t("saveTheDate")}
             title={when.long}
             sub={[events.shown[0]?.time, events.shown[0]?.venue?.name].filter(Boolean).join(" · ")}
+            glyph={temple ? "❁" : undefined}
           />
+        </Part>
+      )}
+
+      {/* Temple · Light the lamps */}
+      {temple && showGallery && photos.length >= 1 && (
+        <Part kicker={t("lampsKicker")} title={t("lampsTitle")}>
+          <LampLighting photo={at(5)} />
         </Part>
       )}
 
@@ -214,6 +258,16 @@ export default function AlbumInvitation(props: PremiumProps) {
       {sections.schedule && events.shown.length > 0 && (
         <Part kicker={data.eventsKicker?.trim() || t("eventsKicker")} title={data.eventsTitle?.trim() || t("eventsTitle")}>
           <EventCards s={s} slug={slug} title={occasionTitle} date={data.weddingDate} events={events} />
+        </Part>
+      )}
+
+      {/* Temple · A garland of photos */}
+      {temple && showGallery && photos.length >= 3 && (
+        <Part kicker={t("garlandKicker")} title={t("garlandTitle")}>
+          <PhotoGarland photos={[at(6), at(7), at(8), at(9), at(10)]} />
+          <p className={s.tapHint} style={{ display: "flex", justifyContent: "center" }}>
+            {t("garlandHint")}
+          </p>
         </Part>
       )}
 
@@ -270,7 +324,7 @@ export default function AlbumInvitation(props: PremiumProps) {
 
       {/* 13 · A heart of photos */}
       <section className={s.albumClosing}>
-        {photos.length > 0 && <PhotoHeart photos={photos} />}
+        {photos.length > 0 && <PhotoHeart photos={photos} shape={temple ? "gopuram" : "heart"} />}
         <Reveal as="p" className={s.closingLine}>
           {t("closing")}
         </Reveal>

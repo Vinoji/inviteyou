@@ -52,7 +52,8 @@ export type IntroId =
   | "photoFresh"
   | "livingTemple"
   // Our Photo Story's album (components/invite/premium/album).
-  | "photoAlbum";
+  | "photoAlbum"
+  | "templeAlbum";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -224,6 +225,19 @@ export const TEMPLATES: TemplateConfig[] = [
     intro: "photoAlbum",
     seed: "hindu-north",
     maxPhotos: 16,
+  },
+  // The photo album again, in temple colours, with doors, lamps and a garland.
+  {
+    id: "temple-photo-story",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#A3201F",
+    defaultFont: "royal-cinzel",
+    cardGradient: "from-red-900 via-amber-700 to-yellow-500",
+    cardTextClass: "text-amber-50",
+    intro: "templeAlbum",
+    seed: "traditional-gold",
+    maxPhotos: 20,
   },
   {
     id: "mandap-marigold",
@@ -1025,4 +1039,5 @@ export const EVENTS_HEADING: Record<string, { ns: string; kicker: string; title:
   "baby-shower-balloons": { ns: "premium.fresh", kicker: "eventsKicker", title: "eventsTitle" },
   "living-temple": { ns: "premium.living", kicker: "eventsKicker", title: "eventsTitle" },
   "photo-story": { ns: "premium.album", kicker: "eventsKicker", title: "eventsTitle" },
+  "temple-photo-story": { ns: "premium.templeAlbum", kicker: "eventsKicker", title: "eventsTitle" },
 };
