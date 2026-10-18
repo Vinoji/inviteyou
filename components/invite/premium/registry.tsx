@@ -26,6 +26,7 @@ const PREMIUM_IDS = new Set([
   "living-temple",
   "photo-story",
   "temple-photo-story",
+  "pearl-curtain",
 ]);
 
 export function hasPremiumLayout(templateId: string): boolean {
@@ -48,6 +49,7 @@ export default function PremiumInvitation(props: PremiumProps) {
       return <LivingTemple {...props} />;
     case "photo-story":
     case "temple-photo-story":
+    case "pearl-curtain":
       return <Album {...props} />;
     default:
       return null;

@@ -1230,6 +1230,12 @@
         "eyebrow": "With the blessings of the Almighty",
         "open": "Ring the bell",
         "view": "View invitation"
+      },
+      "pearlCurtain": {
+        "dialogLabel": "Wedding invitation",
+        "eyebrow": "We're getting married",
+        "open": "Tap to open",
+        "view": "View invitation"
       }
     },
     "kin": {
@@ -2372,6 +2378,11 @@
       "name": "Temple Photo Story",
       "tagline": "Your photos in a temple album — open, light & play",
       "description": "A temple-themed wedding album led by your own photos — up to 20 — in kumkum, brass and sandal: ring the bell to open carved temple doors, light lamps to brighten a photo, swing a garland of photo medallions, plus a swipe stack, kolam tiles, a scratch card for the muhurtham, a then-and-now slider, a draggable photo wall, a pillared-hall gallery and a gopuram made of your photos."
+    },
+    "pearl-curtain": {
+      "name": "Pearl Curtain",
+      "tagline": "Tap the plaque, the pearl curtains part",
+      "description": "An elegant sage-and-ivory wedding invitation. Guests tap an ivory plaque with gold scrollwork and pearls; it splits apart on silk curtains strung with pearls, which gather and tie back to show your names on linen between embroidered cypress trees. Then up to 16 of your photos to swipe, flip, scratch, slide and drag about."
     }
   },
   "defaultContent": {
@@ -4814,6 +4825,68 @@
       "replyTitle": "Bless us with your presence",
       "replySub": "Let us know if you can join us on our auspicious day.",
       "closing": "With your blessings, our new life begins"
+    },
+    "pearlAlbum": {
+      "coverTitle": "Our Album",
+      "lead": "We're getting married",
+      "slidesLabel": "Photos",
+      "slideN": "Photo {n}",
+      "previous": "Previous",
+      "next": "Next",
+      "close": "Close",
+      "swipeKicker": "Moments we treasure",
+      "swipeTitle": "Swipe through our story",
+      "swipeHint": "Swipe or tap the arrows",
+      "cap1": "Where it began",
+      "cap2": "Our favourite day",
+      "cap3": "Little adventures",
+      "cap4": "The question",
+      "cap5": "Two families",
+      "cap6": "Forever starts here",
+      "storyKicker": "Our story",
+      "storyTitle": "How we got here",
+      "chapterN": "Chapter {n}",
+      "ch1": "The first hello",
+      "ch2": "Falling for each other",
+      "ch3": "The big question",
+      "ch4": "Forever begins",
+      "tilesKicker": "A little game",
+      "tilesTitle": "Tap to reveal us",
+      "tileN": "Tile {n}",
+      "revealAll": "Reveal the photo",
+      "hideAll": "Hide it again",
+      "scratchKicker": "A surprise for you",
+      "scratchTitle": "Scratch to see the date",
+      "saveTheDate": "Save the date",
+      "scratchHere": "Scratch here",
+      "scratchLabel": "Scratch card hiding the wedding date",
+      "familyKicker": "With love from",
+      "familyTitle": "Our families",
+      "bride": "The Bride",
+      "groom": "The Groom",
+      "eventsKicker": "Join us",
+      "eventsTitle": "The celebrations",
+      "compareKicker": "Then and now",
+      "compareTitle": "How far we've come",
+      "compareHint": "Drag the slider",
+      "compareLabel": "Slide between the old and new photo",
+      "then": "Then",
+      "now": "Now",
+      "wallKicker": "Play with them",
+      "wallTitle": "Our wall of memories",
+      "wallHint": "Drag the photos around",
+      "stripKicker": "Every frame",
+      "stripTitle": "Every picture",
+      "stripHint": "Swipe, then tap to open",
+      "openPhoto": "Open photo {n}",
+      "viewer": "Photo viewer",
+      "guideKicker": "Getting there",
+      "guideTitle": "Finding us",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you celebrate with us?",
+      "replySub": "Kindly let us know if you can join us.",
+      "closing": "Thank you for being part of our story",
+      "scroll": "Scroll"
     }
   },
   "seoPages": {

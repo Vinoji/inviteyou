@@ -59,4 +59,5 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   livingTemple: dynamic(() => import("../premium/living/LivingIntro")),
   photoAlbum: dynamic(() => import("../premium/album/AlbumIntro")),
   templeAlbum: dynamic(() => import("../premium/album/TempleAlbumIntro")),
+  pearlCurtain: dynamic(() => import("../premium/pearl/PearlCurtainIntro")),
 };

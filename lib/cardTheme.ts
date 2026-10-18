@@ -79,6 +79,7 @@ const THEMES: Record<string, CardTheme> = {
   "engagement-mangni": T(["#4A0A2A", "#6B1240"], "#4A0A2A", "#FFF5F2", "#F9DDD5", "#E0A93B", "#F7D27A", "deco"),
   "anniversary-golden-jubilee": T(["#231A06", "#3A2C0E"], "#231A06", "#FFF9EA", "#F2E4C0", "#D4AF37", "#F2DC8A", "curtain"),
   "anniversary-vintage-reel": T(["#EADBC2", "#FBF3E6"], "#FBF3E6", "#3B2A1E", "#7F6A55", "#B08650", "#8B5E3C", "minimal"),
+  "pearl-curtain": T(["#7c8c69", "#f3ede0"], "#fbf8f0", "#2f4a2b", "#6d6a5c", "#46653f", "#b8964f", "leaves"),
   "temple-photo-story": T(["#fbf1de", "#f3d8a4"], "#fffaf0", "#3b1410", "#7a5a44", "#a3201f", "#c9962b", "kolam"),
   "photo-story": T(["#fbf6ee", "#f7e1e5"], "#fffdf8", "#2f3a32", "#6e6a62", "#c2566f", "#8fa58a", "leaves"),
   "living-temple": T(["#0e0811", "#2a1530"], "#1f0d1c", "#fbf1de", "#f0c25a", "#c9962c", "#f0c25a", "kolam"),

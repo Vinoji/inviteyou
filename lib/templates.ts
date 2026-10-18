@@ -53,7 +53,8 @@ export type IntroId =
   | "livingTemple"
   // Our Photo Story's album (components/invite/premium/album).
   | "photoAlbum"
-  | "templeAlbum";
+  | "templeAlbum"
+  | "pearlCurtain";
 
 /**
  * Non-text template config. Display text (name, tagline, description) lives
@@ -238,6 +239,19 @@ export const TEMPLATES: TemplateConfig[] = [
     intro: "templeAlbum",
     seed: "traditional-gold",
     maxPhotos: 20,
+  },
+  // A plaque that splits, pearl-strung curtains that tie back, then the album.
+  {
+    id: "pearl-curtain",
+    addedAt: "2026-10-18",
+    category: "wedding",
+    defaultAccent: "#46653F",
+    defaultFont: "elegant-script",
+    cardGradient: "from-lime-900 via-stone-300 to-amber-100",
+    cardTextClass: "text-stone-900",
+    intro: "pearlCurtain",
+    seed: "christian",
+    maxPhotos: 16,
   },
   {
     id: "mandap-marigold",
@@ -1040,4 +1054,5 @@ export const EVENTS_HEADING: Record<string, { ns: string; kicker: string; title:
   "living-temple": { ns: "premium.living", kicker: "eventsKicker", title: "eventsTitle" },
   "photo-story": { ns: "premium.album", kicker: "eventsKicker", title: "eventsTitle" },
   "temple-photo-story": { ns: "premium.templeAlbum", kicker: "eventsKicker", title: "eventsTitle" },
+  "pearl-curtain": { ns: "premium.pearlAlbum", kicker: "eventsKicker", title: "eventsTitle" },
 };
