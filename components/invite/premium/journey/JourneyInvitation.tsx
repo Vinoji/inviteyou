@@ -18,7 +18,7 @@ import type { PremiumProps } from "../types";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Working, hasGuide, useEvents, useLongDate } from "../cinema/CinemaBlocks";
-import { BananaPlant, Cloud, DeityPillar, Garland, Gateway, Gopuram, HangingLamp, LotusCorner } from "./JourneyArt";
+import { BananaPlant, Cloud, Garland, Gopuram, HangingLamp, LotusCorner } from "./JourneyArt";
 import s from "./journey.module.css";
 
 /** Stand-ins so the editor preview shows every scene before photos are added. */
@@ -27,7 +27,38 @@ const SAMPLES = [
   "/library/photos/wedding-jasmine-bride.jpg",
   "/library/photos/wedding-ring-ceremony.jpg",
   "/library/photos/wedding-henna-ritual.jpg",
+  "/library/photos/wedding-henna-hands.jpg",
+  "/library/photos/love-hands.jpg",
+  "/library/photos/engagement-rings-hands.jpg",
+  "/library/photos/love-wedding-rings.jpg",
 ];
+
+/** Where the prints settle around the invitation card, and how they lean. */
+const PRINTS = [
+  { side: -1, x: "left", y: "top", ox: "1cqw", oy: "5cqh", r: -9 },
+  { side: 1, x: "right", y: "top", ox: "1cqw", oy: "9cqh", r: 7 },
+  { side: -1, x: "left", y: "bottom", ox: "3cqw", oy: "6cqh", r: 6 },
+  { side: 1, x: "right", y: "bottom", ox: "2cqw", oy: "4cqh", r: -8 },
+] as const;
+
+/** One printed photo, flying in from its side as the corridor scene scrolls. */
+function Print({ p, i, src, caption }: { p: MotionValue<number>; i: number; src: string; caption: string }) {
+  const spot = PRINTS[i];
+  const a = 0.3 + i * 0.09;
+  const x = useTransform(p, [a, a + 0.28], [`${spot.side * 70}cqw`, "0cqw"]);
+  const rotate = useTransform(p, [a, a + 0.28], [spot.r + spot.side * 30, spot.r]);
+  const opacity = useTransform(p, [a, a + 0.12], [0, 1]);
+  return (
+    <motion.figure
+      className={s.print}
+      style={{ x, rotate, opacity, [spot.x]: spot.ox, [spot.y]: spot.oy }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt="" loading="lazy" />
+      <figcaption>{caption}</figcaption>
+    </motion.figure>
+  );
+}
 
 /** A real painted gopuram (Pexels, Nirmal Dev), made whole by mirroring
  * its right half and cut out of its sky — docs/template-art.md. */
@@ -97,22 +128,23 @@ function Pin({ screens, reduce, pinRef, children }: { screens: number; reduce: b
 }
 
 const CLOUDS = [
-  { x: -6, y: 6, w: 34, d: -1 },
-  { x: 70, y: 10, w: 30, d: 1 },
-  { x: 8, y: 34, w: 22, d: -1 },
-  { x: 76, y: 40, w: 24, d: 1 },
-  { x: 40, y: 2, w: 18, d: 1 },
-];
+  { n: 1, x: -18, y: 2, w: 62 },
+  { n: 2, x: 58, y: 8, w: 56 },
+  { n: 3, x: -10, y: 30, w: 40 },
+  { n: 1, x: 70, y: 36, w: 44 },
+  { n: 3, x: 34, y: -4, w: 34 },
+] as const;
 
 /**
  * Wedding — "Temple Journey". A scroll journey, like a film the guest
- * drives: from a blue sky with the couple's names, a painted gopuram rises
- * and the camera flies in through its doorway; a stucco gateway hung with
- * marigolds opens its arch on the invitation, framed by carved deity
- * pillars; the functions in temple frames; their photo in a temple arch
+ * drives: from a blue sky with the couple's names, a real painted gopuram
+ * rises and the camera flies into the window of its crown; down a real
+ * temple corridor the invitation card rises as their photos fly in around
+ * it as taped prints; the functions in temple frames; their photo in a temple arch
  * between banana plants; a red-and-gold "meet the bride and groom" with
  * hanging lamps; the venue under a row of gold gopurams; and the days
- * counted on embossed paper. All the art is drawn in code (JourneyArt).
+ * counted on embossed paper. Photos: public/art/temple-journey and the
+ * living-temple corridor; the rest is drawn in code (JourneyArt).
  */
 export default function JourneyInvitation(props: PremiumProps) {
   const { data, slug, mode, category, occasionTitle, coupleLabel, guestGreeting } = props;
@@ -129,6 +161,8 @@ export default function JourneyInvitation(props: PremiumProps) {
   const b = data.groomName || tCommon("groomFallback");
   const own = (data.photos ?? []).filter(Boolean);
   const photos = mode === "preview" && own.length < SAMPLES.length ? [...own, ...SAMPLES.slice(own.length)] : own;
+  // Each scene takes its own photos, repeating only when there are few.
+  const at = (i: number) => photos[i % Math.max(1, photos.length)];
   const brideFamily = getFamily(data, "bride");
   const groomFamily = getFamily(data, "groom");
   const venue = events.shown[0]?.venue;
@@ -153,7 +187,7 @@ export default function JourneyInvitation(props: PremiumProps) {
   // flies into the window at the heart of its crown.
   const namesY = useTransform(skyV, [0, 0.3], ["0cqh", "-20cqh"]);
   const namesO = useTransform(skyV, [0.1, 0.28], [1, 0]);
-  const gopY = useTransform(skyV, [0, 0.34], ["55%", "0%"]);
+  const gopY = useTransform(skyV, [0, 0.34], ["64%", "0%"]);
   const gopS = useTransform(skyV, [0.5, 0.98], [1, 12]);
   const cloudY = useTransform(skyV, [0, 1], ["0cqh", "-40cqh"]);
   const flash = useTransform(skyV, [0.9, 1], [0, 1]);
@@ -161,10 +195,10 @@ export default function JourneyInvitation(props: PremiumProps) {
 
   // 2 · the gateway opens on the invitation
   const flashIn = useTransform(gateV, [0, 0.07], [1, 0]);
-  // The gateway holds, then its arch opens around the invitation.
-  const gateS = useTransform(gateV, [0.3, 0.85], [1, 6]);
-  const gateO = useTransform(gateV, [0.74, 0.88], [1, 0]);
-  const inviteS = useTransform(gateV, [0.3, 0.9], [0.8, 1]);
+  // Down the temple corridor: the card rises, their prints fly in.
+  const dolly = useTransform(gateV, [0, 1], [1.04, 1.5]);
+  const cardY = useTransform(gateV, [0.06, 0.4], ["70cqh", "0cqh"]);
+  const cardS = useTransform(gateV, [0.06, 0.4], [0.86, 1]);
 
   // 4 · their photo in a temple arch, zooming out
   const archS = useTransform(archV, [0, 0.7], [2.3, 1]);
@@ -202,7 +236,7 @@ export default function JourneyInvitation(props: PremiumProps) {
         <div className={`${s.layer} ${s.sky}`} />
         <motion.div className={s.layer} style={{ y: cloudY }}>
           {CLOUDS.map((c, i) => (
-            <Cloud key={i} className={s.cloud} style={{ left: `${c.x}%`, top: `${c.y}%`, width: `${c.w}%` }} />
+            <Cloud key={i} n={c.n} className={s.cloud} style={{ left: `${c.x}%`, top: `${c.y}%`, width: `${c.w}%` }} />
           ))}
         </motion.div>
         <motion.div className={s.names} style={{ y: namesY, opacity: namesO }}>
@@ -233,41 +267,39 @@ export default function JourneyInvitation(props: PremiumProps) {
         )}
       </Pin>
 
-      {/* 2 · A stucco gateway whose arch opens on the invitation */}
+      {/* 2 · Down a real temple corridor: the invitation card rises and
+          their photographs fly in around it like a photo story */}
       <Pin screens={3} reduce={reduce} pinRef={gateRef}>
-        <div className={s.invite}>
-          <DeityPillar id="l" className={`${s.pillar} ${s.pillarL}`} />
-          <DeityPillar id="r" className={`${s.pillar} ${s.pillarR}`} flip />
-          <motion.div className={s.inviteText} style={{ scale: inviteS }}>
-            <span className={s.ganesha} aria-hidden style={{ fontSize: 34, color: "#c99a2e" }}>
-              ॐ
+        <motion.div className={s.corridor} style={{ scale: dolly }} />
+        <div className={s.corridorShade} />
+        {photos.length > 1 &&
+          PRINTS.map((_, i) => <Print key={i} p={gateV} i={i} src={at(i + 1)} caption={t(`cap${i + 1}` as "cap1")} />)}
+        <motion.div className={s.inviteCard} style={{ y: cardY, scale: cardS }}>
+          <span className={s.om} aria-hidden>
+            ॐ
+          </span>
+          <p className={s.invocation}>{t("invocation")}</p>
+          <p className={s.invocation} style={{ marginTop: 6 }}>
+            {t("inviteLead")}
+          </p>
+          <h1 style={{ margin: "14px 0 0", fontWeight: 400 }}>
+            <span className={s.bigName} lang={scriptLang(a)}>
+              {a}
             </span>
-            <p className={s.invocation}>{t("invocation")}</p>
-            <p className={s.invocation} style={{ marginTop: 8 }}>
-              {t("inviteLead")}
-            </p>
-            <h1 style={{ margin: "18px 0 0", fontWeight: 400 }}>
-              <span className={s.bigName} lang={scriptLang(a)}>
-                {a}
-              </span>
-              {sections.family && <FamilyLines members={brideFamily} side="bride" lineClassName={s.kin} nameClassName={s.kinNames} />}
-              {!category.singlePerson && (
-                <>
-                  <span className={s.amp}>&amp;</span>
-                  <span className={s.bigName} lang={scriptLang(b)}>
-                    {b}
-                  </span>
-                </>
-              )}
-            </h1>
-            {sections.family && !category.singlePerson && (
-              <FamilyLines members={groomFamily} side="groom" lineClassName={s.kin} nameClassName={s.kinNames} />
+            {sections.family && <FamilyLines members={brideFamily} side="bride" lineClassName={s.kin} nameClassName={s.kinNames} />}
+            {!category.singlePerson && (
+              <>
+                <span className={s.amp}>&amp;</span>
+                <span className={s.bigName} lang={scriptLang(b)}>
+                  {b}
+                </span>
+              </>
             )}
-            <p className={s.inviteDate}>{when.long}</p>
-          </motion.div>
-        </div>
-        <motion.div className={s.gateway} style={{ scale: gateS, opacity: gateO }}>
-          <Gateway />
+          </h1>
+          {sections.family && !category.singlePerson && (
+            <FamilyLines members={groomFamily} side="groom" lineClassName={s.kin} nameClassName={s.kinNames} />
+          )}
+          <p className={s.inviteDate}>{when.long}</p>
         </motion.div>
         <motion.div className={s.layer} style={{ background: "#fffaf0", opacity: flashIn, pointerEvents: "none" }} />
       </Pin>
@@ -320,8 +352,8 @@ export default function JourneyInvitation(props: PremiumProps) {
           </Reveal>
           <div className={s.pair}>
             {[
-              { side: "bride" as const, role: t("bride"), name: a, photo: photos[1], members: brideFamily },
-              { side: "groom" as const, role: t("groom"), name: b, photo: photos[2], members: groomFamily },
+              { side: "bride" as const, role: t("bride"), name: a, photo: photos.length ? at(5) : undefined, members: brideFamily },
+              { side: "groom" as const, role: t("groom"), name: b, photo: photos.length ? at(6) : undefined, members: groomFamily },
             ].map((p, i) => (
               <Reveal key={p.side} delay={i * 0.15} className={s.scallop} style={p.photo ? undefined : { paddingTop: 90 }}>
                 {p.photo && (
@@ -343,10 +375,10 @@ export default function JourneyInvitation(props: PremiumProps) {
 
       {/* 6 · The venue under a row of gold gopurams */}
       <section className={s.panorama}>
-        {photos[3] && (
+        {photos.length > 0 && (
           <Reveal className={s.frameGold}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photos[3]} alt="" loading="lazy" />
+            <img src={at(7)} alt="" loading="lazy" />
           </Reveal>
         )}
         <div className={s.towers}>

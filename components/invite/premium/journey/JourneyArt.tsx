@@ -1,11 +1,10 @@
 import type { CSSProperties, ReactNode } from "react";
 
 /**
- * The drawn art of "Temple Journey" (SVG): soft clouds, gopurams in gold
- * line art, a stucco gateway with a cusped arch and marigold garlands,
- * carved deity pillars, a hanging brass lamp, gold lotus corners and banana
- * plants. The gopuram the guest flies into is a real photograph
- * (public/art/temple-journey/gopuram.webp).
+ * The drawn art of "Temple Journey" (SVG): gopurams in gold
+ * line art, marigold garlands, a hanging brass lamp, gold lotus corners and banana
+ * plants. The gopuram the guest flies into is a real photograph and the
+ * clouds are rendered offline (public/art/temple-journey/).
  */
 
 /** Seeded random numbers, so every guest sees the same carvings. */
@@ -26,25 +25,10 @@ const r1 = (n: number) => Math.round(n * 10) / 10;
 /* Clouds                                                              */
 /* ------------------------------------------------------------------ */
 
-export function Cloud({ style, className }: { style?: CSSProperties; className?: string }) {
-  return (
-    <svg viewBox="0 0 240 110" style={style} className={className} aria-hidden>
-      <defs>
-        <linearGradient id="tj-cloud" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="1" stopColor="#dfeaf6" />
-        </linearGradient>
-      </defs>
-      <g fill="url(#tj-cloud)">
-        <circle cx="70" cy="66" r="34" />
-        <circle cx="112" cy="46" r="42" />
-        <circle cx="160" cy="58" r="34" />
-        <circle cx="196" cy="74" r="24" />
-        <circle cx="40" cy="80" r="22" />
-        <rect x="36" y="70" width="180" height="34" rx="17" />
-      </g>
-    </svg>
-  );
+/** Cumulus clouds, rendered offline (public/art/temple-journey/cloud-*). */
+export function Cloud({ n = 1, style, className }: { n?: 1 | 2 | 3; style?: CSSProperties; className?: string }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={`/art/temple-journey/cloud-${n}.webp`} alt="" className={className} style={style} aria-hidden />;
 }
 
 /* ------------------------------------------------------------------ */
@@ -194,132 +178,6 @@ export function Garland({ width = 1000, swags = 5, y = 30, sag = 60 }: { width?:
 }
 
 /* ------------------------------------------------------------------ */
-/* Stucco gateway                                                      */
-/* ------------------------------------------------------------------ */
-
-/** The cusped arch opening, in the gateway's 1000 × 1000 box. */
-export const ARCH = (() => {
-  const cx = 500;
-  const base = 1000;
-  const spring = 520;
-  const rx = 250;
-  const lobes = 9;
-  let d = `M${cx - rx} ${base} V${spring}`;
-  for (let i = 0; i < lobes; i++) {
-    const a0 = Math.PI - (i / lobes) * Math.PI;
-    const a1 = Math.PI - ((i + 1) / lobes) * Math.PI;
-    const ry = 230;
-    const x1 = cx + Math.cos(a1) * rx;
-    const y1 = spring - Math.sin(a1) * ry;
-    const mx = cx + Math.cos((a0 + a1) / 2) * rx * 0.96;
-    const my = spring - Math.sin((a0 + a1) / 2) * ry * 0.96;
-    d += ` Q${r1(mx + (mx - cx) * 0.12)} ${r1(my - 26)} ${r1(x1)} ${r1(y1)}`;
-  }
-  d += ` V${base}Z`;
-  return d;
-})();
-
-export function Gateway({ className, style }: { className?: string; style?: CSSProperties }) {
-  const rand = seeded(5);
-  return (
-    <svg viewBox="0 0 1000 1000" className={className} style={{ overflow: "visible", ...style }} aria-hidden>
-      <defs>
-        <pattern id="tj-lattice" width="26" height="26" patternUnits="userSpaceOnUse">
-          <rect width="26" height="26" fill="#f7d6e2" />
-          <path d="M13 0 L26 13 L13 26 L0 13Z" fill="none" stroke="#e27aa0" strokeWidth="2" />
-        </pattern>
-        <linearGradient id="tj-wall" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#fbf6ec" />
-          <stop offset="1" stopColor="#efe4d0" />
-        </linearGradient>
-      </defs>
-      {/* The wall, with the arch cut out of it */}
-      <path d={`M-1500 -1500 H2500 V2500 H-1500Z ${ARCH}`} fillRule="evenodd" fill="url(#tj-wall)" />
-      {/* Lattice panels over the arch */}
-      <rect x="150" y="190" width="220" height="150" fill="url(#tj-lattice)" stroke="#7fb2e5" strokeWidth="8" />
-      <rect x="630" y="190" width="220" height="150" fill="url(#tj-lattice)" stroke="#7fb2e5" strokeWidth="8" />
-      {/* The arch's moulded rim */}
-      <path d={ARCH} fill="none" stroke="#7fb2e5" strokeWidth="26" />
-      <path d={ARCH} fill="none" stroke="#f6d26b" strokeWidth="10" />
-      <path d={ARCH} fill="none" stroke="#f2a7c3" strokeWidth="4" transform="translate(0 -14) scale(1 1.03)" style={{ transformOrigin: "500px 1000px" }} />
-      {/* Crest: a little shrine over the arch */}
-      <g transform="translate(500 210)">
-        <path d="M-110 70 Q-110 -40 0 -60 Q110 -40 110 70Z" fill="#7fb2e5" stroke="#4f86c0" strokeWidth="4" />
-        <path d="M-70 70 Q-70 -10 0 -24 Q70 -10 70 70Z" fill="#f2a7c3" stroke="#c8678c" strokeWidth="4" />
-        <circle cy="20" r="26" fill="#f6d26b" stroke="#c99a2e" strokeWidth="4" />
-        <ellipse cy="-74" rx="16" ry="18" fill="#e8b93a" stroke="#a57617" strokeWidth="3" />
-        <path d="M-8 -90 L0 -128 L8 -90Z" fill="#e8b93a" stroke="#a57617" strokeWidth="3" />
-      </g>
-      {/* Makara scrolls rising either side of the crest */}
-      {[1, -1].map((m) => (
-        <g key={m} transform={`translate(${500 + m * 210} 300) scale(${m} 1)`}>
-          <path d="M0 0 C40 -60 120 -70 150 -20 C170 20 130 50 100 30 C80 15 95 -10 115 -5" fill="none" stroke="#8fd18b" strokeWidth="22" strokeLinecap="round" />
-          <path d="M0 0 C40 -60 120 -70 150 -20 C170 20 130 50 100 30 C80 15 95 -10 115 -5" fill="none" stroke="#f6d26b" strokeWidth="6" strokeLinecap="round" />
-        </g>
-      ))}
-      {/* Pillars either side */}
-      {[0, 1].map((side) => {
-        const x = side ? 790 : 110;
-        return (
-          <g key={side}>
-            <rect x={x} y="360" width="100" height="640" fill="#f3e7cf" stroke="#c9b48a" strokeWidth="3" />
-            {Array.from({ length: 8 }, (_, k) => (
-              <rect key={k} x={x - 6} y={380 + k * 80} width="112" height="14" rx="5" fill={PASTEL[(k + side) % PASTEL.length]} />
-            ))}
-            {Array.from({ length: 7 }, (_, k) => (
-              <g key={`f${k}`}>
-                <circle cx={x + 50} cy={418 + k * 80} r="12" fill={PASTEL[Math.floor(rand() * PASTEL.length)]} />
-                <path d={`M${x + 32} ${452 + k * 80} L${x + 42} ${430 + k * 80} H${x + 58} L${x + 68} ${452 + k * 80}Z`} fill={PASTEL[Math.floor(rand() * PASTEL.length)]} />
-              </g>
-            ))}
-            {/* Kalasam lamp-posts on the cornice */}
-            <ellipse cx={x + 50} cy="345" rx="22" ry="20" fill="#e8b93a" stroke="#a57617" strokeWidth="3" />
-            <path d={`M${x + 42} 328 L${x + 50} 290 L${x + 58} 328Z`} fill="#e8b93a" stroke="#a57617" strokeWidth="3" />
-          </g>
-        );
-      })}
-      {/* Cornice and marigold garlands */}
-      <rect x="0" y="352" width="1000" height="18" fill="#7fb2e5" />
-      <rect x="0" y="366" width="1000" height="8" fill="#f6d26b" />
-      <g transform="translate(0 70)">
-        <Garland width={1000} swags={5} y={0} sag={70} />
-      </g>
-    </svg>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Deity pillar: a carved border, tiled down the page                  */
-/* ------------------------------------------------------------------ */
-
-export function DeityPillar({ id, className, flip }: { id: string; className?: string; flip?: boolean }) {
-  return (
-    <svg className={className} style={{ transform: flip ? "scaleX(-1)" : undefined }} preserveAspectRatio="none" aria-hidden>
-      <defs>
-        <pattern id={`tj-pillar-${id}`} width="120" height="260" patternUnits="userSpaceOnUse">
-          <rect width="120" height="260" fill="#f3e7cf" />
-          <rect x="6" width="16" height="260" fill="#7fb2e5" />
-          <rect x="98" width="16" height="260" fill="#f2a7c3" />
-          <rect x="0" y="0" width="120" height="16" fill="#f6d26b" />
-          <rect x="0" y="16" width="120" height="6" fill="#8fd18b" />
-          {/* Niche */}
-          <path d="M30 248 V80 Q60 30 90 80 V248Z" fill="#fbf5ea" stroke="#c9b48a" strokeWidth="2" />
-          <path d="M30 80 Q60 30 90 80" fill="none" stroke="#f2a65a" strokeWidth="5" />
-          {/* Figure: crown, face, arms, robe */}
-          <path d="M50 92 L60 70 L70 92Z" fill="#e8b93a" />
-          <circle cx="60" cy="102" r="12" fill="#7fb2e5" />
-          <path d="M42 130 Q60 112 78 130 L84 236 H36Z" fill="#f2a7c3" />
-          <path d="M44 132 Q30 150 38 170 M76 132 Q90 150 82 170" fill="none" stroke="#7fb2e5" strokeWidth="6" strokeLinecap="round" />
-          <path d="M40 200 H80" stroke="#f6d26b" strokeWidth="6" />
-          <rect x="30" y="240" width="60" height="10" fill="#8fd18b" />
-        </pattern>
-      </defs>
-      <rect width="100%" height="100%" fill={`url(#tj-pillar-${id})`} />
-    </svg>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /* Hanging brass lamp                                                  */
 /* ------------------------------------------------------------------ */
 
@@ -408,26 +266,16 @@ export function BananaPlant({ className, style }: { className?: string; style?: 
   );
 }
 
-/** A wall of clouds, for the curtains of the opening. */
+/** A bank of clouds, for the curtains of the opening. */
 export function CloudWall({ flip }: { flip?: boolean }) {
-  const rand = seeded(flip ? 41 : 31);
-  const puffs = Array.from({ length: 34 }, () => ({ x: rand() * 220, y: rand() * 640, r: 40 + rand() * 60 }));
   return (
-    <svg viewBox="0 0 200 620" preserveAspectRatio="xMidYMid slice" aria-hidden style={{ transform: flip ? "scaleX(-1)" : undefined }}>
-      <defs>
-        <linearGradient id={`tj-wall-sky-${flip ? "r" : "l"}`} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#5fa2e8" />
-          <stop offset="1" stopColor="#b6dcf8" />
-        </linearGradient>
-        <radialGradient id={`tj-puff-${flip ? "r" : "l"}`} cx="0.4" cy="0.35" r="0.7">
-          <stop offset="0" stopColor="#ffffff" />
-          <stop offset="1" stopColor="#d6e6f6" />
-        </radialGradient>
-      </defs>
-      <rect width="200" height="620" fill={`url(#tj-wall-sky-${flip ? "r" : "l"})`} />
-      {puffs.map((p, i) => (
-        <circle key={i} cx={r1(p.x)} cy={r1(p.y)} r={r1(p.r)} fill={`url(#tj-puff-${flip ? "r" : "l"})`} />
-      ))}
-    </svg>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/art/temple-journey/cloud-bank.webp"
+      alt=""
+      aria-hidden
+      // Each curtain shows a different part of the bank, so they never mirror.
+      style={{ display: "block", width: "100%", height: "100%", objectFit: "cover", objectPosition: flip ? "100% 0%" : "0% 100%" }}
+    />
   );
 }
