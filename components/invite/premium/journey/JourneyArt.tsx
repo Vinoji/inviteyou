@@ -2,8 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 
 /**
  * The drawn art of "Temple Journey" (SVG): gopurams in gold
- * line art, marigold garlands, a hanging brass lamp, gold lotus corners and banana
- * plants. The gopuram the guest flies into is a real photograph and the
+ * line art, marigold garlands, a hanging brass lamp and gold lotus corners. The gopuram the guest flies into is a real photograph and the
  * clouds are rendered offline (public/art/temple-journey/).
  */
 
@@ -230,52 +229,5 @@ export function LotusCorner({ className, style }: { className?: string; style?: 
         <path d="M10 110 Q70 140 100 200" />
       </g>
     </svg>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Banana plant (they flank every South Indian wedding door)           */
-/* ------------------------------------------------------------------ */
-
-export function BananaPlant({ className, style }: { className?: string; style?: CSSProperties }) {
-  const leaves = [
-    { a: -62, l: 230 },
-    { a: -34, l: 270 },
-    { a: -8, l: 300 },
-    { a: 20, l: 260 },
-    { a: 48, l: 220 },
-  ];
-  return (
-    <svg viewBox="0 0 300 700" preserveAspectRatio="xMidYMax meet" className={className} style={style} aria-hidden>
-      <path d="M140 700 Q130 480 150 300" stroke="#7aa63a" strokeWidth="34" fill="none" />
-      <path d="M140 700 Q130 480 150 300" stroke="#a9cf55" strokeWidth="10" fill="none" />
-      {leaves.map(({ a, l }, i) => (
-        <g key={i} transform={`translate(150 310) rotate(${a})`}>
-          <path d={`M0 0 Q${l * 0.25} -40 ${l * 0.2} ${-l} Q${-l * 0.28} ${-l * 0.6} 0 0Z`} fill={i % 2 ? "#5fa83a" : "#7cc04a"} />
-          <path d={`M0 0 Q${l * 0.02} ${-l * 0.5} ${l * 0.2} ${-l}`} stroke="#c9e88a" strokeWidth="4" fill="none" />
-          {Array.from({ length: 7 }, (_, k) => (
-            <path key={k} d={`M${l * 0.02 * (k / 7)} ${-l * 0.13 * (k + 1)} l${-l * 0.18} ${-l * 0.05}`} stroke="rgba(30,70,20,.35)" strokeWidth="2" />
-          ))}
-        </g>
-      ))}
-      {/* A bunch of bananas */}
-      {Array.from({ length: 10 }, (_, k) => (
-        <path key={k} d={`M${160 + (k % 3) * 8} ${360 + k * 12} q22 -2 30 -14`} stroke="#e8c53a" strokeWidth="9" strokeLinecap="round" fill="none" />
-      ))}
-    </svg>
-  );
-}
-
-/** A bank of clouds, for the curtains of the opening. */
-export function CloudWall({ flip }: { flip?: boolean }) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src="/art/temple-journey/cloud-bank.webp"
-      alt=""
-      aria-hidden
-      // Each curtain shows a different part of the bank, so they never mirror.
-      style={{ display: "block", width: "100%", height: "100%", objectFit: "cover", objectPosition: flip ? "100% 0%" : "0% 100%" }}
-    />
   );
 }

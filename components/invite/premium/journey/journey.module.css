@@ -725,12 +725,19 @@
 }
 
 /* 4 · their photo in a temple arch, zooming out */
+.lampsBg {
+  position: absolute;
+  inset: -4%;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(20, 8, 2, 0.05), rgba(20, 8, 2, 0.5) 95%),
+    url("/art/living-temple/lamps.webp") 50% 40% / cover;
+  filter: blur(2px) saturate(1.15) brightness(1.15);
+}
 .archFrame {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  background: linear-gradient(180deg, #fbe7a8, #f3c96a);
 }
 .archPhoto {
   position: relative;
@@ -739,9 +746,11 @@
   border-radius: 999px 999px 14px 14px;
   overflow: hidden;
   box-shadow:
-    0 0 0 10px #fffaf0,
-    0 0 0 18px #e8b93a,
-    0 40px 70px -30px rgba(90, 50, 10, 0.6);
+    0 0 0 6px #f3d58a,
+    0 0 0 9px #8a6114,
+    0 0 0 14px #e8b93a,
+    0 0 60px 10px rgba(255, 190, 90, 0.35),
+    0 40px 70px -30px rgba(0, 0, 0, 0.8);
 }
 .archPhoto img {
   width: 100%;
@@ -756,22 +765,9 @@
   text-align: center;
   font-family: var(--font-greatvibes), cursive;
   font-size: clamp(30px, 8cqw, 54px);
-  color: #6a2d0c;
+  color: #f3d58a;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.8);
 }
-.banana {
-  position: absolute;
-  bottom: -2cqh;
-  width: min(36cqw, 30cqh);
-  height: 70cqh;
-}
-.bananaL {
-  left: -6cqw;
-}
-.bananaR {
-  right: -6cqw;
-  transform: scaleX(-1);
-}
-
 /* 5 · red and gold: meet the bride and groom */
 .red {
   position: relative;
