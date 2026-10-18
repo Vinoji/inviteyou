@@ -11,6 +11,12 @@ export type PhotoShape = "original" | "square" | "portrait" | "landscape";
 
 export const MAX_PHOTOS = 6;
 
+/** How many photos this design takes: MAX_PHOTOS, or more for photo-led
+ * designs (TemplateConfig.maxPhotos). */
+export function maxPhotosFor(templateId: string): number {
+  return getTemplateConfig(templateId).maxPhotos ?? MAX_PHOTOS;
+}
+
 interface Plan {
   /** Roles of the first photos, in order; every later photo is "gallery". */
   lead: PhotoRole[];
@@ -23,6 +29,8 @@ const PREMIUM: Record<string, Plan> = {
   "baby-shower-balloons": { lead: ["story"] },
   "anniversary-wine-roses": { lead: [] },
   "living-temple": { lead: [] },
+  // The first photo is the cover of the album; the rest fill the album.
+  "photo-story": { lead: ["hero"] },
 };
 
 const SHAPE: Record<PhotoRole, PhotoShape> = {

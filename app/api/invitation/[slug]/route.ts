@@ -143,7 +143,7 @@ export async function PUT(
       brideParents: sanitizeParentsLine(brideParents),
       accentColor: sanitizeAccentColor(accentColor),
       fontPairing: sanitizeFontPairing(fontPairing),
-      photos: sanitizePhotos(photos),
+      photos: sanitizePhotos(photos, templateId),
       backgroundMusic: sanitizeBackgroundMusic(backgroundMusic),
       sections: sanitizeSections(sections),
       faq: sanitizeFaq(faq),

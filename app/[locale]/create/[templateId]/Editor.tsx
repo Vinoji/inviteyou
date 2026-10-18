@@ -41,7 +41,7 @@ import { storage } from "@/lib/firebase";
 import { MAX_AUDIO_INPUT, compressAudio } from "@/lib/media/compressAudio";
 import { compressPhoto } from "@/lib/media/compressImage";
 import { viaSite } from "@/lib/media/viaSite";
-import { MAX_PHOTOS, photoShape, type PhotoShape } from "@/lib/photoPlan";
+import { maxPhotosFor, photoShape, type PhotoShape } from "@/lib/photoPlan";
 import { getTemplateMeta, getTemplatesByCategory } from "@/lib/i18n/templates";
 import { TEMPLATE_STYLE_KEYS, changedFields, clearDraft, loadDraft, saveDraft } from "@/lib/draftStore";
 import { getCategoryMeta } from "@/lib/i18n/categories";
@@ -675,11 +675,12 @@ export default function Editor({
   function pickPhotos(files: File[]) {
     const images = files.filter((f) => f.type.startsWith("image/"));
     if (images.length < files.length) alert(t("errImageFile"));
-    const room = MAX_PHOTOS - data.photos.filter(Boolean).length;
-    if (images.length > room) alert(t("errTooManyPhotos", { max: MAX_PHOTOS }));
+    const max = maxPhotosFor(data.templateId);
+    const room = max - data.photos.filter(Boolean).length;
+    if (images.length > room) alert(t("errTooManyPhotos", { max }));
     const batch = images.slice(0, room);
     if (batch.length === 1) {
-      setCrop({ file: batch[0], shape: photoShape(data.templateId, MAX_PHOTOS - room) });
+      setCrop({ file: batch[0], shape: photoShape(data.templateId, max - room) });
     } else if (batch.length > 1) {
       void uploadPhotos(batch);
     }
@@ -697,7 +698,7 @@ export default function Editor({
 
   function addPhotoUrl(url: string) {
     setData((d) =>
-      d.photos.length >= MAX_PHOTOS ? d : { ...d, photos: [...d.photos.filter(Boolean), url] }
+      d.photos.length >= maxPhotosFor(d.templateId) ? d : { ...d, photos: [...d.photos.filter(Boolean), url] }
     );
   }
 
@@ -1579,8 +1580,8 @@ export default function Editor({
                     onMove={movePhoto}
                     onAdjust={(i) => void adjustPhoto(i)}
                   />
-                  <AddPhotos count={photos.length} progress={photoProgress} onPick={pickPhotos} />
-                  {photos.length < MAX_PHOTOS && (
+                  <AddPhotos count={photos.length} max={maxPhotosFor(data.templateId)} progress={photoProgress} onPick={pickPhotos} />
+                  {photos.length < maxPhotosFor(data.templateId) && (
                     <button
                       type="button"
                       onClick={() => setPhotoLibraryOpen(true)}
@@ -1592,7 +1593,7 @@ export default function Editor({
                   {photoLibraryOpen && (
                     <PhotoLibrary
                       category={template.category}
-                      room={MAX_PHOTOS - photos.length}
+                      room={maxPhotosFor(data.templateId) - photos.length}
                       existing={photos}
                       onClose={() => setPhotoLibraryOpen(false)}
                       onAdd={(srcs) => {
