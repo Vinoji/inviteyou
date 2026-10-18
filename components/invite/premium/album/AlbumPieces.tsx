@@ -147,11 +147,10 @@ export function SwipeStack({ photos, captions }: { photos: string[]; captions: s
 /* Tap-to-reveal tiles                                                 */
 /* ------------------------------------------------------------------ */
 
-export function RevealTiles({ photo }: { photo: string }) {
+export function RevealTiles({ photo, glyphs = ["♥", "✿"] }: { photo: string; glyphs?: [string, string] }) {
   const t = useTranslations("premium.album");
   const [on, setOn] = useState<boolean[]>(() => Array(9).fill(false));
   const all = on.every(Boolean);
-  const hearts = ["♥", "✿", "♥", "✿", "♥", "✿", "♥", "✿", "♥"];
   return (
     <>
       <div className={s.tiles}>
@@ -168,7 +167,7 @@ export function RevealTiles({ photo }: { photo: string }) {
               onClick={() => setOn((v) => v.map((b, j) => (j === k ? !b : b)))}
             >
               <span className={s.tileFront} aria-hidden>
-                {hearts[k]}
+                {glyphs[k % 2]}
               </span>
               <span className={s.tileBack} style={{ backgroundImage: `url("${photo}")`, backgroundPosition: `${x}% ${y}%` }} />
             </button>
@@ -186,7 +185,19 @@ export function RevealTiles({ photo }: { photo: string }) {
 /* Scratch card                                                        */
 /* ------------------------------------------------------------------ */
 
-export function ScratchCard({ photo, kicker, title, sub }: { photo: string; kicker: string; title: string; sub: string }) {
+export function ScratchCard({
+  photo,
+  kicker,
+  title,
+  sub,
+  glyph = "♥",
+}: {
+  photo: string;
+  kicker: string;
+  title: string;
+  sub: string;
+  glyph?: string;
+}) {
   const t = useTranslations("premium.album");
   const reduce = useSafeReducedMotion();
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -219,10 +230,10 @@ export function ScratchCard({ photo, kicker, title, sub }: { photo: string; kick
       g.font = `600 ${Math.max(14, r.width / 20)}px system-ui, sans-serif`;
       g.fillText(t("scratchHere"), r.width / 2, r.height / 2);
       g.font = `${Math.max(22, r.width / 10)}px serif`;
-      g.fillText("♥", r.width / 2, r.height / 2 - r.width / 9);
+      g.fillText(glyph, r.width / 2, r.height / 2 - r.width / 9);
     };
     paint();
-  }, [t]);
+  }, [t, glyph]);
 
   function scratch(e: React.PointerEvent<HTMLCanvasElement>) {
     if (!drawing.current || done) return;
@@ -440,8 +451,19 @@ export function Filmstrip({ photos }: { photos: string[] }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Heart of photos                                                     */
+/* Heart (or gopuram) of photos                                        */
 /* ------------------------------------------------------------------ */
+
+/** A temple tower in tiers, narrowing to its kalasam. */
+const GOPURAM = [
+  "0001000",
+  "0011100",
+  "0011100",
+  "0111110",
+  "0111110",
+  "1111111",
+  "1111111",
+].join("");
 
 const HEART = [
   "0110110",
@@ -453,11 +475,11 @@ const HEART = [
   "0001000",
 ].join("");
 
-export function PhotoHeart({ photos }: { photos: string[] }) {
+export function PhotoHeart({ photos, shape = "heart" }: { photos: string[]; shape?: "heart" | "gopuram" }) {
   let k = 0;
   return (
     <div className={s.heart} aria-hidden>
-      {HEART.split("").map((c, i) => {
+      {(shape === "gopuram" ? GOPURAM : HEART).split("").map((c, i) => {
         if (c === "0") return <span key={i} className={s.heartGap} />;
         const src = photos[k++ % photos.length];
         return (
