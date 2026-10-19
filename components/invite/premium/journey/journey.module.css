@@ -569,7 +569,7 @@
 .corridor {
   position: absolute;
   inset: 0;
-  background: url("/art/living-temple/corridor.webp") 53% 50% / cover;
+  background: url("/art/living-temple/corridor.webp") 53% 50% / cover, #2a160a;
   /* The corridor's vanishing point. */
   transform-origin: 53% 48%;
 }
@@ -730,7 +730,8 @@
   inset: -4%;
   background:
     radial-gradient(ellipse at 50% 50%, rgba(20, 8, 2, 0.05), rgba(20, 8, 2, 0.5) 95%),
-    url("/art/living-temple/lamps.webp") 50% 40% / cover;
+    url("/art/living-temple/lamps.webp") 50% 40% / cover,
+    #1c0d06;
   filter: blur(2px) saturate(1.15) brightness(1.15);
 }
 .archFrame {
@@ -874,7 +875,7 @@
 .nightTower {
   position: absolute;
   inset: 0;
-  background: url("/art/living-temple/finale.webp") 50% 30% / cover;
+  background: url("/art/living-temple/finale.webp") 50% 30% / cover, #0d0704;
   transform-origin: 50% 30%;
 }
 .nightShade {
