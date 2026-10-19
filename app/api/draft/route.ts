@@ -1,3 +1,4 @@
+import { sanitizeCardWording } from "@/lib/cardWording";
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminDb } from "@/lib/firebase-admin";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
@@ -70,6 +71,7 @@ export async function POST(req: NextRequest) {
     eventBLabel,
     eventsKicker,
     eventsTitle,
+    cardWording,
     videoUrl,
     brideFamily,
     groomFamily,
@@ -157,6 +159,7 @@ export async function POST(req: NextRequest) {
     ...(sanitizeLabel(eventBLabel) !== undefined ? { eventBLabel: sanitizeLabel(eventBLabel) } : {}),
     ...(sanitizeLabel(eventsKicker) !== undefined ? { eventsKicker: sanitizeLabel(eventsKicker) } : {}),
     ...(sanitizeLabel(eventsTitle) !== undefined ? { eventsTitle: sanitizeLabel(eventsTitle) } : {}),
+    ...(sanitizeCardWording(cardWording) ? { cardWording: sanitizeCardWording(cardWording) } : {}),
     ...(sanitizeVideoUrl(videoUrl) !== undefined ? { videoUrl: sanitizeVideoUrl(videoUrl) } : {}),
     ...(Array.isArray(brideFamily) ? { brideFamily: sanitizeFamily(brideFamily) } : {}),
     ...(Array.isArray(groomFamily) ? { groomFamily: sanitizeFamily(groomFamily) } : {}),

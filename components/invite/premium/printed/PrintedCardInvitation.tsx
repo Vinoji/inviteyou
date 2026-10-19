@@ -1,5 +1,6 @@
 "use client";
 
+import type { CardWordingKey } from "@/lib/cardWording";
 import type { CSSProperties } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { MapPin } from "lucide-react";
@@ -45,7 +46,9 @@ export default function PrintedCardInvitation(props: PremiumProps) {
   const id = data.templateId;
   const d = printedDesign(id);
   const tp = useTranslations("premium.printed");
-  const w = (key: string, values?: Record<string, string>) => tp(`${d.wording}.${key}`, values);
+  // The couple's own words for a line (cardWording), else the design's.
+  const w = (key: string, values?: Record<string, string>) =>
+    data.cardWording?.[key as CardWordingKey]?.trim() || tp(`${d.wording}.${key}`, values);
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
   const format = useFormatter();

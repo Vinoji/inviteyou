@@ -73,6 +73,8 @@ import CheckoutSheet from "@/components/editor/CheckoutSheet";
 import UpgradeSheet from "@/components/editor/UpgradeSheet";
 import OfferCountdown from "@/components/landing/OfferCountdown";
 import { EVENTS_HEADING, getTemplateConfig } from "@/lib/templates";
+import { CARD_WORDING_KEYS, CARD_WORDING_MAX, type CardWordingKey } from "@/lib/cardWording";
+import { PRINTED } from "@/components/invite/premium/printed/designs";
 import { firstGrapheme, resolveMonogram, scriptLang } from "@/lib/monogram";
 import InvitationView from "@/components/invite/InvitationView";
 import PreviewWatermark from "@/components/editor/PreviewWatermark";
@@ -533,6 +535,9 @@ export default function Editor({
   function updateMonogram(key: "a" | "b", value: string) {
     setData((d) => ({ ...d, monogram: { ...(d.monogram ?? EMPTY_MONOGRAM), [key]: value } }));
   }
+  function updateCardWording(key: CardWordingKey, value: string) {
+    setData((d) => ({ ...d, cardWording: { ...d.cardWording, [key]: value } }));
+  }
   function updateVenue(
     which: "ceremonyVenue" | "receptionVenue",
     field: "name" | "address" | "mapsLink",
@@ -550,6 +555,17 @@ export default function Editor({
       return { kicker: tt(keys.kicker), title: tt(keys.title) };
     } catch {
       return { kicker: "", title: "" };
+    }
+  }, [templateId, contentMessages, contentLocale]);
+  // The printed cards' own wording, as placeholders for the couple's.
+  const cardWordingDefaults = useMemo(() => {
+    const design = PRINTED[templateId];
+    if (!design) return null;
+    try {
+      const tt = contentT(contentMessages, contentLocale, "premium.printed");
+      return Object.fromEntries(CARD_WORDING_KEYS.map((k) => [k, tt(`${design.wording}.${k}`)])) as Record<CardWordingKey, string>;
+    } catch {
+      return Object.fromEntries(CARD_WORDING_KEYS.map((k) => [k, ""])) as Record<CardWordingKey, string>;
     }
   }, [templateId, contentMessages, contentLocale]);
   // A function switched off on the Venues step: designs hide one with no
@@ -1462,6 +1478,34 @@ export default function Editor({
                       </Field>
                     </div>
                     <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("monogramHint")}</p>
+                  </ExtraCard>
+                )}
+
+                {cardWordingDefaults && (
+                  <ExtraCard
+                    icon={PenLine}
+                    title={t("cardWordingTitle")}
+                    summary={data.cardWording?.title?.trim() || cardWordingDefaults.title}
+                  >
+                    <p className="text-xs text-neutral-400 dark:text-neutral-500">{t("cardWordingHint")}</p>
+                    {CARD_WORDING_KEYS.map((k) => {
+                      const long = CARD_WORDING_MAX[k] > 120;
+                      const props = {
+                        className: inputClass,
+                        value: data.cardWording?.[k] ?? "",
+                        maxLength: CARD_WORDING_MAX[k],
+                        placeholder: cardWordingDefaults[k],
+                      };
+                      return (
+                        <Field key={k} label={t(`cardWording.${k}`)}>
+                          {long ? (
+                            <textarea {...props} rows={3} onChange={(e) => updateCardWording(k, e.target.value)} />
+                          ) : (
+                            <input {...props} onChange={(e) => updateCardWording(k, e.target.value)} />
+                          )}
+                        </Field>
+                      );
+                    })}
                   </ExtraCard>
                 )}
               </div>

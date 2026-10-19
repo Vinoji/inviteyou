@@ -838,7 +838,7 @@
   inset: 3% 3% 30%;
   border-radius: 2px;
   background:
-    repeating-linear-gradient(45deg, transparent 0 6px, color-mix(in srgb, var(--liner) 85%, #000 15%) 6px 7px),
+    repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in srgb, var(--liner) 92%, #000 8%) 7px 8px),
     var(--liner);
   box-shadow: inset 0 10px 14px -8px rgba(0, 0, 0, 0.45);
 }
@@ -947,8 +947,8 @@
   transform: rotateX(180deg);
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
   background:
-    linear-gradient(0deg, rgba(0, 0, 0, 0.3), transparent 35%),
-    repeating-linear-gradient(45deg, transparent 0 6px, color-mix(in srgb, var(--liner) 85%, #000 15%) 6px 7px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.12), transparent 25%),
+    repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in srgb, var(--liner) 92%, #000 8%) 7px 8px),
     var(--liner);
 }
 /* The card is out in front: the envelope sinks away behind it. */
