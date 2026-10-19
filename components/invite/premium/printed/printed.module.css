@@ -951,10 +951,16 @@
     repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in srgb, var(--liner) 92%, #000 8%) 7px 8px),
     var(--liner);
 }
-/* The card is out in front: the envelope sinks away behind it. */
+/* The flap is up: its seal faces away. (Not left to backface-visibility
+ * alone: phone Chrome drops it once anything fades the flap.) */
+.envFlapUp .envSeal {
+  visibility: hidden;
+}
+/* The card is out in front: the envelope sinks away behind it. The flap's
+ * lining fades, not the flap — opacity on the flap would flatten its 3D. */
 .envAway .envBack,
 .envAway .envPocket,
-.envAway .envFlap {
+.envAway .flapInner {
   opacity: 0;
   transition: opacity 0.6s ease 0.15s;
 }

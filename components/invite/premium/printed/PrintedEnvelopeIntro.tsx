@@ -81,7 +81,7 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
 
   return (
     <div className={`${s.stage} ${light ? s.envLight : ""} ${paleDesk ? s.deskLight : ""}`} style={style} role="dialog" aria-label={t("dialogLabel")}>
-      <div className={`${s.env} ${phase >= 3 ? s.envAway : ""}`}>
+      <div className={`${s.env} ${phase >= 2 ? s.envFlapUp : ""} ${phase >= 3 ? s.envAway : ""}`}>
         <div className={s.envBack} />
         <motion.div
           className={`${s.envCard} ${d.dark ? s.envCardDark : ""}`}
