@@ -10,6 +10,15 @@ import { EmblemMark } from "./Ornaments";
 import { printedDesign } from "./designs";
 import s from "./printed.module.css";
 
+/** Relative luminance (0 black … 1 white) of a #rrggbb colour. */
+function luminance(hex: string) {
+  const [r, g, b] = [1, 3, 5].map((i) => {
+    const c = parseInt(hex.slice(i, i + 2), 16) / 255;
+    return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
 /**
  * Intro "printedEnvelope" (the printed cards): the card's own envelope on
  * the desk — its colour, a foil seal with the tradition's emblem, the
@@ -27,6 +36,10 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
     if (timer.current) clearTimeout(timer.current);
   }, []);
   const initials = [monogram.a, monogram.b].filter(Boolean).join(" & ");
+  // Ivory and cream envelopes need dark ink for the initials; a pale desk,
+  // a dark button.
+  const light = luminance(d.envelope) > 0.55;
+  const paleDesk = luminance(d.desk) > 0.45;
   const style = {
     "--desk": d.desk,
     "--envelope": d.envelope,
@@ -37,6 +50,8 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
     "--accent": d.accent,
     "--foil": d.foil,
     "--foil-hi": d.foilHi,
+    "--seal": d.seal?.[0] ?? d.foil,
+    "--seal-hi": d.seal?.[1] ?? d.foilHi,
   } as CSSProperties;
 
   function start() {
@@ -47,7 +62,7 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
   }
 
   return (
-    <div className={s.stage} style={style} role="dialog" aria-label={t("dialogLabel")}>
+    <div className={`${s.stage} ${light ? s.envLight : ""} ${paleDesk ? s.deskLight : ""}`} style={style} role="dialog" aria-label={t("dialogLabel")}>
       <div className={s.env}>
         <div className={s.envBack} />
         <motion.div

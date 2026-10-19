@@ -13,7 +13,7 @@ const STEP = 420;
  * black — the crosshair circle, the sweeping hand, grain and flicker. Tap
  * Play: 3 · 2 · 1, and the film begins.
  */
-export default function FilmLeaderIntro({ templateId, onOpen, onDone }: IntroProps) {
+export default function FilmLeaderIntro({ templateId, names, dateLabel, fonts, onOpen, onDone }: IntroProps) {
   const t = useIntroText("invite.intros.filmLeader", templateId);
   const reduce = useSafeReducedMotion();
   const [count, setCount] = useState<number | null>(null);
@@ -43,7 +43,21 @@ export default function FilmLeaderIntro({ templateId, onOpen, onDone }: IntroPro
         <span className={s.leaderCross} />
         {count !== null && <span key={count} className={s.leaderSweep} style={{ animationDuration: `${STEP}ms` }} />}
         <span className={s.leaderRing} />
-        <span className={s.leaderNum}>{count ?? ""}</span>
+        {count !== null ? (
+          <span className={s.leaderNum}>{count}</span>
+        ) : (
+          // Before Play: the title card, so the leader isn't an empty dial.
+          <span className={s.leaderTitle} style={{ fontFamily: fonts.display }}>
+            <span>{names.a}</span>
+            {names.b && (
+              <>
+                <em>&amp;</em>
+                <span>{names.b}</span>
+              </>
+            )}
+            {dateLabel && <small style={{ fontFamily: fonts.caps }}>{dateLabel}</small>}
+          </span>
+        )}
       </div>
       {count === null && (
         <button type="button" className={s.playBtn} onClick={play}>

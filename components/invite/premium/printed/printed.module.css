@@ -905,11 +905,11 @@
   padding: 0;
   cursor: pointer;
   overflow: hidden;
-  background: radial-gradient(circle at 35% 30%, var(--foil-hi), var(--foil) 55%, color-mix(in srgb, var(--foil) 70%, #000 30%));
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--foil) 60%, transparent), 0 10px 20px -6px rgba(0, 0, 0, 0.6);
+  background: radial-gradient(circle at 35% 30%, var(--seal-hi), var(--seal) 55%, color-mix(in srgb, var(--seal) 70%, #000 30%));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--seal) 60%, transparent), 0 10px 20px -6px rgba(0, 0, 0, 0.6);
 }
 .envSeal :global(*) {
-  color: color-mix(in srgb, var(--foil) 40%, #000 60%) !important;
+  color: color-mix(in srgb, var(--seal) 40%, #000 60%) !important;
   -webkit-text-fill-color: currentColor;
   background: none !important;
   animation: none !important;
@@ -922,8 +922,8 @@
 .envSeal svg line,
 .envSeal svg rect,
 .envSeal svg ellipse {
-  fill: color-mix(in srgb, var(--foil) 40%, #000 60%);
-  stroke: color-mix(in srgb, var(--foil) 40%, #000 60%);
+  fill: color-mix(in srgb, var(--seal) 40%, #000 60%);
+  stroke: color-mix(in srgb, var(--seal) 40%, #000 60%);
 }
 .envSeal .glyph {
   font-size: clamp(28px, 9cqw, 38px);
@@ -951,7 +951,7 @@
   font-family: var(--p-display);
   font-size: clamp(14px, 4.6cqw, 20px);
   letter-spacing: 0.2em;
-  color: var(--foil-hi);
+  color: var(--seal-hi);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 .envHint {
@@ -963,6 +963,16 @@
   font-size: 11px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
+}
+/* Ivory and cream envelopes: the initials in dark foil, a dark button. */
+.envLight .envNames b {
+  color: color-mix(in srgb, var(--foil) 55%, #000 45%);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.deskLight .envHint {
+  border-color: color-mix(in srgb, var(--ink) 45%, transparent);
+  background: rgba(255, 255, 255, 0.4);
+  color: var(--ink);
 }
 
 @media (prefers-reduced-motion: reduce) {

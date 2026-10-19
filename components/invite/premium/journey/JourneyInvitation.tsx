@@ -18,7 +18,7 @@ import type { PremiumProps } from "../types";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Working, hasGuide, useEvents, useLongDate } from "../cinema/CinemaBlocks";
-import { Cloud, Garland, Gopuram, HangingLamp, LotusCorner } from "./JourneyArt";
+import { Cloud, Garland, LotusCorner } from "./JourneyArt";
 import s from "./journey.module.css";
 import InviteVideo from "@/components/invite/InviteVideo";
 
@@ -64,6 +64,14 @@ function Print({ p, i, src, caption }: { p: MotionValue<number>; i: number; src:
 /** A real painted gopuram (Pexels, Nirmal Dev), made whole by mirroring
  * its right half and cut out of its sky — docs/template-art.md. */
 const GOPURAM = "/art/temple-journey/gopuram.webp";
+
+const SCENE_PHOTOS = [
+  "/art/living-temple/corridor.webp",
+  "/art/living-temple/lamps.webp",
+  "/art/living-temple/finale.webp",
+  "/art/temple-journey/silk.webp",
+  "/library/photos/home-diya-row.jpg",
+];
 
 const clamp = (x: number) => Math.min(1, Math.max(0, x));
 
@@ -142,8 +150,9 @@ const CLOUDS = [
  * rises and the camera flies into the window of its crown; down a real
  * temple corridor the invitation card rises as their photos fly in around
  * it as taped prints; the functions in temple frames; their photo in a
- * gold arch before glowing brass temple lamps; a red-and-gold "meet the bride and groom" with
- * hanging lamps; the venue under a row of gold gopurams; and the days
+ * gold arch before glowing brass temple lamps; "meet the bride and groom"
+ * on red silk over a row of lit diyas; the venue under the temple tower
+ * lit gold at night; and the days
  * counted on embossed paper. Photos: public/art/temple-journey and the
  * living-temple corridor and lamps; the rest is drawn in code (JourneyArt).
  */
@@ -172,16 +181,27 @@ export default function JourneyInvitation(props: PremiumProps) {
   const skyRef = useRef<HTMLElement>(null);
   const gateRef = useRef<HTMLElement>(null);
   const archRef = useRef<HTMLElement>(null);
+  const venueRef = useRef<HTMLElement>(null);
   useViewportHeight(root);
+  // Fetch the scenes' photos up front, so no scene waits on a download
+  // (and shows the bare page) when the guest scrolls into it.
+  useEffect(() => {
+    SCENE_PHOTOS.forEach((src) => {
+      const im = new Image();
+      im.src = src;
+    });
+  }, []);
   const skyP = usePin(skyRef);
   const gateP = usePin(gateRef);
   const archP = usePin(archRef);
+  const venueP = usePin(venueRef);
 
   // Reduced motion: each scene holds one telling frame.
   const fixed = (v: number) => (reduce ? v : undefined);
   const skyV = useTransform(skyP, (v) => fixed(0.3) ?? v);
   const gateV = useTransform(gateP, (v) => fixed(1) ?? v);
   const archV = useTransform(archP, (v) => fixed(1) ?? v);
+  const venueV = useTransform(venueP, (v) => fixed(1) ?? v);
 
   // 1 · sky → gopuram → through its door
   // The tower rises as the names drift up, holds whole, then the camera
@@ -189,13 +209,13 @@ export default function JourneyInvitation(props: PremiumProps) {
   const namesY = useTransform(skyV, [0, 0.3], ["0cqh", "-20cqh"]);
   const namesO = useTransform(skyV, [0.1, 0.28], [1, 0]);
   const gopY = useTransform(skyV, [0, 0.34], ["64%", "0%"]);
-  const gopS = useTransform(skyV, [0.5, 0.98], [1, 12]);
+  // No overlay between scenes: each pinned scene hands over by scrolling
+  // away as the next scrolls in, so there is always a picture on screen.
+  const gopS = useTransform(skyV, [0.5, 1], [1, 6]);
   const cloudY = useTransform(skyV, [0, 1], ["0cqh", "-40cqh"]);
-  const flash = useTransform(skyV, [0.9, 1], [0, 1]);
   const cueO = useTransform(skyV, [0, 0.06], [1, 0]);
 
-  // 2 · the gateway opens on the invitation
-  const flashIn = useTransform(gateV, [0, 0.07], [1, 0]);
+  // 2 · down the corridor
   // Down the temple corridor: the card rises, their prints fly in.
   const dolly = useTransform(gateV, [0, 1], [1.04, 1.5]);
   const cardY = useTransform(gateV, [0.06, 0.4], ["70cqh", "0cqh"]);
@@ -205,6 +225,12 @@ export default function JourneyInvitation(props: PremiumProps) {
   const archS = useTransform(archV, [0, 0.7], [2.3, 1]);
   const lampsS = useTransform(archV, [0, 1], [1.25, 1.05]);
   const capO = useTransform(archV, [0.6, 0.9], [0, 1]);
+
+  // 6 · the lit tower: the camera eases back and down as the venue rises
+  const towerS = useTransform(venueV, [0, 1], [1.35, 1.05]);
+  const towerY = useTransform(venueV, [0, 1], ["-4%", "2%"]);
+  const venueO = useTransform(venueV, [0.25, 0.55], [0, 1]);
+  const venueY = useTransform(venueV, [0.25, 0.6], [30, 0]);
 
   const style = {
     "--p-display": font.headingVar,
@@ -232,7 +258,7 @@ export default function JourneyInvitation(props: PremiumProps) {
       {mode === "public" && <AudioToggle src={data.backgroundMusic || undefined} templateId={id} accentColor={data.accentColor} />}
 
       {/* 1 · The sky, the names, and a gopuram to fly into */}
-      <Pin screens={3.6} reduce={reduce} pinRef={skyRef}>
+      <Pin screens={2.2} reduce={reduce} pinRef={skyRef}>
         <div className={`${s.layer} ${s.sky}`} />
         <motion.div className={s.layer} style={{ y: cloudY }}>
           {CLOUDS.map((c, i) => (
@@ -258,7 +284,6 @@ export default function JourneyInvitation(props: PremiumProps) {
           <img src={GOPURAM} alt="" />
         </motion.div>
         <div className={s.mist} />
-        <motion.div className={s.layer} style={{ background: "#fffaf0", opacity: flash }} />
         {!reduce && (
           <motion.p className={s.scrollCue} style={{ opacity: cueO }} aria-hidden>
             {t("scroll")}
@@ -269,7 +294,7 @@ export default function JourneyInvitation(props: PremiumProps) {
 
       {/* 2 · Down a real temple corridor: the invitation card rises and
           their photographs fly in around it like a photo story */}
-      <Pin screens={3} reduce={reduce} pinRef={gateRef}>
+      <Pin screens={2} reduce={reduce} pinRef={gateRef}>
         <motion.div className={s.corridor} style={{ scale: dolly }} />
         <div className={s.corridorShade} />
         {photos.length > 1 &&
@@ -301,7 +326,6 @@ export default function JourneyInvitation(props: PremiumProps) {
           )}
           <p className={s.inviteDate}>{when.long}</p>
         </motion.div>
-        <motion.div className={s.layer} style={{ background: "#fffaf0", opacity: flashIn, pointerEvents: "none" }} />
       </Pin>
 
       {/* 3 · The functions, in temple frames */}
@@ -322,7 +346,7 @@ export default function JourneyInvitation(props: PremiumProps) {
 
       {/* 4 · Their photo in a gold arch, before real temple lamps */}
       {photos.length > 0 && (
-        <Pin screens={2} reduce={reduce} pinRef={archRef}>
+        <Pin screens={1.5} reduce={reduce} pinRef={archRef}>
           <motion.div className={s.lampsBg} style={{ scale: lampsS }} />
           <div className={s.archFrame}>
             <motion.div className={s.archPhoto} style={{ scale: archS }}>
@@ -336,13 +360,12 @@ export default function JourneyInvitation(props: PremiumProps) {
         </Pin>
       )}
 
-      {/* 5 · Red and gold: meet the bride and groom */}
+      {/* 5 · Red silk and lit diyas: meet the bride and groom */}
       {!category.singlePerson && (
         <section className={s.red}>
-          <LotusCorner className={s.lotusTL} />
-          <LotusCorner className={s.lotusTR} />
-          <HangingLamp className={`${s.lamp} ${s.lampL}`} />
-          <HangingLamp className={`${s.lamp} ${s.lampR}`} />
+          <span className={s.zari} aria-hidden />
+          <span className={`${s.zari} ${s.zariBottom}`} aria-hidden />
+          <span className={s.diyas} aria-hidden />
           <Reveal as="p" className={s.redTitle}>
             {t("meetTitle")}
           </Reveal>
@@ -369,35 +392,32 @@ export default function JourneyInvitation(props: PremiumProps) {
         </section>
       )}
 
-      {/* 6 · The venue under a row of gold gopurams */}
-      <section className={s.panorama}>
-        {photos.length > 0 && (
+      {/* 6 · The venue: the temple tower lit gold at night */}
+      <Pin screens={1.4} reduce={reduce} pinRef={venueRef}>
+        <motion.div className={s.nightTower} style={{ scale: towerS, y: towerY }} />
+        <div className={s.nightShade} />
+        <div className={s.venueText}>
+          <motion.p className={s.kicker} style={{ color: "#f3d58a", opacity: venueO }}>
+            {t("venueKicker")}
+          </motion.p>
+          <motion.p className={s.venueName} style={{ opacity: venueO, y: venueY }}>
+            {venue?.name || t("venueFallback")}
+          </motion.p>
+          {venue?.address && (
+            <motion.p className={s.venueSub} style={{ opacity: venueO }}>
+              {venue.address}
+            </motion.p>
+          )}
+        </div>
+      </Pin>
+      {photos.length > 0 && (
+        <section className={s.silkBand}>
           <Reveal className={s.frameGold}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={at(7)} alt="" loading="lazy" />
           </Reveal>
-        )}
-        <div className={s.towers}>
-          {[11, 12, 13, 14, 15].map((seed) => (
-            <Gopuram key={seed} gold seed={seed} />
-          ))}
-        </div>
-        <div className={s.venueBand}>
-          <span className={s.curtainL} aria-hidden />
-          <span className={s.curtainR} aria-hidden />
-          <Reveal as="p" className={s.kicker} style={{ color: "#f3d58a" }}>
-            {t("venueKicker")}
-          </Reveal>
-          <Reveal as="p" className={s.venueName} delay={0.1}>
-            {venue?.name || t("venueFallback")}
-          </Reveal>
-          {venue?.address && (
-            <Reveal as="p" className={s.venueSub} delay={0.2}>
-              {venue.address}
-            </Reveal>
-          )}
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* 7 · Counting the days, embossed */}
       {data.weddingDate && category.showCountdown && (

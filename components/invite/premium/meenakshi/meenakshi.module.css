@@ -3,7 +3,10 @@
    jasmine on banana leaf, the Nayakkar Mahal arches and the temple tank —
    maroon, kumkum and temple gold on cream, with a parrot-green accent. */
 
-.root {
+/* The palette — on the page, and on the opening, which also plays on its
+   own (the design cards on the home page). */
+.root,
+.stage {
   --lilac: #f3d9a6;
   --lilac-2: #fbf0dc;
   --lilac-deep: #8e1b2b;
@@ -16,6 +19,8 @@
   --edge: rgba(142, 27, 43, 0.22);
   --parrot: #2f7d4a;
   --maroon: #5a0f1c;
+}
+.root {
   position: relative;
   min-height: 100%;
   width: 100%;
