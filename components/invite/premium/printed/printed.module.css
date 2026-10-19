@@ -822,16 +822,25 @@
   perspective: 1400px;
 }
 .envBack,
-.envFront,
-.envFlap,
 .envCard {
   position: absolute;
   border-radius: 4px;
 }
+/* Inside of the back: the envelope's paper, with the liner glued in. */
 .envBack {
   inset: 0;
-  background: var(--liner);
-  box-shadow: 0 30px 50px -22px rgba(0, 0, 0, 0.7);
+  background: color-mix(in srgb, var(--envelope) 78%, #000 22%);
+  box-shadow: 0 30px 50px -22px rgba(0, 0, 0, 0.7), 0 6px 12px -6px rgba(0, 0, 0, 0.45);
+}
+.envBack::before {
+  content: "";
+  position: absolute;
+  inset: 3% 3% 30%;
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(45deg, transparent 0 6px, color-mix(in srgb, var(--liner) 85%, #000 15%) 6px 7px),
+    var(--liner);
+  box-shadow: inset 0 10px 14px -8px rgba(0, 0, 0, 0.45);
 }
 .envCard {
   left: 6%;
@@ -866,35 +875,95 @@
   letter-spacing: 0.3em;
   color: var(--ink);
 }
-.envFront {
-  inset: 0;
-  z-index: 3;
-  background: var(--envelope);
-  clip-path: polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%);
-  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-}
-.envFront::after {
-  content: "";
+/* The pocket: each folded flap a shade apart, like paper catching light. */
+.envPocket {
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), transparent 40%, rgba(0, 0, 0, 0.12));
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
 }
+.pocketLeft {
+  fill: color-mix(in srgb, var(--envelope) 94%, #fff 6%);
+}
+.pocketRight {
+  fill: color-mix(in srgb, var(--envelope) 90%, #000 10%);
+}
+.pocketBottom {
+  fill: var(--envelope);
+  filter: drop-shadow(0 -0.6px 0.8px rgba(0, 0, 0, 0.35));
+}
+.pocketFold {
+  fill: none;
+  stroke: rgba(0, 0, 0, 0.16);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+/* The closed flap's soft shadow on the pocket (gone once it lifts). */
+.envFlapShadow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1.5%;
+  height: 60%;
+  z-index: 3;
+  filter: blur(3px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+.envFlapShadow span {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+/* The top flap: paper outside, liner inside, turning on its hinge. */
 .envFlap {
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
   height: 58%;
   z-index: 4;
   transform-origin: 50% 0;
+  transform-style: preserve-3d;
+}
+.flapOuter,
+.flapInner {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+.flapOuter {
   clip-path: polygon(0 0, 100% 0, 50% 100%);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--envelope) 88%, #fff 12%), var(--envelope));
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.14), transparent 45%),
+    linear-gradient(180deg, color-mix(in srgb, var(--envelope) 92%, #fff 8%), var(--envelope));
+}
+/* Drawn upside down so it reads the right way up once the flap is open. */
+.flapInner {
+  transform: rotateX(180deg);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  background:
+    linear-gradient(0deg, rgba(0, 0, 0, 0.3), transparent 35%),
+    repeating-linear-gradient(45deg, transparent 0 6px, color-mix(in srgb, var(--liner) 85%, #000 15%) 6px 7px),
+    var(--liner);
+}
+/* The card is out in front: the envelope sinks away behind it. */
+.envAway .envBack,
+.envAway .envPocket,
+.envAway .envFlap {
+  opacity: 0;
+  transition: opacity 0.6s ease 0.15s;
 }
 .envSeal {
   position: absolute;
-  z-index: 6;
+  z-index: 1;
   left: 50%;
-  top: 56%;
+  top: 94%;
+  backface-visibility: hidden;
   width: clamp(62px, 20cqw, 84px);
   aspect-ratio: 1;
   margin: calc(clamp(62px, 20cqw, 84px) / -2) 0 0 calc(clamp(62px, 20cqw, 84px) / -2);
@@ -953,6 +1022,11 @@
   letter-spacing: 0.2em;
   color: var(--seal-hi);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.envHintGone {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
 }
 .envHint {
   padding: 11px 24px;

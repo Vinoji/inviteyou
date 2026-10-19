@@ -21,20 +21,21 @@ function luminance(hex: string) {
 
 /**
  * Intro "printedEnvelope" (the printed cards): the card's own envelope on
- * the desk — its colour, a foil seal with the tradition's emblem, the
- * couple's initials. Tap: the flap opens on its liner and the card slides
- * out, then the card itself.
+ * the desk, made like a real one: a folded pocket (two side flaps under a
+ * bottom flap), the top flap closed with a foil wax seal carrying the
+ * tradition's emblem, and the couple's initials. Tap: the flap lifts on its
+ * hinge with the seal and shows its liner, the card slides up out of the
+ * pocket, then comes forward in front of the envelope — then the card itself.
  */
 export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onDone }: IntroProps) {
   const t = useIntroText("invite.intros.printedEnvelope", templateId);
   const tp = useTranslations("premium.printed");
   const reduce = useSafeReducedMotion();
   const d = printedDesign(templateId);
-  const [open, setOpen] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  useEffect(() => () => {
-    if (timer.current) clearTimeout(timer.current);
-  }, []);
+  // 0 sealed · 1 flap lifting · 2 card sliding out · 3 card in front
+  const [phase, setPhase] = useState(0);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
   const initials = [monogram.a, monogram.b].filter(Boolean).join(" & ");
   // Ivory and cream envelopes need dark ink for the initials; a pale desk,
   // a dark button.
@@ -53,23 +54,40 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
     "--seal": d.seal?.[0] ?? d.foil,
     "--seal-hi": d.seal?.[1] ?? d.foilHi,
   } as CSSProperties;
+  const open = phase > 0;
 
   function start() {
     if (open) return;
-    setOpen(true);
+    setPhase(1);
     onOpen();
-    timer.current = setTimeout(onDone, reduce ? 0 : 1400);
+    if (reduce) {
+      timers.current.push(setTimeout(onDone, 0));
+      return;
+    }
+    timers.current.push(
+      setTimeout(() => setPhase(2), 600),
+      setTimeout(() => setPhase(3), 1500),
+      setTimeout(onDone, 2350),
+    );
   }
+
+  const ease = [0.3, 0, 0.2, 1] as const;
+  const card =
+    phase >= 3
+      ? { y: "-4%", scale: 1.12, zIndex: 8 }
+      : phase === 2
+        ? { y: "-68%", scale: 1, zIndex: 2 }
+        : { y: "0%", scale: 1, zIndex: 2 };
 
   return (
     <div className={`${s.stage} ${light ? s.envLight : ""} ${paleDesk ? s.deskLight : ""}`} style={style} role="dialog" aria-label={t("dialogLabel")}>
-      <div className={s.env}>
+      <div className={`${s.env} ${phase >= 3 ? s.envAway : ""}`}>
         <div className={s.envBack} />
         <motion.div
           className={`${s.envCard} ${d.dark ? s.envCardDark : ""}`}
           initial={false}
-          animate={{ y: open ? "-58%" : "0%" }}
-          transition={{ duration: reduce ? 0 : 0.75, delay: reduce ? 0 : 0.3, ease: [0.3, 0, 0.2, 1] }}
+          animate={card}
+          transition={{ duration: reduce ? 0 : phase >= 3 ? 0.75 : 0.85, ease }}
         >
           <span className={s.envCardEmblem}>
             <EmblemMark emblem={d.emblem} />
@@ -77,42 +95,41 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
           <span className={s.envCardTitle}>{tp(`${d.wording}.title`)}</span>
           <span className={s.envCardMono}>{initials}</span>
         </motion.div>
-        <div className={s.envFront} />
+        {/* The pocket: side flaps, then the bottom flap folded over them. */}
+        <svg className={s.envPocket} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
+          <path className={s.pocketLeft} d="M0 0 L50 55 L0 100 Z" />
+          <path className={s.pocketRight} d="M100 0 L50 55 L100 100 Z" />
+          <path className={s.pocketBottom} d="M0 100 L50 45 L100 100 Z" />
+          <path className={s.pocketFold} d="M0 0 L46 50.6 M100 0 L54 50.6 M0 100 L50 45 L100 100" />
+        </svg>
+        {!open && <div className={s.envFlapShadow} aria-hidden><span /></div>}
         <motion.div
           className={s.envFlap}
           initial={false}
           animate={open ? { rotateX: 180, transitionEnd: { zIndex: 1 } } : { rotateX: 0, zIndex: 4 }}
-          transition={{ duration: reduce ? 0 : 0.45, ease: [0.5, 0, 0.3, 1] }}
-        />
-        <motion.button
-          type="button"
-          className={s.envSeal}
-          onClick={start}
-          aria-label={t("open")}
-          disabled={open}
-          initial={false}
-          animate={open ? { opacity: 0, scale: 1.2 } : { opacity: 1, scale: 1 }}
-          transition={{ duration: reduce ? 0 : 0.25 }}
+          transition={{ duration: reduce ? 0 : 0.6, ease: [0.45, 0, 0.25, 1] }}
         >
-          {d.emblem === "bismillah" ? (
-            <span className={s.sealArabic} lang="ar" aria-hidden>
-              بِسْمِ ٱللَّٰهِ
-            </span>
-          ) : (
-            <EmblemMark emblem={d.emblem} />
-          )}
-        </motion.button>
+          <span className={s.flapOuter} />
+          <span className={s.flapInner} />
+          <button type="button" className={s.envSeal} onClick={start} aria-label={t("open")} disabled={open}>
+            {d.emblem === "bismillah" ? (
+              <span className={s.sealArabic} lang="ar" aria-hidden>
+                بِسْمِ ٱللَّٰهِ
+              </span>
+            ) : (
+              <EmblemMark emblem={d.emblem} />
+            )}
+          </button>
+        </motion.div>
         {!open && (
           <p className={s.envNames}>
             <b>{initials}</b>
           </p>
         )}
       </div>
-      {!open && (
-        <button type="button" className={s.envHint} onClick={start}>
-          {reduce ? t("view") : t("open")}
-        </button>
-      )}
+      <button type="button" className={`${s.envHint} ${open ? s.envHintGone : ""}`} onClick={start} disabled={open}>
+        {reduce ? t("view") : t("open")}
+      </button>
     </div>
   );
 }
