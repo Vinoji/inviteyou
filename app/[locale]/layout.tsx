@@ -14,6 +14,7 @@ import {
   Bodoni_Moda,
   Jost,
   Amiri,
+  Noto_Sans_Gurmukhi,
 } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { CLIENT_BASE, pickMessages } from "@/lib/i18n/clientMessages";
@@ -126,6 +127,14 @@ const amiri = Amiri({
   weight: ["400", "700"],
   preload: false,
 });
+// ੴ on the Anand Karaj cards: one font everywhere, so it sits centred
+// (each device's own Gurmukhi font draws it at a different offset).
+const gurmukhi = Noto_Sans_Gurmukhi({
+  variable: "--font-gurmukhi",
+  subsets: ["gurmukhi"],
+  weight: ["700"],
+  preload: false,
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -196,6 +205,7 @@ const fontVariables = [
   bodoni.variable,
   jost.variable,
   amiri.variable,
+  gurmukhi.variable,
 ].join(" ");
 
 export default async function RootLayout({
