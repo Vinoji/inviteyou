@@ -105,8 +105,10 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
         {!open && <div className={s.envFlapShadow} aria-hidden><span /></div>}
         <motion.div
           className={s.envFlap}
+          // Once it's up, the flap drops behind the card sliding out.
+          style={{ zIndex: phase >= 2 ? 1 : 4 }}
           initial={false}
-          animate={open ? { rotateX: 180, transitionEnd: { zIndex: 1 } } : { rotateX: 0, zIndex: 4 }}
+          animate={{ rotateX: open ? 180 : 0 }}
           transition={{ duration: reduce ? 0 : 0.6, ease: [0.45, 0, 0.25, 1] }}
         >
           <span className={s.flapOuter} />

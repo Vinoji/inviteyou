@@ -1,3 +1,4 @@
+import type { CardWording } from "./cardWording";
 export type InvitationStatus = "pending_payment" | "published";
 
 export interface VenueInfo {
@@ -182,6 +183,9 @@ export interface InvitationData {
    * (EVENTS_HEADING in lib/templates); empty = the design's own. */
   eventsKicker?: string;
   eventsTitle?: string;
+  /** The printed cards: their own words for the card's lines
+   * (lib/cardWording.ts); a missing line = the design's own. */
+  cardWording?: CardWording;
   /** A YouTube link shown on the invitation (lib/youtube.ts); "" = none. */
   videoUrl?: string;
   /** Structured family lines per side. Missing on older docs, which only

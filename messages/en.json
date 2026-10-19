@@ -720,7 +720,22 @@
     "videoLabel": "YouTube link",
     "videoInvalid": "That isn't a YouTube link.",
     "browseAllQ": "Looking for another occasion?",
-    "browseAll": "See all designs"
+    "browseAll": "See all designs",
+    "cardWordingTitle": "Card wording",
+    "cardWordingHint": "Every line printed on your card. Leave a line blank to keep the design's own words.",
+    "cardWording": {
+      "invocation": "Top blessing line",
+      "invocationSub": "Second blessing line",
+      "title": "Card title",
+      "lead": "Opening words",
+      "groomLabel": "Groom label",
+      "brideLabel": "Bride label",
+      "joiner": "Word between the names",
+      "after": "Line before the date",
+      "timeLabel": "Time label",
+      "closing": "Closing words",
+      "hostsLabel": "Hosts heading"
+    }
   },
   "invite": {
     "hero": {
