@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowRight, ChevronDown, Crown, Gift, Sparkles, Star } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { EDITORS_PICKS, HOME_FIRST, isNewTemplate } from "@/lib/templates";
+import { EDITORS_PICKS, HOME_FIRST, HOME_LAST, isNewTemplate } from "@/lib/templates";
 import { activeFestival } from "@/lib/festivals";
 import { type Tier, templateListPriceInr, templatePriceInr, templateTier, tierPriceInr } from "@/lib/pricing";
 import TemplateShowcase, { type ShowcaseProps } from "./TemplateShowcase";
@@ -33,12 +33,15 @@ const OCCASION_ORDER = Object.keys(OCCASION_ICON);
 // Live invitations lead (what most people want), 3D next, free cards last.
 const TIERS: Tier[] = ["standard", "premium", "free"];
 /** Sort key for the cards within a price group: the running festival's
- * designs (lib/festivals.ts), then HOME_FIRST, new designs, our picks. */
+ * designs (lib/festivals.ts), then HOME_FIRST, new designs, our picks,
+ * the rest, and HOME_LAST at the end. */
 function rank(id: string): number {
   const festive = activeFestival()?.designs ?? [];
   if (festive.includes(id)) return -festive.length + festive.indexOf(id);
   const pinned = HOME_FIRST.indexOf(id);
   if (pinned >= 0) return pinned;
+  const last = HOME_LAST.indexOf(id);
+  if (last >= 0) return HOME_FIRST.length + 3 + last;
   return HOME_FIRST.length + (isNewTemplate(id) ? 0 : EDITORS_PICKS.includes(id) ? 1 : 2);
 }
 /** Cards per price group before "Show all" — one or two rows. */

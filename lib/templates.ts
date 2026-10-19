@@ -1262,7 +1262,12 @@ export const EDITORS_PICKS = [
 
 /** Designs pinned to the top of the home page's list, in this order
  * (ahead of the new-and-picks order below). */
-export const HOME_FIRST = ["kalyanam-rituals", "kerala-sadya", "cinematic-film", "manjal-pathirikai", "emerald-nikah", "ivory-holy-matrimony", "anand-karaj-ivory", "jain-namokar-maroon", "madurai-meenakshi", "lilac-seal", "pastel-palace", "photo-story", "temple-photo-story", "pearl-curtain", "temple-journey", "living-temple"];
+export const HOME_FIRST = ["madurai-meenakshi", "lilac-seal", "pastel-palace", "photo-story", "temple-photo-story", "pearl-curtain", "temple-journey", "living-temple"];
+
+/** Designs listed at the end of the home page's list, in this order — the
+ * printed-envelope cards and Cinematic Film, whose openings look alike in
+ * a grid. */
+export const HOME_LAST = ["kalyanam-rituals", "kerala-sadya", "manjal-pathirikai", "maroon-pathirikai", "kerala-sumuhurtham", "emerald-nikah", "ivory-nikah", "ivory-holy-matrimony", "royal-blue-matrimony", "anand-karaj-ivory", "phulkari-anand-karaj", "jain-namokar-maroon", "jain-kesar-ivory", "cinematic-film"];
 
 const NEW_FOR_DAYS = 30;
 
