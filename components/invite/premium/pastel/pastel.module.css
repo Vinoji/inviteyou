@@ -1,7 +1,10 @@
 /* Wedding — "Pastel Palace": a watercolour castle in a rose garden, white
    pillars, blush roses and gold — the soft painted invitation, on ivory. */
 
-.root {
+/* The palette — on the page, and on the opening, which also plays on its
+   own (the design cards on the home page). */
+.root,
+.stage {
   --lilac: #f3c9d4;
   --lilac-2: #fbe9ee;
   --lilac-deep: #c0607f;
@@ -12,6 +15,8 @@
   --ivory: #fffaf6;
   --edge: rgba(192, 96, 127, 0.24);
   --sage: #9fb59a;
+}
+.root {
   position: relative;
   min-height: 100%;
   width: 100%;

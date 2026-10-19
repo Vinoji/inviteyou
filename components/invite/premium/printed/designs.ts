@@ -38,6 +38,9 @@ export interface PrintedDesign {
   foilHi: string;
   /** The envelope and its liner. */
   envelope: string;
+  /** The envelope's wax seal, when it isn't the foil (a red seal would
+   * vanish on a red envelope). */
+  seal?: [base: string, highlight: string];
   liner: string;
   /** Pattern colours for geometric / phulkari borders. */
   pattern?: string[];
@@ -66,6 +69,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#e2574f",
     envelope: "#c2161f",
     liner: "#f5cf55",
+    seal: ["#c9962c", "#fbe7a6"],
     groomFirst: true,
   },
   "maroon-pathirikai": {

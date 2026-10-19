@@ -1,7 +1,10 @@
 /* Wedding — "Lilac Seal": a lilac envelope embossed with roses, a wax seal,
    and an ivory card inside — soft lilac, plum ink and antique gold. */
 
-.root {
+/* The palette — on the page, and on the opening, which also plays on its
+   own (the design cards on the home page). */
+.root,
+.stage {
   --lilac: #c9b6e4;
   --lilac-2: #e8def3;
   --lilac-deep: #8a6fb3;
@@ -11,6 +14,8 @@
   --gold: #b8955a;
   --ivory: #fbf8f4;
   --edge: rgba(138, 111, 179, 0.28);
+}
+.root {
   position: relative;
   min-height: 100%;
   width: 100%;

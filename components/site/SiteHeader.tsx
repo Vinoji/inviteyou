@@ -190,7 +190,9 @@ export default function SiteHeader() {
         </button>
       </div>
 
-      {solid && !open && (
+      {/* The tassels hang only at the top of the page: once it scrolls they
+          would dangle over the content beneath the bar. */}
+      {solid && !open && !scrolled && (
         <>
           <Tassels side="L" />
           <Tassels side="R" />
