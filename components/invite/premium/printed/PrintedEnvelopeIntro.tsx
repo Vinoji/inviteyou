@@ -81,7 +81,7 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
 
   return (
     <div className={`${s.stage} ${light ? s.envLight : ""} ${paleDesk ? s.deskLight : ""}`} style={style} role="dialog" aria-label={t("dialogLabel")}>
-      <div className={`${s.env} ${phase >= 3 ? s.envAway : ""}`}>
+      <div className={`${s.env} ${phase >= 2 ? s.envFlapUp : ""} ${phase >= 3 ? s.envAway : ""}`}>
         <div className={s.envBack} />
         <motion.div
           className={`${s.envCard} ${d.dark ? s.envCardDark : ""}`}
@@ -95,13 +95,17 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
           <span className={s.envCardTitle}>{tp(`${d.wording}.title`)}</span>
           <span className={s.envCardMono}>{initials}</span>
         </motion.div>
-        {/* The pocket: side flaps, then the bottom flap folded over them. */}
-        <svg className={s.envPocket} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden>
-          <path className={s.pocketLeft} d="M0 0 L50 55 L0 100 Z" />
-          <path className={s.pocketRight} d="M100 0 L50 55 L100 100 Z" />
-          <path className={s.pocketBottom} d="M0 100 L50 45 L100 100 Z" />
-          <path className={s.pocketFold} d="M0 0 L46 50.6 M100 0 L54 50.6 M0 100 L50 45 L100 100" />
-        </svg>
+        {/* The pocket: side flaps, then the bottom flap folded over them,
+            each casting a soft shadow on what's under it. */}
+        <div className={s.envPocket} aria-hidden>
+          <span className={s.pocketFold}>
+            <span className={s.pocketLeft} />
+            <span className={s.pocketRight} />
+          </span>
+          <span className={s.pocketFold}>
+            <span className={s.pocketBottom} />
+          </span>
+        </div>
         {!open && <div className={s.envFlapShadow} aria-hidden><span /></div>}
         <motion.div
           className={s.envFlap}

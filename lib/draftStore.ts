@@ -24,8 +24,9 @@ export interface StoredDraft {
   fields: Partial<InvitationData>;
 }
 
-/** Styling that belongs to a template; dropped when a draft changes template. */
-export const TEMPLATE_STYLE_KEYS = ["accentColor", "fontPairing"] as const;
+/** Styling and wording that belong to a template (a Nikah card's lines don't
+ * fit a pathirikai); dropped when a draft changes template. */
+export const TEMPLATE_STYLE_KEYS = ["accentColor", "fontPairing", "cardWording"] as const;
 
 export function changedFields(data: InvitationData, seed: InvitationData): Partial<InvitationData> {
   const out: Partial<InvitationData> = {};

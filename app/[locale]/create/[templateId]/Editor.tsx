@@ -347,10 +347,10 @@ export default function Editor({
         setExpiry(json.expiry ?? null);
         if (loaded.templateId !== templateId) {
           // Opened through the design switcher: keep the content, take the
-          // new template's colours and fonts.
+          // new template's colours, fonts and card wording.
           const next = getTemplateMeta(templateId, tTemplates);
           setDraftNotice({ kind: "carried", from: getTemplateMeta(loaded.templateId, tTemplates).name });
-          setData({ ...loaded, templateId, accentColor: next.defaultAccent, fontPairing: next.defaultFont });
+          setData({ ...loaded, templateId, accentColor: next.defaultAccent, fontPairing: next.defaultFont, cardWording: {} });
         } else {
           setData(loaded);
         }
