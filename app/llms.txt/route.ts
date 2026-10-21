@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/seo";
 import { USUAL_PRICES, currentOffer, tierPriceInr } from "@/lib/pricing";
 import { CATEGORIES } from "@/lib/categories";
 import en from "@/messages/en.json";
+import { POSTS } from "@/lib/blog";
 
 /**
  * /llms.txt — a plain-language summary for AI assistants and answer
@@ -24,7 +25,7 @@ export function GET() {
     "",
     `${SITE.name} (${SITE_URL}) is an Indian online invitation maker. People pick an animated or 3D design, add names, dates, venues, family, story, photos and music in English or Tamil, then share one link on WhatsApp. Each invitation includes RSVP with a guest list, a countdown, Google Maps directions, add-to-calendar, a photo gallery, background music and guest photo sharing.`,
     "",
-    `Pricing: free designs for every occasion give a downloadable invitation card image (no link). A live invitation website with its own link costs ₹${tierPriceInr("standard")} and the premium 3D designs ₹${tierPriceInr("premium")}${
+    `Pricing: every design can be downloaded free as an invitation card image (no link). A live invitation website with its own link costs ₹${tierPriceInr("standard")} and the premium 3D designs ₹${tierPriceInr("premium")}${
       offer ? ` (${offer.festival ? `${en.festivals[offer.festival.theme].name} offer` : "launch"} prices until ${new Date(offer.endsAt).toISOString().slice(0, 10)}, then ₹${USUAL_PRICES.standard} and ₹${USUAL_PRICES.premium}; festival offers run around major Indian festivals)` : " (festival offers run around major Indian festivals)"
     } — paid once, no subscription. Designing and previewing is always free. Invitations stay live until 10 days after the event date.`,
     "",
@@ -33,6 +34,10 @@ export function GET() {
     ...CATEGORIES.filter((c) => pages[c.id]).map(
       (c) => `- [${pages[c.id].metaTitle}](${SITE_URL}/invitations/${c.id}): ${pages[c.id].metaDescription}`
     ),
+    "",
+    "## Guides",
+    "",
+    ...POSTS.map((p) => `- [${p.title}](${SITE_URL}/blog/${p.slug}): ${p.description}`),
     "",
     "## More",
     "",

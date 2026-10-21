@@ -4566,7 +4566,8 @@
       "copyright": "© {years} {brand}. All rights reserved.",
       "madeWith": "Made with love in Tamil Nadu",
       "terms": "Terms & conditions",
-      "invitations": "Invitations"
+      "invitations": "Invitations",
+      "blog": "Blog"
     },
     "demo": {
       "metaTitle": "Demos",
@@ -5796,5 +5797,19 @@
       "error": "Couldn't send — please try again.",
       "note": "Only you can see this box. We show reviews only with your rating and words, never your contact details."
     }
+  },
+  "blog": {
+    "metaTitle": "Wedding Invitation Ideas, Wording & Guides | InviteForYou Blog",
+    "metaDescription": "Guides for digital wedding invitations in India — Tamil and English wording samples, WhatsApp invitation messages and tips for every tradition.",
+    "eyebrow": "Guides & wording",
+    "title": "Blog",
+    "intro": "Wording samples, WhatsApp messages and simple guides to make your invitation — in Tamil and English.",
+    "home": "Home",
+    "read": "Read the guide",
+    "readTime": "{minutes} min read",
+    "updated": "Updated {date}",
+    "contents": "In this guide",
+    "faq": "Frequently asked questions",
+    "more": "More guides"
   }
 }
