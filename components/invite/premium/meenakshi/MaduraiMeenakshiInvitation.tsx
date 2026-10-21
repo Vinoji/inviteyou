@@ -15,6 +15,7 @@ import AudioToggle from "../../AudioToggle";
 import FamilyLines from "../../FamilyLines";
 import InviteVideo from "@/components/invite/InviteVideo";
 import type { PremiumProps } from "../types";
+import { usePremiumText } from "../usePremiumText";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Photos, Story, Working, hasGuide, useEvents } from "../cinema/CinemaBlocks";
@@ -31,7 +32,7 @@ const ART = "/art/madurai-meenakshi";
  */
 export default function MaduraiMeenakshiInvitation(props: PremiumProps) {
   const { data, slug, mode, category, occasionTitle, coupleLabel, guestGreeting } = props;
-  const t = useTranslations("premium.meenakshi");
+  const t = usePremiumText("premium.meenakshi", data.templateId);
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
   const format = useFormatter();
@@ -123,7 +124,7 @@ export default function MaduraiMeenakshiInvitation(props: PremiumProps) {
               உ
             </p>
             <p className={s.tamilTitle} lang="ta">
-              திருமண அழைப்பிதழ்
+              {t("tamilTitle")}
             </p>
             <p className={s.blessing}>{t("invited")}</p>
             <div className={s.coupleNames}>
@@ -243,7 +244,7 @@ export default function MaduraiMeenakshiInvitation(props: PremiumProps) {
         <img src={`${ART}/tank.webp`} alt="" aria-hidden loading="lazy" />
         {locale !== "ta" && (
           <Reveal as="p" className={s.closingTa}>
-            <span lang="ta">நன்றி</span>
+            <span lang="ta">{t("tamilThanks")}</span>
           </Reveal>
         )}
         <Reveal as="p" delay={0.05} className={s.closingLine}>

@@ -1705,6 +1705,131 @@
       },
       "corporate-offsite": {
         "lead": "Pack your bags — a team offsite with"
+      },
+      "lilac-seal-engagement": {
+        "page": {
+          "weddingInvitation": "Engagement invitation",
+          "blessing": "With the blessings of the Almighty and our beloved families, we joyfully invite you to the engagement of",
+          "tamilTitle": "நிச்சயதார்த்த அழைப்பிதழ்",
+          "eventsTitle": "The engagement",
+          "closing": "Your presence and blessings will make this beginning complete."
+        },
+        "intro": {
+          "dialogLabel": "Engagement invitation",
+          "eyebrow": "Engagement invitation"
+        }
+      },
+      "lilac-seal-anniversary": {
+        "page": {
+          "weddingInvitation": "Anniversary celebration",
+          "blessing": "With grateful hearts and the blessings of our families, we invite you to celebrate the wedding anniversary of",
+          "tamilTitle": "திருமண நாள் விழா",
+          "storyKicker": "Our journey",
+          "eventsTitle": "The celebration",
+          "closing": "Thank you for being part of our story — come celebrate with us."
+        },
+        "intro": {
+          "dialogLabel": "Anniversary invitation",
+          "eyebrow": "Anniversary celebration"
+        }
+      },
+      "pastel-palace-birthday": {
+        "page": {
+          "invited": "You're invited to a royal birthday celebration for our little princess",
+          "eventsTitle": "The celebration",
+          "storyKicker": "Our princess",
+          "storyTitle": "A birthday wish",
+          "closing": "Come celebrate with us — your smiles and blessings will make her day magical.",
+          "dearGuest": "Dear guest"
+        },
+        "intro": {
+          "dialogLabel": "Birthday invitation",
+          "eyebrow": "A royal birthday"
+        }
+      },
+      "pastel-palace-baby-shower": {
+        "page": {
+          "invited": "With love and joy, we invite you to the baby shower of",
+          "eventsTitle": "The celebration",
+          "storyKicker": "Our little story",
+          "storyTitle": "A baby on the way",
+          "closing": "Come shower the mother-to-be with love, blessings and good wishes."
+        },
+        "intro": {
+          "dialogLabel": "Baby shower invitation",
+          "eyebrow": "Baby shower"
+        }
+      },
+      "meenakshi-nichayathartham": {
+        "page": {
+          "weddingOf": "The engagement of",
+          "invited": "With the blessings of our elders and Sri Meenakshi Amman, we joyfully invite you and your family to the nichayathartham of",
+          "tamilTitle": "நிச்சயதார்த்த அழைப்பிதழ்",
+          "saveTheDate": "Nichayathartham",
+          "closing": "Come with your family and bless the couple at their nichayam."
+        },
+        "intro": {
+          "dialogLabel": "Engagement invitation",
+          "eyebrow": "Our engagement"
+        }
+      },
+      "cinematic-film-birthday": {
+        "page": {
+          "present": "The family presents",
+          "aLoveStory": "A birthday celebration",
+          "laurelSub": "Friends & family",
+          "musicValue": "The best playlist",
+          "blessingsValue": "Everyone we love",
+          "directedValue": "Another amazing year",
+          "premiereKicker": "The party",
+          "replyTitle": "Will you be at the party?",
+          "replySub": "Save your seat — it won't be the same without you.",
+          "synopsisTitle": "A birthday wish",
+          "thanks": "here's to many more",
+          "families": "Hosted by",
+          "specialValue": "Everyone who made this year special — you."
+        }
+      },
+      "cinematic-film-anniversary": {
+        "page": {
+          "present": "Our family presents",
+          "aLoveStory": "A love story — still running",
+          "laurelSub": "Our family & friends",
+          "musicValue": "Our favourite songs",
+          "blessingsValue": "Our elders",
+          "directedValue": "Love",
+          "premiereKicker": "The celebration",
+          "replyTitle": "Will you celebrate with us?",
+          "synopsisTitle": "Our journey",
+          "thanks": "and the story continues"
+        }
+      },
+      "cinematic-film-launch": {
+        "page": {
+          "present": "presents",
+          "aLoveStory": "A launch event",
+          "laurel": "Premiere",
+          "laurelSub": "Partners & customers",
+          "starring": "Featuring",
+          "musicBy": "Live music",
+          "musicValue": "The house band",
+          "blessingsBy": "Hosted by",
+          "blessingsValue": "The whole team",
+          "directedBy": "Brought to you by",
+          "directedValue": "Innovation",
+          "premiereKicker": "Launch day",
+          "admitValue": "You + 1",
+          "replyKicker": "RSVP",
+          "replyTitle": "Will you join the launch?",
+          "replySub": "Reserve your seat — space is limited.",
+          "synopsisKicker": "About",
+          "synopsisTitle": "About the event",
+          "theEnd": "See you there",
+          "thanks": "the future starts here",
+          "cast": "Featuring",
+          "families": "Hosts",
+          "specialValue": "Our customers, partners and team."
+        }
       }
     },
     "palace": {
@@ -2617,6 +2742,76 @@
       "name": "Cinematic Film",
       "tagline": "Your wedding as a film's title sequence",
       "description": "A film in type alone: a projector countdown leader, then the opening credits — “Two families present… a love story” — your names as the title card with laurels, a poster billing block, “Coming soon”, admit-one tickets for each function, the synopsis, and “The End” with the credits rolling."
+    },
+    "nichayathartham-pathirikai": {
+      "name": "Nichayathartham Pathirikai",
+      "tagline": "Tamil engagement card with a temple arch",
+      "description": "The Tamil engagement card: a temple-arch border in gold foil, உ and “Sri Ganeshaya Namah”, the couple on ribbons with their parents, the nichayathartham date and the families — in its envelope."
+    },
+    "griha-pravesam-pathirikai": {
+      "name": "Griha Pravesam Pathirikai",
+      "tagline": "Turmeric house-warming card with a kalash",
+      "description": "The traditional புதுமனை புகுவிழா card: turmeric-yellow stock with a red temple border, a gold kalash, the hosts, the muhurtham and the lunch — in its red envelope."
+    },
+    "namakaranam-card": {
+      "name": "Namakaranam Card",
+      "tagline": "Soft blue naming-ceremony card",
+      "description": "A printed naming-ceremony card in soft blue and gold: உ, the baby's parents, the ceremony time and venue and a warm request to bless the little one."
+    },
+    "valaikaappu-card": {
+      "name": "Valaikaappu Card",
+      "tagline": "Bangle-green seemantham card in gold",
+      "description": "The valaikaappu card in bangle green and gold under a temple arch — the mother-to-be's name, her family, the muhurtham and lunch."
+    },
+    "shashtiabdapoorthi-card": {
+      "name": "Shashtiabdapoorthi Card",
+      "tagline": "Maroon-and-gold 60th birthday card",
+      "description": "A maroon shimmer card in gold foil for the Shashtiabdapoorthi (Manivizha) — the parents' names, the muhurtham at the temple and an invitation from their children."
+    },
+    "first-birthday-card": {
+      "name": "First Birthday Card",
+      "tagline": "Blush printed card for a first birthday",
+      "description": "A blush-pink printed card with gold corners for a baby's first birthday — the ayush homam, the party, the little one's name and the parents."
+    },
+    "lilac-seal-engagement": {
+      "name": "Lilac Seal Engagement",
+      "tagline": "Wax-seal envelope for your engagement",
+      "description": "Tap the wax seal on a lilac envelope embossed with roses — the card rises with your monogram, then your engagement details in script and gold."
+    },
+    "lilac-seal-anniversary": {
+      "name": "Lilac Seal Anniversary",
+      "tagline": "Wax-seal envelope for your anniversary",
+      "description": "A lilac envelope with a wax seal for your wedding anniversary — your names in script, your journey, the celebration and a warm thank-you."
+    },
+    "pastel-palace-birthday": {
+      "name": "Princess Palace Birthday",
+      "tagline": "Fairy-tale palace birthday with a scratch date",
+      "description": "A watercolour palace for a little princess's birthday: scratch the foil to reveal the date, then roses and gold frame her name, the party and a birthday wish."
+    },
+    "pastel-palace-baby-shower": {
+      "name": "Pastel Palace Baby Shower",
+      "tagline": "Pastel palace for a baby shower",
+      "description": "A soft pastel palace for a baby shower — scratch to reveal the date, blush roses around the mother-to-be's name, the celebration and good wishes."
+    },
+    "meenakshi-nichayathartham": {
+      "name": "Madurai Meenakshi Nichayathartham",
+      "tagline": "Temple doors open to your engagement",
+      "description": "Tap the brass knocker — the temple doors open onto the painted Meenakshi gopuram for your nichayathartham, with marigold, jasmine and your names in temple gold."
+    },
+    "cinematic-film-birthday": {
+      "name": "Cinematic Birthday",
+      "tagline": "A birthday as a film's title sequence",
+      "description": "A projector countdown, then opening credits for the birthday star — a title card with laurels, a poster billing block, admit-one tickets for the party and the credits rolling."
+    },
+    "cinematic-film-anniversary": {
+      "name": "Cinematic Anniversary",
+      "tagline": "Your love story, still running — a film",
+      "description": "Your anniversary as a film: countdown leader, opening credits, your names as the title, tickets for the celebration and “the story continues”."
+    },
+    "cinematic-film-launch": {
+      "name": "Cinematic Launch",
+      "tagline": "A product launch or event, as a premiere",
+      "description": "Turn a launch, premiere or company event into a film's title sequence — countdown, credits, the event as the title card and admit-one tickets for each session."
     }
   },
   "defaultContent": {
@@ -4334,6 +4529,132 @@
           "scene": "nature"
         }
       ]
+    },
+    "nichayathartham": {
+      "brideName": "Kavya",
+      "groomName": "Aravind",
+      "ceremonyVenueName": "Sri Lakshmi Mahal",
+      "ceremonyVenueAddress": "T. Nagar, Chennai",
+      "receptionVenueName": "Sri Lakshmi Mahal — Dinner Hall",
+      "receptionVenueAddress": "T. Nagar, Chennai",
+      "groomParents": "Mr. & Mrs. Venkatesan",
+      "brideParents": "Mr. & Mrs. Raghavan",
+      "story": "Kavya and Aravind's families met over filter coffee and found they had more in common than either expected. With our elders' blessings, the two families now come together for the nichayathartham — the first step towards the wedding.",
+      "faq": [
+        {
+          "question": "Is there a dress code?",
+          "answer": "Traditional wear — silk sarees, veshtis and kurtas are perfect."
+        },
+        {
+          "question": "Will dinner be served?",
+          "answer": "Yes, dinner is served at the same hall after the ceremony."
+        }
+      ]
+    },
+    "griha-pravesam": {
+      "brideName": "Raman & Lakshmi",
+      "groomName": "",
+      "ceremonyVenueName": "Our new home",
+      "ceremonyVenueAddress": "12, 2nd Street, Anna Nagar, Madurai",
+      "receptionVenueName": "Our new home — Lunch",
+      "receptionVenueAddress": "12, 2nd Street, Anna Nagar, Madurai",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "After years of dreaming and saving, our new home is finally ready. We begin our life here with a griha pravesam, the ganapathi homam and milk boiling — and we would love you to be part of it.",
+      "faq": [
+        {
+          "question": "What time should we come?",
+          "answer": "The ceremonies begin early in the morning; please join us any time before lunch."
+        },
+        {
+          "question": "Is there parking?",
+          "answer": "Street parking is available near the house."
+        }
+      ]
+    },
+    "namakaranam": {
+      "brideName": "Baby of Kavya & Arun",
+      "groomName": "",
+      "ceremonyVenueName": "Sri Vinayagar Temple Hall",
+      "ceremonyVenueAddress": "R.S. Puram, Coimbatore",
+      "receptionVenueName": "Sri Vinayagar Temple Hall — Lunch",
+      "receptionVenueAddress": "R.S. Puram, Coimbatore",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "Our little one arrived and turned our world upside down — in the best way. Now it's time to give our baby a name, with the blessings of our elders and the people we love.",
+      "faq": [
+        {
+          "question": "Can we bring gifts?",
+          "answer": "Your blessings are the best gift; anything else is entirely up to you."
+        },
+        {
+          "question": "Is lunch served?",
+          "answer": "Yes, lunch is served right after the ceremony."
+        }
+      ]
+    },
+    "valaikaappu": {
+      "brideName": "Priya",
+      "groomName": "",
+      "ceremonyVenueName": "Sri Annapoorna Hall",
+      "ceremonyVenueAddress": "Thillai Nagar, Tiruchirappalli",
+      "receptionVenueName": "Sri Annapoorna Hall — Lunch",
+      "receptionVenueAddress": "Thillai Nagar, Tiruchirappalli",
+      "groomParents": "",
+      "brideParents": "Mr. & Mrs. Suresh",
+      "story": "Our Priya is expecting her first baby, and the whole family is overjoyed. Come shower her with glass bangles, blessings and love at her valaikaappu.",
+      "faq": [
+        {
+          "question": "Should we bring bangles?",
+          "answer": "Bangles are lovely but not necessary — your blessings mean the most."
+        },
+        {
+          "question": "Is lunch served?",
+          "answer": "Yes, a traditional lunch follows the ceremony."
+        }
+      ]
+    },
+    "shashtiabdapoorthi": {
+      "brideName": "Kamala",
+      "groomName": "Ramanathan",
+      "ceremonyVenueName": "Sri Kapaleeshwarar Kalyana Mandapam",
+      "ceremonyVenueAddress": "Mylapore, Chennai",
+      "receptionVenueName": "Sri Kapaleeshwarar Kalyana Mandapam — Lunch",
+      "receptionVenueAddress": "Mylapore, Chennai",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "Sixty years of life, and more than thirty-five years of togetherness. Appa and Amma have given us everything; now, on Appa's sixtieth, we celebrate them with the Shashtiabdapoorthi and seek their blessings.",
+      "faq": [
+        {
+          "question": "What is a Shashtiabdapoorthi?",
+          "answer": "A celebration of the 60th birthday, when the couple renew their marriage vows with the family's blessings."
+        },
+        {
+          "question": "Is lunch served?",
+          "answer": "Yes, lunch is served after the ceremony."
+        }
+      ]
+    },
+    "first-birthday": {
+      "brideName": "Aadhya",
+      "groomName": "",
+      "ceremonyVenueName": "Lotus Banquet Hall",
+      "ceremonyVenueAddress": "Avinashi Road, Coimbatore",
+      "receptionVenueName": "Lotus Banquet Hall — Party",
+      "receptionVenueAddress": "Avinashi Road, Coimbatore",
+      "groomParents": "",
+      "brideParents": "Kavya & Arun",
+      "story": "One year of giggles, first steps and sleepless nights! Our Aadhya turns one, and we want to celebrate with everyone who has loved her from day one.",
+      "faq": [
+        {
+          "question": "Is it a kids' party?",
+          "answer": "Everyone is welcome — there will be games for the little ones."
+        },
+        {
+          "question": "Is there parking?",
+          "answer": "Yes, the hall has parking."
+        }
+      ]
     }
   },
   "themeToggle": {
@@ -5310,7 +5631,8 @@
       "replyTitle": "Will you join us?",
       "replySub": "Your presence and blessings will make our day complete.",
       "thankYou": "Thank you",
-      "closing": "Your presence, blessings and wishes will make our celebration complete."
+      "closing": "Your presence, blessings and wishes will make our celebration complete.",
+      "tamilTitle": "திருமண அழைப்பிதழ்"
     },
     "pastel": {
       "invited": "We cordially invite you, with your family, to the wedding ceremony of",
@@ -5350,7 +5672,9 @@
       "replyTitle": "Will you join us?",
       "replySub": "Your presence and blessings will make our day complete.",
       "closing": "Come with your family and bless the couple — your presence is our greatest gift.",
-      "thankYou": "Thank you"
+      "thankYou": "Thank you",
+      "tamilTitle": "திருமண அழைப்பிதழ்",
+      "tamilThanks": "நன்றி"
     },
     "printed": {
       "venue": "Venue",
@@ -5592,6 +5916,102 @@
           }
         ],
         "foot": "Pure vegetarian · served before the reception"
+      },
+      "nichayam": {
+        "invocation": "|| Sri Ganeshaya Namah ||",
+        "invocationSub": "",
+        "title": "Engagement Invitation",
+        "lead": "With the blessings of the Almighty and our elders, we joyfully invite you with family to the nichayathartham of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Nichayathartham",
+        "closing": "Your presence and blessings will make this auspicious beginning complete.",
+        "hostsLabel": "With best compliments from",
+        "eventA": "Nichayathartham",
+        "eventB": "Dinner",
+        "thanks": "Thank you"
+      },
+      "griha": {
+        "invocation": "|| Sri Ganeshaya Namah ||",
+        "invocationSub": "",
+        "title": "Griha Pravesam",
+        "lead": "With the blessings of the Almighty and our elders, we joyfully invite you with family to the house-warming of our new home, hosted by",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "",
+        "after": "",
+        "timeLabel": "Muhurtham",
+        "closing": "Please come with your family, bless our new home and join us for lunch.",
+        "hostsLabel": "With warm regards from",
+        "eventA": "Griha Pravesam",
+        "eventB": "Lunch",
+        "thanks": "Thank you"
+      },
+      "namakaranam": {
+        "invocation": "|| Sri Ganeshaya Namah ||",
+        "invocationSub": "",
+        "title": "Naming Ceremony",
+        "lead": "With the blessings of the Almighty and our elders, we joyfully invite you to the namakaranam of our little one,",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "",
+        "after": "",
+        "timeLabel": "Ceremony",
+        "closing": "Please come with your family and bless our little one.",
+        "hostsLabel": "With love from",
+        "eventA": "Naming Ceremony",
+        "eventB": "Lunch",
+        "thanks": "Thank you"
+      },
+      "valaikaappu": {
+        "invocation": "|| Sri Ganeshaya Namah ||",
+        "invocationSub": "Seemantham",
+        "title": "Valaikaappu",
+        "lead": "With the blessings of the Almighty and our elders, we joyfully invite you to the valaikaappu of our beloved",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "",
+        "after": "",
+        "timeLabel": "Muhurtham",
+        "closing": "Please come and bless the mother-to-be with bangles and your good wishes.",
+        "hostsLabel": "With love from",
+        "eventA": "Valaikaappu",
+        "eventB": "Lunch",
+        "thanks": "Thank you"
+      },
+      "shashti": {
+        "invocation": "|| Sri Ganeshaya Namah ||",
+        "invocationSub": "60th birthday · Manivizha",
+        "title": "Shashtiabdapoorthi",
+        "lead": "With the blessings of the Almighty, we joyfully invite you with family to the Shashtiabdapoorthi of our beloved parents",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "&",
+        "after": "",
+        "timeLabel": "Muhurtham",
+        "closing": "Please come with your family and seek their blessings on this sacred day.",
+        "hostsLabel": "With love from their children",
+        "eventA": "Shashtiabdapoorthi",
+        "eventB": "Lunch",
+        "thanks": "Thank you"
+      },
+      "firstBirthday": {
+        "invocation": "",
+        "invocationSub": "",
+        "title": "First Birthday",
+        "lead": "Our little one is turning one! Please join us with your family to celebrate the first birthday of",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "",
+        "after": "",
+        "timeLabel": "Celebration",
+        "closing": "Your blessings and smiles will make the day special.",
+        "hostsLabel": "With love from",
+        "eventA": "Ayush Homam",
+        "eventB": "Birthday Party",
+        "thanks": "Thank you"
       }
     },
     "film": {

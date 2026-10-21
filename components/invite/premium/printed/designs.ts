@@ -10,7 +10,20 @@
  */
 
 /** Which tradition's wording and order the card uses (messages `printed.<id>`). */
-export type Wording = "tamil" | "kerala" | "nikah" | "christian" | "sikh" | "jain";
+export type Wording =
+  | "tamil"
+  | "kerala"
+  | "nikah"
+  | "christian"
+  | "sikh"
+  | "jain"
+  // Other occasions, printed the same way
+  | "nichayam"
+  | "griha"
+  | "namakaranam"
+  | "valaikaappu"
+  | "shashti"
+  | "firstBirthday";
 /** The border printed around the card. */
 export type Frame = "temple" | "mughal" | "kasavu" | "geometric" | "corners" | "phulkari";
 /** What sits at the very top, in foil. */
@@ -278,6 +291,107 @@ export const PRINTED: Record<string, PrintedDesign> = {
     liner: "#b8862c",
     pattern: ["#c45a12", "#b8862c"],
     groomFirst: false,
+  },
+  // ── Other occasions: the same printed cards, worded for the function ──
+  "nichayathartham-pathirikai": {
+    wording: "nichayam",
+    frame: "temple",
+    emblem: "suzhi",
+    paper: ["#fff3e6", "#fbdcc0"],
+    desk: "#6b1424",
+    ink: "#4a1608",
+    soft: "#6e3415",
+    accent: "#b3203a",
+    ribbonInk: "#fff4e6",
+    foil: "#a8740f",
+    foilHi: "#f8e08a",
+    envelope: "#b3203a",
+    liner: "#f2c45a",
+    seal: ["#c9962c", "#fbe7a6"],
+    groomFirst: true,
+  },
+  "griha-pravesam-pathirikai": {
+    wording: "griha",
+    frame: "temple",
+    emblem: "kalash",
+    paper: ["#fbe38a", "#f5cf55"],
+    desk: "#7a2a12",
+    ink: "#4a1608",
+    soft: "#6e3415",
+    accent: "#b3121f",
+    ribbonInk: "#fff4d6",
+    foil: "#a3121c",
+    foilHi: "#e2574f",
+    envelope: "#c2161f",
+    liner: "#f5cf55",
+    seal: ["#c9962c", "#fbe7a6"],
+    groomFirst: true,
+  },
+  "namakaranam-card": {
+    wording: "namakaranam",
+    frame: "corners",
+    emblem: "suzhi",
+    paper: ["#f7fbff", "#e6f1fa"],
+    desk: "#c9d9e8",
+    ink: "#1f3448",
+    soft: "#4f6478",
+    accent: "#2f6d8a",
+    ribbonInk: "#f7fbff",
+    foil: "#b8964f",
+    foilHi: "#f2e2ae",
+    envelope: "#dceaf6",
+    liner: "#b8964f",
+    groomFirst: true,
+  },
+  "valaikaappu-card": {
+    wording: "valaikaappu",
+    frame: "temple",
+    emblem: "suzhi",
+    paper: ["#0f5a3a", "#0a3f29"],
+    desk: "#071c13",
+    ink: "#f6ecd2",
+    soft: "#d9caa2",
+    accent: "#f0cf7e",
+    ribbonInk: "#0a3f29",
+    foil: "#c9a24a",
+    foilHi: "#fbecb4",
+    envelope: "#0d4a33",
+    liner: "#c2185b",
+    dark: true,
+    groomFirst: true,
+  },
+  "shashtiabdapoorthi-card": {
+    wording: "shashti",
+    frame: "temple",
+    emblem: "suzhi",
+    paper: ["#6d0f1c", "#4a0812"],
+    desk: "#1e0a06",
+    ink: "#f8e3b6",
+    soft: "#e7c993",
+    accent: "#f3cf73",
+    ribbonInk: "#4a0812",
+    foil: "#c9962c",
+    foilHi: "#fbe7a6",
+    envelope: "#5a0b16",
+    liner: "#c9962c",
+    dark: true,
+    groomFirst: true,
+  },
+  "first-birthday-card": {
+    wording: "firstBirthday",
+    frame: "corners",
+    emblem: "kalash",
+    paper: ["#fff8fb", "#fde6ef"],
+    desk: "#f3c6d6",
+    ink: "#4a2333",
+    soft: "#7a5363",
+    accent: "#c2185b",
+    ribbonInk: "#fff8fb",
+    foil: "#b8964f",
+    foilHi: "#f2e2ae",
+    envelope: "#f7d3e0",
+    liner: "#b8964f",
+    groomFirst: true,
   },
 };
 

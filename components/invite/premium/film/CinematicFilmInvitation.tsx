@@ -17,6 +17,7 @@ import AudioToggle from "../../AudioToggle";
 import InviteVideo from "@/components/invite/InviteVideo";
 import AddToCalendar from "@/components/invite/AddToCalendar";
 import type { PremiumProps } from "../types";
+import { usePremiumText } from "../usePremiumText";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { Guide, Heading, Photos, Story, Working, hasGuide, useEvents } from "../cinema/CinemaBlocks";
@@ -53,7 +54,7 @@ function Laurel({ flip }: { flip?: boolean }) {
  */
 export default function CinematicFilmInvitation(props: PremiumProps) {
   const { data, slug, mode, category, occasionTitle, coupleLabel, guestGreeting } = props;
-  const t = useTranslations("premium.film");
+  const t = usePremiumText("premium.film", data.templateId);
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
   const format = useFormatter();
@@ -64,6 +65,8 @@ export default function CinematicFilmInvitation(props: PremiumProps) {
   const bride = data.brideName || tCommon("brideFallback");
   const groom = data.groomName || tCommon("groomFallback");
   const single = category.singlePerson;
+  // The title role: the couple's groom, or the one honoree (a birthday, a launch).
+  const lead = single ? data.brideName || data.groomName || bride : groom;
   const photos = (data.photos ?? []).filter(Boolean);
   const day = parseIsoDate(data.weddingDate);
   const groomHosts = sections.family ? hosts(getFamily(data, "groom")) : [];
@@ -151,7 +154,7 @@ export default function CinematicFilmInvitation(props: PremiumProps) {
       <section className={s.section}>
         <Reveal className={s.billing}>
           <p>
-            <i>{t("starring")}</i> <b>{groom}</b> {!single && <><i>{t("and")}</i> <b>{bride}</b></>}
+            <i>{t("starring")}</i> <b>{lead}</b> {!single && <><i>{t("and")}</i> <b>{bride}</b></>}
           </p>
           {families.length > 0 && (
             <p>
@@ -299,7 +302,7 @@ export default function CinematicFilmInvitation(props: PremiumProps) {
         <div className={s.creditsWindow}>
           <div className={s.creditsRoll}>
             <p className={s.rollHead}>{t("cast")}</p>
-            <p>{groom}</p>
+            <p>{lead}</p>
             {!single && <p>{bride}</p>}
             {families.length > 0 && <p className={s.rollHead}>{t("families")}</p>}
             {families.map((f, i) => (

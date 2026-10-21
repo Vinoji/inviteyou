@@ -36,6 +36,20 @@ const PREMIUM_IDS = new Set([
   "pastel-palace",
   "madurai-meenakshi",
   "cinematic-film",
+  "nichayathartham-pathirikai",
+  "meenakshi-nichayathartham",
+  "lilac-seal-engagement",
+  "griha-pravesam-pathirikai",
+  "namakaranam-card",
+  "valaikaappu-card",
+  "pastel-palace-baby-shower",
+  "shashtiabdapoorthi-card",
+  "lilac-seal-anniversary",
+  "cinematic-film-anniversary",
+  "first-birthday-card",
+  "pastel-palace-birthday",
+  "cinematic-film-birthday",
+  "cinematic-film-launch",
   "kalyanam-rituals",
   "kerala-sadya",
   "manjal-pathirikai",
@@ -72,10 +86,16 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "baby-shower-balloons":
       return <Fresh {...props} />;
     case "pastel-palace":
+    case "pastel-palace-baby-shower":
+    case "pastel-palace-birthday":
       return <PastelPalace {...props} />;
     case "madurai-meenakshi":
+    case "meenakshi-nichayathartham":
       return <MaduraiMeenakshi {...props} />;
     case "cinematic-film":
+    case "cinematic-film-anniversary":
+    case "cinematic-film-birthday":
+    case "cinematic-film-launch":
       return <CinematicFilm {...props} />;
     case "kalyanam-rituals":
     case "kerala-sadya":
@@ -90,8 +110,16 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "phulkari-anand-karaj":
     case "jain-namokar-maroon":
     case "jain-kesar-ivory":
+    case "nichayathartham-pathirikai":
+    case "griha-pravesam-pathirikai":
+    case "namakaranam-card":
+    case "valaikaappu-card":
+    case "shashtiabdapoorthi-card":
+    case "first-birthday-card":
       return <PrintedCard {...props} />;
     case "lilac-seal":
+    case "lilac-seal-engagement":
+    case "lilac-seal-anniversary":
       return <LilacSeal {...props} />;
     case "living-temple":
       return <LivingTemple {...props} />;

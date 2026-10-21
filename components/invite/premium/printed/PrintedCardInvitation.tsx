@@ -96,7 +96,11 @@ export default function PrintedCardInvitation(props: PremiumProps) {
     { side: "bride" as const, name: bride, label: w("brideLabel"), family: brideFamily },
   ];
   if (!d.groomFirst) people.reverse();
-  const shown = single ? [{ ...people[0], name: data.brideName || data.groomName || people[0].name }] : people;
+  // One honoree (a birthday, a new home, a baby): their name, with the
+  // family entered on the first side.
+  const shown = single
+    ? [{ side: "bride" as const, name: data.brideName || data.groomName || bride, label: "", family: brideFamily }]
+    : people;
   const capped = d.frame === "temple" || d.frame === "mughal";
   const patterned = d.frame === "geometric" || d.frame === "phulkari";
 
@@ -147,7 +151,7 @@ export default function PrintedCardInvitation(props: PremiumProps) {
                 {shown.map((p, i) => (
                   <div key={p.side} className={s.personBlock}>
                     {i > 0 && <p className={s.joiner}>{w("joiner")}</p>}
-                    {!single && <span className={s.ribbon}>{p.label}</span>}
+                    {!single && p.label && <span className={s.ribbon}>{p.label}</span>}
                     <p className={s.name} lang={scriptLang(p.name)}>
                       {p.name}
                     </p>

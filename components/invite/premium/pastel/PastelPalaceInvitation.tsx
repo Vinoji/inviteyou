@@ -14,6 +14,7 @@ import AudioToggle from "../../AudioToggle";
 import FamilyLines from "../../FamilyLines";
 import InviteVideo from "@/components/invite/InviteVideo";
 import type { PremiumProps } from "../types";
+import { usePremiumText } from "../usePremiumText";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Photos, Story, Working, hasGuide, useEvents } from "../cinema/CinemaBlocks";
@@ -42,7 +43,7 @@ function Bow({ className = "" }: { className?: string }) {
  */
 export default function PastelPalaceInvitation(props: PremiumProps) {
   const { data, slug, mode, category, occasionTitle, coupleLabel, guestGreeting } = props;
-  const t = useTranslations("premium.pastel");
+  const t = usePremiumText("premium.pastel", data.templateId);
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
   const format = useFormatter();

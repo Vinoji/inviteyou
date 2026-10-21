@@ -15,6 +15,7 @@ import AudioToggle from "../../AudioToggle";
 import FamilyLines from "../../FamilyLines";
 import InviteVideo from "@/components/invite/InviteVideo";
 import type { PremiumProps } from "../types";
+import { usePremiumText } from "../usePremiumText";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Photos, Story, Working, hasGuide, useEvents } from "../cinema/CinemaBlocks";
@@ -31,7 +32,7 @@ import s from "./lilac.module.css";
  */
 export default function LilacSealInvitation(props: PremiumProps) {
   const { data, slug, mode, category, occasionTitle, coupleLabel, guestGreeting } = props;
-  const t = useTranslations("premium.lilac");
+  const t = usePremiumText("premium.lilac", data.templateId);
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
   const format = useFormatter();
@@ -105,7 +106,7 @@ export default function LilacSealInvitation(props: PremiumProps) {
             </p>
             <Lotus className={s.lotus} />
             <p className={s.tamilTitle} lang="ta">
-              திருமண அழைப்பிதழ்
+              {t("tamilTitle")}
             </p>
             <p className={s.blessing}>{t("blessing")}</p>
             <div className={s.coupleNames}>
