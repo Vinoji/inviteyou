@@ -28,7 +28,10 @@ export type Wording =
   | "houseBlessing"
   | "milestone"
   | "modern"
-  | "shubhVivah";
+  | "shubhVivah"
+  | "subhaLekha"
+  | "bengali"
+  | "marathi";
 /** The border printed around the card. */
 export type Frame =
   | "temple"
@@ -43,10 +46,13 @@ export type Frame =
   | "jaali"
   | "lace"
   | "deco"
+  | "muggu"
+  | "alpana"
+  | "paithani"
   // no border: the names pressed into heavy cotton stock
   | "letterpress";
 /** The printed pattern used for a border or an envelope liner. */
-export type Pattern = "geometric" | "phulkari" | "kolam" | "paisley" | "jaali" | "lace" | "deco";
+export type Pattern = "geometric" | "phulkari" | "kolam" | "paisley" | "jaali" | "lace" | "deco" | "muggu" | "alpana" | "paithani";
 /** What sits at the very top, in foil. */
 export type Emblem = "suzhi" | "lamp" | "bismillah" | "cross" | "ikonkar" | "kalash" | "none";
 
@@ -619,6 +625,84 @@ export const PRINTED: Record<string, PrintedDesign> = {
     pattern: ["#ffffff", "#ffffff"],
     seal: ["#c9a96a", "#f2e2ae"],
     groomFirst: false,
+  },
+  // ── Regional printed cards: Telugu, Bengali, Marathi, Kerala Muslim ──
+  "telugu-subhalekha": {
+    wording: "subhaLekha",
+    frame: "muggu",
+    emblem: "kalash",
+    paper: ["#fff3c4", "#f7d97a"],
+    desk: "#7a1a12",
+    ink: "#4a1608",
+    soft: "#6e3415",
+    accent: "#c2161f",
+    ribbonInk: "#fff3c4",
+    foil: "#a3121c",
+    foilHi: "#e2574f",
+    envelope: "#b3121f",
+    liner: "#f7d97a",
+    liner2: { pattern: "muggu", colors: ["#c2161f", "#2e7d32"] },
+    pattern: ["#c2161f", "#2e7d32"],
+    seal: ["#c9962c", "#fbe7a6"],
+    groomFirst: true,
+  },
+  "bengali-alpana": {
+    wording: "bengali",
+    frame: "alpana",
+    emblem: "kalash",
+    paper: ["#b01d23", "#8c141a"],
+    desk: "#2a0507",
+    ink: "#fff4e6",
+    soft: "#f6d9c4",
+    accent: "#fbe7a6",
+    ribbonInk: "#8c141a",
+    foil: "#d4a440",
+    foilHi: "#fbe7a6",
+    envelope: "#f7f1e6",
+    liner: "#b01d23",
+    liner2: { pattern: "alpana", colors: ["#ffffff", "#f6d58a"] },
+    pattern: ["#ffffff", "#f6d58a"],
+    seal: ["#b01d23", "#e2574f"],
+    dark: true,
+    groomFirst: true,
+  },
+  "marathi-paithani": {
+    wording: "marathi",
+    frame: "paithani",
+    emblem: "kalash",
+    paper: ["#6a1b5c", "#4a1240"],
+    desk: "#1c0518",
+    ink: "#fbefe0",
+    soft: "#e9cfd9",
+    accent: "#f2cf7a",
+    ribbonInk: "#4a1240",
+    foil: "#d4a440",
+    foilHi: "#fbe7a6",
+    envelope: "#2e6b4a",
+    liner: "#e8c15a",
+    liner2: { pattern: "paithani", colors: ["#4a1240", "#2e6b4a"] },
+    pattern: ["#e8c15a", "#5fb07a"],
+    seal: ["#c9962c", "#fbe7a6"],
+    dark: true,
+    groomFirst: true,
+  },
+  "kerala-muslim-nikah": {
+    wording: "nikah",
+    frame: "kasavu",
+    emblem: "bismillah",
+    paper: ["#fbf5e6", "#f0e6c8"],
+    desk: "#0b3d28",
+    ink: "#203a2c",
+    soft: "#4f6458",
+    accent: "#0f5a3a",
+    ribbonInk: "#fbf5e6",
+    foil: "#b8892a",
+    foilHi: "#f4d98c",
+    envelope: "#0f5a3a",
+    liner: "#c9962c",
+    liner2: { pattern: "jaali", colors: ["#0f5a3a", "#0f5a3a"] },
+    seal: ["#c9962c", "#fbe7a6"],
+    groomFirst: true,
   },
 };
 

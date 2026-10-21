@@ -36,6 +36,10 @@ const PREMIUM_IDS = new Set([
   "pastel-palace",
   "madurai-meenakshi",
   "cinematic-film",
+  "telugu-subhalekha",
+  "bengali-alpana",
+  "marathi-paithani",
+  "kerala-muslim-nikah",
   "letterpress-ivory",
   "art-deco-noir",
   "kolam-pathirikai",
@@ -144,6 +148,10 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "jaali-velvet-nikah":
     case "kerala-christian-kasavu":
     case "blush-lace":
+    case "telugu-subhalekha":
+    case "bengali-alpana":
+    case "marathi-paithani":
+    case "kerala-muslim-nikah":
       return <PrintedCard {...props} />;
     case "lilac-seal":
     case "lilac-seal-engagement":

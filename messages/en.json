@@ -2979,6 +2979,26 @@
       "name": "Blush Lace",
       "tagline": "Blush card framed in white lace",
       "description": "A soft blush card framed in white lace for a romantic, modern wedding — your names, the ceremony and the reception, sealed in gold wax."
+    },
+    "telugu-subhalekha": {
+      "name": "Telugu Subhalekha",
+      "tagline": "Pasupu-kumkuma card with a muggu border",
+      "description": "The Telugu wedding Subhalekha: turmeric card with a red and green muggu border, “Srirastu Subhamastu Avighnamastu” in Telugu, Chiranjeevi and Chi. La. Sow., the sumuhurtham and both families."
+    },
+    "bengali-alpana": {
+      "name": "Bengali Alpana",
+      "tagline": "Red card with a white alpana border",
+      "description": "The Bengali Shubho Bibaho card: deep red stock framed in white alpana lotuses, “Sri Sri Prajapataye Namah” in Bengali, the lagna, the Bibaho and the Bou Bhaat."
+    },
+    "marathi-paithani": {
+      "name": "Marathi Paithani",
+      "tagline": "Paithani magenta with gold zari lotuses",
+      "description": "The Marathi lagna patrika in Paithani colours: magenta silk with a gold zari lotus border, “Shri Ganeshaya Namah” and the kuldevata line, Chi. and Chi. Sau. Kan., in a parrot-green envelope."
+    },
+    "kerala-muslim-nikah": {
+      "name": "Kerala Muslim Nikah",
+      "tagline": "Kasavu gold and emerald with the Bismillah",
+      "description": "A Kerala Muslim Nikah card: cream stock with gold kasavu bands, the Bismillah in gold, emerald ink, the Nikah and the wedding feast, in a green envelope."
     }
   },
   "defaultContent": {
@@ -4864,6 +4884,282 @@
           "answer": "Yes, dinner follows the celebration."
         }
       ]
+    },
+    "telugu": {
+      "brideName": "Sravani",
+      "groomName": "Karthik",
+      "ceremonyVenueName": "Sri Venkateswara Kalyana Mandapam",
+      "ceremonyVenueAddress": "Ameerpet, Hyderabad",
+      "receptionVenueName": "Grand Banquet Hall",
+      "receptionVenueAddress": "Banjara Hills, Hyderabad",
+      "groomParents": "Sri Ramesh & Smt. Padmavathi",
+      "brideParents": "Sri Prasad & Smt. Lakshmi",
+      "story": "Sravani and Karthik met through their families and found they laughed at the same jokes. With the blessings of our elders, we begin our life together — come bless us.",
+      "faq": [
+        {
+          "question": "When is the muhurtham?",
+          "answer": "The muhurtham is early in the morning; please arrive a little before."
+        },
+        {
+          "question": "Will lunch be served?",
+          "answer": "Yes, a traditional Telugu meal follows the wedding."
+        }
+      ],
+      "travel": {
+        "city": "Hyderabad",
+        "cityCode": "HYD",
+        "airports": [
+          {
+            "code": "HYD",
+            "name": "Hyderabad",
+            "distance": "30 km"
+          },
+          {
+            "code": "VGA",
+            "name": "Vijayawada",
+            "distance": "270 km"
+          },
+          {
+            "code": "BLR",
+            "name": "Bengaluru",
+            "distance": "570 km"
+          }
+        ],
+        "routes": []
+      },
+      "places": [
+        {
+          "title": "Charminar",
+          "description": "The 16th-century monument at the heart of the old city.",
+          "distance": "8 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Golconda Fort",
+          "description": "A hilltop fort famous for its acoustics.",
+          "distance": "11 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Hussain Sagar",
+          "description": "A heart-shaped lake with a tall Buddha statue.",
+          "distance": "4 km from venue",
+          "scene": "nature"
+        },
+        {
+          "title": "Birla Mandir",
+          "description": "A white-marble Venkateswara temple on a hill.",
+          "distance": "5 km from venue",
+          "scene": "temple"
+        }
+      ]
+    },
+    "bengali": {
+      "brideName": "Ishita",
+      "groomName": "Sourav",
+      "ceremonyVenueName": "Shubho Milan Banquet",
+      "ceremonyVenueAddress": "Salt Lake, Kolkata",
+      "receptionVenueName": "Ballygunge Community Hall",
+      "receptionVenueAddress": "Ballygunge, Kolkata",
+      "groomParents": "Sri Debashis & Smt. Mitali",
+      "brideParents": "Sri Anirban & Smt. Sharmila",
+      "story": "Ishita and Sourav first met at a Durga Puja pandal, arguing over the best phuchka in town. With Ma's blessings and our families' love, we are getting married — please come.",
+      "faq": [
+        {
+          "question": "What should I wear?",
+          "answer": "Festive traditional wear — sarees, dhoti-panjabi or kurtas."
+        },
+        {
+          "question": "When is the Bou Bhaat?",
+          "answer": "The reception (Bou Bhaat) is on the evening after the wedding."
+        }
+      ],
+      "travel": {
+        "city": "Kolkata",
+        "cityCode": "CCU",
+        "airports": [
+          {
+            "code": "CCU",
+            "name": "Kolkata",
+            "distance": "12 km"
+          },
+          {
+            "code": "BBI",
+            "name": "Bhubaneswar",
+            "distance": "440 km"
+          },
+          {
+            "code": "IXB",
+            "name": "Bagdogra",
+            "distance": "560 km"
+          }
+        ],
+        "routes": []
+      },
+      "places": [
+        {
+          "title": "Victoria Memorial",
+          "description": "The white-marble memorial and its gardens.",
+          "distance": "9 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Dakshineswar Kali Temple",
+          "description": "The riverside temple of Ma Kali.",
+          "distance": "14 km from venue",
+          "scene": "temple"
+        },
+        {
+          "title": "Howrah Bridge",
+          "description": "The great cantilever bridge over the Hooghly.",
+          "distance": "10 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Prinsep Ghat",
+          "description": "A riverside ghat, lovely at sunset.",
+          "distance": "9 km from venue",
+          "scene": "nature"
+        }
+      ]
+    },
+    "marathi": {
+      "brideName": "Snehal",
+      "groomName": "Aniket",
+      "ceremonyVenueName": "Shubh Mangal Karyalay",
+      "ceremonyVenueAddress": "Kothrud, Pune",
+      "receptionVenueName": "Green Lawns",
+      "receptionVenueAddress": "Baner, Pune",
+      "groomParents": "Shri Vijay & Sau. Sunita Joshi",
+      "brideParents": "Shri Prakash & Sau. Anjali Kulkarni",
+      "story": "Snehal and Aniket met on a trek to Sinhagad and have been climbing together ever since. With the blessings of Bappa and our elders, we are getting married — do come.",
+      "faq": [
+        {
+          "question": "When is the muhurta?",
+          "answer": "The lagna muhurta is at noon; please be seated a little earlier."
+        },
+        {
+          "question": "Will lunch be served?",
+          "answer": "Yes, a traditional Maharashtrian meal follows the wedding."
+        }
+      ],
+      "travel": {
+        "city": "Pune",
+        "cityCode": "PNQ",
+        "airports": [
+          {
+            "code": "PNQ",
+            "name": "Pune",
+            "distance": "15 km"
+          },
+          {
+            "code": "BOM",
+            "name": "Mumbai",
+            "distance": "150 km"
+          },
+          {
+            "code": "GOI",
+            "name": "Goa",
+            "distance": "450 km"
+          }
+        ],
+        "routes": []
+      },
+      "places": [
+        {
+          "title": "Shaniwar Wada",
+          "description": "The Peshwas' 18th-century fort palace.",
+          "distance": "6 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Dagdusheth Ganpati",
+          "description": "Pune's best-loved Ganpati temple.",
+          "distance": "6 km from venue",
+          "scene": "temple"
+        },
+        {
+          "title": "Aga Khan Palace",
+          "description": "A historic palace with gardens.",
+          "distance": "11 km from venue",
+          "scene": "palace"
+        },
+        {
+          "title": "Sinhagad Fort",
+          "description": "A hill fort with sweeping views — go early.",
+          "distance": "25 km from venue",
+          "scene": "nature"
+        }
+      ]
+    },
+    "kerala-muslim": {
+      "brideName": "Fathima Nasrin",
+      "groomName": "Muhammed Shafi",
+      "ceremonyVenueName": "Al-Ameen Auditorium",
+      "ceremonyVenueAddress": "Mavoor Road, Kozhikode",
+      "receptionVenueName": "Al-Ameen Auditorium — Wedding Lunch",
+      "receptionVenueAddress": "Mavoor Road, Kozhikode",
+      "groomParents": "Mr. & Mrs. Abdul Rahman",
+      "brideParents": "Mr. & Mrs. Moideen Kutty",
+      "story": "With the blessings of Allah and the duas of our families, Fathima and Shafi begin their life together. Join us for the Nikah and stay for the wedding feast.",
+      "faq": [
+        {
+          "question": "Is there a prayer space?",
+          "answer": "Yes, prayer spaces for men and women are available at the venue."
+        },
+        {
+          "question": "Will lunch be served?",
+          "answer": "Yes — biryani and the wedding feast follow the Nikah."
+        }
+      ],
+      "travel": {
+        "city": "Kozhikode",
+        "cityCode": "CCJ",
+        "airports": [
+          {
+            "code": "CCJ",
+            "name": "Kozhikode",
+            "distance": "26 km"
+          },
+          {
+            "code": "COK",
+            "name": "Kochi",
+            "distance": "190 km"
+          },
+          {
+            "code": "IXE",
+            "name": "Mangaluru",
+            "distance": "220 km"
+          }
+        ],
+        "routes": []
+      },
+      "places": [
+        {
+          "title": "Kozhikode Beach",
+          "description": "A long beach with the old piers, lovely at sunset.",
+          "distance": "3 km from venue",
+          "scene": "beach"
+        },
+        {
+          "title": "Mishkal Mosque",
+          "description": "A centuries-old wooden mosque in Kuttichira.",
+          "distance": "4 km from venue",
+          "scene": "heritage"
+        },
+        {
+          "title": "Kappad Beach",
+          "description": "The quiet beach where Vasco da Gama landed.",
+          "distance": "18 km from venue",
+          "scene": "beach"
+        },
+        {
+          "title": "SM Street",
+          "description": "The old bazaar street — halwa and banana chips.",
+          "distance": "3 km from venue",
+          "scene": "heritage"
+        }
+      ]
     }
   },
   "themeToggle": {
@@ -6302,6 +6598,54 @@
         "eventA": "Phere",
         "eventB": "Reception",
         "thanks": "Dhanyavaad"
+      },
+      "subhaLekha": {
+        "invocation": "శ్రీరస్తు శుభమస్తు అవిఘ్నమస్తు",
+        "invocationSub": "Srirastu · Subhamastu · Avighnamastu",
+        "title": "Subhalekha",
+        "lead": "With the blessings of the Almighty and our elders, we cordially invite you with family to the auspicious wedding of",
+        "groomLabel": "Chiranjeevi",
+        "brideLabel": "Chi. La. Sow.",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Sumuhurtham",
+        "closing": "We request your gracious presence with family and friends to bless the couple.",
+        "hostsLabel": "With best compliments from",
+        "eventA": "Sumuhurtham",
+        "eventB": "Reception",
+        "thanks": "Dhanyavadamulu"
+      },
+      "bengali": {
+        "invocation": "শ্রী শ্রী প্রজাপতয়ে নমঃ",
+        "invocationSub": "Sri Sri Prajapataye Namah",
+        "title": "Shubho Bibaho",
+        "lead": "With the blessings of Prajapati and our elders, we request the pleasure of your company at the wedding of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Lagna",
+        "closing": "Please come and bless the couple with your presence.",
+        "hostsLabel": "With warm regards from",
+        "eventA": "Bibaho",
+        "eventB": "Bou Bhaat",
+        "thanks": "Dhonnobad"
+      },
+      "marathi": {
+        "invocation": "॥ श्री गणेशाय नमः ॥",
+        "invocationSub": "॥ श्री कुलदेवता प्रसन्न ॥",
+        "title": "Shubh Vivah",
+        "lead": "With the blessings of Shri Ganesha and our family deity, we cordially invite you and your family to the wedding of",
+        "groomLabel": "Chi.",
+        "brideLabel": "Chi. Sau. Kan.",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Muhurta",
+        "closing": "Your presence and blessings will make the occasion complete.",
+        "hostsLabel": "With best compliments from",
+        "eventA": "Lagna",
+        "eventB": "Reception",
+        "thanks": "Dhanyavad"
       }
     },
     "film": {

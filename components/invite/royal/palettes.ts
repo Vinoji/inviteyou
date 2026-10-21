@@ -305,6 +305,26 @@ const PALETTES: Record<string, RoyalPalette> = {
     ivory: "#fffdf8", ivory2: "#f6f0e2", text: "#3a3226", muted: "#6b6152",
     flowers: ["#f2e2ae", "#FFFFFF", "#b8964f"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
   },
+  "telugu-subhalekha": {
+    deep: "#4a1608", mid: "#B3121F", gold: "#a8740f", goldLight: "#f8e08a", goldDeep: "#a8740f",
+    ivory: "#fbe38a", ivory2: "#f5cf55", text: "#4a1608", muted: "#6e3415",
+    flowers: ["#f8e08a", "#FFFFFF", "#a8740f"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "bengali-alpana": {
+    deep: "#4a0812", mid: "#6d0f1c", gold: "#c9962c", goldLight: "#fbe7a6", goldDeep: "#c9962c",
+    ivory: "#FBF3E2", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",
+    flowers: ["#fbe7a6", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "marathi-paithani": {
+    deep: "#3e0b19", mid: "#5e1426", gold: "#c9962c", goldLight: "#fbe7a6", goldDeep: "#c9962c",
+    ivory: "#FBF3E2", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",
+    flowers: ["#fbe7a6", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "kerala-muslim-nikah": {
+    deep: "#3d1a0c", mid: "#8A1620", gold: "#b8892a", goldLight: "#f4d98c", goldDeep: "#b8892a",
+    ivory: "#fbf5e6", ivory2: "#f3e8cc", text: "#3d1a0c", muted: "#6a4a30",
+    flowers: ["#f4d98c", "#FFFFFF", "#b8892a"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
   "cinematic-film": {
     deep: "#0B0A09", mid: "#1C1814", gold: "#D6A84C", goldLight: "#F0D48E", goldDeep: "#8A6A2A",
     ivory: "#F3EDE2", ivory2: "#E2D8C6", text: "#1C1814", muted: "#6E6556",

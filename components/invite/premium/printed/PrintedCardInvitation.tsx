@@ -102,7 +102,7 @@ export default function PrintedCardInvitation(props: PremiumProps) {
     ? [{ side: "bride" as const, name: data.brideName || data.groomName || bride, label: "", family: brideFamily }]
     : people;
   const capped = d.frame === "temple" || d.frame === "mughal";
-  const patterned = ["geometric", "phulkari", "kolam", "paisley", "jaali", "lace", "deco"].includes(d.frame);
+  const patterned = ["geometric", "phulkari", "kolam", "paisley", "jaali", "lace", "deco", "muggu", "alpana", "paithani"].includes(d.frame);
 
   return (
     <div data-invite-root className={`${s.root} ${d.dark ? s.dark : ""}`} style={style}>

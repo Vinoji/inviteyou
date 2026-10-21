@@ -183,6 +183,12 @@ export function patternTile(pattern: string, colors: string[] = []): string | un
     lace: `<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><g fill='none' stroke='${a}' stroke-width='1.1'><circle cx='15' cy='15' r='7'/><circle cx='0' cy='0' r='7'/><circle cx='30' cy='0' r='7'/><circle cx='0' cy='30' r='7'/><circle cx='30' cy='30' r='7'/></g><g fill='${a}'><circle cx='15' cy='15' r='2'/><circle cx='15' cy='5.5' r='1'/><circle cx='15' cy='24.5' r='1'/><circle cx='5.5' cy='15' r='1'/><circle cx='24.5' cy='15' r='1'/></g><g fill='${b}'><circle cx='15' cy='0' r='1.2'/><circle cx='0' cy='15' r='1.2'/><circle cx='30' cy='15' r='1.2'/><circle cx='15' cy='30' r='1.2'/></g></svg>`,
     // art deco: stacked fans
     deco: `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g fill='none' stroke='${a}' stroke-width='1.1'><path d='M0 16A16 16 0 0 1 32 16'/><path d='M5 16A11 11 0 0 1 27 16'/><path d='M10 16A6 6 0 0 1 22 16'/><path d='M-16 32A16 16 0 0 1 16 32'/><path d='M16 32A16 16 0 0 1 48 32'/><path d='M-11 32A11 11 0 0 1 11 32'/><path d='M21 32A11 11 0 0 1 43 32'/><path d='M16 0v16'/></g><circle cx='16' cy='16' r='1.3' fill='${b}'/></svg>`,
+    // Telugu muggu: a diamond lattice with dots and a red-green centre
+    muggu: `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><path d='M14 2L26 14L14 26L2 14Z' fill='none' stroke='${a}' stroke-width='1.1'/><path d='M14 9L19 14L14 19L9 14Z' fill='${b}'/><g fill='${a}'><circle cx='14' cy='14' r='1.4'/><circle cx='0' cy='0' r='1.5'/><circle cx='28' cy='0' r='1.5'/><circle cx='0' cy='28' r='1.5'/><circle cx='28' cy='28' r='1.5'/></g></svg>`,
+    // Bengali alpana: a white rice-paste lotus with a ring of dots
+    alpana: `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g fill='${a}'>${[0, 45, 90, 135, 180, 225, 270, 315].map((r) => `<ellipse cx='16' cy='8.6' rx='2.4' ry='4.8' transform='rotate(${r} 16 16)'/>`).join("")}</g><circle cx='16' cy='16' r='2.6' fill='${b}'/><g fill='${a}'><circle cx='0' cy='0' r='1.6'/><circle cx='32' cy='0' r='1.6'/><circle cx='0' cy='32' r='1.6'/><circle cx='32' cy='32' r='1.6'/></g></svg>`,
+    // Paithani zari: a lotus between gold stripes, parrot-green diamonds
+    paithani: `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g fill='${a}'><path d='M16 7c3 4 3 8 0 12c-3-4-3-8 0-12z'/><path d='M16 19c-4-1-7-4-8-8c4 1 7 4 8 8zM16 19c4-1 7-4 8-8c-4 1-7 4-8 8z'/><rect x='4' y='24' width='24' height='1.2'/><rect x='4' y='27' width='24' height='0.6'/></g><g fill='${b}'><path d='M0 0l3 3-3 3-3-3zM32 0l3 3-3 3-3-3zM16 22l2 2-2 2-2-2z'/></g></svg>`,
   };
   const svg = T[pattern];
   return svg ? `url("data:image/svg+xml,${encodeURIComponent(svg)}")` : undefined;
@@ -190,5 +196,5 @@ export function patternTile(pattern: string, colors: string[] = []): string | un
 
 /** The tile's size in CSS px. */
 export function patternSize(pattern: string): number {
-  return ({ geometric: 24, phulkari: 28, kolam: 28, paisley: 32, jaali: 28, lace: 30, deco: 32 } as Record<string, number>)[pattern] ?? 24;
+  return ({ geometric: 24, phulkari: 28, kolam: 28, paisley: 32, jaali: 28, lace: 30, deco: 32, muggu: 28, alpana: 32, paithani: 32 } as Record<string, number>)[pattern] ?? 24;
 }
