@@ -946,3 +946,33 @@
 :global(html[data-perf="low"]) .thoranam {
   animation: none;
 }
+
+/* Real paper (public/art/materials/paper-grain.webp) on the card stock. */
+.card0::after,
+.letterCard::after,
+.card::after,
+.dateBlock::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url("/art/materials/paper-grain.webp") 0 0 / 300px;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.letterCard,
+.card,
+.dateBlock {
+  position: relative;
+  overflow: hidden;
+}
+
+.card0::after,
+.letterCard::after,
+.card::after,
+.dateBlock::after {
+  background: url("/art/materials/paper-grain-light.webp") 0 0 / 300px;
+  mix-blend-mode: multiply;
+  opacity: 1;
+}

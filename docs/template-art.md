@@ -257,3 +257,13 @@ Photos from Pexels under the [Pexels License](https://www.pexels.com/license/) (
 | carvings.webp | https://www.pexels.com/photo/vibrant-close-up-of-hindu-temple-architecture-39374780/ | Sculpture band |
 | mahal.webp | https://www.pexels.com/photo/37253291/ — Thirumalai Nayakkar Mahal arches | Over the functions |
 | tank.webp | https://www.pexels.com/photo/majestic-meenakshi-amman-temple-in-madurai-30373182/ | Closing |
+
+## Materials (`public/art/materials/`)
+
+Shared by the printed cards, Lilac Seal, Madurai Meenakshi and Cinematic Film.
+
+| File | Source |
+|---|---|
+| paper-grain.webp | Baked from [ambientCG Paper001](https://ambientcg.com/view?id=Paper001) (normal map, lit from the top left) and the fibres of [ambientCG Paper006](https://ambientcg.com/view?id=Paper006) — CC0. Laid over the paper colour with `overlay`. |
+| paper-grain-light.webp | The same relief as soft shadow only, for light card stock (`multiply`). |
+| wax-seal.webp | Rendered in code from a height field (poured edge, raised rim, pressed centre) with diffuse and specular light; neutral grey, tinted per design with `hard-light`. |

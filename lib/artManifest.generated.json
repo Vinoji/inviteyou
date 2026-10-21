@@ -49,6 +49,11 @@
     "marigold.webp",
     "tank.webp"
   ],
+  "materials": [
+    "paper-grain-light.webp",
+    "paper-grain.webp",
+    "wax-seal.webp"
+  ],
   "pastel-palace": [
     "castle.webp",
     "rose-frame.webp",

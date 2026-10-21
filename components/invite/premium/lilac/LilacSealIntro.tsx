@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import type { IntroProps } from "../../intros/types";
 import { useIntroText } from "../../intros/useIntroText";
 import useSafeReducedMotion from "../../useSafeReducedMotion";
-import { Butterfly, Emboss, WaxSeal } from "./LilacArt";
+import { Butterfly, Emboss } from "./LilacArt";
 import s from "./lilac.module.css";
 
 /**
@@ -72,7 +72,7 @@ export default function LilacSealIntro({ monogram, templateId, onOpen, onDone }:
           transition={{ duration: reduce ? 0 : 0.35 }}
           disabled={open}
         >
-          <WaxSeal initials={initials} />
+          <span className={s.sealInitials}>{initials}</span>
         </motion.button>
         {!open && <p className={s.tapHint}>{t("open")}</p>}
         {open && !reduce && (

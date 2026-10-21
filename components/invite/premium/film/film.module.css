@@ -742,3 +742,23 @@
   animation: none !important;
   opacity: 1;
 }
+
+/* The tickets on real card stock (public/art/materials/paper-grain.webp). */
+.ticket {
+  position: relative;
+}
+.ticket::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/art/materials/paper-grain.webp") 0 0 / 300px;
+  mix-blend-mode: overlay;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.ticket::after {
+  background: url("/art/materials/paper-grain-light.webp") 0 0 / 300px;
+  mix-blend-mode: multiply;
+  opacity: 1;
+}

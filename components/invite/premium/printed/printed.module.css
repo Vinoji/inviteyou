@@ -70,19 +70,21 @@
 .patterned .sheet {
   box-shadow: 0 0 0 2px var(--foil);
 }
+/* Real card stock: the tooth of cotton paper (public/art/materials/
+   paper-grain.webp, baked from ambientCG Paper001/006, CC0), lit from the
+   top left and laid over the paper colour. */
 .sheet::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--grain);
-  opacity: 0.32;
-  mix-blend-mode: multiply;
+  background: url("/art/materials/paper-grain.webp") 0 0 / 360px;
+  opacity: 0.7;
+  mix-blend-mode: overlay;
   pointer-events: none;
 }
 .dark .sheet::after {
-  opacity: 0.5;
-  mix-blend-mode: overlay;
+  opacity: 0.55;
 }
 /* the sheen of shimmer stock on dark cards */
 .dark .sheet::before {
@@ -462,9 +464,9 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--grain);
-  opacity: 0.3;
-  mix-blend-mode: multiply;
+  background: url("/art/materials/paper-grain.webp") 0 0 / 360px;
+  opacity: 0.6;
+  mix-blend-mode: overlay;
 }
 .slip::before {
   content: "";
@@ -918,6 +920,25 @@
     var(--grain),
     linear-gradient(180deg, color-mix(in srgb, var(--envelope) 90%, #fff 10%) 40%, color-mix(in srgb, var(--envelope) 92%, #000 8%));
 }
+/* Real envelope paper on every fold (clipped with it), the back and the
+   card inside. */
+.pocketLeft::after,
+.pocketRight::after,
+.pocketBottom::after,
+.flapOuter::after,
+.envBack::after,
+.envCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/art/materials/paper-grain.webp") 0 0 / 300px;
+  mix-blend-mode: overlay;
+  opacity: 0.75;
+  pointer-events: none;
+}
+.envCard::after {
+  opacity: 0.6;
+}
 /* The closed flap's soft shadow on the pocket (gone once it lifts). */
 .envFlapShadow {
   position: absolute;
@@ -1000,25 +1021,27 @@
   border-radius: 50%;
   padding: 0;
   cursor: pointer;
-  /* pressed wax: a raised rim, a sunken face with the stamp */
-  background: radial-gradient(circle at 38% 32%, var(--seal-hi), var(--seal) 48%, color-mix(in srgb, var(--seal) 72%, #000 28%));
-  box-shadow:
-    inset 0 0 0 calc(var(--size) * 0.09) color-mix(in srgb, var(--seal) 88%, #fff 12%),
-    inset 0 0 0 calc(var(--size) * 0.1) color-mix(in srgb, var(--seal) 70%, #000 30%),
-    inset 0 calc(var(--size) * 0.06) calc(var(--size) * 0.08) rgba(0, 0, 0, 0.28),
-    inset 0 calc(var(--size) * -0.03) calc(var(--size) * 0.05) rgba(255, 255, 255, 0.25),
-    0 2px 3px rgba(0, 0, 0, 0.45),
-    0 8px 16px -6px rgba(0, 0, 0, 0.6);
+  /* Poured wax, rendered with light (public/art/materials/wax-seal.webp):
+     the seal colour, masked to the wax's shape, then its light and shade. */
+  background: none;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4)) drop-shadow(0 7px 10px rgba(0, 0, 0, 0.35));
 }
-/* the wax that spread past the stamp: an uneven blob behind it */
-.envSeal::before {
+.envSeal::before,
+.envSeal::after {
   content: "";
   position: absolute;
-  inset: -7%;
+  inset: -40%;
   z-index: -1;
-  border-radius: 47% 53% 45% 55% / 54% 46% 52% 48%;
-  background: radial-gradient(circle at 40% 35%, color-mix(in srgb, var(--seal) 90%, #fff 10%), color-mix(in srgb, var(--seal) 75%, #000 25%));
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+.envSeal::before {
+  background: var(--seal);
+  -webkit-mask: url("/art/materials/wax-seal.webp") center / contain no-repeat;
+  mask: url("/art/materials/wax-seal.webp") center / contain no-repeat;
+}
+.envSeal::after {
+  background: url("/art/materials/wax-seal.webp") center / contain no-repeat;
+  mix-blend-mode: hard-light;
 }
 /* the stamp pressed into the wax */
 .envSeal > * {
@@ -1253,4 +1276,36 @@
   font-size: clamp(16px, 5cqw, 22px);
   font-weight: 700;
   letter-spacing: 0.04em;
+}
+
+/* The function slips and headings on the same card stock. */
+.card::after,
+.heading::after,
+.reply::after,
+.leafCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url("/art/materials/paper-grain.webp") 0 0 / 300px;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.heading,
+.leafCard {
+  position: relative;
+}
+
+/* Light stock: the paper's tooth as soft shadow (overlay can't shade white). */
+.root:not(.dark) .sheet::after,
+.root:not(.dark) .slip::after,
+.root:not(.dark) .card::after,
+.root:not(.dark) .heading::after,
+.root:not(.dark) .reply::after,
+.root:not(.dark) .leafCard::after,
+.envCard:not(.envCardDark)::after {
+  background: url("/art/materials/paper-grain-light.webp") 0 0 / 300px;
+  mix-blend-mode: multiply;
+  opacity: 1;
 }
