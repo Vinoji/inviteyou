@@ -209,7 +209,7 @@
     "tiers": {
       "free": {
         "name": "Free cards",
-        "gets": "A card image to download and share on WhatsApp — no link."
+        "gets": "Try any design and download your invitation card free. Make it a live invitation whenever you like."
       },
       "standard": {
         "name": "Live invitations",
@@ -268,7 +268,9 @@
       "rsvps": "RSVPs received",
       "upgrade": "of couples who made a free card upgraded to a live invitation",
       "opens": "times guests opened an invitation"
-    }
+    },
+    "freeCard": "Free card",
+    "liveFrom": "Live ₹{price}"
   },
   "notFound": {
     "eyebrow": "404",
@@ -713,7 +715,19 @@
       "pick": "Same details, your pick of design",
       "keeps": "Everything you've typed stays — just pick a design.",
       "later": "Maybe later",
-      "close": "Close"
+      "close": "Close",
+      "liveTitle": "Make {name} live",
+      "liveSub": "Your card image is free. The live invitation gives your guests the whole experience.",
+      "colFree": "Free card",
+      "colLive": "Live",
+      "c1": "Card image to share",
+      "c2": "Animated opening with your names",
+      "c3": "Google Maps & Add to Calendar",
+      "c4": "Live countdown, story & photos",
+      "c5": "RSVP — see who is coming",
+      "c6": "One link — update details anytime",
+      "goLive": "Make it live",
+      "keepsLive": "Everything you typed stays — just publish."
     },
     "videoTitle": "YouTube video",
     "videoHint": "Paste a YouTube link — your pre-wedding shoot, a save-the-date or the live stream. Guests tap to play it on the invitation.",
@@ -735,7 +749,9 @@
       "timeLabel": "Time label",
       "closing": "Closing words",
       "hostsLabel": "Hosts heading"
-    }
+    },
+    "goLiveLine": "Go live for ₹{price} — opening animation, maps & RSVP",
+    "freeCardLink": "Or download a free card (image)"
   },
   "invite": {
     "hero": {

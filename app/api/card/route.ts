@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
-import { isFreeTemplate } from "@/lib/pricing";
 import { renderCardImage } from "@/lib/cardImage";
 import { tooMany } from "@/lib/rateLimit";
 import { recordFreeCardMaker } from "@/lib/stats";
@@ -23,7 +22,8 @@ export const runtime = "nodejs";
  * POST /api/card — the free designs' download: the invitation card as a
  * PNG, drawn from the editor's current details (nothing is saved), with a
  * small "Made with InviteForYou" line where a published card has its QR
- * code. Only for designs marked free; the rest are published (paid).
+ * code. Free for every design — card-only designs and live designs alike
+ * (a live design's link, RSVP and site are what's paid).
  */
 export async function POST(req: NextRequest) {
   const limited = tooMany(req, "card", 30, 60 * 60 * 1000);
@@ -34,8 +34,10 @@ export async function POST(req: NextRequest) {
   if (!TEMPLATE_IDS.includes(templateId)) {
     return NextResponse.json({ error: "Invalid template." }, { status: 400 });
   }
-  if (!isFreeTemplate(templateId)) {
-    return NextResponse.json({ error: "This design is published, not downloaded." }, { status: 403 });
+  // Every design's card image is free (live designs are also published,
+  // paid); retired designs aren't offered.
+  if (getTemplateConfig(templateId).hidden) {
+    return NextResponse.json({ error: "This design is no longer available." }, { status: 403 });
   }
   const category = getCategoryConfig(getTemplateConfig(templateId).category);
   const brideName = String(body?.brideName ?? "").slice(0, 100).trim();

@@ -34,7 +34,9 @@ export interface Coupon {
 
 export const COUPONS: Coupon[] = [
   { code: "WEDDING50", offInr: 50, kind: "returning", label: "Welcome back" },
-  { code: "INVITEFORYOU", offInr: 50, kind: "offer", label: "Offer bonus on 3D", premium: true, auto: true },
+  // 3D designs stay ₹99 during the offer (live invitations ₹49); only the
+  // partner codes below bring a 3D design down to ₹49. (INVITEFORYOU, which
+  // applied itself on 3D for ₹49, is retired.)
   { code: "OVY100", offInr: 100, kind: "partner", label: "First 10 customers · 3D", premium: true, limit: 10 },
   { code: "SANJU100", offInr: 100, kind: "partner", label: "First 10 customers · 3D", premium: true, limit: 10 },
   // Partners — one line each, e.g.:

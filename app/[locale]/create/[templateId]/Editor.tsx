@@ -176,6 +176,8 @@ const SEED_KEYS = [
 const SAVE_STEPS: PublishPhase[] = ["saving", "opening"];
 const RESTORE_STEPS: PublishPhase[] = ["checkout", "verifying"];
 
+/** When this device downloaded its first free card (an event handler's timestamp). */
+const nowStamp = () => String(Date.now());
 /** Set once this device has downloaded a free card (see downloadCard). */
 const FREE_CARD_KEY = "namma:freeCard";
 function madeFreeCard(): boolean {
@@ -1002,6 +1004,10 @@ export default function Editor({
   /** Checks what Publish needs and says what's missing, instead of a
    * silently disabled button. */
   const free = isFreeTemplate(templateId);
+  // Opened from the Free group (?card=free): a live design whose card image
+  // is free — downloading is the main action, going live the step up.
+  const cardMode = free || searchParams.get("card") === "free";
+  const designName = designs.find((d) => d.id === templateId)?.name ?? "";
   const [downloading, setDownloading] = useState(false);
   const [upgradeOpen, setUpgradeOpen] = useState(false);
   // A discount code — from a partner's link (?ref=) or typed in.
@@ -1013,7 +1019,7 @@ export default function Editor({
   }, []);
   // Payment test: ?dev_option=1 charges ₹1 (only where lib/pricing.ts allows).
   const devOption = searchParams.get("dev_option") === "1" && devPriceEnabled();
-  // While an offer runs, its code (INVITEFORYOU on 3D designs) applies by
+  // While an offer runs, an `auto` code (lib/coupons.ts) applies by
   // itself unless the buyer typed another or removed it.
   const [autoOff, setAutoOff] = useState(false);
   const appliedCoupon = coupon || (autoOff ? "" : autoCoupon(templateId));
@@ -1048,7 +1054,7 @@ export default function Editor({
       if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error ?? t("errGeneric"));
       const blob = await res.blob();
       try {
-        localStorage.setItem(FREE_CARD_KEY, String(Date.now()));
+        localStorage.setItem(FREE_CARD_KEY, nowStamp());
       } catch {
         // Private mode.
       }
@@ -1220,7 +1226,26 @@ export default function Editor({
           onClose={() => setCheckoutOpen(false)}
         />
       )}
-      {upgradeOpen && <UpgradeSheet designs={designs} onLeave={persistDraft} onClose={() => setUpgradeOpen(false)} />}
+      {upgradeOpen && (
+        <UpgradeSheet
+          designs={designs}
+          onLeave={persistDraft}
+          onClose={() => setUpgradeOpen(false)}
+          current={
+            free
+              ? undefined
+              : {
+                  name: designName,
+                  price: payable,
+                  was: templateListPriceInr(templateId),
+                  onGoLive: () => {
+                    setUpgradeOpen(false);
+                    tryPublish();
+                  },
+                }
+          }
+        />
+      )}
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="afterInteractive"
@@ -1857,7 +1882,7 @@ export default function Editor({
             </p>
           )}
           {publishError && <p className="mb-2 hidden text-sm text-red-600 lg:block">{publishError}</p>}
-          {!isEditMode && !free && !getTemplateConfig(templateId).price && (
+          {!isEditMode && !cardMode && !getTemplateConfig(templateId).price && (
             <OfferCountdown
               compact
               price={templatePriceInr(templateId)}
@@ -1866,6 +1891,17 @@ export default function Editor({
             />
           )}
           {!isEditMode && free && <p className="mb-2 hidden text-center text-xs text-neutral-500 lg:block dark:text-neutral-400">{t("freeUpsell")}</p>}
+          {!isEditMode && cardMode && !free && (
+            <button
+              type="button"
+              onClick={tryPublish}
+              disabled={publishing}
+              className="mb-2 hidden w-full items-center justify-center gap-1.5 rounded-full border border-[#e8b04a] px-3 py-2.5 text-[13px] font-semibold text-[#7a4a12] hover:bg-[#e8b04a]/10 lg:flex dark:text-[#ffd35c]"
+            >
+              <Sparkles size={14} aria-hidden />
+              {t("goLiveLine", { price: payable })}
+            </button>
+          )}
           <div className="hidden lg:block">
           {isEditMode ? (
             <button
@@ -1877,11 +1913,11 @@ export default function Editor({
             </button>
           ) : (
             <button
-              onClick={free ? downloadCard : tryPublish}
+              onClick={cardMode ? downloadCard : tryPublish}
               disabled={publishing || downloading}
               className={`flex h-12 w-full items-center justify-center gap-2 rounded-full text-sm font-bold ${ed.gold}`}
             >
-              {free ? (
+              {cardMode ? (
                 <>
                   <Download size={16} aria-hidden />
                   {downloading ? t("preparingCard") : t("downloadCardFree")}
@@ -1892,6 +1928,17 @@ export default function Editor({
                   {publishing ? t("processing") : t("publishCta", { price: payable })}
                 </>
               )}
+            </button>
+          )}
+          {!isEditMode && !cardMode && (
+            <button
+              type="button"
+              onClick={downloadCard}
+              disabled={downloading}
+              className="mt-2 flex w-full items-center justify-center gap-1.5 text-xs font-medium text-neutral-500 underline underline-offset-2 hover:text-neutral-700 dark:text-neutral-400"
+            >
+              <Download size={13} aria-hidden />
+              {downloading ? t("preparingCard") : t("freeCardLink")}
             </button>
           )}
           </div>
@@ -2014,6 +2061,28 @@ export default function Editor({
         <div className={`px-3 pt-3 pb-[max(0.5rem,env(safe-area-inset-bottom))] lg:hidden ${ed.dock}`}>
           {publishError && <p className="mb-2 px-1 text-sm font-medium text-[#ffb4a8]">{publishError}</p>}
           {!isEditMode && free && <p className="mb-2 text-center text-[11px] text-[#ffe9b8]/75">{t("freeUpsellShort")}</p>}
+          {!isEditMode && cardMode && !free && (
+            <button
+              type="button"
+              onClick={tryPublish}
+              disabled={publishing}
+              className="mb-2 flex w-full items-center justify-center gap-1.5 rounded-full border border-[#e8b04a]/60 px-3 py-1.5 text-[12px] font-semibold text-[#ffd35c]"
+            >
+              <Sparkles size={13} aria-hidden />
+              {t("goLiveLine", { price: payable })}
+            </button>
+          )}
+          {!isEditMode && !cardMode && (
+            <button
+              type="button"
+              onClick={downloadCard}
+              disabled={downloading}
+              className="mb-2 flex w-full items-center justify-center gap-1.5 text-[11.5px] text-[#ffe9b8]/80 underline underline-offset-2"
+            >
+              <Download size={12} aria-hidden />
+              {downloading ? t("preparingCard") : t("freeCardLink")}
+            </button>
+          )}
           <div className="flex items-center gap-2.5">
             <div className={`flex shrink-0 rounded-full p-1 ${ed.seg}`} role="tablist">
               {(["edit", "preview"] as const).map((view) => {
@@ -2038,13 +2107,13 @@ export default function Editor({
             </div>
             <button
               type="button"
-              onClick={isEditMode ? handleSaveEdit : free ? downloadCard : tryPublish}
+              onClick={isEditMode ? handleSaveEdit : cardMode ? downloadCard : tryPublish}
               disabled={isEditMode ? !canSubmit : publishing || downloading}
               className={`flex h-12 min-w-0 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-sm font-bold ${ed.gold}`}
             >
               {isEditMode ? (
                 publishing ? t("saving") : t("saveChanges")
-              ) : free ? (
+              ) : cardMode ? (
                 <>
                   <Download size={16} aria-hidden className="shrink-0" />
                   <span className="truncate">{downloading ? t("preparingCard") : t("downloadCardShort")}</span>

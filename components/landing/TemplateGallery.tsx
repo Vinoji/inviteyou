@@ -30,8 +30,8 @@ const OCCASION_ICON: Record<string, string> = {
   corporate: "🎤",
 };
 const OCCASION_ORDER = Object.keys(OCCASION_ICON);
-// Live invitations lead (what most people want), 3D next, free cards last.
-const TIERS: Tier[] = ["standard", "premium", "free"];
+// Free cards lead (try any design, no payment), then live invitations and 3D.
+const TIERS: Tier[] = ["free", "standard", "premium"];
 /** Sort key for the cards within a price group: the running festival's
  * designs (lib/festivals.ts), then HOME_FIRST, new designs, our picks,
  * the rest, and HOME_LAST at the end. */
@@ -97,14 +97,23 @@ export default function TemplateGallery({
 
   // A single-occasion page (/invitations/<category>) passes no categories.
   const inOccasion = occasions.length ? templates.filter((tpl) => tpl.category === occasion) : templates;
-  const groups = TIERS.map((tier) => ({
-    tier,
-    items: inOccasion
-      .filter((tpl) => templateTier(tpl.id) === tier)
+  const ranked = (list: GalleryTemplate[]) =>
+    list
       .map((tpl, i) => ({ tpl, i }))
       // Pinned designs (HOME_FIRST, in order), new designs, our picks, the rest.
       .sort((a, b) => rank(a.tpl.id) - rank(b.tpl.id) || a.i - b.i)
-      .map(({ tpl }) => tpl),
+      .map(({ tpl }) => tpl);
+  const groups = TIERS.map((tier) => ({
+    tier,
+    // Every live design is also a free card (its card image to download), in
+    // the live designs' own order, then the card-only designs.
+    items:
+      tier === "free"
+        ? [
+            ...ranked(inOccasion.filter((tpl) => templateTier(tpl.id) === "standard")).map((tpl) => ({ tpl, asFree: true })),
+            ...ranked(inOccasion.filter((tpl) => templateTier(tpl.id) === "free")).map((tpl) => ({ tpl, asFree: false })),
+          ]
+        : ranked(inOccasion.filter((tpl) => templateTier(tpl.id) === tier)).map((tpl) => ({ tpl, asFree: false })),
   })).filter((g) => g.items.length > 0);
 
   return (
@@ -147,7 +156,7 @@ export default function TemplateGallery({
         {groups.map(({ tier, items }) => {
           const expanded = open[tier];
           const price = tierPriceInr(tier);
-          const usual = tier === "free" ? null : templateListPriceInr(items[0].id);
+          const usual = tier === "free" ? null : templateListPriceInr(items[0].tpl.id);
           return (
             <section key={tier} id={`tier-${tier}`} className="scroll-mt-28">
               {/* The group's price and, in one line, what it gets you. */}
@@ -181,12 +190,12 @@ export default function TemplateGallery({
               </header>
 
               <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
-                {items.map((tpl, i) => (
+                {items.map(({ tpl, asFree }, i) => (
                   <li
                     key={tpl.id}
                     className={expanded ? "" : i >= FIRST.desktop ? "hidden" : i >= FIRST.phone ? "hidden md:block" : ""}
                   >
-                    <DesignCard tpl={tpl} rating={ratings[tpl.id]} />
+                    <DesignCard tpl={tpl} rating={ratings[tpl.id]} asFree={asFree} />
                   </li>
                 ))}
               </ul>
@@ -213,9 +222,18 @@ export default function TemplateGallery({
 
 /** A short card: the live opening (4:5), its price, and one row with the
  * name and an arrow into the editor. */
-function DesignCard({ tpl, rating }: { tpl: GalleryTemplate; rating?: { average: number; count: number } }) {
+function DesignCard({
+  tpl,
+  rating,
+  asFree = false,
+}: {
+  tpl: GalleryTemplate;
+  rating?: { average: number; count: number };
+  /** A live design shown in the Free group: its card image is free, the live invitation is the step up. */
+  asFree?: boolean;
+}) {
   const t = useTranslations("landing");
-  const tier = templateTier(tpl.id);
+  const tier = asFree ? "free" : templateTier(tpl.id);
   const price = templatePriceInr(tpl.id);
   const usual = templateListPriceInr(tpl.id);
   return (
@@ -238,7 +256,7 @@ function DesignCard({ tpl, rating }: { tpl: GalleryTemplate; rating?: { average:
           {tier === "free" ? (
             <>
               <Gift size={11} aria-hidden />
-              {t("free")}
+              {asFree ? t("freeCard") : t("free")}
             </>
           ) : (
             <>
@@ -247,9 +265,15 @@ function DesignCard({ tpl, rating }: { tpl: GalleryTemplate; rating?: { average:
             </>
           )}
         </span>
+        {asFree && (
+          <span className="pointer-events-none absolute bottom-2 left-2 z-30 inline-flex items-center gap-1 rounded-full bg-[#22091f]/85 px-2 py-0.5 text-[10px] font-bold text-[#ffe9b8] shadow-md backdrop-blur">
+            <Sparkles size={10} aria-hidden />
+            {t("liveFrom", { price })}
+          </span>
+        )}
       </div>
       <Link
-        href={`/create/${tpl.id}`}
+        href={asFree ? `/create/${tpl.id}?card=free` : `/create/${tpl.id}`}
         aria-label={`${t("useTemplate")} — ${tpl.name}`}
         className="flex flex-1 items-center justify-between gap-2 px-3 py-2.5"
       >
