@@ -454,6 +454,21 @@
     translate: 0 -10px;
   }
 }
+/* Phones (and the apps' built-in browsers, which report as fast as any
+   phone) froze with the blurred glow breathing, the phone floating with a
+   live opening inside it and the stickers bobbing all at once: on touch
+   screens the stage holds still, and the glow is a plain gradient. */
+@media (pointer: coarse) {
+  .archGlow {
+    inset: 10% 8%;
+    filter: none;
+    animation: none;
+    background: radial-gradient(circle, rgba(255, 196, 92, 0.4), transparent 68%);
+  }
+  .phone {
+    animation: none;
+  }
+}
 .screen {
   position: relative;
   overflow: hidden;
@@ -1904,4 +1919,11 @@
   background: rgba(255, 255, 255, 0.06);
   font-size: 13px;
   color: #ffe9b8;
+}
+
+/* Touch screens: the stickers hold still too (after .sticker, so it wins). */
+@media (pointer: coarse) {
+  .sticker {
+    animation: none;
+  }
 }

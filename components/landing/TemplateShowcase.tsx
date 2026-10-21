@@ -40,6 +40,8 @@ export interface ShowcaseProps {
   /** A still card (names on the design's colours) that never plays — for
    * pickers that list many designs at once. */
   still?: boolean;
+  /** Wait for a tap before playing (the hero phone on touch screens). */
+  tapToStart?: boolean;
   /** Width / height of the card. Shorter than the phone-shaped stage crops
    * its top and bottom evenly (the gallery uses 4 / 5). */
   aspect?: number;
@@ -62,8 +64,8 @@ export default function TemplateShowcase(p: ShowcaseProps) {
   const [started, setStarted] = useState(!p.still && !TAP_TO_START.has(p.introId));
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the phone's tier is only known in the browser
-    if (perfTier() === "low") setStarted(false);
-  }, []);
+    if (perfTier() === "low" || p.tapToStart) setStarted(false);
+  }, [p.tapToStart]);
 
   useEffect(() => {
     const el = boxRef.current;

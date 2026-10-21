@@ -24,6 +24,13 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
   const rootRef = useRef<HTMLElement>(null);
   const [index, setIndex] = useState(0);
   const [pausedUntil, setPausedUntil] = useState(0);
+  // On touch screens the phone shows each design as a still card that plays
+  // when tapped — mounting a live opening every few seconds froze phones.
+  const [touch, setTouch] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the pointer type is only known in the browser
+    setTouch(matchMedia("(pointer: coarse)").matches);
+  }, []);
 
   // Rotate through the featured openings, pausing after a guest taps one.
   useEffect(() => {
@@ -120,7 +127,7 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
               <div className={s.notch} aria-hidden />
               {current && (
                 <div key={current.templateId} className={s.fadeIn}>
-                  <TemplateShowcase {...current} hintAt="bottom" />
+                  <TemplateShowcase {...current} hintAt="bottom" tapToStart={touch} />
                 </div>
               )}
             </div>
