@@ -25,10 +25,19 @@ export const SITE = {
     whatsapp: "",
   },
   /**
-   * Walkthrough videos for the Demos page — YouTube video ids. Until
-   * there are any, the page shows every template's live opening instead.
+   * Walkthrough videos for the Demos page: YouTube Shorts, one per design
+   * (the title is the design's name; "Use this design" opens its editor).
    */
-  demoVideos: [] as { title: string; youtubeId: string }[],
+  demoVideos: [
+    { youtubeId: "DJmMX0Hkw60", templateId: "madurai-meenakshi" },
+    { youtubeId: "xgHPICGTL98", templateId: "pastel-palace" },
+    { youtubeId: "5roOqKf-eVg", templateId: "temple-journey" },
+    { youtubeId: "EzbHe7K9gkQ", templateId: "lilac-seal" },
+    { youtubeId: "yk0Y8YgCMpY", templateId: "pearl-curtain" },
+    { youtubeId: "dHvIqIsFQw4", templateId: "photo-story" },
+    { youtubeId: "IqK47qpAgzM", templateId: "living-temple" },
+    { youtubeId: "nTB0Oi_51mw", templateId: "temple-photo-story" },
+  ] as { youtubeId: string; templateId: string }[],
 } as const;
 
 export type SocialId = keyof typeof SITE.social;

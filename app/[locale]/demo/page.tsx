@@ -8,7 +8,8 @@ import TemplateShowcase from "@/components/landing/TemplateShowcase";
 import { SITE } from "@/lib/site";
 import FestiveBanner from "@/components/site/FestiveBanner";
 import paper from "@/components/landing/landing.module.css";
-import { pageAlternates } from "@/lib/seo";
+import { SITE_URL, pageAlternates } from "@/lib/seo";
+import DemoShort from "@/components/site/DemoShort";
 
 export async function generateMetadata({
   params,
@@ -35,6 +36,20 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
   const tLanding = await getTranslations("landing");
 
   const steps = ["step1", "step2", "step3"] as const;
+  // Each Short as a schema.org VideoObject, so search can show it as a video.
+  const videosJsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": SITE.demoVideos.map((v) => ({
+      "@type": "VideoObject",
+      name: `${tTemplates(`${v.templateId}.name`)} — ${tTemplates(`${v.templateId}.tagline`)}`,
+      description: tTemplates(`${v.templateId}.description`),
+      thumbnailUrl: `https://i.ytimg.com/vi/${v.youtubeId}/hqdefault.jpg`,
+      embedUrl: `https://www.youtube.com/embed/${v.youtubeId}`,
+      contentUrl: `https://www.youtube.com/shorts/${v.youtubeId}`,
+      uploadDate: "2026-10-21",
+      publisher: { "@id": `${SITE_URL}/#org` },
+    })),
+  }).replace(/</g, "\\u003c");
 
   return (
     <main className={`flex-1 ${paper.paper}`}>
@@ -58,25 +73,34 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
       </section>
 
       {SITE.demoVideos.length > 0 && (
-        <section className="mx-auto max-w-6xl px-6 pb-16">
-          <h2 className="mb-6 font-serif text-2xl font-bold text-neutral-900 dark:text-neutral-50">
-            {t("videosTitle")}
-          </h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            {SITE.demoVideos.map((v) => (
-              <figure key={v.youtubeId} className="overflow-hidden rounded-2xl border border-neutral-200 dark:border-neutral-800">
-                <iframe
-                  className="aspect-video w-full"
-                  src={`https://www.youtube-nocookie.com/embed/${v.youtubeId}`}
-                  title={v.title}
-                  loading="lazy"
-                  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-                <figcaption className="p-4 text-sm font-medium">{v.title}</figcaption>
-              </figure>
-            ))}
+        <section className="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: videosJsonLd }} />
+          <div className="mb-6 text-center">
+            <h2 className="font-serif text-3xl font-bold text-neutral-900 dark:text-neutral-50">{t("videosTitle")}</h2>
+            <p className="mx-auto mt-2 max-w-2xl text-sm text-neutral-600 dark:text-neutral-400">{t("videosBody")}</p>
           </div>
+          <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+            {SITE.demoVideos.map((v) => {
+              const name = tTemplates(`${v.templateId}.name`);
+              return (
+                <li key={v.youtubeId} className={`${paper.festiveCard} overflow-hidden`}>
+                  <div className="overflow-hidden rounded-t-[21px]">
+                    <DemoShort id={v.youtubeId} title={name} playLabel={t("play")} />
+                  </div>
+                  <div className="flex items-center justify-between gap-2 p-3">
+                    <span className="line-clamp-2 min-w-0 font-serif text-sm leading-tight font-bold text-neutral-900 dark:text-neutral-50">{name}</span>
+                    <Link
+                      href={`/create/${v.templateId}`}
+                      className="shrink-0 text-xs font-semibold text-amber-700 hover:underline dark:text-amber-400"
+                      aria-label={`${tLanding("useTemplate")} — ${name}`}
+                    >
+                      {t("use")} →
+                    </Link>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </section>
       )}
 
