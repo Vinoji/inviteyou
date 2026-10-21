@@ -88,6 +88,7 @@ function Cross({ fill }: { fill: string }) {
 export function EmblemMark({ emblem }: { emblem: Emblem }) {
   const id = useId().replace(/:/g, "");
   const fill = `url(#f${id})`;
+  if (emblem === "none") return null;
   if (emblem === "suzhi") return <span className={`${s.glyph} ${s.foilText}`} aria-hidden>உ</span>;
   if (emblem === "ikonkar") return <span className={`${s.glyph} ${s.glyphGurmukhi} ${s.foilText}`} aria-hidden>ੴ</span>;
   if (emblem === "bismillah")

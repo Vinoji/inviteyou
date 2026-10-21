@@ -118,7 +118,11 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
           <span className={s.flapOuter} />
           <span className={s.flapInner} />
           <button type="button" className={s.envSeal} onClick={start} aria-label={t("open")} disabled={open}>
-            {d.emblem === "bismillah" ? (
+            {d.emblem === "none" ? (
+              <span className={s.sealInitials} aria-hidden>
+                {[monogram.a, monogram.b].filter(Boolean).join("")}
+              </span>
+            ) : d.emblem === "bismillah" ? (
               <span className={s.sealArabic} lang="ar" aria-hidden>
                 بِسْمِ ٱللَّٰهِ
               </span>

@@ -101,13 +101,20 @@ export default function LilacSealInvitation(props: PremiumProps) {
       <section className={s.section}>
         <div className={s.inner}>
           <Reveal className={s.card0}>
-            <p className={s.suzhi} aria-hidden>
-              உ
-            </p>
-            <Lotus className={s.lotus} />
-            <p className={s.tamilTitle} lang="ta">
-              {t("tamilTitle")}
-            </p>
+            {/* உ and the lotus, unless a copy for another occasion leaves them out (suzhi: "") */}
+            {t("suzhi") && (
+              <>
+                <p className={s.suzhi} aria-hidden>
+                  {t("suzhi")}
+                </p>
+                <Lotus className={s.lotus} />
+              </>
+            )}
+            {t("tamilTitle") && (
+              <p className={s.tamilTitle} lang="ta">
+                {t("tamilTitle")}
+              </p>
+            )}
             <p className={s.blessing}>{t("blessing")}</p>
             <div className={s.coupleNames}>
               <div className={s.person}>

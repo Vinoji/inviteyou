@@ -1830,6 +1830,98 @@
           "families": "Hosts",
           "specialValue": "Our customers, partners and team."
         }
+      },
+      "lilac-seal-proposal": {
+        "page": {
+          "weddingInvitation": "A question for you",
+          "cordially": "Will you marry me?",
+          "suzhi": "",
+          "tamilTitle": "",
+          "blessing": "Every chapter of my life is better with you in it. So here is the most important question I will ever ask —",
+          "saveTheDate": "The day I ask",
+          "eventsKicker": "Meet me",
+          "eventsTitle": "The plan",
+          "storyKicker": "Why you",
+          "storyTitle": "Why you",
+          "replyTitle": "So… will you?",
+          "replySub": "Say yes, and let's begin forever.",
+          "thankYou": "Forever starts here",
+          "closing": "Whatever the answer, thank you for every moment so far."
+        },
+        "intro": {
+          "dialogLabel": "A question for you",
+          "eyebrow": "A question for you"
+        }
+      },
+      "cinematic-film-proposal": {
+        "page": {
+          "present": "Starring the two of us",
+          "aLoveStory": "A proposal",
+          "laurelSub": "Just the two of us",
+          "musicValue": "Our song",
+          "blessingsBy": "Written by",
+          "blessingsValue": "Every day with you",
+          "directedValue": "Destiny",
+          "premiereKicker": "The big question",
+          "replyTitle": "So… will you?",
+          "replySub": "Say yes — the sequel is forever.",
+          "synopsisTitle": "Why you",
+          "theEnd": "Forever",
+          "thanks": "starts with yes",
+          "families": "With love from"
+        }
+      },
+      "lilac-seal-valentine": {
+        "page": {
+          "weddingInvitation": "Valentine's Day",
+          "cordially": "Be my valentine",
+          "suzhi": "",
+          "tamilTitle": "",
+          "blessing": "An evening of roses, good food and the two of us — will you spend Valentine's Day with me,",
+          "saveTheDate": "Our date",
+          "eventsKicker": "Meet me",
+          "eventsTitle": "The plan",
+          "storyKicker": "Us",
+          "storyTitle": "Our story",
+          "replyTitle": "Will you be my valentine?",
+          "replySub": "Say yes — I've already booked the table.",
+          "thankYou": "With all my love",
+          "closing": "Every day with you feels like Valentine's Day."
+        },
+        "intro": {
+          "dialogLabel": "Valentine's invitation",
+          "eyebrow": "Be my valentine"
+        }
+      },
+      "pastel-palace-valentine": {
+        "page": {
+          "invited": "You're invited to a Valentine's evening with",
+          "eventsTitle": "The plan",
+          "storyKicker": "Us",
+          "storyTitle": "Our story",
+          "closing": "Roses, candlelight and the two of us — I can't wait.",
+          "dearGuest": "My love"
+        },
+        "intro": {
+          "dialogLabel": "Valentine's invitation",
+          "eyebrow": "Valentine's day"
+        }
+      },
+      "cinematic-film-housewarming": {
+        "page": {
+          "present": "The family presents",
+          "aLoveStory": "Our new home",
+          "laurelSub": "Family & friends",
+          "musicValue": "Home sweet home",
+          "blessingsValue": "Our elders",
+          "directedValue": "Years of dreaming",
+          "premiereKicker": "The house-warming",
+          "replyTitle": "Will you come home with us?",
+          "replySub": "Save your seat — the first meal in our new home.",
+          "synopsisTitle": "About our new home",
+          "thanks": "welcome home",
+          "families": "Hosts"
+        }
       }
     },
     "palace": {
@@ -2812,6 +2904,46 @@
       "name": "Cinematic Launch",
       "tagline": "A product launch or event, as a premiere",
       "description": "Turn a launch, premiere or company event into a film's title sequence — countdown, credits, the event as the title card and admit-one tickets for each session."
+    },
+    "corporate-formal-card": {
+      "name": "Formal Invitation Card",
+      "tagline": "Navy-and-gold printed corporate invitation",
+      "description": "A formal printed invitation in navy and gold foil for conferences, launches, award nights and company events — your company's name, the event, timings, venue and a request to confirm."
+    },
+    "house-blessing-card": {
+      "name": "House Blessing Card",
+      "tagline": "Christian house-blessing card with Psalm 127:1",
+      "description": "An ivory card with a gold cross and Psalm 127:1 for a Christian house blessing — the hosts, the service, the lunch and a warm invitation to pray together."
+    },
+    "milestone-birthday-card": {
+      "name": "Golden Milestone Card",
+      "tagline": "Maroon-and-gold 50th birthday card",
+      "description": "A maroon shimmer card in gold foil for a milestone birthday — the honoree's name, the celebration, dinner and good wishes from the family."
+    },
+    "lilac-seal-proposal": {
+      "name": "Lilac Seal Proposal",
+      "tagline": "“Will you marry me?” in a wax-sealed letter",
+      "description": "A lilac envelope with a wax seal — when it opens, the letter asks the question: “Will you marry me?”, with why you, the plan and a place to say yes."
+    },
+    "cinematic-film-proposal": {
+      "name": "Cinematic Proposal",
+      "tagline": "Your proposal as a film premiere",
+      "description": "A projector countdown, then opening credits starring the two of you — “A proposal”, the big question, and “Forever starts with yes”."
+    },
+    "lilac-seal-valentine": {
+      "name": "Lilac Seal Valentine",
+      "tagline": "A wax-sealed Valentine's invitation",
+      "description": "A lilac envelope embossed with roses: break the wax seal and the card asks, “Be my valentine” — with the plan for the evening."
+    },
+    "pastel-palace-valentine": {
+      "name": "Pastel Palace Valentine",
+      "tagline": "Scratch to reveal your Valentine's date",
+      "description": "A fairy-tale pastel palace for Valentine's Day — scratch the foil to reveal the date, then roses frame your names and the plan."
+    },
+    "cinematic-film-housewarming": {
+      "name": "Cinematic House-warming",
+      "tagline": "Your new home, as a film premiere",
+      "description": "A projector countdown and opening credits for your new home — “The family presents… Our new home”, tickets for the house-warming and “welcome home”."
     }
   },
   "defaultContent": {
@@ -4655,6 +4787,48 @@
           "answer": "Yes, the hall has parking."
         }
       ]
+    },
+    "house-blessing": {
+      "brideName": "Joseph & Anna Varghese",
+      "groomName": "",
+      "ceremonyVenueName": "Our new home",
+      "ceremonyVenueAddress": "Kakkanad, Kochi",
+      "receptionVenueName": "Our new home — Lunch",
+      "receptionVenueAddress": "Kakkanad, Kochi",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "God has blessed us with a home of our own. Our parish priest will bless the house, and we would love our family and friends to pray with us and share the first meal under our new roof.",
+      "faq": [
+        {
+          "question": "What time is the service?",
+          "answer": "The blessing service begins in the morning; lunch follows."
+        },
+        {
+          "question": "Is there parking?",
+          "answer": "Parking is available on our street."
+        }
+      ]
+    },
+    "milestone-birthday": {
+      "brideName": "R. Natarajan",
+      "groomName": "",
+      "ceremonyVenueName": "The Residency",
+      "ceremonyVenueAddress": "Avinashi Road, Coimbatore",
+      "receptionVenueName": "The Residency — Dinner",
+      "receptionVenueAddress": "Avinashi Road, Coimbatore",
+      "groomParents": "",
+      "brideParents": "",
+      "story": "Fifty years of hard work, laughter and looking after all of us. This one is for Appa — come raise a toast to a golden milestone.",
+      "faq": [
+        {
+          "question": "Is there a dress code?",
+          "answer": "Festive or semi-formal wear."
+        },
+        {
+          "question": "Will dinner be served?",
+          "answer": "Yes, dinner follows the celebration."
+        }
+      ]
     }
   },
   "themeToggle": {
@@ -5632,7 +5806,8 @@
       "replySub": "Your presence and blessings will make our day complete.",
       "thankYou": "Thank you",
       "closing": "Your presence, blessings and wishes will make our celebration complete.",
-      "tamilTitle": "திருமண அழைப்பிதழ்"
+      "tamilTitle": "திருமண அழைப்பிதழ்",
+      "suzhi": "உ"
     },
     "pastel": {
       "invited": "We cordially invite you, with your family, to the wedding ceremony of",
@@ -6011,6 +6186,54 @@
         "hostsLabel": "With love from",
         "eventA": "Ayush Homam",
         "eventB": "Birthday Party",
+        "thanks": "Thank you"
+      },
+      "corporate": {
+        "invocation": "",
+        "invocationSub": "",
+        "title": "Invitation",
+        "lead": "",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "",
+        "after": "requests the pleasure of your company at our event",
+        "timeLabel": "Time",
+        "closing": "Kindly confirm your attendance — we look forward to welcoming you.",
+        "hostsLabel": "",
+        "eventA": "Main Event",
+        "eventB": "Networking Dinner",
+        "thanks": "Thank you"
+      },
+      "houseBlessing": {
+        "invocation": "“Except the Lord build the house, they labour in vain that build it.”",
+        "invocationSub": "Psalm 127:1",
+        "title": "House Blessing",
+        "lead": "By the grace of God, we joyfully invite you to the blessing of our new home, hosted by",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "",
+        "after": "",
+        "timeLabel": "Service",
+        "closing": "Please come with your family, pray with us and stay for lunch.",
+        "hostsLabel": "With love from",
+        "eventA": "House Blessing",
+        "eventB": "Lunch",
+        "thanks": "God bless you"
+      },
+      "milestone": {
+        "invocation": "",
+        "invocationSub": "50th Birthday",
+        "title": "A Golden Milestone",
+        "lead": "Please join us with your family to celebrate the 50th birthday of",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "",
+        "after": "",
+        "timeLabel": "Celebration",
+        "closing": "Your presence and good wishes will make the evening special.",
+        "hostsLabel": "With love from the family",
+        "eventA": "Celebration",
+        "eventB": "Dinner",
         "thanks": "Thank you"
       }
     },

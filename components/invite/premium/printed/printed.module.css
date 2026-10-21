@@ -1246,3 +1246,11 @@
   font-style: italic;
   color: var(--accent);
 }
+
+/* A seal with no emblem (corporate, milestone cards): the initials. */
+.sealInitials {
+  font-family: var(--p-display), Georgia, serif;
+  font-size: clamp(16px, 5cqw, 22px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}

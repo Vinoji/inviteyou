@@ -23,6 +23,8 @@ export const DEFAULT_CONTENT_DATES: Record<
   valaikaappu: { weddingDate: "2026-12-20", ceremonyTime: "10:30 AM", receptionTime: "12:30 PM" },
   shashtiabdapoorthi: { weddingDate: "2027-02-07", ceremonyTime: "8:00 AM", receptionTime: "12:30 PM" },
   "first-birthday": { weddingDate: "2027-01-30", ceremonyTime: "9:00 AM", receptionTime: "6:30 PM" },
+  "house-blessing": { weddingDate: "2027-01-09", ceremonyTime: "9:30 AM", receptionTime: "12:30 PM" },
+  "milestone-birthday": { weddingDate: "2027-03-20", ceremonyTime: "6:30 PM", receptionTime: "8:00 PM" },
   sikh: { weddingDate: "2027-02-21", ceremonyTime: "10:00 AM", receptionTime: "7:30 PM" },
   jain: { weddingDate: "2027-01-31", ceremonyTime: "11:15 AM", receptionTime: "5:00 PM" },
   "minimal-modern": { weddingDate: "2026-12-12", ceremonyTime: "4:00 PM", receptionTime: "8:00 PM" },

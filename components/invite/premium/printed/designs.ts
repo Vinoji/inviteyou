@@ -23,11 +23,14 @@ export type Wording =
   | "namakaranam"
   | "valaikaappu"
   | "shashti"
-  | "firstBirthday";
+  | "firstBirthday"
+  | "corporate"
+  | "houseBlessing"
+  | "milestone";
 /** The border printed around the card. */
 export type Frame = "temple" | "mughal" | "kasavu" | "geometric" | "corners" | "phulkari";
 /** What sits at the very top, in foil. */
-export type Emblem = "suzhi" | "lamp" | "bismillah" | "cross" | "ikonkar" | "kalash";
+export type Emblem = "suzhi" | "lamp" | "bismillah" | "cross" | "ikonkar" | "kalash" | "none";
 
 /** Extra printed inserts after the card. */
 export type Extra = "rituals" | "sadya";
@@ -391,6 +394,56 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f2e2ae",
     envelope: "#f7d3e0",
     liner: "#b8964f",
+    groomFirst: true,
+  },
+  "corporate-formal-card": {
+    wording: "corporate",
+    frame: "corners",
+    emblem: "none",
+    paper: ["#14213d", "#0b1428"],
+    desk: "#05080f",
+    ink: "#eef2fa",
+    soft: "#b9c3d6",
+    accent: "#e2c37a",
+    ribbonInk: "#0b1428",
+    foil: "#c9a24a",
+    foilHi: "#fbecb4",
+    envelope: "#0f1a33",
+    liner: "#c9a24a",
+    dark: true,
+    groomFirst: true,
+  },
+  "house-blessing-card": {
+    wording: "houseBlessing",
+    frame: "corners",
+    emblem: "cross",
+    paper: ["#fffdf8", "#f3ecdc"],
+    desk: "#b9c7a8",
+    ink: "#2f3a26",
+    soft: "#5e6a52",
+    accent: "#4a6b3a",
+    ribbonInk: "#fffdf8",
+    foil: "#b8964f",
+    foilHi: "#f2e2ae",
+    envelope: "#e8efe0",
+    liner: "#b8964f",
+    groomFirst: true,
+  },
+  "milestone-birthday-card": {
+    wording: "milestone",
+    frame: "corners",
+    emblem: "none",
+    paper: ["#5e1426", "#3e0b19"],
+    desk: "#1a070c",
+    ink: "#f8e6c2",
+    soft: "#e2c79a",
+    accent: "#f3cf73",
+    ribbonInk: "#3e0b19",
+    foil: "#c9962c",
+    foilHi: "#fbe7a6",
+    envelope: "#4e1020",
+    liner: "#c9962c",
+    dark: true,
     groomFirst: true,
   },
 };

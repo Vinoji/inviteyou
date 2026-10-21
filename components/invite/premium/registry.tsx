@@ -36,6 +36,14 @@ const PREMIUM_IDS = new Set([
   "pastel-palace",
   "madurai-meenakshi",
   "cinematic-film",
+  "lilac-seal-proposal",
+  "cinematic-film-proposal",
+  "lilac-seal-valentine",
+  "pastel-palace-valentine",
+  "cinematic-film-housewarming",
+  "house-blessing-card",
+  "corporate-formal-card",
+  "milestone-birthday-card",
   "nichayathartham-pathirikai",
   "meenakshi-nichayathartham",
   "lilac-seal-engagement",
@@ -88,6 +96,7 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "pastel-palace":
     case "pastel-palace-baby-shower":
     case "pastel-palace-birthday":
+    case "pastel-palace-valentine":
       return <PastelPalace {...props} />;
     case "madurai-meenakshi":
     case "meenakshi-nichayathartham":
@@ -96,6 +105,8 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "cinematic-film-anniversary":
     case "cinematic-film-birthday":
     case "cinematic-film-launch":
+    case "cinematic-film-proposal":
+    case "cinematic-film-housewarming":
       return <CinematicFilm {...props} />;
     case "kalyanam-rituals":
     case "kerala-sadya":
@@ -116,10 +127,15 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "valaikaappu-card":
     case "shashtiabdapoorthi-card":
     case "first-birthday-card":
+    case "house-blessing-card":
+    case "corporate-formal-card":
+    case "milestone-birthday-card":
       return <PrintedCard {...props} />;
     case "lilac-seal":
     case "lilac-seal-engagement":
     case "lilac-seal-anniversary":
+    case "lilac-seal-proposal":
+    case "lilac-seal-valentine":
       return <LilacSeal {...props} />;
     case "living-temple":
       return <LivingTemple {...props} />;
