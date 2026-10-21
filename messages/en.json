@@ -2944,6 +2944,41 @@
       "name": "Cinematic House-warming",
       "tagline": "Your new home, as a film premiere",
       "description": "A projector countdown and opening credits for your new home — “The family presents… Our new home”, tickets for the house-warming and “welcome home”."
+    },
+    "letterpress-ivory": {
+      "name": "Letterpress Ivory",
+      "tagline": "Minimal cotton card with names pressed in",
+      "description": "Heavy ivory cotton stock, generous margins and one deep-sage ink — your names pressed into the paper like real letterpress, sealed with a sage wax seal."
+    },
+    "art-deco-noir": {
+      "name": "Art Deco Noir",
+      "tagline": "Black-and-gold art deco fans",
+      "description": "A black card framed in a gold art-deco fan border for an elegant evening wedding or reception, in a black envelope lined with gold fans."
+    },
+    "kolam-pathirikai": {
+      "name": "Kolam Pathirikai",
+      "tagline": "Maroon card with a white kolam border",
+      "description": "A maroon Tamil pathirikai framed in a white rice-flour kolam border, with உ in gold, the traditional wording, the muhurtham and the families."
+    },
+    "paisley-silk-vivah": {
+      "name": "Paisley Silk Shubh Vivah",
+      "tagline": "Red silk card with a gold paisley border",
+      "description": "A rich red card with a printed gold paisley border, a kalash, “Shri Ganeshaya Namah” and the Shubh Vivah wording — in a red envelope lined with paisley."
+    },
+    "jaali-velvet-nikah": {
+      "name": "Jaali Velvet Nikah",
+      "tagline": "Maroon velvet with a gold Mughal jaali",
+      "description": "A maroon velvet Nikah card framed in a carved gold Mughal jaali lattice, with the Bismillah in gold calligraphy, the Nikah and the Walima."
+    },
+    "kerala-christian-kasavu": {
+      "name": "Kerala Christian Kasavu",
+      "tagline": "Kasavu gold bands with a cross and verse",
+      "description": "The Kerala Christian wedding card: cream stock with gold kasavu bands, a gold cross, Matthew 19:6, Holy Matrimony and the church."
+    },
+    "blush-lace": {
+      "name": "Blush Lace",
+      "tagline": "Blush card framed in white lace",
+      "description": "A soft blush card framed in white lace for a romantic, modern wedding — your names, the ceremony and the reception, sealed in gold wax."
     }
   },
   "defaultContent": {
@@ -6235,6 +6270,38 @@
         "eventA": "Celebration",
         "eventB": "Dinner",
         "thanks": "Thank you"
+      },
+      "modern": {
+        "invocation": "",
+        "invocationSub": "",
+        "title": "We're getting married",
+        "lead": "Together with our families, we joyfully invite you to celebrate the wedding of",
+        "groomLabel": "",
+        "brideLabel": "",
+        "joiner": "&",
+        "after": "",
+        "timeLabel": "Ceremony",
+        "closing": "Dinner and celebrations to follow. We can't wait to celebrate with you.",
+        "hostsLabel": "With love,",
+        "eventA": "Ceremony",
+        "eventB": "Reception",
+        "thanks": "Thank you"
+      },
+      "shubhVivah": {
+        "invocation": "|| Shri Ganeshaya Namah ||",
+        "invocationSub": "Vakratunda Mahakaya Suryakoti Samaprabha",
+        "title": "Shubh Vivah",
+        "lead": "With the blessings of Lord Ganesha and our elders, we cordially invite you and your family to grace the auspicious wedding of",
+        "groomLabel": "Groom",
+        "brideLabel": "Bride",
+        "joiner": "with",
+        "after": "",
+        "timeLabel": "Muhurat",
+        "closing": "Your gracious presence and blessings will make the occasion complete.",
+        "hostsLabel": "With best compliments from",
+        "eventA": "Phere",
+        "eventB": "Reception",
+        "thanks": "Dhanyavaad"
       }
     },
     "film": {

@@ -52,7 +52,7 @@
 .patterned {
   padding: 14px;
   background: var(--tile) repeat, linear-gradient(180deg, var(--paper-a), var(--paper-b));
-  background-size: 24px 24px, auto;
+  background-size: var(--tile-size, 24px) var(--tile-size, 24px), auto;
   box-shadow:
     inset 0 0 0 2px var(--foil),
     inset 0 0 0 4px var(--paper-a),
@@ -842,8 +842,9 @@
   inset: 3% 3% 30%;
   border-radius: 2px;
   background:
-    repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in srgb, var(--liner) 92%, #000 8%) 7px 8px),
+    var(--liner-tile, repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in srgb, var(--liner) 92%, #000 8%) 7px 8px)),
     var(--liner);
+  background-size: var(--liner-size, auto) var(--liner-size, auto), auto;
   box-shadow: inset 0 10px 14px -8px rgba(0, 0, 0, 0.45);
 }
 .envCard {
@@ -988,8 +989,9 @@
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
   background:
     linear-gradient(0deg, rgba(0, 0, 0, 0.12), transparent 25%),
-    repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in srgb, var(--liner) 92%, #000 8%) 7px 8px),
+    var(--liner-tile, repeating-linear-gradient(45deg, transparent 0 7px, color-mix(in srgb, var(--liner) 92%, #000 8%) 7px 8px)),
     var(--liner);
+  background-size: var(--liner-size, auto) var(--liner-size, auto), auto;
 }
 /* The flap is up: its seal faces away. (Not left to backface-visibility
  * alone: phone Chrome drops it once anything fades the flap.) */
@@ -1308,4 +1310,29 @@
   background: url("/art/materials/paper-grain-light.webp") 0 0 / 300px;
   mix-blend-mode: multiply;
   opacity: 1;
+}
+
+/* Letterpress: no border — heavy cotton stock, generous margins, the names
+   pressed into the paper. */
+.letterpress {
+  padding: 34px 22px;
+}
+.letterpress .frameBox {
+  border: 0;
+  padding: 30px 12px 26px;
+}
+.letterpress .frameBox::before {
+  inset: 0;
+  border: 0;
+  border-top: 0.8px solid var(--edge);
+  border-bottom: 0.8px solid var(--edge);
+}
+.letterpress .name,
+.letterpress .cardTitle {
+  color: color-mix(in srgb, var(--accent) 88%, #000 12%);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85), 0 -1px 0 rgba(0, 0, 0, 0.14);
+}
+.letterpress .name {
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }

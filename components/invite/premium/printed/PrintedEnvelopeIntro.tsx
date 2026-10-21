@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 import type { IntroProps } from "../../intros/types";
 import { useIntroText } from "../../intros/useIntroText";
 import useSafeReducedMotion from "../../useSafeReducedMotion";
-import { EmblemMark } from "./Ornaments";
+import { EmblemMark, patternSize, patternTile } from "./Ornaments";
 import { printedDesign } from "./designs";
 import s from "./printed.module.css";
 
@@ -51,6 +51,9 @@ export default function PrintedEnvelopeIntro({ monogram, templateId, onOpen, onD
     "--accent": d.accent,
     "--foil": d.foil,
     "--foil-hi": d.foilHi,
+    ...(d.liner2
+      ? { "--liner-tile": patternTile(d.liner2.pattern, d.liner2.colors), "--liner-size": `${patternSize(d.liner2.pattern)}px` }
+      : {}),
     "--seal": d.seal?.[0] ?? d.foil,
     "--seal-hi": d.seal?.[1] ?? d.foilHi,
   } as CSSProperties;

@@ -270,6 +270,41 @@ const PALETTES: Record<string, RoyalPalette> = {
     ivory: "#FBF3E2", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",
     flowers: ["#fbe7a6", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
   },
+  "letterpress-ivory": {
+    deep: "#3a3226", mid: "#7A5A22", gold: "#b8964f", goldLight: "#f2e2ae", goldDeep: "#b8964f",
+    ivory: "#fffdf8", ivory2: "#f6f0e2", text: "#3a3226", muted: "#6b6152",
+    flowers: ["#f2e2ae", "#FFFFFF", "#b8964f"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "art-deco-noir": {
+    deep: "#132858", mid: "#1d3a7a", gold: "#b9c3d6", goldLight: "#ffffff", goldDeep: "#b9c3d6",
+    ivory: "#FBF3E2", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",
+    flowers: ["#ffffff", "#FFFFFF", "#b9c3d6"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "kolam-pathirikai": {
+    deep: "#4a0812", mid: "#6d0f1c", gold: "#c9962c", goldLight: "#fbe7a6", goldDeep: "#c9962c",
+    ivory: "#FBF3E2", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",
+    flowers: ["#fbe7a6", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "paisley-silk-vivah": {
+    deep: "#4a0812", mid: "#6d0f1c", gold: "#c9962c", goldLight: "#fbe7a6", goldDeep: "#c9962c",
+    ivory: "#FBF3E2", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",
+    flowers: ["#fbe7a6", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "jaali-velvet-nikah": {
+    deep: "#073227", mid: "#0d4a3a", gold: "#c9a24a", goldLight: "#fbecb4", goldDeep: "#c9a24a",
+    ivory: "#FBF3E2", ivory2: "#F1E2BE", text: "#2A1708", muted: "#7A6550",
+    flowers: ["#fbecb4", "#FFFFFF", "#c9a24a"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "kerala-christian-kasavu": {
+    deep: "#3d1a0c", mid: "#8A1620", gold: "#b8892a", goldLight: "#f4d98c", goldDeep: "#b8892a",
+    ivory: "#fbf5e6", ivory2: "#f3e8cc", text: "#3d1a0c", muted: "#6a4a30",
+    flowers: ["#f4d98c", "#FFFFFF", "#b8892a"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
+  "blush-lace": {
+    deep: "#3a3226", mid: "#7A5A22", gold: "#b8964f", goldLight: "#f2e2ae", goldDeep: "#b8964f",
+    ivory: "#fffdf8", ivory2: "#f6f0e2", text: "#3a3226", muted: "#6b6152",
+    flowers: ["#f2e2ae", "#FFFFFF", "#b8964f"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },
   "cinematic-film": {
     deep: "#0B0A09", mid: "#1C1814", gold: "#D6A84C", goldLight: "#F0D48E", goldDeep: "#8A6A2A",
     ivory: "#F3EDE2", ivory2: "#E2D8C6", text: "#1C1814", muted: "#6E6556",

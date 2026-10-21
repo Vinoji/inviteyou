@@ -20,7 +20,7 @@ import type { PremiumProps } from "../types";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Photos, Story, Working, hasGuide, useEvents } from "../cinema/CinemaBlocks";
-import { Corner, EmblemMark, FrameCap, patternTile } from "./Ornaments";
+import { Corner, EmblemMark, FrameCap, patternSize, patternTile } from "./Ornaments";
 import { printedDesign } from "./designs";
 import { RitualsInsert, SadyaInsert } from "./Inserts";
 import s from "./printed.module.css";
@@ -88,7 +88,7 @@ export default function PrintedCardInvitation(props: PremiumProps) {
     "--ribbon-ink": d.ribbonInk,
     "--foil": d.foil,
     "--foil-hi": d.foilHi,
-    ...(tile ? { "--tile": tile } : {}),
+    ...(tile ? { "--tile": tile, "--tile-size": `${patternSize(d.frame)}px` } : {}),
   } as CSSProperties;
 
   const people = [
@@ -102,7 +102,7 @@ export default function PrintedCardInvitation(props: PremiumProps) {
     ? [{ side: "bride" as const, name: data.brideName || data.groomName || bride, label: "", family: brideFamily }]
     : people;
   const capped = d.frame === "temple" || d.frame === "mughal";
-  const patterned = d.frame === "geometric" || d.frame === "phulkari";
+  const patterned = ["geometric", "phulkari", "kolam", "paisley", "jaali", "lace", "deco"].includes(d.frame);
 
   return (
     <div data-invite-root className={`${s.root} ${d.dark ? s.dark : ""}`} style={style}>
@@ -127,7 +127,7 @@ export default function PrintedCardInvitation(props: PremiumProps) {
       {/* ── The card, as printed ── */}
       <section className={s.desk}>
         <Reveal className={`${s.print} ${patterned ? s.patterned : ""}`}>
-          <div className={`${s.sheet} ${d.frame === "kasavu" ? s.kasavu : ""}`}>
+          <div className={`${s.sheet} ${d.frame === "kasavu" ? s.kasavu : ""} ${d.frame === "letterpress" ? s.letterpress : ""}`}>
             {d.frame === "corners" && (
               <>
                 <Corner className={`${s.corner} ${s.tl}`} />

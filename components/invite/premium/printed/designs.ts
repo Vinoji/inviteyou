@@ -26,9 +26,27 @@ export type Wording =
   | "firstBirthday"
   | "corporate"
   | "houseBlessing"
-  | "milestone";
+  | "milestone"
+  | "modern"
+  | "shubhVivah";
 /** The border printed around the card. */
-export type Frame = "temple" | "mughal" | "kasavu" | "geometric" | "corners" | "phulkari";
+export type Frame =
+  | "temple"
+  | "mughal"
+  | "kasavu"
+  | "geometric"
+  | "corners"
+  | "phulkari"
+  // printed pattern borders
+  | "kolam"
+  | "paisley"
+  | "jaali"
+  | "lace"
+  | "deco"
+  // no border: the names pressed into heavy cotton stock
+  | "letterpress";
+/** The printed pattern used for a border or an envelope liner. */
+export type Pattern = "geometric" | "phulkari" | "kolam" | "paisley" | "jaali" | "lace" | "deco";
 /** What sits at the very top, in foil. */
 export type Emblem = "suzhi" | "lamp" | "bismillah" | "cross" | "ikonkar" | "kalash" | "none";
 
@@ -62,6 +80,8 @@ export interface PrintedDesign {
   pattern?: string[];
   /** Dark card stock (light text). */
   dark?: boolean;
+  /** The envelope's printed liner: a pattern in the given colours. */
+  liner2?: { pattern: Pattern; colors: string[] };
   /** The groom is named first (Tamil, Nikah, Christian cards). */
   groomFirst: boolean;
   /** The order-of-ceremonies programme, or the sadya menu. */
@@ -85,6 +105,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#e2574f",
     envelope: "#c2161f",
     liner: "#f5cf55",
+    liner2: { pattern: "kolam", colors: ["#c2161f", "#c2161f"] },
     seal: ["#c9962c", "#fbe7a6"],
     groomFirst: true,
   },
@@ -102,6 +123,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#fbe7a6",
     envelope: "#5a0b16",
     liner: "#c9962c",
+    liner2: { pattern: "paisley", colors: ["#5a0b16", "#5a0b16"] },
     dark: true,
     groomFirst: true,
   },
@@ -119,6 +141,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f4d98c",
     envelope: "#f3e8cc",
     liner: "#c9962c",
+    liner2: { pattern: "kolam", colors: ["#8a1620", "#8a1620"] },
     groomFirst: true,
   },
   // Batch 3: a Tamil kalyanam card with its order of ceremonies, and a
@@ -137,6 +160,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f2cf7a",
     envelope: "#7a1424",
     liner: "#e0a526",
+    liner2: { pattern: "kolam", colors: ["#7a1424", "#7a1424"] },
     groomFirst: true,
     extras: ["rituals"],
   },
@@ -154,6 +178,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f4d98c",
     envelope: "#f4ead0",
     liner: "#2f6b2a",
+    liner2: { pattern: "kolam", colors: ["#f4ead0", "#f4ead0"] },
     groomFirst: true,
     extras: ["sadya"],
   },
@@ -172,6 +197,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#fbecb4",
     envelope: "#0a3d30",
     liner: "#c9a24a",
+    liner2: { pattern: "jaali", colors: ["#0a3d30", "#0a3d30"] },
     dark: true,
     groomFirst: true,
   },
@@ -189,6 +215,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f1d998",
     envelope: "#1f3a6b",
     liner: "#b08a3e",
+    liner2: { pattern: "geometric", colors: ["#1f3a6b", "#1f3a6b"] },
     pattern: ["#1f3a6b", "#b08a3e"],
     groomFirst: true,
   },
@@ -207,6 +234,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f2e2ae",
     envelope: "#efe7d6",
     liner: "#b8964f",
+    liner2: { pattern: "lace", colors: ["#efe7d6", "#efe7d6"] },
     groomFirst: true,
   },
   "royal-blue-matrimony": {
@@ -223,6 +251,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#ffffff",
     envelope: "#132858",
     liner: "#b9c3d6",
+    liner2: { pattern: "lace", colors: ["#132858", "#132858"] },
     dark: true,
     groomFirst: true,
   },
@@ -241,6 +270,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f6dc92",
     envelope: "#e9861c",
     liner: "#b8862c",
+    liner2: { pattern: "phulkari", colors: ["#e9861c", "#c2185b", "#fffaf0", "#2e7d32"] },
     groomFirst: false,
   },
   "phulkari-anand-karaj": {
@@ -257,6 +287,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f6dc92",
     envelope: "#e86a12",
     liner: "#c2185b",
+    liner2: { pattern: "phulkari", colors: ["#f6b40e", "#e86a12", "#fff6e6", "#2e7d32"] },
     pattern: ["#e86a12", "#c2185b", "#f6b40e", "#2e7d32"],
     groomFirst: false,
   },
@@ -275,6 +306,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#fbe7a6",
     envelope: "#4e1020",
     liner: "#c9962c",
+    liner2: { pattern: "paisley", colors: ["#4e1020", "#4e1020"] },
     dark: true,
     groomFirst: false,
   },
@@ -292,6 +324,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f6dc92",
     envelope: "#d8781c",
     liner: "#b8862c",
+    liner2: { pattern: "geometric", colors: ["#d8781c", "#d8781c"] },
     pattern: ["#c45a12", "#b8862c"],
     groomFirst: false,
   },
@@ -310,6 +343,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f8e08a",
     envelope: "#b3203a",
     liner: "#f2c45a",
+    liner2: { pattern: "kolam", colors: ["#b3203a", "#b3203a"] },
     seal: ["#c9962c", "#fbe7a6"],
     groomFirst: true,
   },
@@ -327,6 +361,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#e2574f",
     envelope: "#c2161f",
     liner: "#f5cf55",
+    liner2: { pattern: "kolam", colors: ["#c2161f", "#c2161f"] },
     seal: ["#c9962c", "#fbe7a6"],
     groomFirst: true,
   },
@@ -344,6 +379,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f2e2ae",
     envelope: "#dceaf6",
     liner: "#b8964f",
+    liner2: { pattern: "lace", colors: ["#dceaf6", "#dceaf6"] },
     groomFirst: true,
   },
   "valaikaappu-card": {
@@ -360,6 +396,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#fbecb4",
     envelope: "#0d4a33",
     liner: "#c2185b",
+    liner2: { pattern: "paisley", colors: ["#0d4a33", "#0d4a33"] },
     dark: true,
     groomFirst: true,
   },
@@ -377,6 +414,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#fbe7a6",
     envelope: "#5a0b16",
     liner: "#c9962c",
+    liner2: { pattern: "paisley", colors: ["#5a0b16", "#5a0b16"] },
     dark: true,
     groomFirst: true,
   },
@@ -394,6 +432,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f2e2ae",
     envelope: "#f7d3e0",
     liner: "#b8964f",
+    liner2: { pattern: "lace", colors: ["#f7d3e0", "#f7d3e0"] },
     groomFirst: true,
   },
   "corporate-formal-card": {
@@ -410,6 +449,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#fbecb4",
     envelope: "#0f1a33",
     liner: "#c9a24a",
+    liner2: { pattern: "deco", colors: ["#0f1a33", "#0f1a33"] },
     dark: true,
     groomFirst: true,
   },
@@ -427,6 +467,7 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#f2e2ae",
     envelope: "#e8efe0",
     liner: "#b8964f",
+    liner2: { pattern: "lace", colors: ["#e8efe0", "#e8efe0"] },
     groomFirst: true,
   },
   "milestone-birthday-card": {
@@ -443,8 +484,141 @@ export const PRINTED: Record<string, PrintedDesign> = {
     foilHi: "#fbe7a6",
     envelope: "#4e1020",
     liner: "#c9962c",
+    liner2: { pattern: "deco", colors: ["#4e1020", "#4e1020"] },
     dark: true,
     groomFirst: true,
+  },
+  // ── More printed styles: letterpress, art deco, kolam, paisley, jaali,
+  // Kerala Christian kasavu, lace ──
+  "letterpress-ivory": {
+    wording: "modern",
+    frame: "letterpress",
+    emblem: "none",
+    paper: ["#fbf8f1", "#f3eee3"],
+    desk: "#cfc6b6",
+    ink: "#2e2a24",
+    soft: "#6b645a",
+    accent: "#3c4a3a",
+    ribbonInk: "#fbf8f1",
+    foil: "#9a8a6a",
+    foilHi: "#d9cba8",
+    envelope: "#efe9dc",
+    liner: "#3c4a3a",
+    liner2: { pattern: "lace", colors: ["#9fb39a", "#d9cba8"] },
+    seal: ["#3c4a3a", "#7d8f78"],
+    groomFirst: false,
+  },
+  "art-deco-noir": {
+    wording: "modern",
+    frame: "deco",
+    emblem: "none",
+    paper: ["#161616", "#0b0b0b"],
+    desk: "#000000",
+    ink: "#f2e6c8",
+    soft: "#c9b98f",
+    accent: "#e2c37a",
+    ribbonInk: "#0b0b0b",
+    foil: "#c9a24a",
+    foilHi: "#fbecb4",
+    envelope: "#141414",
+    liner: "#c9a24a",
+    liner2: { pattern: "deco", colors: ["#1a1a1a", "#1a1a1a"] },
+    pattern: ["#c9a24a", "#fbecb4"],
+    dark: true,
+    groomFirst: false,
+  },
+  "kolam-pathirikai": {
+    wording: "tamil",
+    frame: "kolam",
+    emblem: "suzhi",
+    paper: ["#7a1424", "#5a0f1c"],
+    desk: "#2a0608",
+    ink: "#fff3e0",
+    soft: "#f1d7b8",
+    accent: "#f6d58a",
+    ribbonInk: "#5a0f1c",
+    foil: "#d6a84c",
+    foilHi: "#fbe7a6",
+    envelope: "#7a1424",
+    liner: "#f6d58a",
+    liner2: { pattern: "kolam", colors: ["#7a1424", "#7a1424"] },
+    pattern: ["#fff8ee", "#f6d58a"],
+    dark: true,
+    groomFirst: true,
+  },
+  "paisley-silk-vivah": {
+    wording: "shubhVivah",
+    frame: "paisley",
+    emblem: "kalash",
+    paper: ["#b3121f", "#8e0e19"],
+    desk: "#3a0508",
+    ink: "#fff1d6",
+    soft: "#f4d3a6",
+    accent: "#f6d58a",
+    ribbonInk: "#8e0e19",
+    foil: "#d4a440",
+    foilHi: "#fbe7a6",
+    envelope: "#8e0e19",
+    liner: "#f2b134",
+    liner2: { pattern: "paisley", colors: ["#8e0e19", "#b3121f"] },
+    pattern: ["#f6d58a", "#ffe9b8"],
+    dark: true,
+    groomFirst: true,
+  },
+  "jaali-velvet-nikah": {
+    wording: "nikah",
+    frame: "jaali",
+    emblem: "bismillah",
+    paper: ["#5a0f2a", "#3e0a1d"],
+    desk: "#16040a",
+    ink: "#f8e6c8",
+    soft: "#e2c79a",
+    accent: "#f0cf7e",
+    ribbonInk: "#3e0a1d",
+    foil: "#c9a24a",
+    foilHi: "#fbecb4",
+    envelope: "#4a0c22",
+    liner: "#c9a24a",
+    liner2: { pattern: "jaali", colors: ["#4a0c22", "#4a0c22"] },
+    pattern: ["#c9a24a", "#fbecb4"],
+    dark: true,
+    groomFirst: true,
+  },
+  "kerala-christian-kasavu": {
+    wording: "christian",
+    frame: "kasavu",
+    emblem: "cross",
+    paper: ["#fbf5e6", "#f3e8cc"],
+    desk: "#2f5a2a",
+    ink: "#3d1a0c",
+    soft: "#6a4a30",
+    accent: "#7a5a22",
+    ribbonInk: "#fff7e4",
+    foil: "#b8892a",
+    foilHi: "#f4d98c",
+    envelope: "#f3e8cc",
+    liner: "#c9962c",
+    liner2: { pattern: "lace", colors: ["#fbf5e6", "#fbf5e6"] },
+    groomFirst: true,
+  },
+  "blush-lace": {
+    wording: "modern",
+    frame: "lace",
+    emblem: "none",
+    paper: ["#fbe9ec", "#f6d9de"],
+    desk: "#e9c3cb",
+    ink: "#4a2a32",
+    soft: "#7a5862",
+    accent: "#a8485f",
+    ribbonInk: "#ffffff",
+    foil: "#b8964f",
+    foilHi: "#f2e2ae",
+    envelope: "#f6d9de",
+    liner: "#ffffff",
+    liner2: { pattern: "lace", colors: ["#e3b3bf", "#d8a0ae"] },
+    pattern: ["#ffffff", "#ffffff"],
+    seal: ["#c9a96a", "#f2e2ae"],
+    groomFirst: false,
   },
 };
 

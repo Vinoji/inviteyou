@@ -36,6 +36,13 @@ const PREMIUM_IDS = new Set([
   "pastel-palace",
   "madurai-meenakshi",
   "cinematic-film",
+  "letterpress-ivory",
+  "art-deco-noir",
+  "kolam-pathirikai",
+  "paisley-silk-vivah",
+  "jaali-velvet-nikah",
+  "kerala-christian-kasavu",
+  "blush-lace",
   "lilac-seal-proposal",
   "cinematic-film-proposal",
   "lilac-seal-valentine",
@@ -130,6 +137,13 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "house-blessing-card":
     case "corporate-formal-card":
     case "milestone-birthday-card":
+    case "letterpress-ivory":
+    case "art-deco-noir":
+    case "kolam-pathirikai":
+    case "paisley-silk-vivah":
+    case "jaali-velvet-nikah":
+    case "kerala-christian-kasavu":
+    case "blush-lace":
       return <PrintedCard {...props} />;
     case "lilac-seal":
     case "lilac-seal-engagement":

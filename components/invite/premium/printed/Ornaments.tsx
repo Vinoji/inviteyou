@@ -165,18 +165,30 @@ export function Corner({ className }: { className: string }) {
   );
 }
 
-/** The repeating tile for patterned borders, as a CSS background. */
-export function patternTile(frame: Frame, colors: string[] = []): string | undefined {
+/** The repeating tile for patterned borders and liners, as a CSS background. */
+export function patternTile(pattern: string, colors: string[] = []): string | undefined {
   const [a = "#1f3a6b", b = "#b08a3e", c = a, d = b] = colors;
-  let svg = "";
-  if (frame === "geometric") {
+  const T: Record<string, string> = {
     // an eight-pointed star (two squares) with a dot — the Islamic and Jain border
-    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><g fill='none' stroke='${a}' stroke-width='1.1'><rect x='6' y='6' width='12' height='12'/><rect x='6' y='6' width='12' height='12' transform='rotate(45 12 12)'/></g><circle cx='12' cy='12' r='2' fill='${b}'/><circle cx='0' cy='0' r='1.4' fill='${b}'/><circle cx='24' cy='0' r='1.4' fill='${b}'/><circle cx='0' cy='24' r='1.4' fill='${b}'/><circle cx='24' cy='24' r='1.4' fill='${b}'/></svg>`;
-  } else if (frame === "phulkari") {
+    geometric: `<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><g fill='none' stroke='${a}' stroke-width='1.1'><rect x='6' y='6' width='12' height='12'/><rect x='6' y='6' width='12' height='12' transform='rotate(45 12 12)'/></g><circle cx='12' cy='12' r='2' fill='${b}'/><circle cx='0' cy='0' r='1.4' fill='${b}'/><circle cx='24' cy='0' r='1.4' fill='${b}'/><circle cx='0' cy='24' r='1.4' fill='${b}'/><circle cx='24' cy='24' r='1.4' fill='${b}'/></svg>`,
     // phulkari: stitched diamonds in silk colours
-    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><path d='M14 2l10 12-10 12L4 14z' fill='${a}'/><path d='M14 7l5.5 7L14 21l-5.5-7z' fill='${b}'/><path d='M14 11l2.5 3L14 17l-2.5-3z' fill='${c}'/><path d='M0 0l3 3.5L0 7zM28 0l-3 3.5L28 7zM0 28l3-3.5L0 21zM28 28l-3-3.5L28 21z' fill='${d}'/></svg>`;
-  } else {
-    return undefined;
-  }
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+    phulkari: `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><path d='M14 2l10 12-10 12L4 14z' fill='${a}'/><path d='M14 7l5.5 7L14 21l-5.5-7z' fill='${b}'/><path d='M14 11l2.5 3L14 17l-2.5-3z' fill='${c}'/><path d='M0 0l3 3.5L0 7zM28 0l-3 3.5L28 7zM0 28l3-3.5L0 21zM28 28l-3-3.5L28 21z' fill='${d}'/></svg>`,
+    // pulli kolam: rice-flour dots with a looped line around them
+    kolam: `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><g fill='${a}'><circle cx='7' cy='7' r='1.5'/><circle cx='21' cy='7' r='1.5'/><circle cx='7' cy='21' r='1.5'/><circle cx='21' cy='21' r='1.5'/><circle cx='14' cy='14' r='1.5'/></g><g fill='none' stroke='${a}' stroke-width='1.1' stroke-linecap='round'><path d='M14 3.5C17 7 17 10.5 14 14C11 10.5 11 7 14 3.5zM14 24.5C11 21 11 17.5 14 14C17 17.5 17 21 14 24.5zM3.5 14C7 11 10.5 11 14 14C10.5 17 7 17 3.5 14zM24.5 14C21 17 17.5 17 14 14C17.5 11 21 11 24.5 14z'/></g></svg>`,
+    // a printed paisley (mango) with dots
+    paisley: `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M15 4c7 0 12 6 10 13c-1.6 5.6-7.6 9-12.4 7c-4-1.6-4.7-7-1.2-8.9c2.8-1.5 6 0.4 5.6 3.4' fill='none' stroke='${a}' stroke-width='1.3' stroke-linecap='round'/><path d='M15 4c-2 2-2.5 5-1 7' fill='none' stroke='${a}' stroke-width='1.1'/><circle cx='15.3' cy='17.6' r='1.4' fill='${b}'/><g fill='${b}'><circle cx='3' cy='29' r='1'/><circle cx='29' cy='3' r='1'/><circle cx='6' cy='6' r='0.8'/></g></svg>`,
+    // Mughal jaali: overlapping circles, a carved lattice
+    jaali: `<svg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'><g fill='none' stroke='${a}' stroke-width='1.1'><circle cx='0' cy='0' r='14'/><circle cx='28' cy='0' r='14'/><circle cx='0' cy='28' r='14'/><circle cx='28' cy='28' r='14'/><circle cx='14' cy='14' r='14'/></g><circle cx='14' cy='14' r='1.6' fill='${b}'/></svg>`,
+    // lace: scallops and little flowers
+    lace: `<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><g fill='none' stroke='${a}' stroke-width='1.1'><circle cx='15' cy='15' r='7'/><circle cx='0' cy='0' r='7'/><circle cx='30' cy='0' r='7'/><circle cx='0' cy='30' r='7'/><circle cx='30' cy='30' r='7'/></g><g fill='${a}'><circle cx='15' cy='15' r='2'/><circle cx='15' cy='5.5' r='1'/><circle cx='15' cy='24.5' r='1'/><circle cx='5.5' cy='15' r='1'/><circle cx='24.5' cy='15' r='1'/></g><g fill='${b}'><circle cx='15' cy='0' r='1.2'/><circle cx='0' cy='15' r='1.2'/><circle cx='30' cy='15' r='1.2'/><circle cx='15' cy='30' r='1.2'/></g></svg>`,
+    // art deco: stacked fans
+    deco: `<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><g fill='none' stroke='${a}' stroke-width='1.1'><path d='M0 16A16 16 0 0 1 32 16'/><path d='M5 16A11 11 0 0 1 27 16'/><path d='M10 16A6 6 0 0 1 22 16'/><path d='M-16 32A16 16 0 0 1 16 32'/><path d='M16 32A16 16 0 0 1 48 32'/><path d='M-11 32A11 11 0 0 1 11 32'/><path d='M21 32A11 11 0 0 1 43 32'/><path d='M16 0v16'/></g><circle cx='16' cy='16' r='1.3' fill='${b}'/></svg>`,
+  };
+  const svg = T[pattern];
+  return svg ? `url("data:image/svg+xml,${encodeURIComponent(svg)}")` : undefined;
+}
+
+/** The tile's size in CSS px. */
+export function patternSize(pattern: string): number {
+  return ({ geometric: 24, phulkari: 28, kolam: 28, paisley: 32, jaali: 28, lace: 30, deco: 32 } as Record<string, number>)[pattern] ?? 24;
 }
