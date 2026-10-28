@@ -270,7 +270,132 @@
       "opens": "times guests opened an invitation"
     },
     "freeCard": "Free card",
-    "liveFrom": "Live ₹{price}"
+    "liveFrom": "Live ₹{price}",
+    "home": {
+      "h1": "Digital Wedding Invitation Maker for Tamil & English Invites",
+      "tagline": "Digital invitations that open like a <hl>celebration</hl>",
+      "why": {
+        "title": "Why a digital invitation beats a printed card or a PDF",
+        "sub": "One link does what a box of cards and a forwarded image can't.",
+        "printed": {
+          "title": "Printed cards",
+          "items": {
+            "0": "₹20–₹150+ per card, plus envelopes and courier",
+            "1": "Weeks of printing and delivery",
+            "2": "A typo or a venue change means reprinting",
+            "3": "Guests still have to search for the hall"
+          }
+        },
+        "pdf": {
+          "title": "PDF or image cards",
+          "items": {
+            "0": "A flat picture lost in a busy WhatsApp chat",
+            "1": "No map, no calendar, no RSVP",
+            "2": "Can't be changed once it's forwarded",
+            "3": "Hard to read on a small phone screen"
+          }
+        },
+        "live": {
+          "title": "An InviteForYou live invitation",
+          "items": {
+            "0": "Opens with an animation — your names, your design",
+            "1": "One link for every guest, in Tamil or English",
+            "2": "Google Maps directions and Add to Calendar built in",
+            "3": "RSVPs and a guest list; update details any time"
+          }
+        }
+      },
+      "features": {
+        "title": "Everything in one invitation link",
+        "sub": "What your guests get when they tap the link.",
+        "items": {
+          "0": {
+            "t": "Animated opening",
+            "d": "Temple doors, a wax seal, a pearl curtain or a 3D palace — opening with your names."
+          },
+          "1": {
+            "t": "Tamil & English",
+            "d": "Write the whole invitation in Tamil or English, with traditional wording ready to edit."
+          },
+          "2": {
+            "t": "Google Maps directions",
+            "d": "Every function's venue with one-tap directions from wherever guests are."
+          },
+          "3": {
+            "t": "Add to Calendar",
+            "d": "Guests save the muhurtham and reception, with a reminder the day before."
+          },
+          "4": {
+            "t": "RSVP & guest list",
+            "d": "Guests reply in a tap; you see who's coming and how many."
+          },
+          "5": {
+            "t": "Countdown, story & photos",
+            "d": "A live countdown, your love story and a photo gallery."
+          },
+          "6": {
+            "t": "Free card image",
+            "d": "Download any design as a card image free — to share or print for elders."
+          },
+          "7": {
+            "t": "WhatsApp sharing",
+            "d": "Share one link on WhatsApp; it opens on every phone, with no app."
+          }
+        }
+      },
+      "occasions": {
+        "title": "Invitations for every Indian occasion",
+        "sub": "Designs made for each tradition and function — pick yours."
+      },
+      "faq": {
+        "title": "Questions couples ask",
+        "items": {
+          "0": {
+            "q": "How much does a digital wedding invitation cost?",
+            "a": "Designing and previewing is free, and any design downloads free as a card image. A live invitation link — with the animation, maps, RSVP and more — is a one-time payment from ₹{price}. No subscription."
+          },
+          "1": {
+            "q": "Can I make a Tamil wedding invitation?",
+            "a": "Yes. Every design works in Tamil and English, with Tamil fonts and traditional wording such as உ, ஸ்ரீ விநாயகர் துணை and the muhurtham details."
+          },
+          "2": {
+            "q": "Do guests need an app to open it?",
+            "a": "No. Guests tap the link on WhatsApp and it opens in their phone's browser, on Android and iPhone."
+          },
+          "3": {
+            "q": "Can I change details after sharing?",
+            "a": "Yes. Change the venue, timings, photos or wording with your private edit link — guests always see the latest version on the same link."
+          },
+          "4": {
+            "q": "How do RSVPs work?",
+            "a": "Guests reply on the invitation with how many are coming and a message, and you see every response in your private guest list."
+          },
+          "5": {
+            "q": "How long does the invitation stay live?",
+            "a": "It stays live until 10 days after your event date."
+          }
+        }
+      },
+      "examples": {
+        "title": "See real examples",
+        "sub": "Watch the openings, read the wording guides, or browse every design.",
+        "demo": "Watch every design's opening",
+        "demoText": "Short videos of each invitation opening, from Temple Journey to Lilac Seal.",
+        "youtube": "InviteForYou on YouTube",
+        "youtubeText": "All our design walkthroughs as YouTube Shorts.",
+        "wording": "Tamil wedding invitation wording",
+        "wordingText": "Traditional திருமண அழைப்பிதழ் wording with samples in Tamil and English.",
+        "whatsapp": "WhatsApp invitation messages",
+        "whatsappText": "15 ready-to-send messages for relatives, friends and colleagues.",
+        "all": "Browse all designs",
+        "allText": "Every design in one place, for every occasion and tradition."
+      },
+      "seeAll": "See all {count} designs",
+      "badgeFree": "Free card",
+      "badgeLive": "Live ₹{price}",
+      "badge3d": "3D ₹{price}",
+      "freeAlso": "Free card · Live ₹{price}"
+    }
   },
   "notFound": {
     "eyebrow": "404",
@@ -5374,7 +5499,12 @@
       "demos": "Demos",
       "support": "Support",
       "create": "Create invitation",
-      "pricing": "Pricing"
+      "pricing": "Pricing",
+      "invitations": "Invitations",
+      "allDesigns": "All designs",
+      "about": "About",
+      "occasionsHead": "Occasions",
+      "traditionsHead": "Traditions & functions"
     },
     "footer": {
       "tagline": "Beautiful animated invitations for weddings and every celebration — in English and Tamil, shared with one link.",
@@ -5412,7 +5542,11 @@
       "youtube": "More videos on our YouTube channel",
       "use": "Use",
       "videosBody": "Each design in under a minute — the opening, typing your names, and the finished invitation your guests receive.",
-      "play": "Play"
+      "play": "Play",
+      "metaTitleFull": "Wedding Invitation Demos – Try Animated Opening | InviteForYou",
+      "metaDescriptionFull": "Watch and try every animated wedding invitation opening — temple doors, wax seals, pearl curtains and 3D palaces. Tap to open each design like your guests will.",
+      "ogTitle": "Try Every Invitation Opening",
+      "ogDescription": "Tap, pull or scratch — every design's opening animation, plus short videos of each one."
     },
     "support": {
       "metaTitle": "Support",
@@ -5724,7 +5858,19 @@
       "volume": "Volume"
     },
     "backHome": "Home",
-    "backDesigns": "All designs"
+    "backDesigns": "All designs",
+    "navCollections": {
+      "tamil-wedding-invitation": "Tamil Wedding",
+      "kerala-wedding-invitation": "Kerala Wedding",
+      "nikah-invitation": "Nikah & Walima",
+      "christian-wedding-invitation": "Christian Wedding",
+      "anand-karaj-invitation": "Anand Karaj",
+      "jain-wedding-invitation": "Jain Wedding",
+      "nichayathartham-invitation": "Nichayathartham",
+      "valaikappu-invitation": "Valaikappu & Seemantham",
+      "griha-pravesam-invitation": "Griha Pravesam",
+      "shashtiabdapoorthi-invitation": "Shashtiabdapoorthi"
+    }
   },
   "notify": {
     "published": "Your invitation for {title} is live! 🎉\n\nShare with guests: {inviteUrl}\n\nYour private edit link (keep it safe, don’t share): {editUrl}",
@@ -5745,8 +5891,10 @@
     "ogLine": "Animated invitations · RSVPs · Tamil & English",
     "orgDescription": "Animated online invitations for weddings, engagements, birthdays and every Indian celebration — in Tamil and English, with RSVPs, maps and WhatsApp sharing.",
     "offerName": "One invitation, all features",
-    "homeTitle": "Online Wedding Invitation Maker — Animated & 3D Digital Invites",
-    "homeDescription": "Create a beautiful digital invitation website for weddings, engagements, birthdays and housewarmings — animated and 3D designs, Tamil & English, RSVPs, maps and WhatsApp sharing. Live in minutes."
+    "homeTitle": "Digital Wedding Invitation Maker – Animated & 3D",
+    "homeDescription": "Make an animated digital wedding invitation in Tamil or English. RSVP, Google Maps and WhatsApp sharing included. Design free, go live from ₹49.",
+    "homeOgTitle": "Wedding Invitations That Open Like a Celebration",
+    "homeOgDescription": "Temple doors, wax-sealed envelopes and pearl curtains that open with your names. Design free, share one WhatsApp link, go live from ₹49."
   },
   "premium": {
     "pathirikai": {
@@ -6706,11 +6854,15 @@
       "faqTitle": "Questions",
       "moreTitle": "More invitations",
       "start": "Start with a design",
-      "breadcrumbHome": "Home"
+      "breadcrumbHome": "Home",
+      "relatedTitle": "See also",
+      "allOf": "All {label} invitations",
+      "allDesigns": "Browse all designs",
+      "allDesignsText": "Every design for every occasion, in one place."
     },
     "wedding": {
-      "metaTitle": "Wedding Invitation Website & Digital Wedding Card Maker",
-      "metaDescription": "Create an animated wedding invitation website in minutes — Hindu, Christian, Muslim and Tamil designs, 3D palace, temple and cathedral templates, RSVPs, maps and WhatsApp sharing.",
+      "metaTitle": "Digital Wedding Invitation & Wedding Card Maker",
+      "metaDescription": "Animated wedding invitations for Hindu, Christian, Muslim and Tamil weddings — 3D palace and temple designs, RSVP, maps and WhatsApp sharing.",
       "h1": "Digital wedding invitations your guests will remember",
       "intro": "Pick a wedding design — from kolam and temple gopuram openings to a 3D palace, cathedral or blossom park — add your story, families, events and photos, and share one link on WhatsApp. Guests RSVP, get directions and count down to the muhurtham.",
       "faq": {
@@ -6726,7 +6878,9 @@
           "q": "Can guests RSVP online?",
           "a": "Yes. Guests reply on the invitation with how many are coming and a message; you see every response in your guest list."
         }
-      }
+      },
+      "ogTitle": "Wedding Invitations That Open Like a Celebration",
+      "ogDescription": "Temple doors, wax-sealed envelopes, pearl curtains and 3D palaces — your wedding in one WhatsApp link, with RSVP and maps."
     },
     "engagement": {
       "metaTitle": "Engagement Invitation Online — Animated E-Invite Maker",
@@ -6742,7 +6896,9 @@
           "q": "Can I share it on WhatsApp?",
           "a": "Yes — share the link, or the invitation card image with the message."
         }
-      }
+      },
+      "ogTitle": "Engagement Invitations — Ring Ceremony to Nichayam",
+      "ogDescription": "Wax seals, temple doors and thamboolam designs for your engagement, shared as one link."
     },
     "anniversary": {
       "metaTitle": "Anniversary Invitation Online — Digital Anniversary Card",
@@ -6758,7 +6914,9 @@
           "q": "Can family edit it?",
           "a": "Anyone with your private edit link can make changes."
         }
-      }
+      },
+      "ogTitle": "Anniversary Invitations — From 25 Years to Manivizha",
+      "ogDescription": "Lilac seals, cinematic love stories and shashtiabdapoorthi cards for your anniversary."
     },
     "valentine": {
       "metaTitle": "Valentine's Day Invitation & Love Letter Online",
@@ -6770,7 +6928,9 @@
           "q": "Is it only for couples?",
           "a": "Use it for any Valentine's celebration — a date, a party or a surprise."
         }
-      }
+      },
+      "ogTitle": "Valentine's Invitations — Be My Valentine",
+      "ogDescription": "Wax-sealed letters, pastel palaces and scratch-to-reveal dates for your Valentine's Day."
     },
     "proposal": {
       "metaTitle": "Proposal Invitation & Engagement Announcement Online",
@@ -6782,7 +6942,9 @@
           "q": "Can the date be in the past?",
           "a": "Yes — proposal invitations can share a moment that has already happened."
         }
-      }
+      },
+      "ogTitle": "Proposal Invitations — Will You Marry Me?",
+      "ogDescription": "A wax-sealed letter or a cinematic premiere to pop the question."
     },
     "birthday": {
       "metaTitle": "Birthday Invitation Online — Animated Birthday E-Invite",
@@ -6798,7 +6960,9 @@
           "q": "Will guests see a countdown?",
           "a": "Yes, a countdown to the party is built in."
         }
-      }
+      },
+      "ogTitle": "Birthday Invitations — First Birthday to 50th",
+      "ogDescription": "Printed first-birthday cards, princess palaces and cinematic birthday premieres."
     },
     "housewarming": {
       "metaTitle": "Housewarming Invitation Online — Griha Pravesh E-Invite",
@@ -6810,7 +6974,9 @@
           "q": "Can I add the pooja time and the lunch?",
           "a": "Yes — add two events, each with its own time and venue."
         }
-      }
+      },
+      "ogTitle": "Housewarming Invitations — Griha Pravesam",
+      "ogDescription": "Turmeric புதுமனை புகுவிழா cards, house blessings and cinematic “our new home” designs."
     },
     "baby": {
       "metaTitle": "Baby Shower & Naming Ceremony Invitation Online",
@@ -6822,10 +6988,12 @@
           "q": "Can I use it for a cradle ceremony?",
           "a": "Yes — it works for baby showers, valaikappu, cradle and naming ceremonies."
         }
-      }
+      },
+      "ogTitle": "Baby Invitations — Valaikappu, Naming & Baby Shower",
+      "ogDescription": "Valaikappu cards, naming ceremonies and pastel baby showers."
     },
     "corporate": {
-      "metaTitle": "Corporate Event Invitation Online — Launch & Annual Day E-Invite",
+      "metaTitle": "Corporate Event Invitation Online – Launch & Annual Day",
       "metaDescription": "Make a polished corporate event invitation with agenda, venue map, RSVPs and a QR code — for launches, annual days and conferences.",
       "h1": "Corporate event invitations, done in minutes",
       "intro": "Invite guests to a launch, annual day or conference with a clean, animated invitation — event times, venue directions, RSVPs and a QR code for entry.",
@@ -6833,6 +7001,238 @@
         "0": {
           "q": "Can I get a guest list?",
           "a": "Yes — every RSVP appears in your private guest list with counts and messages."
+        }
+      },
+      "ogTitle": "Event Invitations — Launches, Conferences & Galas",
+      "ogDescription": "Formal navy-and-gold cards and cinematic launch invitations with tickets for every session."
+    },
+    "tamil-wedding-invitation": {
+      "label": "Tamil Wedding",
+      "metaTitle": "Tamil Wedding Invitation Online – Kalyana Pathirikai Maker",
+      "metaDescription": "Make a Tamil wedding invitation online — traditional கல்யாண பத்திரிக்கை wording, உ and the muhurtham, animated temple designs, RSVP and WhatsApp sharing.",
+      "ogTitle": "Tamil Wedding Invitations That Open Like a Temple",
+      "ogDescription": "Manjal pathirikai, kolam borders, Madurai Meenakshi temple doors — your kalyana pathirikai in Tamil or English, shared as one WhatsApp link.",
+      "h1": "Tamil Wedding Invitation Online – Kalyana Pathirikai",
+      "intro": "Your திருமண அழைப்பிதழ் (kalyana pathirikai) the way Tamil families print it — உ and ஸ்ரீ விநாயகர் துணை at the top, மணமகன் and மணமகள் with their parents, the muhurtham and the venue — now as an animated invitation your guests open on WhatsApp. Pick a turmeric manjal pathirikai, a kolam-bordered maroon card, temple doors opening onto the Meenakshi gopuram, or a walk into a temple.",
+      "faq": {
+        "0": {
+          "q": "Can I write the whole invitation in Tamil?",
+          "a": "Yes. Every design works in Tamil and English, with Tamil fonts and the traditional Tamil wording ready to edit."
+        },
+        "1": {
+          "q": "Does it include the muhurtham and both families?",
+          "a": "Yes — the muhurtham date and time, the venue with Google Maps, and both families (“…அவர்களின் அன்புப் புதல்வன் / புதல்வி”) are on the card."
+        },
+        "2": {
+          "q": "Can I also print it?",
+          "a": "Yes. You can download the card image of any design free and print a few for elders."
+        }
+      }
+    },
+    "kerala-wedding-invitation": {
+      "label": "Kerala Wedding",
+      "metaTitle": "Kerala Wedding Invitation Online – Hindu, Christian & Muslim",
+      "metaDescription": "Kerala wedding invitations online — kasavu gold Hindu cards, Kerala Christian cards with a verse, Kerala Muslim Nikah cards. RSVP and WhatsApp sharing.",
+      "ogTitle": "Kerala Wedding Invitations in Kasavu Gold",
+      "ogDescription": "Sumuhurtham cards with a nilavilakku, Kerala Christian Holy Matrimony and Kerala Muslim Nikah — on cream stock with gold kasavu bands.",
+      "h1": "Kerala Wedding Invitations – Hindu, Christian & Muslim",
+      "intro": "Cream card stock and gold kasavu bands, the way Kerala wedding cards are printed — for a Hindu Sumuhurtham with a brass nilavilakku and a banana-leaf sadya menu, a Kerala Christian Holy Matrimony with a cross and Matthew 19:6, or a Kerala Muslim Nikah with the Bismillah. Share one link on WhatsApp; guests get directions, the date and the RSVP.",
+      "faq": {
+        "0": {
+          "q": "Do you have Kerala Christian wedding invitations?",
+          "a": "Yes — Kerala Christian Kasavu: cream stock with gold kasavu bands, a gold cross, Matthew 19:6 and Holy Matrimony wording."
+        },
+        "1": {
+          "q": "Do you have Kerala Muslim Nikah cards?",
+          "a": "Yes — Kerala Muslim Nikah: kasavu gold and emerald with the Bismillah, the Nikah and the wedding lunch."
+        },
+        "2": {
+          "q": "Can I add the sadya menu?",
+          "a": "Yes. Kerala Backwaters & Sadya prints the Kalyana Sadya on a banana-leaf insert."
+        }
+      }
+    },
+    "nikah-invitation": {
+      "label": "Nikah & Walima",
+      "metaTitle": "Nikah Invitation Card Online – Muslim Wedding Invitation",
+      "metaDescription": "Create a Nikah and Walima invitation online — Bismillah in Arabic calligraphy, Mughal arch and jaali designs, Tamil or English, RSVP and WhatsApp sharing.",
+      "ogTitle": "Nikah Invitations With the Bismillah in Gold",
+      "ogDescription": "Emerald Mughal arches, maroon velvet jaali and ivory geometric borders — your Nikah and Walima in one link.",
+      "h1": "Nikah Invitation Card Online – Nikah & Walima",
+      "intro": "Nikah cards open with the Bismillah — بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ — and invite guests to both the Nikah and the Walima. Choose an emerald card with a gold Mughal arch, maroon velvet with a carved jaali, ivory with eight-pointed stars, or a Kerala Muslim kasavu card, and share it on WhatsApp.",
+      "faq": {
+        "0": {
+          "q": "Can I add both the Nikah and the Walima?",
+          "a": "Yes. Each design has two functions, named Nikah and Walima by default, each with its own time and venue."
+        },
+        "1": {
+          "q": "Is the Bismillah in Arabic?",
+          "a": "Yes, in Arabic calligraphy, with the English or Tamil meaning below it."
+        },
+        "2": {
+          "q": "Can guests RSVP?",
+          "a": "Yes — guests reply on the invitation and you see every response."
+        }
+      }
+    },
+    "christian-wedding-invitation": {
+      "label": "Christian Wedding",
+      "metaTitle": "Christian Wedding Invitation Online – Holy Matrimony Cards",
+      "metaDescription": "Christian wedding invitations online — Holy Matrimony cards with a cross and Bible verse, church venue, reception, RSVP and WhatsApp sharing. Tamil & English.",
+      "ogTitle": "Holy Matrimony Invitations With a Verse",
+      "ogDescription": "Ivory and royal-blue cards with a cross and Matthew 19:6, lace, Kerala kasavu, a pearl curtain and a 3D cathedral.",
+      "h1": "Christian Wedding Invitation – Holy Matrimony",
+      "intro": "Holy Matrimony cards begin with a Bible verse — Matthew 19:6, “What therefore God hath joined together, let not man put asunder” — and name the church. Pick an ivory card with gold corners, royal blue printed in silver, blush lace, Kerala Christian kasavu, a pearl curtain or a 3D cathedral, and share it in one WhatsApp link.",
+      "faq": {
+        "0": {
+          "q": "Can I change the Bible verse?",
+          "a": "Yes. Every line of the card can be edited, including the verse and its reference."
+        },
+        "1": {
+          "q": "Can I add the reception?",
+          "a": "Yes — the service and the reception each have their own time, venue and map."
+        },
+        "2": {
+          "q": "Is it available in Tamil?",
+          "a": "Yes, including the verse in the Tamil Bible wording."
+        }
+      }
+    },
+    "anand-karaj-invitation": {
+      "label": "Anand Karaj",
+      "metaTitle": "Anand Karaj Invitation Online – Sikh Wedding Card",
+      "metaDescription": "Sikh wedding invitations online — Anand Karaj cards with Ik Onkar, “With the blessings of Waheguru Ji”, the Gurdwara, langar and reception. RSVP & WhatsApp.",
+      "ogTitle": "Anand Karaj Invitations With Ik Onkar",
+      "ogDescription": "Ivory and phulkari cards for your Anand Karaj — the Gurdwara, langar and reception in one link.",
+      "h1": "Anand Karaj Invitation – Sikh Wedding Card",
+      "intro": "Anand Karaj cards carry ੴ and “With the blessings of Waheguru Ji”, name the bride and groom with their families, and invite guests to the Gurdwara and langar. Following Gurdwara guidance, Gurbani isn't printed on the card. Pick ivory with saffron and gold, or a phulkari embroidery border.",
+      "faq": {
+        "0": {
+          "q": "Is Gurbani printed on the card?",
+          "a": "No. Many Gurdwaras ask that Gurbani not be printed on invitations, so the cards use Ik Onkar and a blessing line."
+        },
+        "1": {
+          "q": "Can I add the reception?",
+          "a": "Yes, the Anand Karaj and the reception each have their own time and venue."
+        },
+        "2": {
+          "q": "Is the bride named first?",
+          "a": "Yes, by default — you can change the order."
+        }
+      }
+    },
+    "jain-wedding-invitation": {
+      "label": "Jain Wedding",
+      "metaTitle": "Jain Wedding Invitation Online – Namokar Mantra Cards",
+      "metaDescription": "Jain wedding invitations online — ॥ णमो अरिहंताणं ॥ and Jai Jinendra, a gold kalash, Shubh Vivah wording, the lagna and venue. RSVP & WhatsApp sharing.",
+      "ogTitle": "Jain Wedding Invitations With the Namokar Line",
+      "ogDescription": "Maroon-and-gold and kesar-ivory cards with “Namo Arihantanam”, a kalash and the Shubh Vivah wording.",
+      "h1": "Jain Wedding Invitation – Shubh Vivah",
+      "intro": "Jain wedding cards open with the first line of the Namokar Mantra — ॥ णमो अरिहंताणं ॥ — and “Jai Jinendra”, with a kalash, the Shubh Vivah wording, the couple with their families and the lagna. Pick maroon and gold under a temple arch, or ivory in a kesar border.",
+      "faq": {
+        "0": {
+          "q": "Can I mention that meals are Jain and before sunset?",
+          "a": "Yes — add it to the FAQ or the closing line; the sample content already does."
+        },
+        "1": {
+          "q": "Can I edit the mantra line?",
+          "a": "Yes, every line of the card can be edited."
+        },
+        "2": {
+          "q": "Is it in Hindi?",
+          "a": "The mantra is printed in Devanagari; the rest is in English or Tamil."
+        }
+      }
+    },
+    "nichayathartham-invitation": {
+      "label": "Nichayathartham",
+      "metaTitle": "Nichayathartham Invitation Online – Engagement Invitation",
+      "metaDescription": "Make a nichayathartham (engagement) invitation online — Tamil pathirikai, temple doors or a wax-sealed envelope, with RSVP and WhatsApp sharing.",
+      "ogTitle": "Nichayathartham Invitations, Tamil Style",
+      "ogDescription": "A Tamil engagement pathirikai, Madurai temple doors or a lilac wax seal — your nichayam in one WhatsApp link.",
+      "h1": "Nichayathartham Invitation Online – Engagement",
+      "intro": "The நிச்சயதார்த்த அழைப்பிதழ் — the first step towards the wedding. Pick a Tamil engagement pathirikai with a temple arch, temple doors opening onto the Meenakshi gopuram, a thamboolam design or a lilac wax-sealed envelope, add both families and the time, and share it on WhatsApp.",
+      "faq": {
+        "0": {
+          "q": "Can I write it in Tamil?",
+          "a": "Yes — “நிச்சயதார்த்த அழைப்பிதழ்” and the traditional wording are ready to edit."
+        },
+        "1": {
+          "q": "Can I add the dinner?",
+          "a": "Yes. The nichayathartham and the dinner each have their own time and venue."
+        },
+        "2": {
+          "q": "Can I reuse my details for the wedding invitation?",
+          "a": "Yes — switch designs and everything you typed stays."
+        }
+      }
+    },
+    "valaikappu-invitation": {
+      "label": "Valaikappu & Seemantham",
+      "metaTitle": "Valaikappu Invitation Online – Seemantham & Baby Shower",
+      "metaDescription": "Valaikappu, seemantham and baby shower invitations online — bangle-green cards, pastel palaces and marigold designs in Tamil or English, with RSVP and WhatsApp.",
+      "ogTitle": "Valaikappu Invitations in Bangle Green and Gold",
+      "ogDescription": "A printed valaikappu card, a pastel palace baby shower or marigold curtains — for the mother-to-be.",
+      "h1": "Valaikappu Invitation – Seemantham & Baby Shower",
+      "intro": "Invite family to shower the mother-to-be with bangles and blessings — a வளைகாப்பு / seemantham card in bangle green and gold under a temple arch, a pastel palace baby shower with a scratch-to-reveal date, or a marigold-curtain design. Add the muhurtham and lunch, and share it on WhatsApp.",
+      "faq": {
+        "0": {
+          "q": "Can I call it seemantham instead?",
+          "a": "Yes — the title and every line can be edited."
+        },
+        "1": {
+          "q": "Is there a naming ceremony card too?",
+          "a": "Yes, the Namakaranam card is in the same collection."
+        },
+        "2": {
+          "q": "Can guests RSVP?",
+          "a": "Yes, and you'll see who is coming."
+        }
+      }
+    },
+    "griha-pravesam-invitation": {
+      "label": "Griha Pravesam",
+      "metaTitle": "Griha Pravesam Invitation Online – Housewarming Invitation",
+      "metaDescription": "Griha pravesam and housewarming invitations online — புதுமனை புகுவிழா turmeric cards with a kalash, house blessing cards and cinematic designs. RSVP & WhatsApp.",
+      "ogTitle": "Griha Pravesam Invitations With a Kalash",
+      "ogDescription": "A turmeric புதுமனை புகுவிழா card, a Christian house blessing or a cinematic “our new home” — in one link.",
+      "h1": "Griha Pravesam Invitation – Housewarming",
+      "intro": "Welcome family to your new home — a turmeric புதுமனை புகுவிழா pathirikai with a gold kalash and the muhurtham, a vastu lamp design, a Christian house-blessing card with Psalm 127:1, or a cinematic “The family presents… Our new home”. Add the lunch and share it on WhatsApp.",
+      "faq": {
+        "0": {
+          "q": "Can I add the ganapathi homam and lunch?",
+          "a": "Yes — two functions with their own times, and a story section for the details."
+        },
+        "1": {
+          "q": "Is there a Christian house blessing card?",
+          "a": "Yes, with a gold cross and Psalm 127:1."
+        },
+        "2": {
+          "q": "Can guests get directions to the new house?",
+          "a": "Yes, each function has a Google Maps link."
+        }
+      }
+    },
+    "shashtiabdapoorthi-invitation": {
+      "label": "Shashtiabdapoorthi",
+      "metaTitle": "Shashtiabdapoorthi Invitation Online – 60th Birthday Manivizha",
+      "metaDescription": "Shashtiabdapoorthi (manivizha) invitations online — maroon-and-gold cards from the children, temple muhurtham and lunch. Tamil & English, with RSVP.",
+      "ogTitle": "Shashtiabdapoorthi Invitations From the Children",
+      "ogDescription": "A maroon-and-gold manivizha card, a gopuram design or a golden jubilee — to honour Appa and Amma.",
+      "h1": "Shashtiabdapoorthi Invitation – 60th Birthday",
+      "intro": "Celebrate your parents' sixtieth with a Shashtiabdapoorthi (மணிவிழா) card in maroon and gold foil — their names, the muhurtham at the temple, lunch, and an invitation from their children. Or choose a temple gopuram or golden jubilee design, and share it with the whole family on WhatsApp.",
+      "faq": {
+        "0": {
+          "q": "Who is the invitation from?",
+          "a": "By default from the children (“With love from their children”) — you can change it."
+        },
+        "1": {
+          "q": "Can I add the temple and the lunch?",
+          "a": "Yes, each with its own time and Google Maps link."
+        },
+        "2": {
+          "q": "Is there a 25th or 50th anniversary design?",
+          "a": "Yes — see the anniversary designs, including the golden jubilee."
         }
       }
     }
@@ -6866,6 +7266,47 @@
     "updated": "Updated {date}",
     "contents": "In this guide",
     "faq": "Frequently asked questions",
-    "more": "More guides"
+    "more": "More guides",
+    "ogTitle": "Wedding Invitation Wording, Messages & Guides",
+    "ogDescription": "Copy-ready Tamil and English wording for every tradition, WhatsApp invitation messages and how-to guides.",
+    "h1": "Wedding Invitation Wording & Guides"
+  },
+  "templatesPage": {
+    "metaTitle": "Invitation Templates – Wedding, Engagement & More | InviteForYou",
+    "metaDescription": "Browse every invitation design — wedding, engagement, birthday, housewarming, baby and more. Animated and 3D, Tamil & English, free card or live from ₹49.",
+    "ogTitle": "Every Invitation Design in One Place",
+    "ogDescription": "Printed pathirikai cards, temple doors, wax seals, pearl curtains and 3D palaces — for every Indian occasion.",
+    "eyebrow": "Templates",
+    "h1": "Invitation designs & templates",
+    "intro": "Every design on InviteForYou, for every occasion and tradition. Each one downloads free as a card image, goes live as an animated invitation link from ₹{price}, and works in Tamil and English. Open any design to try it with your own names."
+  },
+  "aboutPage": {
+    "metaTitle": "About InviteForYou – Digital Invitations for Indian Celebrations",
+    "metaDescription": "InviteForYou makes animated digital invitations for Indian weddings and celebrations — in Tamil and English, with RSVP, maps and WhatsApp sharing.",
+    "ogTitle": "About InviteForYou",
+    "ogDescription": "Digital invitations inspired by the printed cards of every Indian tradition — made to share on WhatsApp.",
+    "eyebrow": "About us",
+    "h1": "About InviteForYou",
+    "intro": "InviteForYou is an online invitation maker for Indian celebrations — weddings, engagements, valaikappu, griha pravesam, birthdays and more. We turn the invitation your family would print into a link that opens like a celebration on every guest's phone.",
+    "sections": {
+      "0": {
+        "t": "What we make",
+        "d": "Animated and 3D invitations: printed pathirikai cards in their envelopes with wax seals, temple doors opening onto a gopuram, pearl curtains, wax-sealed letters, cinematic title sequences and 3D palaces. Every design works in Tamil and English."
+      },
+      "1": {
+        "t": "Made for every tradition",
+        "d": "Our designs follow how each community's cards are really printed — உ and the muhurtham on a Tamil pathirikai, the Bismillah on a Nikah card, a verse on a Holy Matrimony card, Ik Onkar on an Anand Karaj card, the Namokar line on a Jain card, kasavu bands from Kerala, Telugu Subhalekha, Bengali alpana and Marathi Paithani — and every line can be reworded."
+      },
+      "2": {
+        "t": "Simple, fair pricing",
+        "d": "Designing and previewing is free, and any design downloads free as a card image. A live invitation link is a one-time payment from ₹{price} — no subscription, no hidden charges."
+      },
+      "3": {
+        "t": "Your privacy",
+        "d": "Only you hold the private edit link to your invitation. Guest replies are visible only on your private guest list, and we never sell your data. Read our privacy policy for details."
+      }
+    },
+    "contactTitle": "Contact us",
+    "contactText": "Questions, partnerships or feedback — write to us and we'll reply soon."
   }
 }

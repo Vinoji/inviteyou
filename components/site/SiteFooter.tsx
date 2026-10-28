@@ -23,11 +23,12 @@ export default async function SiteFooter() {
     {
       title: t("footer.product"),
       links: [
-        { href: "/#templates", label: t("nav.templates") },
+        { href: "/templates", label: t("nav.templates") },
         { href: "/#pricing", label: t("nav.pricing") },
         { href: "/demo", label: t("footer.demoVideos") },
         { href: "/blog", label: t("footer.blog") },
-        { href: "/#templates", label: t("nav.create") },
+        { href: "/about", label: t("nav.about") },
+        { href: "/templates", label: t("nav.create") },
       ],
     },
     {

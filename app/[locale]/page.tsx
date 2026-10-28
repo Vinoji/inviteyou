@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { pageAlternates } from "@/lib/seo";
+import { Examples, Features, HomeFaq, OccasionsGrid, WhyDigital } from "@/components/landing/HomeSeo";
 import StickyCta from "@/components/landing/StickyCta";
 import Reviews from "@/components/landing/Reviews";
 import Proof from "@/components/landing/Proof";
@@ -28,6 +29,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: { absolute: `${tSeo("homeTitle")} | InviteForYou` },
     description: tSeo("homeDescription"),
     alternates: pageAlternates(locale, ""),
+    // Social shares get their own line; the home keeps its drawn card
+    // (app/[locale]/opengraph-image.tsx).
+    openGraph: { title: tSeo("homeOgTitle"), description: tSeo("homeOgDescription"), type: "website", url: locale === "ta" ? "/ta" : "/" },
+    twitter: { card: "summary_large_image", title: tSeo("homeOgTitle"), description: tSeo("homeOgDescription") },
   };
 }
 
@@ -70,15 +75,22 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             categories={categories.map((c) => ({ id: c.id, label: c.label }))}
             templates={templates}
             ratings={stats.designRatings}
+            preview={{ limit: 8, href: "/templates" }}
           />
         </div>
       </section>
 
       <KolamDivider />
+      <WhyDigital />
+      <Features />
+      <KolamDivider />
       <HowItWorks />
+      <OccasionsGrid />
       <KolamDivider />
       <Reviews />
+      <Examples />
       <Pricing />
+      <HomeFaq />
       <FinalCta />
       <StickyCta price={standardPriceInr()} />
     </main>

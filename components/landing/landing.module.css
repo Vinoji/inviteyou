@@ -1927,3 +1927,18 @@
     animation: none;
   }
 }
+
+/* The hero's H1: the search phrase, set small above the big tagline. */
+.h1Line {
+  margin-top: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #ffd98a;
+}
+@media (min-width: 640px) {
+  .h1Line {
+    font-size: 17px;
+  }
+}

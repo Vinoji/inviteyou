@@ -9,7 +9,8 @@ import { getCategoryMeta } from "@/lib/i18n/categories";
 import { getTemplatesByCategory } from "@/lib/i18n/templates";
 import { showcaseProps } from "@/lib/i18n/showcase";
 import { templatePriceInr } from "@/lib/pricing";
-import { SITE_URL, pageAlternates } from "@/lib/seo";
+import { SITE_URL, pageAlternates, pageSocial } from "@/lib/seo";
+import { COLLECTIONS, collectionTemplateIds, collectionsFor, getCollection } from "@/lib/collections";
 import TemplateGallery, { type GalleryTemplate } from "@/components/landing/TemplateGallery";
 import FestiveBanner from "@/components/site/FestiveBanner";
 import { KolamDivider } from "@/components/site/festive";
@@ -26,9 +27,11 @@ import paper from "@/components/landing/landing.module.css";
  */
 
 const IDS = CATEGORIES.map((c) => c.id);
+// …and the keyword pages for traditions and functions (lib/collections.ts)
+const SLUGS = [...IDS, ...COLLECTIONS.map((c) => c.slug)] as string[];
 
 export function generateStaticParams() {
-  return routing.locales.flatMap((locale) => IDS.map((category) => ({ locale, category })));
+  return routing.locales.flatMap((locale) => SLUGS.map((category) => ({ locale, category })));
 }
 
 export async function generateMetadata({
@@ -37,16 +40,22 @@ export async function generateMetadata({
   params: Promise<{ locale: string; category: string }>;
 }): Promise<Metadata> {
   const { locale, category } = await params;
-  if (!(IDS as string[]).includes(category)) return {};
+  if (!SLUGS.includes(category)) return {};
   const t = await getTranslations({ locale, namespace: `seoPages.${category}` });
   const title = t("metaTitle");
   const description = t("metaDescription");
+  const path = `/invitations/${category}`;
   return {
-    title,
+    // keyword-first, without the " | InviteForYou" suffix (kept under ~60 characters)
+    title: { absolute: title },
     description,
-    alternates: pageAlternates(locale, `/invitations/${category}`),
-    openGraph: { title, description, type: "website" },
-    twitter: { card: "summary_large_image", title, description },
+    alternates: pageAlternates(locale, path),
+    ...pageSocial({
+      title: t.has("ogTitle") ? t("ogTitle") : title,
+      description: t.has("ogDescription") ? t("ogDescription") : description,
+      kicker: "Invitations",
+      url: locale === "ta" ? `/ta${path}` : path,
+    }),
   };
 }
 
@@ -55,11 +64,14 @@ export default async function InvitationCategoryPage({
 }: {
   params: Promise<{ locale: string; category: string }>;
 }) {
-  const { locale, category } = await params;
-  if (!(IDS as string[]).includes(category)) notFound();
+  const { locale, category: slug } = await params;
+  if (!SLUGS.includes(slug)) notFound();
   setRequestLocale(locale);
+  // A keyword page shows just its designs, under its occasion.
+  const collection = getCollection(slug);
+  const category = collection?.category ?? (slug as CategoryId);
 
-  const t = await getTranslations(`seoPages.${category}`);
+  const t = await getTranslations(`seoPages.${slug}`);
   const tc = await getTranslations("seoPages.common");
   const tCategories = await getTranslations("categories");
   const tTemplates = await getTranslations("templates");
@@ -67,7 +79,11 @@ export default async function InvitationCategoryPage({
   const tCommon = await getTranslations("common");
 
   const meta = getCategoryMeta(category, tCategories);
-  const templates: GalleryTemplate[] = getTemplatesByCategory(category as CategoryId, tTemplates).map((tpl) => ({
+  const all = getTemplatesByCategory(category as CategoryId, tTemplates);
+  const picked = collection
+    ? collectionTemplateIds(collection).flatMap((id) => all.filter((tpl) => tpl.id === id))
+    : all;
+  const templates: GalleryTemplate[] = picked.map((tpl) => ({
     id: tpl.id,
     category,
     name: tpl.name,
@@ -76,10 +92,14 @@ export default async function InvitationCategoryPage({
   }));
   const faqKeys = Object.keys(t.raw("faq") as Record<string, unknown>);
   const whyKeys = Object.keys(tc.raw("why") as Record<string, unknown>);
-  const others = IDS.filter((id) => id !== category).map((id) => getCategoryMeta(id, tCategories));
+  const others = IDS.filter((id) => id !== slug).map((id) => getCategoryMeta(id, tCategories));
+  // Keyword pages of this occasion (or the siblings of this keyword page).
+  const related = collectionsFor(category as CategoryId).filter((c) => c.slug !== slug);
+  const tSeo = await getTranslations("seoPages");
+  const label = collection ? t("label") : meta.label;
 
   const base = locale === "ta" ? `${SITE_URL}/ta` : SITE_URL;
-  const pageUrl = `${base}/invitations/${category}`;
+  const pageUrl = `${base}/invitations/${slug}`;
   const prices = templates.map((tpl) => templatePriceInr(tpl.id));
   const jsonLd = {
     "@context": "https://schema.org",
@@ -88,7 +108,12 @@ export default async function InvitationCategoryPage({
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: tc("breadcrumbHome"), item: `${base}/` },
-          { "@type": "ListItem", position: 2, name: meta.label, item: pageUrl },
+          ...(collection
+            ? [
+                { "@type": "ListItem", position: 2, name: meta.label, item: `${base}/invitations/${category}` },
+                { "@type": "ListItem", position: 3, name: label, item: pageUrl },
+              ]
+            : [{ "@type": "ListItem", position: 2, name: meta.label, item: pageUrl }]),
         ],
       },
       {
@@ -144,7 +169,7 @@ export default async function InvitationCategoryPage({
   return (
     <main className={`flex-1 ${paper.paper}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />
-      <FestiveBanner eyebrow={`${meta.label} · ${tc("eyebrow")}`} title={t("h1")} intro={t("intro")}>
+      <FestiveBanner eyebrow={`${label} · ${tc("eyebrow")}`} title={t("h1")} intro={t("intro")}>
         <a
           href="#designs"
           className="mt-6 inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-neutral-950 shadow-lg hover:bg-amber-400"
@@ -159,7 +184,15 @@ export default async function InvitationCategoryPage({
           {tc("breadcrumbHome")}
         </Link>
         <span className="mx-2">/</span>
-        <span aria-current="page">{meta.label}</span>
+        {collection && (
+          <>
+            <Link href={`/invitations/${category}`} className="hover:text-amber-700">
+              {meta.label}
+            </Link>
+            <span className="mx-2">/</span>
+          </>
+        )}
+        <span aria-current="page">{label}</span>
       </nav>
 
       <section id="designs" className="mx-auto max-w-6xl scroll-mt-24 px-4 pt-8 pb-14 sm:px-6">
@@ -198,6 +231,36 @@ export default async function InvitationCategoryPage({
           ))}
         </div>
       </section>
+
+      {(related.length > 0 || collection) && (
+        <section className="mx-auto max-w-5xl px-6 pb-10">
+          <h2 className="font-serif text-2xl font-bold text-neutral-900 dark:text-neutral-50">{tc("relatedTitle")}</h2>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {collection && (
+              <li>
+                <Link href={`/invitations/${category}`} className={`${paper.festiveCard} block p-4 hover:border-amber-500`}>
+                  <span className="font-semibold text-neutral-900 dark:text-neutral-50">{tc("allOf", { label: meta.label })}</span>
+                  <span className="mt-1 block text-sm text-neutral-600 dark:text-neutral-400">{tSeo(`${category}.ogDescription`)}</span>
+                </Link>
+              </li>
+            )}
+            {related.map((c) => (
+              <li key={c.slug}>
+                <Link href={`/invitations/${c.slug}`} className={`${paper.festiveCard} block p-4 hover:border-amber-500`}>
+                  <span className="font-semibold text-neutral-900 dark:text-neutral-50">{tSeo(`${c.slug}.h1`)}</span>
+                  <span className="mt-1 block text-sm text-neutral-600 dark:text-neutral-400">{tSeo(`${c.slug}.ogDescription`)}</span>
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/templates" className={`${paper.festiveCard} block p-4 hover:border-amber-500`}>
+                <span className="font-semibold text-neutral-900 dark:text-neutral-50">{tc("allDesigns")}</span>
+                <span className="mt-1 block text-sm text-neutral-600 dark:text-neutral-400">{tc("allDesignsText")}</span>
+              </Link>
+            </li>
+          </ul>
+        </section>
+      )}
 
       <section className="mx-auto max-w-5xl px-6 pb-20">
         <h2 className="font-serif text-2xl font-bold text-neutral-900 dark:text-neutral-50">{tc("moreTitle")}</h2>

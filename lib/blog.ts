@@ -26,6 +26,8 @@ export interface Post {
   metaTitle: string;
   /** Meta description — under ~155 characters. */
   description: string;
+  /** The share title, when the headline is the same as metaTitle. */
+  ogTitle?: string;
   /** The page's H1. */
   title: string;
   /** One line under the title, and the card on the blog index. */
@@ -172,6 +174,7 @@ export const POSTS: Post[] = [
 
   {
     slug: "tamil-wedding-invitation-wording",
+    ogTitle: "Copy-Ready Tamil Wedding Invitation Wording (உ to Muhurtham)",
     metaTitle: "Tamil Wedding Invitation Wording: Samples in Tamil & English",
     description:
       "Traditional Tamil wedding invitation wording (திருமண அழைப்பிதழ் வாசகம்) with samples for the muhurtham, reception and WhatsApp — in Tamil and English.",
@@ -466,6 +469,7 @@ export const POSTS: Post[] = [
 
   {
     slug: "whatsapp-wedding-invitation-message",
+    ogTitle: "What to Send With Your Wedding Invite on WhatsApp",
     metaTitle: "WhatsApp Wedding Invitation Messages: 15 Samples to Send",
     description:
       "Ready-to-send wedding invitation messages for WhatsApp — for relatives, friends, colleagues and elders, in English and Tamil, plus reminder messages.",

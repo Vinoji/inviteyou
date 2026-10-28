@@ -17,3 +17,19 @@ export function pageAlternates(locale: string, path: string): Metadata["alternat
     languages: { en, ta, "x-default": en },
   };
 }
+
+/**
+ * A page's own social preview: its share title and line (different from
+ * the search title and description), and its preview card from /api/og.
+ */
+export function pageSocial(opts: { title: string; description: string; kicker?: string; url: string; type?: "website" | "article" }): {
+  openGraph: NonNullable<Metadata["openGraph"]>;
+  twitter: NonNullable<Metadata["twitter"]>;
+} {
+  const q = new URLSearchParams({ t: opts.title, s: opts.description, ...(opts.kicker ? { k: opts.kicker } : {}) });
+  const image = { url: `/api/og?${q.toString()}`, width: 1200, height: 630, alt: opts.title };
+  return {
+    openGraph: { title: opts.title, description: opts.description, url: opts.url, type: opts.type ?? "website", siteName: "InviteForYou", images: [image] },
+    twitter: { card: "summary_large_image", title: opts.title, description: opts.description, images: [image.url] },
+  };
+}

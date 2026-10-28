@@ -2,6 +2,7 @@
 
 import { useFormatter, useTranslations } from "next-intl";
 import { Timer } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 import { USUAL_PRICES } from "@/lib/pricing";
 import FestivalArt, { FestivalParticles } from "@/components/offers/FestivalArt";
 import a from "@/components/offers/festivalArt.module.css";
@@ -128,13 +129,13 @@ export default function OfferCountdown({
         ))}
       </div>
 
-      <a
-        href="#templates"
+      <Link
+        href="/templates"
         className={`relative mt-4 inline-flex h-12 w-full max-w-sm items-center justify-center rounded-full text-sm font-bold shadow-lg ${a.shine}`}
         style={{ background: look.button, color: look.buttonInk }}
       >
         {tf("cta", { price: offer.prices.standard })}
-      </a>
+      </Link>
       <p className={`relative mx-auto mt-3 w-fit max-w-full rounded-full px-3 py-1 text-xs font-medium ${glass}`}>
         {tf("endsLine", { date: endDate, after: USUAL_PRICES.standard, after3d: USUAL_PRICES.premium })}
       </p>

@@ -216,7 +216,7 @@ export default async function RsvpsPage({
               {template.category === "engagement" ? t("nextWedding") : t("nextEvent")}
             </p>
             <p className="mt-1">{t("returningCode", { code: returning.code, off: returning.offInr })}</p>
-            <Link href={template.category === "engagement" ? "/#wedding" : "/#templates"} className="mt-2 inline-block font-semibold underline">
+            <Link href={template.category === "engagement" ? "/invitations/wedding" : "/templates"} className="mt-2 inline-block font-semibold underline">
               {t("returningCta")}
             </Link>
           </div>

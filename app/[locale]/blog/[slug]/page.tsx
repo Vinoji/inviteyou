@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { POSTS, getPost, type Block } from "@/lib/blog";
 import { standardPriceInr } from "@/lib/pricing";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, pageSocial } from "@/lib/seo";
 import paper from "@/components/landing/landing.module.css";
 
 /**
@@ -23,20 +23,21 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const post = getPost(slug);
   if (!post) return {};
   const url = `/blog/${post.slug}`;
+  const social = pageSocial({ title: post.ogTitle ?? post.title, description: post.excerpt, kicker: "Guide", url, type: "article" });
   return {
     title: { absolute: post.metaTitle },
     description: post.description,
     keywords: post.keywords,
     alternates: { canonical: url },
+    // Shares get the headline and the excerpt (not the search title and
+    // description), on the post's own card.
     openGraph: {
-      title: post.metaTitle,
-      description: post.description,
+      ...social.openGraph,
       type: "article",
-      url,
       publishedTime: post.published,
       modifiedTime: post.updated,
     },
-    twitter: { card: "summary_large_image", title: post.metaTitle, description: post.description },
+    twitter: social.twitter,
   };
 }
 

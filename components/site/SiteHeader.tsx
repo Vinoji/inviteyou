@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Menu, Sparkles, X } from "lucide-react";
+import { ChevronDown, Menu, Sparkles, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import SettingsMenu from "./SettingsMenu";
 import SiteMusic from "./SiteMusic";
@@ -23,7 +23,7 @@ const DARK_TOP = new Set(["/", "/demo", "/support", "/privacy", "/terms"]);
 type HomeSection = "templates" | "pricing";
 
 const NAV = [
-  { href: "/#templates", key: "templates", match: (p: string, sec: HomeSection) => p === "/" && sec === "templates" },
+  { href: "/templates", key: "templates", match: (p: string) => p.startsWith("/templates") },
   { href: "/#pricing", key: "pricing", match: (p: string, sec: HomeSection) => p === "/" && sec === "pricing" },
   { href: "/demo", key: "demos", match: (p: string) => p.startsWith("/demo") },
   { href: "/support", key: "support", match: (p: string) => p.startsWith("/support") },
@@ -151,6 +151,7 @@ export default function SiteHeader() {
         </Link>
 
         <nav className="ml-6 hidden items-center gap-1 md:flex" aria-label={t("mainNav")}>
+          <InvitationsMenu active={pathname.startsWith("/invitations")} />
           {NAV.map((item) => {
             const active = item.match(pathname, section);
             return (
@@ -170,7 +171,7 @@ export default function SiteHeader() {
 
         <div className="ml-auto hidden items-center gap-2 md:flex">
           <SettingsMenu />
-          <Link href="/#templates" className={s.cta}>
+          <Link href="/templates" className={s.cta}>
             <Sparkles size={15} aria-hidden />
             {t("nav.create")}
           </Link>
@@ -231,10 +232,11 @@ export default function SiteHeader() {
                   </Link>
                 </motion.div>
               ))}
+              <InvitationLinks onPick={() => setOpenFor(null)} />
               <div className="mt-3 rounded-2xl bg-[#fffaf2] p-4 dark:bg-[#1c1220]">
                 <SettingsMenu inline />
               </div>
-              <Link href="/#templates" onClick={() => setOpenFor(null)} className={`${s.cta} mt-3 justify-center`}>
+              <Link href="/templates" onClick={() => setOpenFor(null)} className={`${s.cta} mt-3 justify-center`}>
                 <Sparkles size={15} aria-hidden />
                 {t("nav.create")}
               </Link>
@@ -244,5 +246,99 @@ export default function SiteHeader() {
       </AnimatePresence>
       </div>
     </header>
+  );
+}
+
+const OCCASIONS = ["wedding", "engagement", "birthday", "housewarming", "anniversary", "baby", "valentine", "proposal", "corporate"] as const;
+const TRADITIONS = [
+  "tamil-wedding-invitation",
+  "kerala-wedding-invitation",
+  "nikah-invitation",
+  "christian-wedding-invitation",
+  "anand-karaj-invitation",
+  "jain-wedding-invitation",
+  "nichayathartham-invitation",
+  "valaikappu-invitation",
+  "griha-pravesam-invitation",
+  "shashtiabdapoorthi-invitation",
+] as const;
+
+/** The occasion and tradition pages, as two lists of links. */
+function InvitationLinks({ onPick, compact }: { onPick?: () => void; compact?: boolean }) {
+  const t = useTranslations("site");
+  const tc = useTranslations("categories");
+  const link = compact
+    ? "block rounded-lg px-3 py-1.5 text-sm text-[#3d1236] hover:bg-[#e8b04a]/15 dark:text-[#f6e7d0]"
+    : "block rounded-lg px-4 py-2 text-[15px] text-[#fff6e6]/85";
+  const head = compact
+    ? "px-3 pb-1 text-[11px] font-semibold tracking-wider text-[#b0791f] uppercase dark:text-[#ffd35c]"
+    : "px-4 pt-3 pb-1 text-xs font-semibold tracking-wider text-[#ffd35c] uppercase";
+  return (
+    <div className={compact ? "grid grid-cols-2 gap-4" : "mt-1"}>
+      <div>
+        <p className={head}>{t("nav.occasionsHead")}</p>
+        {OCCASIONS.map((id) => (
+          <Link key={id} href={`/invitations/${id}`} onClick={onPick} className={link}>
+            {tc(`${id}.label`)}
+          </Link>
+        ))}
+      </div>
+      <div>
+        <p className={head}>{t("nav.traditionsHead")}</p>
+        {TRADITIONS.map((slug) => (
+          <Link key={slug} href={`/invitations/${slug}`} onClick={onPick} className={link}>
+            {t(`navCollections.${slug}`)}
+          </Link>
+        ))}
+        <Link href="/templates" onClick={onPick} className={`${link} font-semibold`}>
+          {t("nav.allDesigns")} →
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/** "Invitations ▾" in the desktop nav: occasions and traditions. */
+function InvitationsMenu({ active }: { active: boolean }) {
+  const t = useTranslations("site");
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", esc);
+    };
+  }, [open]);
+  return (
+    <div ref={ref} className="relative" onMouseLeave={() => setOpen(false)}>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-haspopup="true"
+        // hover already opened it, so a mouse click keeps it open; Enter/Space toggles
+        onClick={(e) => setOpen((o) => (e.detail === 0 ? !o : true))}
+        onMouseEnter={() => setOpen(true)}
+        className={`flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium transition ${
+          active || open ? "text-[#ffe9b8]" : "text-[#fff6e6]/80 hover:text-white"
+        }`}
+      >
+        {t("nav.invitations")}
+        <ChevronDown size={14} className={`transition ${open ? "rotate-180" : ""}`} aria-hidden />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 z-50 pt-2">
+          <div className="w-[480px] rounded-2xl border border-[#e8b04a]/40 bg-[#fffaf2] p-4 shadow-2xl dark:bg-[#1c1220]">
+            <InvitationLinks compact onPick={() => setOpen(false)} />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

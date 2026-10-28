@@ -58,11 +58,15 @@ export default function TemplateGallery({
   categories,
   templates,
   ratings = {},
+  preview,
 }: {
   categories: { id: string; label: string }[];
   templates: GalleryTemplate[];
   /** Real per-design ratings (lib/stats.ts) — shown only where they exist. */
   ratings?: Record<string, { average: number; count: number }>;
+  /** The home page's short list: the occasion's top designs, each once with
+   * its price badge, then a link to the full list (/templates). */
+  preview?: { limit: number; href: string };
 }) {
   const t = useTranslations("landing");
   const occasions = [...categories]
@@ -103,18 +107,13 @@ export default function TemplateGallery({
       // Pinned designs (HOME_FIRST, in order), new designs, our picks, the rest.
       .sort((a, b) => rank(a.tpl.id) - rank(b.tpl.id) || a.i - b.i)
       .map(({ tpl }) => tpl);
+  // Each design once (live designs also download free as a card — their
+  // badge says so), grouped by price.
   const groups = TIERS.map((tier) => ({
     tier,
-    // Every live design is also a free card (its card image to download), in
-    // the live designs' own order, then the card-only designs.
-    items:
-      tier === "free"
-        ? [
-            ...ranked(inOccasion.filter((tpl) => templateTier(tpl.id) === "standard")).map((tpl) => ({ tpl, asFree: true })),
-            ...ranked(inOccasion.filter((tpl) => templateTier(tpl.id) === "free")).map((tpl) => ({ tpl, asFree: false })),
-          ]
-        : ranked(inOccasion.filter((tpl) => templateTier(tpl.id) === tier)).map((tpl) => ({ tpl, asFree: false })),
+    items: ranked(inOccasion.filter((tpl) => templateTier(tpl.id) === tier)).map((tpl) => ({ tpl, asFree: false })),
   })).filter((g) => g.items.length > 0);
+  const top = preview ? ranked(inOccasion).slice(0, preview.limit) : [];
 
   return (
     <div>
@@ -152,6 +151,26 @@ export default function TemplateGallery({
         </div>
       )}
 
+      {preview ? (
+        <div>
+          <ul className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">
+            {top.map((tpl) => (
+              <li key={tpl.id}>
+                <DesignCard tpl={tpl} rating={ratings[tpl.id]} />
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6 text-center">
+            <Link
+              href={preview.href}
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#3d1236]/15 px-5 py-2.5 text-sm font-semibold text-[#3d1236] hover:border-[#e8b04a] dark:border-white/15 dark:text-[#f6e7d0]"
+            >
+              {t("home.seeAll", { count: templates.length })}
+              <ArrowRight size={16} aria-hidden />
+            </Link>
+          </div>
+        </div>
+      ) : (
       <div className="space-y-12">
         {groups.map(({ tier, items }) => {
           const expanded = open[tier];
@@ -216,6 +235,7 @@ export default function TemplateGallery({
           );
         })}
       </div>
+      )}
     </div>
   );
 }
@@ -265,10 +285,10 @@ function DesignCard({
             </>
           )}
         </span>
-        {asFree && (
-          <span className="pointer-events-none absolute bottom-2 left-2 z-30 inline-flex items-center gap-1 rounded-full bg-[#22091f]/85 px-2 py-0.5 text-[10px] font-bold text-[#ffe9b8] shadow-md backdrop-blur">
-            <Sparkles size={10} aria-hidden />
-            {t("liveFrom", { price })}
+        {tier === "standard" && (
+          <span className="pointer-events-none absolute bottom-2 left-2 z-30 inline-flex items-center gap-1 rounded-full bg-emerald-700/90 px-2 py-0.5 text-[10px] font-bold text-white shadow-md">
+            <Gift size={10} aria-hidden />
+            {t("home.badgeFree")}
           </span>
         )}
       </div>

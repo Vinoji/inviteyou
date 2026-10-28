@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { CATEGORIES } from "@/lib/categories";
 import { POSTS } from "@/lib/blog";
+import { COLLECTIONS } from "@/lib/collections";
 
 const BASE = (process.env.NEXT_PUBLIC_SITE_URL || SITE.url).replace(/\/+$/, "");
 const PAGES = [
@@ -12,6 +13,10 @@ const PAGES = [
     priority: c.id === "wedding" ? 0.9 : 0.8,
     changeFrequency: "weekly" as const,
   })),
+  // Keyword pages for traditions and functions (lib/collections.ts).
+  ...COLLECTIONS.map((c) => ({ path: `/invitations/${c.slug}`, priority: 0.8, changeFrequency: "weekly" as const })),
+  { path: "/templates", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/about", priority: 0.5, changeFrequency: "yearly" as const },
   { path: "/demo", priority: 0.7, changeFrequency: "monthly" as const },
   { path: "/blog", priority: 0.7, changeFrequency: "weekly" as const },
   { path: "/support", priority: 0.5, changeFrequency: "monthly" as const },

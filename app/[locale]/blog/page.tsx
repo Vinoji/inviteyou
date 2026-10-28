@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowRight, Clock } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { POSTS } from "@/lib/blog";
-import { SITE_URL, pageAlternates } from "@/lib/seo";
+import { SITE_URL, pageAlternates, pageSocial } from "@/lib/seo";
 import FestiveBanner from "@/components/site/FestiveBanner";
 import paper from "@/components/landing/landing.module.css";
 
@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: { absolute: title },
     description,
     alternates: pageAlternates(locale, "/blog"),
-    openGraph: { title, description, type: "website" },
+    ...pageSocial({ title: t("ogTitle"), description: t("ogDescription"), kicker: t("eyebrow"), url: locale === "ta" ? "/ta/blog" : "/blog" }),
   };
 }
 
@@ -60,7 +60,7 @@ export default async function BlogIndex({ params }: { params: Promise<{ locale: 
   return (
     <main className={`flex-1 ${paper.paper}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <FestiveBanner eyebrow={t("eyebrow")} title={t("title")} intro={t("intro")} />
+      <FestiveBanner eyebrow={t("eyebrow")} title={t("h1")} intro={t("intro")} />
       <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6">
         <ul className="grid gap-5 sm:grid-cols-2">
           {POSTS.map((p) => (

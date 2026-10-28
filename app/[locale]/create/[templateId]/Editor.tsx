@@ -1364,7 +1364,7 @@ export default function Editor({
               <div className="space-y-7">
                 {/* Other occasions live on the home page's design list. */}
                 <Link
-                  href="/#templates"
+                  href="/templates"
                   onClick={persistDraft}
                   className="flex items-center justify-between gap-3 rounded-2xl border border-[#e8b04a]/40 bg-[#fff6e0] px-4 py-3 text-sm text-[#5a3a12] dark:border-[#e8b04a]/30 dark:bg-[#2a0c27] dark:text-[#ffe9b8]"
                 >

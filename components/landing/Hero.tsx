@@ -20,6 +20,7 @@ const CYCLE_MS = 7000;
  */
 export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
   const t = useTranslations("landing.hero");
+  const tHome = useTranslations("landing.home");
   const reduced = useReducedMotionPref();
   const rootRef = useRef<HTMLElement>(null);
   const [index, setIndex] = useState(0);
@@ -67,8 +68,10 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
             <Sparkles size={14} aria-hidden />
             {t("chip")}
           </span>
-          <h1 className={s.title}>
-            {t.rich("title", {
+          {/* The page's H1 (the search phrase); the big line is the tagline. */}
+          <h1 className={s.h1Line}>{tHome("h1")}</h1>
+          <p className={s.title}>
+            {tHome.rich("tagline", {
               hl: (chunks) => (
                 <span className={s.hl}>
                   {chunks}
@@ -78,10 +81,10 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
                 </span>
               ),
             })}
-          </h1>
+          </p>
           <p className={s.subtitle}>{t("subtitle")}</p>
           <div className={s.ctas}>
-            <Link href="/#templates" className={s.ctaPrimary}>
+            <Link href="/templates" className={s.ctaPrimary}>
               <Sparkles size={17} aria-hidden />
               {t("ctaPrimary")}
             </Link>
@@ -93,13 +96,13 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
           {/* The three ways to buy, each a tap away from its designs. */}
           <ul className={s.priceStrip}>
             <li>
-              <Link href="/#free" className={s.pricePill}>
+              <Link href="/templates#free" className={s.pricePill}>
                 <Gift size={15} aria-hidden />
                 <span>{t("priceFree")}</span>
               </Link>
             </li>
             <li>
-              <Link href="/#value" className={`${s.pricePill} ${s.pricePillHot}`}>
+              <Link href="/templates#value" className={`${s.pricePill} ${s.pricePillHot}`}>
                 <Sparkles size={15} aria-hidden />
                 <span>
                   {offerActive() && <s className={s.priceWas}>₹{TIER_PRICES.standard.usual}</s>} ₹{tierPriceInr("standard")}{" "}
@@ -108,7 +111,7 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
               </Link>
             </li>
             <li>
-              <Link href="/#premium" className={s.pricePill}>
+              <Link href="/templates#premium" className={s.pricePill}>
                 <Crown size={15} aria-hidden />
                 <span>
                   ₹{tierPriceInr("premium")} {t("price3d")}

@@ -236,7 +236,7 @@ export async function FinalCta() {
         <Petals />
         <h2 className={`${s.h2} mx-auto max-w-2xl`}>{t("title")}</h2>
         <p className="mx-auto mt-3 max-w-xl text-[15px] text-[#fff6e6]/80">{t("body")}</p>
-        <Link href="/#templates" className={`${s.ctaPrimary} mt-7`}>
+        <Link href="/templates" className={`${s.ctaPrimary} mt-7`}>
           {t("button")}
           <ArrowRight size={17} aria-hidden />
         </Link>

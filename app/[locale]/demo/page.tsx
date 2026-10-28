@@ -8,7 +8,7 @@ import TemplateShowcase from "@/components/landing/TemplateShowcase";
 import { SITE } from "@/lib/site";
 import FestiveBanner from "@/components/site/FestiveBanner";
 import paper from "@/components/landing/landing.module.css";
-import { SITE_URL, pageAlternates } from "@/lib/seo";
+import { SITE_URL, pageAlternates, pageSocial } from "@/lib/seo";
 import DemoShort from "@/components/site/DemoShort";
 
 export async function generateMetadata({
@@ -18,7 +18,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "site.demo" });
-  return { title: t("metaTitle"), description: t("intro"), alternates: pageAlternates(locale, "/demo") };
+  return {
+    title: { absolute: t("metaTitleFull") },
+    description: t("metaDescriptionFull"),
+    alternates: pageAlternates(locale, "/demo"),
+    ...pageSocial({ title: t("ogTitle"), description: t("ogDescription"), kicker: t("eyebrow"), url: locale === "ta" ? "/ta/demo" : "/demo" }),
+  };
 }
 
 /**

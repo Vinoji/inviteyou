@@ -16,7 +16,8 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: "/",
+      // the pages' preview cards live under /api (app/api/og)
+      allow: ["/", "/api/og"],
       disallow: ["/api/", ...privatePaths, ...privatePaths.map((p) => `/ta${p}`)],
     },
     sitemap: `${BASE}/sitemap.xml`,

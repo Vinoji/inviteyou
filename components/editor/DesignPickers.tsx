@@ -55,7 +55,7 @@ export function TemplatePicker({
       )}
       <div className="mb-2 flex items-baseline justify-between gap-3">
         <span className={label.replace("mb-2 ", "")}>{t("designPickTitle")}</span>
-        <Link href="/#templates" className="shrink-0 text-xs font-semibold text-amber-700 hover:underline dark:text-amber-500">
+        <Link href="/templates" className="shrink-0 text-xs font-semibold text-amber-700 hover:underline dark:text-amber-500">
           {t("changeTemplate")}
         </Link>
       </div>

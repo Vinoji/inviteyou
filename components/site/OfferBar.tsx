@@ -28,7 +28,7 @@ export default function OfferBar() {
 
   return (
     <Link
-      href="/#templates"
+      href="/templates"
       style={
         look.photo
           ? {

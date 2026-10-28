@@ -49,7 +49,7 @@ export default function SavingsCalculator({ price }: { price: number }) {
       <p className="mt-1 text-center text-xs text-neutral-500 dark:text-neutral-400">{t("assumption", { per: PRINTED_PER_CARD })}</p>
       <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
         <Link
-          href="/#value"
+          href="/templates#value"
           className="inline-flex h-11 items-center rounded-full bg-gradient-to-br from-[#ffe08a] via-[#f2c45a] to-[#c98f3a] px-6 text-sm font-bold text-[#2a0c27] shadow-[0_8px_18px_-8px_rgba(201,143,58,0.9)]"
         >
           {t("cta", { price })}

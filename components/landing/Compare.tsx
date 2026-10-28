@@ -31,13 +31,13 @@ export default async function Compare() {
   const t = await getTranslations("landing.compare");
   const offer = offerActive();
   const cols = [
-    { key: "free", icon: Gift, price: 0, usual: null as number | null, href: "/#free", hot: false },
+    { key: "free", icon: Gift, price: 0, usual: null as number | null, href: "/templates#free", hot: false },
     {
       key: "standard",
       icon: Sparkles,
       price: tierPriceInr("standard"),
       usual: offer ? TIER_PRICES.standard.usual : null,
-      href: "/#value",
+      href: "/templates#value",
       hot: true,
     },
     {
@@ -45,7 +45,7 @@ export default async function Compare() {
       icon: Crown,
       price: tierPriceInr("premium"),
       usual: offer ? TIER_PRICES.premium.usual : null,
-      href: "/#premium",
+      href: "/templates#premium",
       hot: false,
     },
   ];
