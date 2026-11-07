@@ -117,7 +117,9 @@ export default async function BlogPost({ params }: { params: Promise<{ locale: s
   const price = standardPriceInr();
   const url = `${SITE_URL}/blog/${post.slug}`;
   const toc = post.body.filter((b): b is Extract<Block, { t: "h2" }> => b.t === "h2" && !!b.id);
-  const others = POSTS.filter((p) => p.slug !== post.slug);
+  // the post's own picks first, then the rest, four in all
+  const picks = (post.related ?? []).map(getPost).filter((p): p is NonNullable<typeof p> => !!p);
+  const others = [...picks, ...POSTS.filter((p) => p.slug !== post.slug && !picks.includes(p))].slice(0, 4);
   const date = new Intl.DateTimeFormat(locale === "ta" ? "ta-IN" : "en-IN", { day: "numeric", month: "long", year: "numeric" }).format(
     new Date(`${post.updated}T00:00:00+05:30`),
   );
