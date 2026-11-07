@@ -20,7 +20,6 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { CLIENT_BASE, pickMessages } from "@/lib/i18n/clientMessages";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { cookies } from "next/headers";
 import { routing } from "@/i18n/routing";
 import SiteHeader from "@/components/site/SiteHeader";
 import RefCapture from "@/components/site/RefCapture";
@@ -31,6 +30,7 @@ import SiteFooter from "@/components/site/SiteFooter";
 import EntranceGate from "@/components/site/EntranceGate";
 import HelpMenu from "@/components/site/HelpMenu";
 import OffscreenPause from "@/components/site/OffscreenPause";
+import ThemeSync from "@/components/site/ThemeSync";
 import { MotionPrefSync } from "@/components/invite/MotionToggle";
 import "../globals.css";
 
@@ -220,33 +220,30 @@ export default async function RootLayout({
   setRequestLocale(locale);
   const messages = await getMessages();
 
-  // Theme is decided server-side from a cookie (written by lib/themePref.ts),
-  // not a client-side "flash of wrong theme, then fix it" script — the
-  // right `dark`/`light` class is already in the HTML the browser first
-  // paints, on every request including the soft client-side navigation a
-  // locale switch does. No stored preference yet (or "system") means no
-  // extra class here; the `@media (prefers-color-scheme: dark)` rule in
-  // globals.css covers that case at the CSS level.
-  const cookieStore = await cookies();
-  const themePref = cookieStore.get("theme")?.value;
-  const themeClass = themePref === "light" || themePref === "dark" ? themePref : "";
-
+  // No cookies() or headers() here: reading one makes every page render
+  // per request (on a US server) instead of coming from the CDN. The
+  // theme is applied by the inline script below instead.
   return (
     <html
-      // data-perf is set by the inline script below, before hydration.
+      // data-perf and the theme class are set by the inline script below,
+      // before hydration.
       suppressHydrationWarning
       lang={locale}
-      className={`${fontVariables} ${themeClass} h-full antialiased`}
+      className={`${fontVariables} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
-        {/* The phone's performance tier (lib/perfTier.ts), set before the
-            first paint so old phones never start the heavy effects. */}
+        {/* Before the first paint: the saved theme (the `theme` cookie from
+            lib/themePref.ts — "system" or none leaves it to the
+            prefers-color-scheme rule in globals.css), and the phone's
+            performance tier (lib/perfTier.ts) so old phones never start
+            the heavy effects. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `try{var n=navigator,c=n.hardwareConcurrency||4,m=n.deviceMemory||4,s=n.connection&&n.connection.saveData,r=matchMedia("(prefers-reduced-motion: reduce)").matches;document.documentElement.dataset.perf=s||r||c<=4||m<=2?"low":c<=6||m<=4?"mid":"high"}catch(e){}`,
+            __html: `try{var h=document.cookie.match(/(?:^|; )theme=(light|dark)/);h&&document.documentElement.classList.add(h[1])}catch(e){}try{var n=navigator,c=n.hardwareConcurrency||4,m=n.deviceMemory||4,s=n.connection&&n.connection.saveData,r=matchMedia("(prefers-reduced-motion: reduce)").matches;document.documentElement.dataset.perf=s||r||c<=4||m<=2?"low":c<=6||m<=4?"mid":"high"}catch(e){}`,
           }}
         />
         <NextIntlClientProvider messages={pickMessages(messages, CLIENT_BASE)}>
+          <ThemeSync />
           <MotionPrefSync />
           <OffscreenPause />
           <EntranceGate />

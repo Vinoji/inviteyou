@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
@@ -11,12 +12,21 @@ import {
   INVITATION_NAMESPACES,
   getContentMessages,
 } from "@/lib/i18n/contentMessages";
+import { routing } from "@/i18n/routing";
 import Editor from "./Editor";
+import EditorSkeleton from "./EditorSkeleton";
 
 /** Everything the editor renders in the *invitation's* language (preview,
  * story presets, seed content) — for both languages, so switching the
  * invitation language is instant and doesn't touch the UI language. */
 const EDITOR_CONTENT_NAMESPACES = [...INVITATION_NAMESPACES, "storyPresets", "defaultContent"];
+
+/** Every design is built ahead of time and served from the CDN, so opening
+ * one is instant. ?edit=…&token=… (editing a published invitation) and
+ * ?card=free are read by the editor in the browser. */
+export function generateStaticParams() {
+  return routing.locales.flatMap((locale) => TEMPLATE_IDS.map((templateId) => ({ locale, templateId })));
+}
 
 export async function generateMetadata({
   params,
@@ -31,15 +41,8 @@ export async function generateMetadata({
   return { title: tEditor("pageTitleCreate", { name: template.name }), robots: { index: false, follow: false } };
 }
 
-export default async function CreatePage({
-  params,
-  searchParams,
-}: {
-  params: Promise<{ locale: string; templateId: string }>;
-  searchParams: Promise<{ edit?: string; token?: string }>;
-}) {
+export default async function CreatePage({ params }: { params: Promise<{ locale: string; templateId: string }> }) {
   const { locale, templateId } = await params;
-  const { edit, token } = await searchParams;
   setRequestLocale(locale);
 
   if (!TEMPLATE_IDS.includes(templateId)) notFound();
@@ -68,13 +71,10 @@ export default async function CreatePage({
   const messages = await getMessages();
   return (
     <NextIntlClientProvider messages={pickMessages(messages, [...CLIENT_BASE, ...EDITOR_EXTRA])}>
-      <Editor
-        templateId={templateId}
-        editSlug={edit ?? null}
-        editToken={token ?? null}
-        contentMessages={{ en, ta }}
-        designs={designs}
-      />
+      {/* the editor reads the URL's ?edit / ?token / ?card in the browser */}
+      <Suspense fallback={<EditorSkeleton />}>
+        <Editor templateId={templateId} contentMessages={{ en, ta }} designs={designs} />
+      </Suspense>
     </NextIntlClientProvider>
   );
 }

@@ -18,6 +18,9 @@ import paper from "@/components/landing/landing.module.css";
 import { KolamDivider, SideGarlands } from "@/components/site/festive";
 import { FinalCta, HowItWorks, SectionHeading } from "@/components/landing/Sections";
 
+// Served from the CDN; the design ratings (lib/stats.ts) refresh hourly.
+export const revalidate = 3600;
+
 /** Openings the hero phone cycles through — the newest designs first. */
 const FEATURED = ["photo-story", "temple-photo-story", "pearl-curtain", "temple-journey", "living-temple"];
 

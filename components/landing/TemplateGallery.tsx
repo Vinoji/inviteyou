@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { EDITORS_PICKS, HOME_FIRST, HOME_LAST, isNewTemplate } from "@/lib/templates";
 import { activeFestival } from "@/lib/festivals";
 import { type Tier, templateListPriceInr, templatePriceInr, templateTier, tierPriceInr } from "@/lib/pricing";
+import DesignLink from "@/components/site/DesignLink";
 import TemplateShowcase, { type ShowcaseProps } from "./TemplateShowcase";
 
 export interface GalleryTemplate {
@@ -292,7 +293,7 @@ function DesignCard({
           </span>
         )}
       </div>
-      <Link
+      <DesignLink
         href={asFree ? `/create/${tpl.id}?card=free` : `/create/${tpl.id}`}
         aria-label={`${t("useTemplate")} — ${tpl.name}`}
         className="flex flex-1 items-center justify-between gap-2 px-3 py-2.5"
@@ -318,7 +319,7 @@ function DesignCard({
         <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#ffe08a] via-[#f2c45a] to-[#c98f3a] text-[#2a0c27] shadow-[0_6px_14px_-6px_rgba(201,143,58,0.9)] transition group-hover:scale-110">
           <ArrowRight size={15} aria-hidden />
         </span>
-      </Link>
+      </DesignLink>
     </article>
   );
 }

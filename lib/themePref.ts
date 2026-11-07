@@ -7,11 +7,9 @@ export function readThemeCookie(): ThemePref {
   return (match?.[1] as ThemePref) ?? "system";
 }
 
-/** Writes the cookie the server reads in app/[locale]/layout.tsx to decide
- * the `dark`/`light` class before first paint — this is what makes theme
- * changes (and the locale-switch soft navigation, which re-runs that server
- * render) show the right theme immediately, with no client script and no
- * flash of the wrong one. */
+/** Writes the cookie the inline script in app/[locale]/layout.tsx reads to
+ * set the `dark`/`light` class before first paint, so a saved theme never
+ * flashes the wrong one. */
 function persistTheme(pref: ThemePref) {
   if (pref === "system") {
     document.cookie = `${COOKIE_NAME}=; path=/; max-age=0`;
@@ -26,6 +24,12 @@ function applyThemeClass(pref: ThemePref) {
   const root = document.documentElement;
   root.classList.remove("dark", "light");
   if (pref !== "system") root.classList.add(pref);
+}
+
+/** Re-applies the saved theme — after a language switch, which re-renders
+ * <html> without the class the inline script set. */
+export function applySavedTheme() {
+  applyThemeClass(readThemeCookie());
 }
 
 /** Switches theme now and remembers it. A crossfade where the browser

@@ -13,6 +13,9 @@ import FestiveBanner from "@/components/site/FestiveBanner";
 import { KolamDivider } from "@/components/site/festive";
 import paper from "@/components/landing/landing.module.css";
 
+// Served from the CDN; the design ratings (lib/stats.ts) refresh hourly.
+export const revalidate = 3600;
+
 /**
  * /templates — every design once, by occasion and price (the playable
  * gallery), then a plain index of every design under its occasion with

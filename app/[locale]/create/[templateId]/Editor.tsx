@@ -202,20 +202,20 @@ function generateDraftId() {
 
 export default function Editor({
   templateId,
-  editSlug,
-  editToken,
   contentMessages,
   designs,
 }: {
   templateId: string;
-  editSlug: string | null;
-  editToken: string | null;
   /** Invitation-language messages for both locales (see page.tsx). */
   contentMessages: Record<ContentLocale, AbstractIntlMessages>;
   /** This occasion's designs, for the design picker. */
   designs: DesignOption[];
 }) {
   const router = useRouter();
+  // Editing a published invitation: /create/<id>?edit=<slug>&token=<token>
+  const searchParams = useSearchParams();
+  const editSlug = searchParams.get("edit");
+  const editToken = searchParams.get("token");
   const t = useTranslations("editor");
   // The preview and design cards always play in full here (lib/motionPref).
   // Switched on during the first render, before the preview reads it, so
@@ -322,7 +322,6 @@ export default function Editor({
   const storyRef = useRef<HTMLTextAreaElement>(null);
   // Which part of the form is open. A design switch comes back to the
   // design step (?step=design); otherwise start with the names.
-  const searchParams = useSearchParams();
   const [step, setStep] = useState(() => (searchParams.get("step") === "design" ? "design" : "names"));
   const formScrollRef = useRef<HTMLDivElement>(null);
   // Phones scroll the whole form panel (the step bar stays pinned).

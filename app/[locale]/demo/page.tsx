@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import DesignLink from "@/components/site/DesignLink";
 import { getAllCategoryMeta } from "@/lib/i18n/categories";
 import { getTemplatesByCategory } from "@/lib/i18n/templates";
 import { showcaseProps } from "@/lib/i18n/showcase";
@@ -94,13 +94,13 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
                   </div>
                   <div className="flex items-center justify-between gap-2 p-3">
                     <span className="line-clamp-2 min-w-0 font-serif text-sm leading-tight font-bold text-neutral-900 dark:text-neutral-50">{name}</span>
-                    <Link
+                    <DesignLink
                       href={`/create/${v.templateId}`}
                       className="shrink-0 text-xs font-semibold text-amber-700 hover:underline dark:text-amber-400"
                       aria-label={`${tLanding("useTemplate")} — ${name}`}
                     >
                       {t("use")} →
-                    </Link>
+                    </DesignLink>
                   </div>
                 </li>
               );
@@ -140,13 +140,13 @@ export default async function DemoPage({ params }: { params: Promise<{ locale: s
                     </div>
                     <figcaption className="flex items-center justify-between gap-2 p-3">
                       <span className="truncate text-sm font-semibold text-neutral-900 dark:text-neutral-50">{tpl.name}</span>
-                      <Link
+                      <DesignLink
                         href={`/create/${tpl.id}`}
                         className="shrink-0 text-xs font-semibold text-amber-700 hover:underline dark:text-amber-400"
                         aria-label={`${tLanding("useTemplate")} — ${tpl.name}`}
                       >
                         {t("use")} →
-                      </Link>
+                      </DesignLink>
                     </figcaption>
                   </figure>
                 ))}

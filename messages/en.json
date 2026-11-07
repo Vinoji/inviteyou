@@ -78,7 +78,8 @@
     "brideFallback": "Bride",
     "groomFallback": "Groom",
     "youFallback": "You",
-    "friendFallback": "Friend"
+    "friendFallback": "Friend",
+    "openingDesign": "Opening your design…"
   },
   "landing": {
     "eyebrow": "InviteForYou",
