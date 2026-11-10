@@ -9,8 +9,9 @@ import "server-only";
  */
 type OgFont = { name: string; data: ArrayBuffer; weight: 400 | 600 | 700; style: "normal" };
 
-async function loadGoogleFont(family: string, weight: 400 | 600 | 700, text: string) {
-  const url = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@${weight}&text=${encodeURIComponent(text)}`;
+/** One Google Font weight as TTF — subset to `text`, or the whole font. */
+export async function loadGoogleFont(family: string, weight: 400 | 600 | 700, text?: string) {
+  const url = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(family)}:wght@${weight}${text ? `&text=${encodeURIComponent(text)}` : ""}`;
   const css = await (await fetch(url, { next: { revalidate: 60 * 60 * 24 * 7 } })).text();
   const src = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/)?.[1];
   if (!src) throw new Error(`no ttf for ${family}`);

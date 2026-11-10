@@ -10,6 +10,7 @@ import { parseIsoDate } from "./calendar";
 import { resolveMonogram } from "./monogram";
 import { loadFonts, tamilVisualOrder as v } from "./ogFonts";
 import { CARD_FONTS, cardOrnaments, getCardTheme, isDarkPaper } from "./cardTheme";
+import { hasTamil, shapeTamil } from "./tamilText";
 
 /** A5 portrait. */
 export const CARD_RATIO = 1.4142;
@@ -42,12 +43,13 @@ export async function renderCardImage({
   const height = Math.round(width * CARD_RATIO);
   const px = (n: number) => Math.round(n * k);
 
-  const [t, tCategories, tCommon, tKin, tView, format] = await Promise.all([
+  const [t, tCategories, tCommon, tKin, tView, tValaikappu, format] = await Promise.all([
     getTranslations({ locale, namespace: "invite.card" }),
     getTranslations({ locale, namespace: "categories" }),
     getTranslations({ locale, namespace: "common" }),
     getTranslations({ locale, namespace: "invite.kin" }),
     getTranslations({ locale, namespace: "invite.view" }),
+    getTranslations({ locale, namespace: "premium.valaikappu" }),
     getFormatter({ locale }),
   ]);
   const template = getTemplateConfig(data.templateId);
@@ -77,6 +79,13 @@ export async function renderCardImage({
   const kinLine = (side: "bride" | "groom") => {
     const m = getFamily(data, side)[0];
     if (!m?.name) return "";
+    // Velum Mayilum doesn't print the seed's sample family (as on its page).
+    if (template.id === "velum-mayilum-valaikappu" && m.name.trim() === tValaikappu("sampleHosts")) return "";
+    // "குடும்பத்தினர் அவர்களின் நல்லாசியுடன்" → "குடும்பத்தினரின் நல்லாசியுடன்":
+    // a plural like குடும்பத்தினர் / பெற்றோர் takes -இன் directly.
+    if (locale === "ta" && m.relation === "blessings" && /(?:த்தினர்|பெற்றோர்)$/.test(m.name.trim())) {
+      return `${m.name.trim().slice(0, -1)}ின் நல்லாசியுடன்`;
+    }
     try {
       return tKin.markup(m.relation, { side, label: m.label || "", name: m.name, n: (chunks) => chunks });
     } catch {
@@ -117,10 +126,90 @@ export async function renderCardImage({
   const display = '"Display", "Tamil", serif';
   const body = '"Body", "Tamil", sans-serif';
 
+  // One line of text: Tamil is drawn shaped by sharp (lib/tamilText.ts) and
+  // placed as an image; anything else, or if that fails, is Satori text.
+  const textWidth = px(940);
+  async function line(
+    text: string,
+    o: {
+      size: number;
+      color: string;
+      weight?: 400 | 600 | 700;
+      family?: string;
+      italic?: boolean;
+      spacing?: number;
+      marginTop?: number;
+      maxWidth?: number;
+      align?: "left" | "centre";
+    }
+  ) {
+    const box = { display: "flex", marginTop: o.marginTop ?? 0 } as const;
+    if (text && hasTamil(text)) {
+      try {
+        const img = await shapeTamil(text, {
+          size: o.size,
+          color: o.color,
+          weight: o.weight ?? 400,
+          maxWidth: o.maxWidth ?? textWidth,
+          align: o.align,
+        });
+        // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+        return <img src={img.src} width={img.width} height={img.height} style={box} />;
+      } catch (err) {
+        console.error("[card] tamil text", err);
+      }
+    }
+    return (
+      <div
+        style={{
+          ...box,
+          fontSize: o.size,
+          color: o.color,
+          fontWeight: o.weight ?? 400,
+          fontFamily: o.family ?? body,
+          fontStyle: o.italic ? "italic" : "normal",
+          letterSpacing: o.spacing ?? 0,
+          maxWidth: o.maxWidth ?? textWidth,
+          justifyContent: "center",
+        }}
+      >
+        {v(text)}
+      </div>
+    );
+  }
+
   const longest = Math.max(bride.length, groom.length);
   const nameSize = px((script ? 124 : 96) * Math.min(1, Math.max(0.55, 12 / Math.max(longest, 1))));
   const caps = (s: string) => (locale === "ta" ? s : s.toUpperCase());
   const spacing = locale === "ta" ? 0 : px(5);
+
+  // Fewer lines, bigger type: a one-function card fills the page.
+  const lines = family.length + events.length * 3 + (groom ? 2 : 0);
+  const grow = lines <= 4 ? 1.3 : lines <= 7 ? 1.15 : 1;
+  const g = (n: number) => px(n * grow);
+  const nameFamily = display;
+  const [eyebrowEl, brideEl, groomEl, requestEl, dateEl, scanEl, ...familyEls] = await Promise.all([
+    line(caps(category.heroEyebrow), { size: g(26), color: theme.trim, weight: 700, spacing }),
+    line(bride, { size: Math.round(nameSize * grow), color: accent, weight: 700, family: nameFamily }),
+    groom ? line(groom, { size: Math.round(nameSize * grow), color: accent, weight: 700, family: nameFamily }) : Promise.resolve(null),
+    line(t("request"), { size: g(30), color: theme.muted, italic: true, marginTop: g(20) }),
+    date ? line(date, { size: g(38), color: theme.ink, weight: 700 }) : Promise.resolve(null),
+    line(t("scan"), { size: px(24), color: dark ? theme.ink : theme.muted, maxWidth: px(420), align: "left" }),
+    ...family.map((l) => line(l, { size: g(26), color: theme.muted })),
+  ]);
+  const eventEls = await Promise.all(
+    events.map(async (e) => ({
+      key: e.label,
+      label: await line(caps(e.label), { size: g(24), color: theme.trim, weight: 700, spacing, maxWidth: px(440) }),
+      time: e.time ? await line(e.time, { size: g(34), color: theme.ink, weight: 700, marginTop: g(8), maxWidth: px(440) }) : null,
+      venue: e.venue?.name
+        ? await line(e.venue.name, { size: g(script ? 40 : 34), color: accent, weight: 600, family: display, marginTop: g(6), maxWidth: events.length > 1 ? px(440) : textWidth })
+        : null,
+      address: e.venue?.address
+        ? await line(e.venue.address, { size: g(24), color: theme.muted, marginTop: g(4), maxWidth: events.length > 1 ? px(440) : textWidth })
+        : null,
+    }))
+  );
 
   return new ImageResponse(
     (
@@ -166,101 +255,71 @@ export async function renderCardImage({
             style={{ position: "absolute", bottom: px(18), right: px(18), transform: "scaleX(-1)" }}
           />
 
-          {!category.singlePerson && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: px(92),
-                height: px(92),
-                borderRadius: px(46),
-                border: `${px(2.5)}px solid ${theme.trim}`,
-                color: accent,
-                fontFamily: display,
-                fontSize: px(34),
-                marginBottom: px(18),
-              }}
-            >
-              {v(monogram.b ? `${monogram.a}&${monogram.b}` : monogram.a)}
-            </div>
-          )}
-          <div style={{ display: "flex", fontSize: px(26), letterSpacing: spacing, color: theme.trim, fontWeight: 700 }}>
-            {v(caps(category.heroEyebrow))}
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              marginTop: px(22),
-              fontFamily: display,
-              fontSize: nameSize,
-              lineHeight: 1.08,
-              color: accent,
-            }}
-          >
-            <div style={{ display: "flex" }}>{v(bride)}</div>
-            {groom && (
-              <div style={{ display: "flex", fontSize: nameSize * 0.5, color: theme.trim, margin: `${px(4)}px 0` }}>&</div>
+          {/* Everything but the footer, centred in the space below the
+              thoranam so short cards don't leave the bottom half empty. */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%" }}>
+            {!category.singlePerson && (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: px(92),
+                  height: px(92),
+                  borderRadius: px(46),
+                  border: `${px(2.5)}px solid ${theme.trim}`,
+                  color: accent,
+                  fontFamily: display,
+                  fontSize: px(34),
+                  marginBottom: px(18),
+                }}
+              >
+                {v(monogram.b ? `${monogram.a}&${monogram.b}` : monogram.a)}
+              </div>
             )}
-            {groom && <div style={{ display: "flex" }}>{v(groom)}</div>}
-          </div>
+            {eyebrowEl}
 
-          <div style={{ display: "flex", marginTop: px(18), fontSize: px(30), color: theme.muted, fontStyle: "italic" }}>
-            {v(t("request"))}
-          </div>
-
-          {family.length > 0 && (
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: px(16), fontSize: px(24), color: theme.muted }}>
-              {family.map((line) => (
-                <div key={line} style={{ display: "flex" }}>
-                  {v(line)}
-                </div>
-              ))}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: g(24), lineHeight: 1.08 }}>
+              {brideEl}
+              {groom && (
+                <div style={{ display: "flex", fontFamily: display, fontSize: nameSize * grow * 0.5, color: theme.trim, margin: `${px(4)}px 0` }}>&</div>
+              )}
+              {groomEl}
             </div>
-          )}
 
-          {date && (
-            <div
-              style={{
-                display: "flex",
-                marginTop: px(30),
-                padding: `${px(14)}px ${px(36)}px`,
-                borderTop: `${px(2)}px solid ${theme.trim}`,
-                borderBottom: `${px(2)}px solid ${theme.trim}`,
-                fontSize: px(38),
-                fontWeight: 700,
-                color: theme.ink,
-              }}
-            >
-              {v(date)}
-            </div>
-          )}
+            {requestEl}
 
-          {events.length > 0 && (
-            <div style={{ display: "flex", justifyContent: "center", gap: px(56), marginTop: px(34), width: "100%" }}>
-              {events.map((e) => (
-                <div key={e.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", maxWidth: px(440) }}>
-                  <div style={{ display: "flex", fontSize: px(22), letterSpacing: spacing, color: theme.trim, fontWeight: 700 }}>
-                    {v(caps(e.label))}
+            {familyEls.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: g(18) }}>{familyEls}</div>
+            )}
+
+            {dateEl && (
+              <div
+                style={{
+                  display: "flex",
+                  marginTop: g(36),
+                  padding: `${g(14)}px ${g(36)}px`,
+                  borderTop: `${px(2)}px solid ${theme.trim}`,
+                  borderBottom: `${px(2)}px solid ${theme.trim}`,
+                }}
+              >
+                {dateEl}
+              </div>
+            )}
+
+            {eventEls.length > 0 && (
+              <div style={{ display: "flex", justifyContent: "center", gap: px(56), marginTop: g(44), width: "100%" }}>
+                {eventEls.map((e) => (
+                  <div key={e.key} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    {e.label}
+                    {e.time}
+                    {e.venue}
+                    {e.address}
                   </div>
-                  {e.time && <div style={{ display: "flex", marginTop: px(8), fontSize: px(32), fontWeight: 700 }}>{v(e.time)}</div>}
-                  {e.venue?.name && (
-                    <div style={{ display: "flex", marginTop: px(6), fontFamily: display, fontSize: px(script ? 40 : 30), color: accent }}>
-                      {v(e.venue.name)}
-                    </div>
-                  )}
-                  {e.venue?.address && (
-                    <div style={{ display: "flex", marginTop: px(4), fontSize: px(22), color: theme.muted }}>{v(e.venue.address)}</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div style={{ display: "flex", flex: 1 }} />
+                ))}
+              </div>
+            )}
+          </div>
 
           {qr && inviteUrl ? (
             <div style={{ display: "flex", alignItems: "center", gap: px(26), marginBottom: px(30) }}>
@@ -277,7 +336,7 @@ export async function renderCardImage({
                 <img src={qr} width={px(176)} height={px(176)} />
               </div>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", maxWidth: px(420), textAlign: "left" }}>
-                <div style={{ display: "flex", fontSize: px(24), color: dark ? theme.ink : theme.muted }}>{v(t("scan"))}</div>
+                {scanEl}
                 <div style={{ display: "flex", marginTop: px(8), fontSize: px(20), color: theme.trim }}>
                   {inviteUrl.replace(/^https?:\/\//, "")}
                 </div>
