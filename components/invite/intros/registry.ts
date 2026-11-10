@@ -59,6 +59,7 @@ export const INTROS: Record<IntroId, ComponentType<IntroProps>> = {
   livingTemple: dynamic(() => import("../premium/living/LivingIntro")),
   lilacSeal: dynamic(() => import("../premium/lilac/LilacSealIntro")),
   pastelPalace: dynamic(() => import("../premium/pastel/PastelPalaceIntro")),
+  valaikappu: dynamic(() => import("../premium/valaikappu/ValaikappuIntro")),
   meenakshiDoors: dynamic(() => import("../premium/meenakshi/MeenakshiDoorsIntro")),
   printedEnvelope: dynamic(() => import("../premium/printed/PrintedEnvelopeIntro")),
   filmLeader: dynamic(() => import("../premium/film/FilmLeaderIntro")),

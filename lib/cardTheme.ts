@@ -90,6 +90,7 @@ const THEMES: Record<string, CardTheme> = {
   "griha-pravesam-pathirikai": T(["#fbe38a", "#f5cf55"], "#fbe38a", "#4a1608", "#6e3415", "#a8740f", "#b3121f", "kolam"),
   "namakaranam-card": T(["#1d3a7a", "#132858"], "#1d3a7a", "#f2f5fb", "#c6d0e6", "#b9c3d6", "#ffffff", "minimal"),
   "valaikaappu-card": T(["#0d4a3a", "#073227"], "#0d4a3a", "#f6ecd2", "#d9caa2", "#c9a24a", "#f0cf7e", "foil"),
+  "velum-mayilum-valaikappu": T(["#fbf4e3", "#f3e3bf"], "#fbf4e3", "#3b1d12", "#7a5a48", "#c9962c", "#8e1b1b", "thoranam"),
   "pastel-palace-baby-shower": T(["#fbe9ee", "#fffaf6"], "#fffaf6", "#4b3a3f", "#7a6468", "#c0607f", "#b8955a", "floral"),
   "shashtiabdapoorthi-card": T(["#6d0f1c", "#4a0812"], "#6d0f1c", "#f8e3b6", "#e7c993", "#c9962c", "#f3cf73", "foil"),
   "lilac-seal-anniversary": T(["#e8def3", "#fbf8f4"], "#fbf8f4", "#4a3a5c", "#7a6a8c", "#8a6fb3", "#b8955a", "floral"),

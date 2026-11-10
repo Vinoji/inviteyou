@@ -59,6 +59,8 @@ export type IntroId =
   // Trending, simple and elegant (components/invite/premium/lilac …).
   | "lilacSeal"
   | "pastelPalace"
+  // Velum Mayilum Valaikaappu (components/invite/premium/valaikappu).
+  | "valaikappu"
   | "meenakshiDoors"
   // The printed cards of each tradition (components/invite/premium/printed).
   | "printedEnvelope"
@@ -395,7 +397,18 @@ export const TEMPLATES: TemplateConfig[] = [
     cardTextClass: "text-rose-900",
     intro: "pastelPalace",
     seed: "valaikaappu",
+  },  {
+    id: "velum-mayilum-valaikappu",
+    addedAt: "2026-11-10",
+    category: "baby",
+    defaultAccent: "#8E1B1B",
+    defaultFont: "tamil-classic",
+    cardGradient: "from-amber-50 via-orange-50 to-emerald-100",
+    cardTextClass: "text-red-900",
+    intro: "valaikappu",
+    seed: "valaikaappu",
   },
+
   {
     id: "shashtiabdapoorthi-card",
     addedAt: "2026-10-21",
@@ -1662,6 +1675,7 @@ export const EVENTS_HEADING: Record<string, { ns: string; kicker: string; title:
   "namakaranam-card": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
   "valaikaappu-card": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
   "pastel-palace-baby-shower": { ns: "premium.pastel", kicker: "eventsKicker", title: "eventsTitle" },
+  "velum-mayilum-valaikappu": { ns: "premium.valaikappu", kicker: "eventsKicker", title: "eventsTitle" },
   "shashtiabdapoorthi-card": { ns: "premium.printed", kicker: "eventsKicker", title: "eventsTitle" },
   "lilac-seal-anniversary": { ns: "premium.lilac", kicker: "eventsKicker", title: "eventsTitle" },
   "cinematic-film-anniversary": { ns: "premium.film", kicker: "ticketsKicker", title: "ticketsTitle" },

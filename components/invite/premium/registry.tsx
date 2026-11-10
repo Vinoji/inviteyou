@@ -17,6 +17,8 @@ const LivingTemple = dynamic(() => import("./living/LivingTempleInvitation"));
 // Trending, simple and elegant.
 const LilacSeal = dynamic(() => import("./lilac/LilacSealInvitation"));
 const PastelPalace = dynamic(() => import("./pastel/PastelPalaceInvitation"));
+// The Tamil valaikaappu card with baby Murugan, bells and bangles.
+const Valaikappu = dynamic(() => import("./valaikappu/ValaikappuInvitation"));
 const MaduraiMeenakshi = dynamic(() => import("./meenakshi/MaduraiMeenakshiInvitation"));
 const PrintedCard = dynamic(() => import("./printed/PrintedCardInvitation"));
 const CinematicFilm = dynamic(() => import("./film/CinematicFilmInvitation"));
@@ -62,6 +64,7 @@ const PREMIUM_IDS = new Set([
   "namakaranam-card",
   "valaikaappu-card",
   "pastel-palace-baby-shower",
+  "velum-mayilum-valaikappu",
   "shashtiabdapoorthi-card",
   "lilac-seal-anniversary",
   "cinematic-film-anniversary",
@@ -109,6 +112,8 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "pastel-palace-birthday":
     case "pastel-palace-valentine":
       return <PastelPalace {...props} />;
+    case "velum-mayilum-valaikappu":
+      return <Valaikappu {...props} />;
     case "madurai-meenakshi":
     case "meenakshi-nichayathartham":
       return <MaduraiMeenakshi {...props} />;

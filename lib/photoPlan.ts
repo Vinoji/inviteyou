@@ -63,6 +63,7 @@ const PREMIUM: Record<string, Plan> = {
   "namakaranam-card": { lead: [] },
   "valaikaappu-card": { lead: [] },
   "pastel-palace-baby-shower": { lead: [] },
+  "velum-mayilum-valaikappu": { lead: [] },
   "shashtiabdapoorthi-card": { lead: [] },
   "lilac-seal-anniversary": { lead: [] },
   "cinematic-film-anniversary": { lead: [] },

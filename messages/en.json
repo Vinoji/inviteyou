@@ -1506,6 +1506,13 @@
         "dialogLabel": "Wedding invitation",
         "play": "Play",
         "view": "Open the invitation"
+      },
+      "valaikappu": {
+        "dialogLabel": "Invitation cover",
+        "invocation": "With the blessings of Vel and Mayil",
+        "title": "Valaikaappu",
+        "hint": "Tap the bangles",
+        "view": "View invitation"
       }
     },
     "kin": {
@@ -3125,6 +3132,11 @@
       "name": "Kerala Muslim Nikah",
       "tagline": "Kasavu gold and emerald with the Bismillah",
       "description": "A Kerala Muslim Nikah card: cream stock with gold kasavu bands, the Bismillah in gold, emerald ink, the Nikah and the wedding feast, in a green envelope."
+    },
+    "velum-mayilum-valaikappu": {
+      "name": "Velum Mayilum Valaikaappu",
+      "tagline": "Baby Murugan, temple bells and glass bangles",
+      "description": "The Tamil valaikaappu card families share on WhatsApp — cream paper under a mango-leaf thoranam, swinging brass bells, baby Murugan with his peacock, a verse for the mother-to-be, the day and venue with a directions QR, and the family's welcome."
     }
   },
   "defaultContent": {
@@ -6838,6 +6850,36 @@
       "families": "Families",
       "special": "Special thanks",
       "specialValue": "Everyone who made this possible — you."
+    },
+    "valaikappu": {
+      "invocation": "With the blessings of Vel and Mayil",
+      "title": "Valaikaappu Ceremony",
+      "titleSub": "Invitation",
+      "scroll": "Scroll",
+      "verse": "With glass bangles for her wrists\nand a heart full of dreams,\nshe carries the joy of motherhood —\nwe invite you to the valaikaappu\nof the light of our home,\nto come and bless her with love.",
+      "honorific": "Sowbhagyavathi",
+      "wifeOf": "wife of {name}",
+      "dateLabel": "Date",
+      "timeLine": "from {time}",
+      "venueLabel": "Venue",
+      "directions": "Get directions",
+      "welcome": "Eagerly awaiting your gracious presence,",
+      "familyOf": "The family of {names}",
+      "countdownKicker": "Counting the days",
+      "countdownTitle": "Until the bangles ring",
+      "eventsKicker": "Join us",
+      "eventsTitle": "The celebration",
+      "storyKicker": "Our joy",
+      "storyTitle": "A little one on the way",
+      "signoff": "With love, {names}",
+      "photosKicker": "Moments",
+      "photosTitle": "Photos",
+      "guideKicker": "Getting there",
+      "guideTitle": "Travel & stay",
+      "replyKicker": "Kindly reply",
+      "replyTitle": "Will you be there?",
+      "replySub": "Your presence and blessings mean the world to her.",
+      "thankYou": "Thank you"
     }
   },
   "seoPages": {

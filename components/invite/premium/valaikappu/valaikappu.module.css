@@ -1,0 +1,811 @@
+/* Baby shower — "Velum Mayilum Valaikaappu": cream paper under a mango-leaf
+   thoranam and brass bells, maroon and leaf-green Tamil lettering, and
+   illustrations that rise in as each screen scrolls into view. The shared
+   blocks below (events, countdown, RSVP…) follow Pastel Palace's rules. */
+
+.root,
+.stage {
+  --lilac: #f3dca8;
+  --lilac-2: #fbefd4;
+  --lilac-deep: #8e1b1b;
+  --plum: #3b1d12;
+  --ink: #4a2a1c;
+  --soft: rgba(59, 29, 18, 0.68);
+  --gold: #b8862b;
+  --ivory: #fbf4e3;
+  --edge: rgba(142, 27, 27, 0.2);
+  --leaf: #2f6b2a;
+  --paper:
+    radial-gradient(120% 70% at 50% 30%, #fffdf6 0%, transparent 70%),
+    radial-gradient(90% 60% at 50% 110%, #f3e3bf 0%, transparent 70%),
+    #fbf4e3;
+}
+.root {
+  position: relative;
+  min-height: 100%;
+  width: 100%;
+  overflow-x: clip;
+  background: var(--paper);
+  color: var(--plum);
+  font-family: var(--p-body);
+}
+.root::before {
+  /* paper grain */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(/art/materials/paper-grain-light.webp) repeat;
+  background-size: 512px;
+  mix-blend-mode: multiply;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ---------- the canopy: thoranam and bells, stuck to the top while the
+   four screens scroll past ---------- */
+.scene {
+  position: relative;
+}
+.canopy {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  height: 0;
+  pointer-events: none;
+}
+.thoranam {
+  position: absolute;
+  inset: 0 0 auto;
+  display: block;
+  filter: drop-shadow(0 4px 4px rgba(40, 60, 20, 0.25));
+}
+.bell {
+  position: absolute;
+  top: 26px;
+  width: clamp(44px, 12vw, 62px);
+  height: auto;
+  transform-origin: 50% 0;
+  animation: swing 2.8s ease-in-out infinite alternate;
+  filter: drop-shadow(0 6px 6px rgba(60, 35, 5, 0.3));
+}
+.bellL {
+  left: 4%;
+}
+.bellR {
+  right: 4%;
+  animation-delay: -1.4s;
+}
+.clapper {
+  transform-box: view-box;
+  transform-origin: 50% 80%;
+  animation: clap 1.4s ease-in-out infinite alternate;
+}
+@keyframes swing {
+  from { transform: rotate(-7deg); }
+  to { transform: rotate(7deg); }
+}
+@keyframes clap {
+  from { transform: rotate(10deg); }
+  to { transform: rotate(-10deg); }
+}
+
+/* ---------- the four screens ---------- */
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: max(660px, 100svh);
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 138px 22px 0;
+  text-align: center;
+}
+.screenText {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.ground {
+  position: relative;
+  flex: 1;
+  min-height: calc(var(--fig, 220px) + 40px);
+  margin: 18px -22px 0;
+}
+.figure {
+  position: absolute;
+  bottom: 22px;
+  height: auto;
+  z-index: 1;
+}
+.grass {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: block;
+  z-index: 2;
+}
+.figure {
+  width: auto;
+  height: var(--fig);
+}
+.groundMurugan { --fig: min(26svh, 230px); }
+.groundCouple { --fig: min(42svh, 360px); }
+.groundVenue { --fig: min(36svh, 300px); }
+.groundHand { --fig: min(30svh, 240px); }
+.murugan,
+.couple {
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+.murugan {
+  max-width: 94%;
+  height: auto;
+  width: min(88vw, 420px);
+}
+.elephant {
+  left: 2%;
+  height: calc(var(--fig) * 0.56);
+}
+.mother {
+  right: 5%;
+}
+.lotusHand {
+  left: 0;
+  bottom: 40px;
+}
+@supports (animation-timeline: view()) {
+  .figure {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 35%;
+  }
+  .lotusHand {
+    animation-name: reach;
+  }
+}
+@keyframes rise {
+  from { opacity: 0; translate: 0 40px; }
+  to { opacity: 1; translate: 0 0; }
+}
+@keyframes reach {
+  from { opacity: 0; translate: -60px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- lettering ---------- */
+.frame {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  min-width: min(78vw, 300px);
+  padding: 14px 36px;
+}
+.frameArt {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.frameText {
+  position: relative;
+  font-family: var(--p-display);
+  font-size: clamp(17px, 4.6vw, 21px);
+  color: var(--lilac-deep);
+}
+.bigTitle {
+  display: flex;
+  flex-direction: column;
+  margin-top: 18px;
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: clamp(30px, 9vw, 46px);
+  line-height: 1.2;
+  color: var(--lilac-deep);
+  text-shadow: 0 1px 0 #fff;
+}
+.bigTitleSub {
+  font-size: 0.82em;
+}
+.kolam {
+  width: 92px;
+  height: 92px;
+  margin-top: 8px;
+}
+.kolamLines {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: draw 3s ease forwards 0.4s;
+}
+@keyframes draw {
+  to { stroke-dashoffset: 0; }
+}
+.scrollHint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 52px;
+  z-index: 3;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--soft);
+  animation: nudge 1.8s ease-in-out infinite;
+}
+@keyframes nudge {
+  50% { translate: 0 6px; }
+}
+.verse {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-wrap: balance;
+  font-weight: 600;
+  font-size: clamp(15px, 4.1vw, 19px);
+  line-height: 1.55;
+  color: var(--lilac-deep);
+}
+.divider {
+  width: 200px;
+  height: 18px;
+  margin: 10px 0 4px;
+}
+.honorific,
+.fieldLabel {
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: clamp(18px, 5vw, 24px);
+  color: var(--leaf);
+}
+.fieldLabel {
+  margin-top: 6px;
+}
+.motherName {
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: clamp(30px, 9vw, 44px);
+  line-height: 1.2;
+  color: var(--lilac-deep);
+}
+.wifeOf {
+  font-size: 15px;
+  color: var(--soft);
+}
+.dateLine,
+.venueName {
+  font-weight: 700;
+  font-size: clamp(18px, 5.2vw, 25px);
+  line-height: 1.35;
+  color: var(--lilac-deep);
+}
+.venueAddress {
+  max-width: 30ch;
+  font-size: 15px;
+  color: var(--ink);
+}
+.mapBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.qr {
+  display: block;
+  width: 96px;
+  height: 96px;
+  padding: 4px;
+  border: 1.5px solid var(--gold);
+  border-radius: 8px;
+  background: #fffaf0;
+}
+.qr svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.mapLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--lilac-deep);
+  color: #fff7e6;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: auto;
+}
+.welcome {
+  max-width: 22ch;
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: clamp(20px, 5.8vw, 28px);
+  line-height: 1.4;
+  color: var(--leaf);
+}
+.hosts {
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: clamp(22px, 6.6vw, 32px);
+  line-height: 1.35;
+  color: var(--lilac-deep);
+}
+
+.bigBangles {
+  display: block;
+  width: min(84vw, 380px);
+  height: auto;
+  margin-top: 10px;
+  transform-origin: 50% 0;
+  animation: sway 3.2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 8px 10px rgba(120, 60, 20, 0.2));
+}
+@keyframes sway {
+  from { rotate: -1.5deg; }
+  to { rotate: 1.5deg; }
+}
+
+/* ---------- closing ---------- */
+.thanks {
+  text-align: center;
+}
+.thanksKolam {
+  margin: 0 auto 10px;
+}
+.thanksLine {
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: clamp(22px, 6vw, 30px);
+  color: var(--lilac-deep);
+}
+.thanksName {
+  margin-top: 6px;
+  color: var(--soft);
+}
+.tint {
+  background: linear-gradient(180deg, transparent, rgba(243, 220, 168, 0.35) 50%, transparent);
+}
+.letterCard {
+  padding: 22px;
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  background: rgba(255, 252, 244, 0.85);
+}
+.replyHead {
+  margin-bottom: 18px;
+  text-align: center;
+}
+.replyHead p:last-child {
+  margin-top: 8px;
+  color: var(--soft);
+}
+.footer {
+  position: relative;
+  padding: 18px;
+  text-align: center;
+  font-size: 12px;
+  background: #f1e2bf;
+  color: rgba(59, 29, 18, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bell,
+  .clapper,
+  .scrollHint,
+  .figure,
+  .bigBangles {
+    animation: none;
+  }
+  .kolamLines {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+:global(html[data-motion="reduced"]) .bell,
+:global(html[data-motion="reduced"]) .clapper,
+:global(html[data-motion="reduced"]) .figure,
+:global(html[data-motion="reduced"]) .bigBangles {
+  animation: none;
+}
+
+/* ---------- shared blocks (from Pastel Palace) ---------- */
+.section {
+  position: relative;
+  padding: 64px 22px;
+}
+.inner {
+  position: relative;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.countdown {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.unit {
+  padding: 10px 0 8px;
+  border: 1px solid var(--edge);
+  border-radius: 10px;
+  background: #fff;
+}
+.num {
+  display: block;
+  font-family: var(--p-display);
+  font-size: 24px;
+  line-height: 1;
+  color: var(--plum);
+}
+.label {
+  display: block;
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.countdownDone {
+  margin-top: 18px;
+  font-family: var(--p-display);
+  font-style: italic;
+  font-size: 20px;
+  color: var(--lilac-deep);
+}
+
+/* shared blocks (CinemaBlocks) */
+.heading {
+  container-type: inline-size;
+  margin-bottom: 26px;
+  text-align: center;
+}
+.kicker {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.title {
+  margin-top: 6px;
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-weight: 400;
+  font-size: clamp(34px, 11cqi, 54px);
+  line-height: 1.1;
+  color: var(--lilac-deep);
+}
+.story {
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--ink);
+}
+.story p + p {
+  margin-top: 14px;
+}
+.lead::first-letter {
+  float: left;
+  margin: 6px 8px 0 0;
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: 3.6em;
+  line-height: 0.7;
+  color: var(--lilac-deep);
+}
+.signoff {
+  margin-top: 18px;
+  text-align: right;
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--lilac-deep);
+}
+.storyPhoto {
+  display: none;
+}
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+.card {
+  flex: 1 1 260px;
+  max-width: 440px;
+  padding: 26px 20px 22px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 40px -30px rgba(74, 58, 92, 0.5), 0 0 0 1px var(--edge);
+  text-align: center;
+}
+.cardLabel {
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.1;
+  color: var(--lilac-deep);
+}
+.cardTime {
+  margin-top: 8px;
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--plum);
+}
+.cardVenue {
+  margin-top: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--plum);
+}
+.cardAddress {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 10px 20px;
+  border: 1px solid var(--lilac-deep);
+  border-radius: 999px;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--lilac-deep);
+  background: #fff;
+}
+.calendar {
+  margin-top: 24px;
+  text-align: center;
+}
+.calendarRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.calendar .button {
+  margin-top: 0;
+}
+.calendarHint {
+  margin-top: 8px;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--soft);
+}
+.photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.photo {
+  overflow: hidden;
+  border-radius: 12px;
+  border: 6px solid #fff;
+  box-shadow: 0 16px 30px -22px rgba(74, 58, 92, 0.6);
+}
+.photo:nth-child(3n + 1) {
+  grid-column: span 2;
+}
+.photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.guide {
+  display: grid;
+  gap: 22px;
+}
+.guideHead {
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--edge);
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.guideItem {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(138, 111, 179, 0.12);
+}
+.guideItem > p:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 15px;
+}
+.guideItem span {
+  color: var(--soft);
+  white-space: nowrap;
+}
+.guideText {
+  margin-top: 3px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--soft);
+}
+.shared {
+  margin-top: 28px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #fff;
+  color: var(--plum);
+  box-shadow: 0 0 0 1px var(--edge);
+}
+.reply {
+  margin-top: 28px;
+  padding: 28px 22px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 20px 40px -30px rgba(74, 58, 92, 0.5), 0 0 0 1px var(--edge);
+}
+.replyForm {
+  max-width: none;
+}
+.formLabel {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 10.5px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.formInput {
+  width: 100%;
+  padding: 9px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--edge);
+  background: transparent;
+  font-size: 16px;
+  color: var(--plum);
+}
+.formInput:focus {
+  outline: none;
+  border-bottom-color: var(--lilac-deep);
+}
+.formButton {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: #fff;
+}
+.formButton:disabled {
+  opacity: 0.6;
+}
+.formNote {
+  text-align: center;
+  font-size: 12px;
+  color: var(--soft);
+}
+.thanksCard {
+  padding: 18px 0;
+  text-align: center;
+}
+.thanksTitle {
+  font-family: var(--p-display);
+  font-weight: 700;
+  font-size: 34px;
+  color: var(--lilac-deep);
+}
+.thanksBody {
+  margin-top: 6px;
+  color: var(--soft);
+}
+
+/* the shared blocks, tuned for bold Tamil lettering */
+.title {
+  font-size: clamp(26px, 7.4vw, 36px);
+  line-height: 1.25;
+}
+.heading {
+  text-align: center;
+}
+.countdown {
+  text-align: center;
+}
+.num {
+  font-family: var(--p-body);
+  color: var(--lilac-deep);
+}
+
+/* ---------- the opening (IntroHost's slot) ---------- */
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--plum);
+  font-family: var(--font-catamaran), sans-serif;
+}
+.stageCanopy {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 2;
+}
+.ringing {
+  animation-duration: 0.35s;
+}
+.stageColumn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 100%;
+  padding: 110px 24px 40px;
+  text-align: center;
+}
+.stageMurugan {
+  width: min(58%, 260px);
+  height: auto;
+  margin-bottom: 4px;
+}
+.stageTitle {
+  font-weight: 700;
+  font-size: clamp(24px, 7vw, 34px);
+  color: var(--lilac-deep);
+}
+.stageName {
+  font-weight: 700;
+  font-size: clamp(28px, 8.5vw, 42px);
+  line-height: 1.2;
+  color: var(--lilac-deep);
+}
+.stageDate {
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  color: var(--soft);
+}
+.banglesBtn {
+  margin-top: 8px;
+  padding: 6px;
+  border-radius: 999px;
+  cursor: pointer;
+  animation: glow 2.2s ease-in-out infinite;
+}
+.banglesBtn:disabled {
+  animation: none;
+  cursor: default;
+}
+@keyframes glow {
+  50% { filter: drop-shadow(0 0 14px rgba(201, 150, 44, 0.75)); }
+}
+.bangles {
+  display: block;
+  width: min(62vw, 260px);
+  height: auto;
+}
+.stageHint {
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--soft);
+}
+.stageCta {
+  margin-top: 12px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: var(--lilac-deep);
+  color: #fff7e6;
+  font-weight: 600;
+}
+.stageOpen .stageColumn {
+  transition: transform 1.4s ease 0.9s;
+  transform: translateY(-6%);
+}
