@@ -1202,6 +1202,32 @@ export default function Editor({
   // when it has something else: the phone field or the expiry notices.
   const formFooterOnPhone = Boolean(isEditMode && expiry && (expiry.expired || expiry.expiresAt));
 
+  // The family: with the names for one-person occasions (a baby shower's
+  // hosting family), with the story for couples.
+  const familySection = category.familyTitle ? (
+    <FormSection
+      title={category.familyTitle}
+      toggle={{
+        enabled: data.sections.family,
+        onChange: (v) => updateSection("family", v),
+      }}
+    >
+      <FamilyFields
+        brideHeading={t("familySideOf", {
+          name: data.brideName.trim() || category.personALabel,
+        })}
+        groomHeading={
+          category.singlePerson
+            ? undefined
+            : t("familySideOf", { name: data.groomName.trim() || category.personBLabel })
+        }
+        brideMembers={data.brideFamily ?? getFamily(data, "bride")}
+        groomMembers={data.groomFamily ?? getFamily(data, "groom")}
+        onChange={updateFamily}
+      />
+    </FormSection>
+  ) : null;
+
   return (
     // The screen below the 44px (h-11) app toolbar, so the publish bar and
     // the phone's Edit / Preview tabs stay in view.
@@ -1532,6 +1558,8 @@ export default function Editor({
                     })}
                   </ExtraCard>
                 )}
+
+                {category.singlePerson && familySection}
               </div>
             )}
 
@@ -1640,29 +1668,7 @@ export default function Editor({
                   />
                 </FormSection>
 
-                {category.familyTitle && (
-                  <FormSection
-                    title={category.familyTitle}
-                    toggle={{
-                      enabled: data.sections.family,
-                      onChange: (v) => updateSection("family", v),
-                    }}
-                  >
-                    <FamilyFields
-                      brideHeading={t("familySideOf", {
-                        name: data.brideName.trim() || category.personALabel,
-                      })}
-                      groomHeading={
-                        category.singlePerson
-                          ? undefined
-                          : t("familySideOf", { name: data.groomName.trim() || category.personBLabel })
-                      }
-                      brideMembers={data.brideFamily ?? getFamily(data, "bride")}
-                      groomMembers={data.groomFamily ?? getFamily(data, "groom")}
-                      onChange={updateFamily}
-                    />
-                  </FormSection>
-                )}
+                {!category.singlePerson && familySection}
               </div>
             )}
 

@@ -69,7 +69,12 @@ export default function ValaikappuInvitation(props: PremiumProps) {
   const mapHref = main?.venue ? directionsUrl(main.venue) : "";
   // The hosts, from the editor's Family section (and only while it's on).
   const family = sections.family ? getFamily(data, "bride") : [];
-  const hosts = family.filter((m) => HOST_RELATIONS.has(m.relation)).map((m) => m.name.trim());
+  // The sample family from the seed isn't anyone's real hosts: until it's
+  // replaced, the line reads "The family of <her name>".
+  const sampleHosts = t("sampleHosts");
+  const hosts = family
+    .filter((m) => HOST_RELATIONS.has(m.relation) && m.name.trim() !== sampleHosts)
+    .map((m) => m.name.trim());
   const hostLine = hosts.length ? hosts.join(" · ") : coupleLabel;
   const verse = t("verse").split("\n");
   const style = {
