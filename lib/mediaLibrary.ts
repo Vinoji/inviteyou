@@ -16,6 +16,7 @@ export type LibraryCategory =
   | "proposal"
   | "birthday"
   | "housewarming"
+  | "baby-shower"
   | "baby"
   | "corporate";
 
@@ -64,18 +65,18 @@ export const PHOTO_LIBRARY: LibraryPhoto[] = [
   photo("birthday-letters", ["birthday"]),
   art("birthday-balloon-party", "cake", ["birthday"]),
   art("birthday-balloon-party", "sparkler", ["birthday", "corporate"]),
-  art("birthday-balloon-party", "balloons", ["birthday", "baby"]),
+  art("birthday-balloon-party", "balloons", ["birthday", "baby", "baby-shower"]),
   photo("home-diyas", ["housewarming"]),
   photo("home-diya-close", ["housewarming"]),
   photo("home-new-keys", ["housewarming"]),
   photo("home-diya-row", ["housewarming", "wedding"]),
-  photo("baby-newborn-foot", ["baby"]),
-  photo("baby-yellow-shoes", ["baby"]),
-  photo("baby-feet", ["baby"]),
-  photo("baby-booties", ["baby"]),
-  art("baby-shower-balloons", "shoes-hand", ["baby"]),
-  art("baby-shower-balloons", "nursery", ["baby"]),
-  art("baby-shower-balloons", "booties", ["baby"]),
+  photo("baby-newborn-foot", ["baby", "baby-shower"]),
+  photo("baby-yellow-shoes", ["baby", "baby-shower"]),
+  photo("baby-feet", ["baby", "baby-shower"]),
+  photo("baby-booties", ["baby", "baby-shower"]),
+  art("baby-shower-balloons", "shoes-hand", ["baby", "baby-shower"]),
+  art("baby-shower-balloons", "nursery", ["baby", "baby-shower"]),
+  art("baby-shower-balloons", "booties", ["baby", "baby-shower"]),
   photo("corporate-keynote", ["corporate"]),
   photo("corporate-office-party", ["corporate"]),
   photo("corporate-auditorium", ["corporate"]),
@@ -97,7 +98,7 @@ export const MUSIC_LIBRARY: LibraryTrack[] = [
   track("nadaswaram", 180, ["wedding", "engagement", "housewarming"]),
   track("shehnai", 94, ["wedding", "engagement"]),
   track("veena", 42, ["wedding", "housewarming", "anniversary"]),
-  track("krishna-flute", 180, ["wedding", "housewarming", "baby"]),
+  track("krishna-flute", 180, ["wedding", "housewarming", "baby", "baby-shower"]),
   track("indian-wedding", 143, ["wedding", "engagement"]),
   track("bollywood-wedding", 153, ["wedding", "engagement"]),
   track("diwali-festive", 128, ["housewarming", "wedding", "corporate"]),
@@ -105,8 +106,8 @@ export const MUSIC_LIBRARY: LibraryTrack[] = [
   track("romantic-piano", 142, ["anniversary", "valentine", "proposal", "wedding"]),
   track("happy-birthday", 121, ["birthday"]),
   track("celebration", 160, ["birthday", "corporate"]),
-  track("lullaby", 111, ["baby"]),
-  track("morning-serenity", 123, ["housewarming", "baby"]),
+  track("lullaby", 111, ["baby", "baby-shower"]),
+  track("morning-serenity", 123, ["housewarming", "baby", "baby-shower"]),
   track("corporate-uplifting", 180, ["corporate"]),
 ];
 

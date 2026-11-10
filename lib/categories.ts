@@ -6,6 +6,7 @@ export type CategoryId =
   | "birthday"
   | "housewarming"
   | "engagement"
+  | "baby-shower"
   | "baby"
   | "corporate";
 
@@ -49,6 +50,7 @@ export const CATEGORIES: CategoryConfig[] = [
   { id: "proposal", singlePerson: false, showCountdown: false, allowPastDate: true },
   { id: "birthday", singlePerson: true, showCountdown: true, allowPastDate: false },
   { id: "housewarming", singlePerson: true, showCountdown: true, allowPastDate: false },
+  { id: "baby-shower", singlePerson: true, showCountdown: true, allowPastDate: false },
   { id: "baby", singlePerson: true, showCountdown: true, allowPastDate: false },
   { id: "corporate", singlePerson: true, showCountdown: true, allowPastDate: false },
 ];

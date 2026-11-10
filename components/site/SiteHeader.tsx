@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { ChevronDown, Menu, Sparkles, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import SettingsMenu from "./SettingsMenu";
+import GlobalSearch from "./GlobalSearch";
 import SiteMusic from "./SiteMusic";
 import AppToolbar from "../AppToolbar";
 import useSafeReducedMotion from "../invite/useSafeReducedMotion";
@@ -169,7 +170,9 @@ export default function SiteHeader() {
           })}
         </nav>
 
-        <div className="ml-auto hidden items-center gap-2 md:flex">
+        <GlobalSearch className="ml-auto" />
+
+        <div className="ml-2 hidden items-center gap-2 md:flex">
           <SettingsMenu />
           <Link href="/templates" className={s.cta}>
             <Sparkles size={15} aria-hidden />
@@ -177,7 +180,7 @@ export default function SiteHeader() {
           </Link>
         </div>
 
-        <SiteMusic className="ml-auto md:ml-2" />
+        <SiteMusic className="ml-2" />
 
         <button
           type="button"
@@ -249,7 +252,7 @@ export default function SiteHeader() {
   );
 }
 
-const OCCASIONS = ["wedding", "engagement", "birthday", "housewarming", "anniversary", "baby", "valentine", "proposal", "corporate"] as const;
+const OCCASIONS = ["wedding", "engagement", "birthday", "housewarming", "anniversary", "baby-shower", "baby", "valentine", "proposal", "corporate"] as const;
 const TRADITIONS = [
   "tamil-wedding-invitation",
   "kerala-wedding-invitation",

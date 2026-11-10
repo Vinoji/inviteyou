@@ -7,7 +7,7 @@ import { COLLECTIONS } from "@/lib/collections";
 import { SectionHeading } from "./Sections";
 import paper from "./landing.module.css";
 
-const OCCASIONS = ["wedding", "engagement", "birthday", "housewarming", "anniversary", "baby", "valentine", "proposal", "corporate"] as const;
+const OCCASIONS = ["wedding", "engagement", "birthday", "housewarming", "anniversary", "baby-shower", "baby", "valentine", "proposal", "corporate"] as const;
 const FEATURE_ICONS = [Sparkles, Languages, MapPin, CalendarPlus, Users, Video, Gift, MessageCircle];
 
 /** Why a live invitation beats printed cards and PDFs — three columns. */
@@ -52,7 +52,7 @@ export async function Features() {
   const t = await getTranslations("landing.home.features");
   const keys = Object.keys(t.raw("items") as Record<string, unknown>);
   return (
-    <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+    <section id="features" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-14 sm:px-6">
       <SectionHeading eyebrow="" title={t("title")} sub={t("sub")} />
       <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {keys.map((k, i) => {

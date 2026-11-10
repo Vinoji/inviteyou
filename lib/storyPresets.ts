@@ -24,6 +24,7 @@ export const STORY_PRESETS: Record<CategoryId, readonly string[]> = {
   birthday: ["bestFriend", "firstBirthday", "manivizha", "milestone"],
   housewarming: ["grihaPravesam", "casualParty", "firstHome"],
   engagement: ["familiesMeet", "loveStory", "traditional"],
-  baby: ["valaikaappu", "babyShower", "namingCeremony"],
+  "baby-shower": ["valaikaappu", "babyShower"],
+  baby: ["namingCeremony", "valaikaappu", "babyShower"],
   corporate: ["productLaunch", "annualDay", "conference"],
 };

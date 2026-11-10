@@ -11,6 +11,7 @@ import {
   PartyPopper,
   Sparkles,
   type LucideIcon,
+  HandHeart,
 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Petals } from "../site/festive";
@@ -24,6 +25,7 @@ const OCCASION_ICONS: Record<string, LucideIcon> = {
   proposal: Gem,
   birthday: Cake,
   housewarming: House,
+  "baby-shower": HandHeart,
   baby: Baby,
   corporate: Briefcase,
 };

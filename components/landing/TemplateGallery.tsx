@@ -24,6 +24,7 @@ const OCCASION_ICON: Record<string, string> = {
   engagement: "💞",
   birthday: "🎂",
   housewarming: "🏡",
+  "baby-shower": "🤰",
   baby: "👶",
   anniversary: "💐",
   valentine: "❤️",

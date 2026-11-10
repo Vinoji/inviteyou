@@ -1064,6 +1064,7 @@
           "proposal": "The Moment",
           "birthday": "The Party",
           "housewarming": "Open House",
+          "baby-shower": "The Ceremony",
           "baby": "The Celebration",
           "corporate": "The Event"
         },
@@ -1074,6 +1075,7 @@
           "proposal": "A question, a ring and a lifetime",
           "birthday": "Cake, laughter and a lot of love",
           "housewarming": "Come see our new home",
+          "baby-shower": "Bless the mother-to-be",
           "baby": "Blessings for our little one",
           "corporate": "Everything you need for the day"
         }
@@ -1119,6 +1121,7 @@
           "proposal": "Be there for the question of a lifetime.",
           "birthday": "The party isn't complete without you.",
           "housewarming": "Our new home would love its first guests.",
+          "baby-shower": "Shower her with your blessings.",
           "baby": "Shower our little one with your blessings.",
           "corporate": "Please confirm your attendance."
         }
@@ -2442,9 +2445,21 @@
       "personALabel": "Bride's name",
       "personBLabel": "Groom's name"
     },
+    "baby-shower": {
+      "label": "Baby Shower",
+      "tagline": "Valaikaappu, seemantham & baby shower",
+      "heroEyebrow": "A little one is on the way",
+      "dateLabel": "Ceremony date",
+      "eventALabel": "The Ceremony",
+      "eventBLabel": "",
+      "storyTitle": "Our Little Story",
+      "familyTitle": "",
+      "personALabel": "Mom-to-be's name",
+      "personBLabel": ""
+    },
     "baby": {
       "label": "Baby Celebration",
-      "tagline": "Valaikaappu, baby shower & naming",
+      "tagline": "Naming ceremony, cradle & welcome",
       "heroEyebrow": "A little blessing is on the way",
       "dateLabel": "Celebration date",
       "eventALabel": "The Celebration",
@@ -5466,6 +5481,18 @@
         "text": "With the grace of the Almighty and the blessings of our families, the engagement of {a} and {b} will be celebrated with the customary rituals. We request your presence and blessings on this auspicious day."
       }
     },
+    "baby-shower": {
+      "valaikaappu": {
+        "title": "Valaikaappu",
+        "tag": "Traditional",
+        "text": "With joy in our hearts, we celebrate the Valaikaappu of {a}. Bangles, blessings and good food await — please come and shower your love on the mother-to-be and the little one on the way."
+      },
+      "babyShower": {
+        "title": "Baby shower",
+        "tag": "Modern",
+        "text": "A little one is on the way! Join us for an afternoon of games, cake and happy tears as we celebrate {a} before the newest member of our family arrives."
+      }
+    },
     "baby": {
       "valaikaappu": {
         "title": "Valaikaappu",
@@ -5883,6 +5910,22 @@
       "valaikappu-invitation": "Valaikappu & Seemantham",
       "griha-pravesam-invitation": "Griha Pravesam",
       "shashtiabdapoorthi-invitation": "Shashtiabdapoorthi"
+    },
+    "search": {
+      "open": "Search",
+      "placeholder": "Search designs, occasions, guides, help…",
+      "close": "Close search",
+      "loading": "Loading…",
+      "empty": "Nothing found for “{q}” — try another word.",
+      "suggested": "Popular",
+      "keys": "↑ ↓ to move · Enter to open · Esc to close · Ctrl/⌘ K to search anytime",
+      "groups": {
+        "page": "Pages & features",
+        "occasion": "Occasions & traditions",
+        "design": "Designs",
+        "help": "Help & FAQ",
+        "guide": "Guides"
+      }
     }
   },
   "notify": {
@@ -7021,19 +7064,38 @@
       "ogTitle": "Housewarming Invitations — Griha Pravesam",
       "ogDescription": "Turmeric புதுமனை புகுவிழா cards, house blessings and cinematic “our new home” designs."
     },
+    "baby-shower": {
+      "label": "Baby Shower",
+      "metaTitle": "Baby Shower & Valaikappu Invitation Online",
+      "metaDescription": "Animated baby shower, valaikappu and seemantham invitations — Tamil or English, with venue map, countdown, RSVP and WhatsApp sharing.",
+      "ogTitle": "Valaikappu & Baby Shower Invitations",
+      "ogDescription": "Bangle-green valaikappu cards, baby Murugan and temple bells, pastel baby showers.",
+      "h1": "Baby shower and valaikappu invitations",
+      "intro": "Invite family to bless the mother-to-be — a valaikappu, seemantham or baby shower invitation that opens with bangles, bells or balloons, with directions and RSVPs inside.",
+      "faq": {
+        "0": {
+          "q": "Is this for valaikappu and seemantham too?",
+          "a": "Yes — these designs are made for valaikappu, seemantham, godh bharai and baby showers, in Tamil or English."
+        },
+        "1": {
+          "q": "Can guests get directions to the venue?",
+          "a": "Yes. Every invitation has a Google Maps button, and some designs also show a QR code for the venue."
+        }
+      }
+    },
     "baby": {
-      "metaTitle": "Baby Shower & Naming Ceremony Invitation Online",
-      "metaDescription": "Create an animated baby shower, valaikappu or naming ceremony invitation with photos, venue map and RSVPs.",
-      "h1": "Baby shower and naming ceremony invitations",
-      "intro": "Celebrate the little one with a gentle, animated invitation for a baby shower, valaikappu or naming ceremony — with directions and RSVPs.",
+      "metaTitle": "Naming Ceremony & Cradle Invitation Online",
+      "metaDescription": "Create an animated naming ceremony, cradle or baby welcome invitation with photos, venue map and RSVPs.",
+      "h1": "Naming ceremony and baby welcome invitations",
+      "intro": "Welcome the little one with a gentle, animated invitation for a naming ceremony, cradle ceremony or first welcome — with directions and RSVPs.",
       "faq": {
         "0": {
           "q": "Can I use it for a cradle ceremony?",
-          "a": "Yes — it works for baby showers, valaikappu, cradle and naming ceremonies."
+          "a": "Yes — it works for naming, cradle and baby welcome ceremonies. For valaikappu and baby showers, see the Baby Shower designs."
         }
       },
-      "ogTitle": "Baby Invitations — Valaikappu, Naming & Baby Shower",
-      "ogDescription": "Valaikappu cards, naming ceremonies and pastel baby showers."
+      "ogTitle": "Baby Invitations — Naming & Cradle Ceremony",
+      "ogDescription": "Naming ceremonies, cradle ceremonies and a warm welcome for the baby."
     },
     "corporate": {
       "metaTitle": "Corporate Event Invitation Online – Launch & Annual Day",
@@ -7351,5 +7413,90 @@
     },
     "contactTitle": "Contact us",
     "contactText": "Questions, partnerships or feedback — write to us and we'll reply soon."
+  },
+  "searchIndex": {
+    "featureTerms": "feature what you get includes",
+    "pages": {
+      "home": {
+        "t": "Home",
+        "d": "Animated digital invitations in Tamil & English",
+        "k": "start main"
+      },
+      "templates": {
+        "t": "All designs",
+        "d": "Every invitation design, by occasion and price",
+        "k": "templates designs catalogue browse"
+      },
+      "freeCards": {
+        "t": "Free invitation cards",
+        "d": "Download any design as a card image, free",
+        "k": "free download card image jpg png print"
+      },
+      "live": {
+        "t": "Live invitation link — ₹{price}",
+        "d": "Your own link with opening animation, maps, RSVP and music",
+        "k": "live link website buy publish"
+      },
+      "premium3d": {
+        "t": "3D invitations",
+        "d": "Palace, temple and cathedral designs in 3D",
+        "k": "3d premium palace temple cathedral"
+      },
+      "pricing": {
+        "t": "Pricing",
+        "d": "Free cards, live invitations from ₹{price}, 3D designs",
+        "k": "price cost rate how much offer coupon"
+      },
+      "demo": {
+        "t": "Demo videos",
+        "d": "Watch every opening animation",
+        "k": "video demo youtube preview example"
+      },
+      "blog": {
+        "t": "Guides & wording",
+        "d": "Invitation wording samples and WhatsApp messages",
+        "k": "blog articles wording message samples"
+      },
+      "about": {
+        "t": "About InviteForYou",
+        "d": "Who we are and what we make",
+        "k": "about company team"
+      },
+      "support": {
+        "t": "Support centre",
+        "d": "Help with editing, guests, language and payments",
+        "k": "help support guide how to"
+      },
+      "contact": {
+        "t": "Contact us",
+        "d": "WhatsApp, email and Instagram",
+        "k": "contact whatsapp email phone call instagram"
+      },
+      "faq": {
+        "t": "FAQs",
+        "d": "Answers to common questions",
+        "k": "faq questions answers"
+      },
+      "privacy": {
+        "t": "Privacy policy",
+        "d": "How we handle your data",
+        "k": "privacy policy data"
+      },
+      "yourData": {
+        "t": "Your data",
+        "d": "Download or delete your invitation data",
+        "k": "delete data download gdpr remove"
+      },
+      "terms": {
+        "t": "Terms & conditions",
+        "d": "The rules for using InviteForYou",
+        "k": "terms conditions rules"
+      },
+      "refunds": {
+        "t": "Payments & refunds",
+        "d": "Refunds, failed payments and receipts",
+        "k": "refund payment failed money back receipt razorpay upi"
+      }
+    }
   }
 }

@@ -379,7 +379,7 @@ export const TEMPLATES: TemplateConfig[] = [
   {
     id: "valaikaappu-card",
     addedAt: "2026-10-21",
-    category: "baby",
+    category: "baby-shower",
     defaultAccent: "#F0CF7E",
     defaultFont: "royal-cinzel",
     cardGradient: "from-emerald-950 via-emerald-800 to-amber-400",
@@ -390,7 +390,7 @@ export const TEMPLATES: TemplateConfig[] = [
   {
     id: "pastel-palace-baby-shower",
     addedAt: "2026-10-21",
-    category: "baby",
+    category: "baby-shower",
     defaultAccent: "#C0607F",
     defaultFont: "elegant-script",
     cardGradient: "from-rose-100 via-pink-50 to-stone-100",
@@ -400,7 +400,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },  {
     id: "velum-mayilum-valaikappu",
     addedAt: "2026-11-10",
-    category: "baby",
+    category: "baby-shower",
     defaultAccent: "#8E1B1B",
     defaultFont: "tamil-classic",
     cardGradient: "from-amber-50 via-orange-50 to-emerald-100",
@@ -1521,7 +1521,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "baby-valaikaappu",
-    category: "baby",
+    category: "baby-shower",
     defaultAccent: "#C2185B",
     defaultFont: "royal-cinzel",
     cardGradient: "from-pink-800 via-rose-600 to-emerald-500",
@@ -1554,7 +1554,7 @@ export const TEMPLATES: TemplateConfig[] = [
   },
   {
     id: "baby-shower-balloons",
-    category: "baby",
+    category: "baby-shower",
     defaultAccent: "#5FA8C9",
     defaultFont: "elegant-script",
     cardGradient: "from-sky-100 via-pink-50 to-yellow-50",

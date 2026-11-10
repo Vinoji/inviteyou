@@ -34,7 +34,7 @@ export default async function SiteFooter() {
     {
       // Occasion landing pages (app/[locale]/invitations/[category]).
       title: t("footer.invitations"),
-      links: (["wedding", "engagement", "birthday", "housewarming", "anniversary", "baby"] as const).map((id) => ({
+      links: (["wedding", "engagement", "birthday", "housewarming", "anniversary", "baby-shower", "baby"] as const).map((id) => ({
         href: `/invitations/${id}`,
         label: tCategories(`${id}.label`),
       })),

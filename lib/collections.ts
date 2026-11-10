@@ -69,7 +69,7 @@ export const COLLECTIONS: Collection[] = [
   },
   {
     slug: "valaikappu-invitation",
-    category: "baby",
+    category: "baby-shower",
     templates: ["velum-mayilum-valaikappu", "valaikaappu-card", "baby-valaikaappu", "pastel-palace-baby-shower", "baby-shower-balloons", "namakaranam-card"],
   },
   {
