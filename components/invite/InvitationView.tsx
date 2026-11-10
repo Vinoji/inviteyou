@@ -216,7 +216,7 @@ function InvitationBody({
             </Section>
           </ScrollScene>
         )}
-        {category.familyTitle && sections.family && (
+        {category.familyTitle && !category.singlePerson && sections.family && (
           <ScrollScene templateId={data.templateId} accentColor={data.accentColor} kind="family">
             <Section delay={0.03}>
               <Family

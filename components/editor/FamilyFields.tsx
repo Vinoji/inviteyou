@@ -127,7 +127,8 @@ export default function FamilyFields({
   onChange,
 }: {
   brideHeading: string;
-  groomHeading: string;
+  /** Left out for one-person occasions (a baby shower, a birthday). */
+  groomHeading?: string;
   brideMembers: FamilyMember[];
   groomMembers: FamilyMember[];
   onChange: (side: FamilySide, update: FamilyUpdate) => void;
@@ -143,11 +144,13 @@ export default function FamilyFields({
         members={brideMembers}
         onChange={(m) => onChange("bride", m)}
       />
-      <SideFields
-        heading={groomHeading}
-        members={groomMembers}
-        onChange={(m) => onChange("groom", m)}
-      />
+      {groomHeading !== undefined && (
+        <SideFields
+          heading={groomHeading}
+          members={groomMembers}
+          onChange={(m) => onChange("groom", m)}
+        />
+      )}
     </div>
   );
 }

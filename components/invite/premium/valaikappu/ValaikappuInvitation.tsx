@@ -67,7 +67,8 @@ export default function ValaikappuInvitation(props: PremiumProps) {
   const day = parseIsoDate(data.weddingDate);
   const photos = data.photos ?? [];
   const mapHref = main?.venue ? directionsUrl(main.venue) : "";
-  const family = getFamily(data, "bride");
+  // The hosts, from the editor's Family section (and only while it's on).
+  const family = sections.family ? getFamily(data, "bride") : [];
   const hosts = family.filter((m) => HOST_RELATIONS.has(m.relation)).map((m) => m.name.trim());
   const hostLine = hosts.length ? hosts.join(" · ") : coupleLabel;
   const verse = t("verse").split("\n");

@@ -76,8 +76,13 @@ export default function RoyalInvitation({
   const names = [data.brideName, data.groomName].filter(Boolean).join(" & ");
   const brideFamily = getFamily(data, "bride");
   const groomFamily = getFamily(data, "groom");
+  // Both families, as a couple's invitation lists them; one-person occasions
+  // (a baby shower) name their hosts in their own designs.
   const familyShown =
-    sections.family && Boolean(category.familyTitle) && brideFamily.length + groomFamily.length > 0;
+    sections.family &&
+    Boolean(category.familyTitle) &&
+    !category.singlePerson &&
+    brideFamily.length + groomFamily.length > 0;
   // Weddings always have a second event (a reception by default); other
   // occasions only when their category names one.
   const eventBLabel = category.eventBLabel || (category.id === "wedding" ? tView("defaultReception") : "");

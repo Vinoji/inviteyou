@@ -1652,9 +1652,11 @@ export default function Editor({
                       brideHeading={t("familySideOf", {
                         name: data.brideName.trim() || category.personALabel,
                       })}
-                      groomHeading={t("familySideOf", {
-                        name: data.groomName.trim() || category.personBLabel,
-                      })}
+                      groomHeading={
+                        category.singlePerson
+                          ? undefined
+                          : t("familySideOf", { name: data.groomName.trim() || category.personBLabel })
+                      }
                       brideMembers={data.brideFamily ?? getFamily(data, "bride")}
                       groomMembers={data.groomFamily ?? getFamily(data, "groom")}
                       onChange={updateFamily}
