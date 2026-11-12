@@ -65,6 +65,9 @@ const PREMIUM_IDS = new Set([
   "valaikaappu-card",
   "pastel-palace-baby-shower",
   "velum-mayilum-valaikappu",
+  "mangala-thirumanam",
+  "pudhumanai-puguvizha",
+  "kannan-valaikaappu",
   "shashtiabdapoorthi-card",
   "lilac-seal-anniversary",
   "cinematic-film-anniversary",
@@ -113,6 +116,9 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "pastel-palace-valentine":
       return <PastelPalace {...props} />;
     case "velum-mayilum-valaikappu":
+    case "mangala-thirumanam":
+    case "pudhumanai-puguvizha":
+    case "kannan-valaikaappu":
       return <Valaikappu {...props} />;
     case "madurai-meenakshi":
     case "meenakshi-nichayathartham":

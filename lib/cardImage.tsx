@@ -11,6 +11,7 @@ import { resolveMonogram } from "./monogram";
 import { loadFonts, tamilVisualOrder as v } from "./ogFonts";
 import { CARD_FONTS, cardOrnaments, getCardTheme, isDarkPaper } from "./cardTheme";
 import { hasTamil, shapeTamil } from "./tamilText";
+import { SCENE_DESIGNS } from "@/components/invite/premium/valaikappu/scenes";
 
 /** A5 portrait. */
 export const CARD_RATIO = 1.4142;
@@ -43,13 +44,14 @@ export async function renderCardImage({
   const height = Math.round(width * CARD_RATIO);
   const px = (n: number) => Math.round(n * k);
 
-  const [t, tCategories, tCommon, tKin, tView, tValaikappu, format] = await Promise.all([
+  const scene = SCENE_DESIGNS[data.templateId];
+  const [t, tCategories, tCommon, tKin, tView, tScene, format] = await Promise.all([
     getTranslations({ locale, namespace: "invite.card" }),
     getTranslations({ locale, namespace: "categories" }),
     getTranslations({ locale, namespace: "common" }),
     getTranslations({ locale, namespace: "invite.kin" }),
     getTranslations({ locale, namespace: "invite.view" }),
-    getTranslations({ locale, namespace: "premium.valaikappu" }),
+    getTranslations({ locale, namespace: `premium.${scene?.ns ?? "valaikappu"}` }),
     getFormatter({ locale }),
   ]);
   const template = getTemplateConfig(data.templateId);
@@ -79,8 +81,8 @@ export async function renderCardImage({
   const kinLine = (side: "bride" | "groom") => {
     const m = getFamily(data, side)[0];
     if (!m?.name) return "";
-    // Velum Mayilum doesn't print the seed's sample family (as on its page).
-    if (template.id === "velum-mayilum-valaikappu" && m.name.trim() === tValaikappu("sampleHosts")) return "";
+    // The Tamil scene cards don't print the seed's sample families (as on their page).
+    if (scene && tScene("sampleHosts").split("|").map((x) => x.trim()).includes(m.name.trim())) return "";
     // "குடும்பத்தினர் அவர்களின் நல்லாசியுடன்" → "குடும்பத்தினரின் நல்லாசியுடன்":
     // a plural like குடும்பத்தினர் / பெற்றோர் takes -இன் directly.
     if (locale === "ta" && m.relation === "blessings" && /(?:த்தினர்|பெற்றோர்)$/.test(m.name.trim())) {

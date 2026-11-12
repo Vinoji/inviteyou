@@ -28,6 +28,13 @@
     "ugadi.webp",
     "valentine.webp"
   ],
+  "kannan-valaikaappu": [
+    "bangle-ceremony.webp",
+    "bangle-tray.webp",
+    "couple.webp",
+    "krishna.webp",
+    "seer.webp"
+  ],
   "living-temple": [
     "corridor-depth.webp",
     "corridor.webp",
@@ -49,6 +56,14 @@
     "marigold.webp",
     "tank.webp"
   ],
+  "mangala-thirumanam": [
+    "ganesha.webp",
+    "garland.webp",
+    "kuthuvilakku.webp",
+    "manavarai.webp",
+    "musicians.webp",
+    "thali.webp"
+  ],
   "materials": [
     "paper-grain-light.webp",
     "paper-grain.webp",
@@ -59,6 +74,14 @@
     "rose-frame.webp",
     "swan.webp",
     "wreath.webp"
+  ],
+  "pudhumanai-puguvizha": [
+    "cow.webp",
+    "ganesha.webp",
+    "house.webp",
+    "kalasam.webp",
+    "key.webp",
+    "milk-pot.webp"
   ],
   "temple-gopuram": [
     "aarti.webp",

@@ -194,6 +194,18 @@ const PALETTES: Record<string, RoyalPalette> = {
     deep: "#5c1010", mid: "#8e1b1b", gold: "#c9962c", goldLight: "#f3dca8", goldDeep: "#9c6a1d",
     ivory: "#FBF4E3", ivory2: "#F3E3BF", text: "#3B1D12", muted: "#7A5A48",
     flowers: ["#ff9f1c", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },  "mangala-thirumanam": {
+    deep: "#5c1010", mid: "#8e1b1b", gold: "#c9962c", goldLight: "#f3dca8", goldDeep: "#9c6a1d",
+    ivory: "#FBF4E3", ivory2: "#F3E3BF", text: "#3B1D12", muted: "#7A5A48",
+    flowers: ["#ff9f1c", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },  "pudhumanai-puguvizha": {
+    deep: "#5c1010", mid: "#8e1b1b", gold: "#c9962c", goldLight: "#f3dca8", goldDeep: "#9c6a1d",
+    ivory: "#FBF4E3", ivory2: "#F3E3BF", text: "#3B1D12", muted: "#7A5A48",
+    flowers: ["#ff9f1c", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
+  },  "kannan-valaikaappu": {
+    deep: "#5c1010", mid: "#8e1b1b", gold: "#c9962c", goldLight: "#f3dca8", goldDeep: "#9c6a1d",
+    ivory: "#FBF4E3", ivory2: "#F3E3BF", text: "#3B1D12", muted: "#7A5A48",
+    flowers: ["#ff9f1c", "#FFFFFF", "#c9962c"], leaf: "#2F6B2A", leafLight: "#4A8C3A",
   },
   "pastel-palace-baby-shower": {
     deep: "#4B3A3F", mid: "#8A4A62", gold: "#B8955A", goldLight: "#E8D6B0", goldDeep: "#8A6A34",

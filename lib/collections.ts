@@ -22,6 +22,7 @@ export const COLLECTIONS: Collection[] = [
     slug: "tamil-wedding-invitation",
     category: "wedding",
     templates: [
+      "mangala-thirumanam",
       "manjal-pathirikai",
       "kolam-pathirikai",
       "maroon-pathirikai",
@@ -70,12 +71,13 @@ export const COLLECTIONS: Collection[] = [
   {
     slug: "valaikappu-invitation",
     category: "baby-shower",
-    templates: ["velum-mayilum-valaikappu", "valaikaappu-card", "baby-valaikaappu", "pastel-palace-baby-shower", "baby-shower-balloons", "namakaranam-card"],
+    templates: ["velum-mayilum-valaikappu", "kannan-valaikaappu", "valaikaappu-card", "baby-valaikaappu", "pastel-palace-baby-shower", "baby-shower-balloons", "namakaranam-card"],
   },
   {
     slug: "griha-pravesam-invitation",
     category: "housewarming",
     templates: [
+      "pudhumanai-puguvizha",
       "griha-pravesam-pathirikai",
       "housewarming-griha-pravesam",
       "housewarming-vastu-lamp",

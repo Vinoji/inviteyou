@@ -21,9 +21,34 @@ import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Photos, Story, Working, hasGuide, useEvents } from "../cinema/CinemaBlocks";
 import { Bell, Divider, Grass, InvocationFrame, Kolam, Thoranam } from "./Ornaments";
+import { artSrc, sceneDesign, type SceneDesign, type Screen } from "./scenes";
 import s from "./valaikappu.module.css";
 
-const ART = "/art/valaikappu";
+const PLACE = { center: s.figCenter, wide: s.figWide, left: s.figLeft, right: s.figRight, edge: s.figEdge, bleed: s.figBleed };
+
+/** A screen's foot: its illustrations standing on a strip of grass. */
+function Ground({ design, screen, n }: { design: SceneDesign; screen: Screen; n: number }) {
+  const [svh, px] = screen.ground;
+  return (
+    <div className={s.ground} style={{ ["--fig" as string]: `min(${svh}svh, ${px}px)` }}>
+      {screen.figures.map((f) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={f.src}
+          src={artSrc(design, f.src)}
+          alt=""
+          aria-hidden
+          loading={n === 0 ? undefined : "lazy"}
+          fetchPriority={n === 0 ? "high" : undefined}
+          className={`${s.figure} ${PLACE[f.place]}`}
+          style={f.scale ? { height: `calc(var(--fig) * ${f.scale})` } : undefined}
+        />
+      ))}
+      <Grass id={`vk-grass-${n + 1}`} />
+    </div>
+  );
+}
+
 const HOST_RELATIONS = new Set(["parents", "father", "mother", "guardian", "grandparents"]);
 
 /** A QR code for the venue's directions, drawn as SVG in the browser. */
@@ -43,18 +68,21 @@ function MapQr({ href }: { href: string }) {
 }
 
 /**
- * Baby shower — "Velum Mayilum Valaikaappu": the Tamil valaikaappu card as
- * families share it on WhatsApp. Cream paper under a mango-leaf thoranam
- * with two brass bells that swing as the guest scrolls through four
- * screens — baby Murugan with the invocation and the title, a verse with
- * the mother-to-be's name, the day and the venue with a directions QR,
- * and the family's welcome — then the functions, photos and RSVP.
- * Art: public/art/valaikappu (illustrations made for InviteForYou).
+ * The Tamil scene cards (scenes.ts) — "Velum Mayilum Valaikaappu", "Kannan
+ * Valaikaappu", "Mangala Thirumanam", "Pudhumanai Puguvizha": the card as
+ * Tamil families share it on WhatsApp. Cream paper under a mango-leaf
+ * thoranam with two brass bells that swing as the guest scrolls through
+ * four screens — the deity with the invocation and the title, a verse with
+ * the names, the day and the venue with a directions QR, and the family's
+ * welcome — then the functions, photos and RSVP. Each design brings its
+ * own wording (premium.<ns>) and illustrations.
  */
 export default function ValaikappuInvitation(props: PremiumProps) {
   const { data, slug, mode, category, occasionTitle, coupleLabel, guestGreeting } = props;
   const id = data.templateId;
-  const t = usePremiumText("premium.valaikappu", id);
+  const design = sceneDesign(id);
+  const t = usePremiumText(`premium.${design.ns}`, id);
+  const couple = !category.singlePerson;
   const tView = useTranslations("invite.view");
   const tCommon = useTranslations("common");
   const format = useFormatter();
@@ -63,19 +91,23 @@ export default function ValaikappuInvitation(props: PremiumProps) {
   const events = useEvents(props);
   const main = events.all[0];
   const mother = data.brideName || tCommon("brideFallback");
-  const husband = data.groomName?.trim();
+  const husband = couple ? "" : data.groomName?.trim();
+  const groom = data.groomName || tCommon("groomFallback");
   const day = parseIsoDate(data.weddingDate);
   const photos = data.photos ?? [];
   const mapHref = main?.venue ? directionsUrl(main.venue) : "";
-  // The hosts, from the editor's Family section (and only while it's on).
-  const family = sections.family ? getFamily(data, "bride") : [];
-  // The sample family from the seed isn't anyone's real hosts: until it's
-  // replaced, the line reads "The family of <her name>".
-  const sampleHosts = t("sampleHosts");
+  // The hosts, from the editor's Family section (and only while it's on):
+  // a couple's two families, groom's side first as Tamil cards print them.
+  const family = sections.family ? [...(couple ? getFamily(data, "groom") : []), ...getFamily(data, "bride")] : [];
+  // The seed's sample families aren't anyone's real hosts: until they're
+  // replaced, the line reads "The family of <the names>".
+  const sampleHosts = new Set(t("sampleHosts").split("|").map((n) => n.trim()));
   const hosts = family
-    .filter((m) => HOST_RELATIONS.has(m.relation) && m.name.trim() !== sampleHosts)
+    .filter((m) => HOST_RELATIONS.has(m.relation) && !sampleHosts.has(m.name.trim()))
     .map((m) => m.name.trim());
   const hostLine = hosts.length ? hosts.join(" · ") : coupleLabel;
+  // "The family of …" — or, for a couple with no families entered, "both families"
+  const hostsTitle = hosts.length || !couple ? t("familyOf", { names: hostLine }) : t("bothFamilies");
   const verse = t("verse").split("\n");
   const style = {
     "--p-display": font.headingVar,
@@ -126,11 +158,7 @@ export default function ValaikappuInvitation(props: PremiumProps) {
               <Kolam />
             </Reveal>
           </div>
-          <div className={`${s.ground} ${s.groundMurugan}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${ART}/murugan.webp`} alt="" aria-hidden fetchPriority="high" className={`${s.figure} ${s.murugan}`} />
-            <Grass id="vk-grass-1" />
-          </div>
+          <Ground design={design} screen={design.screens[0]} n={0} />
           <p className={s.scrollHint} aria-hidden>
             {t("scroll")}
           </p>
@@ -145,23 +173,43 @@ export default function ValaikappuInvitation(props: PremiumProps) {
               ))}
             </Reveal>
             <Divider />
-            <Reveal delay={0.2} className={s.honorific}>
-              {t("honorific")}
-            </Reveal>
-            <Reveal delay={0.3} as="h2" className={s.motherName}>
-              <span lang={scriptLang(mother)}>{mother}</span>
-            </Reveal>
+            {couple ? (
+              <>
+                <Reveal delay={0.2} className={s.honorific}>
+                  {t("groomHonorific")}
+                </Reveal>
+                <Reveal delay={0.25} as="h2" className={s.motherName}>
+                  <span lang={scriptLang(groom)}>{groom}</span>
+                </Reveal>
+                <Reveal delay={0.3} className={s.joiner}>
+                  {t("joiner")}
+                </Reveal>
+                <Reveal delay={0.35} className={s.honorific}>
+                  {t("brideHonorific")}
+                </Reveal>
+                <Reveal delay={0.4} as="h2" className={s.motherName}>
+                  <span lang={scriptLang(mother)}>{mother}</span>
+                </Reveal>
+              </>
+            ) : (
+              <>
+                {t("honorific") && (
+                  <Reveal delay={0.2} className={s.honorific}>
+                    {t("honorific")}
+                  </Reveal>
+                )}
+                <Reveal delay={0.3} as="h2" className={s.motherName}>
+                  <span lang={scriptLang(mother)}>{mother}</span>
+                </Reveal>
+              </>
+            )}
             {husband && (
               <Reveal delay={0.4} className={s.wifeOf}>
                 {t("wifeOf", { name: husband })}
               </Reveal>
             )}
           </div>
-          <div className={`${s.ground} ${s.groundCouple}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${ART}/couple.webp`} alt="" aria-hidden loading="lazy" className={`${s.figure} ${s.couple}`} />
-            <Grass id="vk-grass-2" />
-          </div>
+          <Ground design={design} screen={design.screens[1]} n={1} />
         </section>
 
         {/* 3 · The day, the time and the venue, with a directions QR */}
@@ -207,13 +255,7 @@ export default function ValaikappuInvitation(props: PremiumProps) {
               </Reveal>
             )}
           </div>
-          <div className={`${s.ground} ${s.groundVenue}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${ART}/elephant.webp`} alt="" aria-hidden loading="lazy" className={`${s.figure} ${s.elephant}`} />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${ART}/mother.webp`} alt="" aria-hidden loading="lazy" className={`${s.figure} ${s.mother}`} />
-            <Grass id="vk-grass-3" />
-          </div>
+          <Ground design={design} screen={design.screens[2]} n={2} />
         </section>
 
         {/* 4 · The family's welcome */}
@@ -221,19 +263,15 @@ export default function ValaikappuInvitation(props: PremiumProps) {
           <div className={s.screenText}>
             <Reveal className={s.welcome}>{t("welcome")}</Reveal>
             <Reveal delay={0.2} as="h2" className={s.hosts}>
-              {t("familyOf", { names: hostLine })}
+              {hostsTitle}
             </Reveal>
             <Divider />
             <Reveal delay={0.35}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${ART}/bangles.webp`} alt="" aria-hidden loading="lazy" className={s.bigBangles} />
+              <img src={artSrc(design, design.ornament)} alt="" aria-hidden loading="lazy" className={s.bigBangles} />
             </Reveal>
           </div>
-          <div className={`${s.ground} ${s.groundHand}`}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${ART}/lotus-hand.webp`} alt="" aria-hidden loading="lazy" className={`${s.figure} ${s.lotusHand}`} />
-            <Grass id="vk-grass-4" />
-          </div>
+          <Ground design={design} screen={design.screens[3]} n={3} />
         </section>
       </div>
 

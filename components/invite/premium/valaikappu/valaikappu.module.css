@@ -132,31 +132,36 @@
   width: auto;
   height: var(--fig);
 }
-.groundMurugan { --fig: min(26svh, 230px); }
-.groundCouple { --fig: min(42svh, 360px); }
-.groundVenue { --fig: min(36svh, 300px); }
-.groundHand { --fig: min(30svh, 240px); }
-.murugan,
-.couple {
+/* where a figure stands (scenes.ts: Place) */
+.figCenter,
+.figWide {
   left: 0;
   right: 0;
   margin: 0 auto;
 }
-.murugan {
+.figWide {
   max-width: 94%;
   height: auto;
   width: min(88vw, 420px);
 }
-.elephant {
+.figLeft {
   left: 2%;
-  height: calc(var(--fig) * 0.56);
 }
-.mother {
+.figRight {
   right: 5%;
 }
-.lotusHand {
+.figEdge {
   left: 0;
   bottom: 40px;
+}
+.figBleed {
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: auto;
+  max-height: var(--fig);
+  object-fit: contain;
+  bottom: 30px;
 }
 @supports (animation-timeline: view()) {
   .figure {
@@ -164,7 +169,7 @@
     animation-timeline: view();
     animation-range: entry 0% cover 35%;
   }
-  .lotusHand {
+  .figEdge {
     animation-name: reach;
   }
 }
@@ -270,6 +275,10 @@
   font-size: clamp(30px, 9vw, 44px);
   line-height: 1.2;
   color: var(--lilac-deep);
+}
+.joiner {
+  font-size: 18px;
+  color: var(--gold);
 }
 .wifeOf {
   font-size: 15px;

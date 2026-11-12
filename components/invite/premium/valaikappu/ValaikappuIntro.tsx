@@ -8,6 +8,7 @@ import { playSound, useWarmAudio } from "../../intros/audio";
 import useSafeReducedMotion from "../../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
 import { Bell, InvocationFrame, Thoranam } from "./Ornaments";
+import { artSrc, sceneDesign } from "./scenes";
 import s from "./valaikappu.module.css";
 
 /** Glass bangles clinking, then a temple bell — only ever from the guest's tap. */
@@ -43,13 +44,17 @@ function jingle() {
 }
 
 /**
- * Intro "valaikappu" (velum-mayilum-valaikappu): the cream card under the
- * thoranam, baby Murugan with the invocation, the mother-to-be's name and
- * a ring of glass bangles. Tapping the bangles clinks them, the bells ring,
- * marigolds fall and the card opens. Reduced motion: a plain button.
+ * Intro "valaikappu" (the Tamil scene cards, scenes.ts): the cream card
+ * under the thoranam, the design's deity with the invocation, the names,
+ * and its token (glass bangles, the thali, the kalasam). The token is
+ * pressed — by IntroHost on its own, or by the guest — it rocks, the bells
+ * ring, marigolds fall and the card opens. Reduced motion: a plain button.
  */
 export default function ValaikappuIntro({ templateId, names, dateLabel, fonts, onOpen, onDone, burst, preview }: IntroProps) {
-  const t = useIntroText("invite.intros.valaikappu", templateId);
+  const design = sceneDesign(templateId);
+  const t = useIntroText(`invite.intros.${design.ns}`, templateId);
+  // a couple: the groom's name first, as Tamil cards print them
+  const shownNames = names.b !== undefined ? `${names.b} & ${names.a}` : names.a;
   const reduceMotion = useSafeReducedMotion();
   useWarmAudio(!preview);
   const [open, setOpen] = useState(false);
@@ -87,11 +92,11 @@ export default function ValaikappuIntro({ templateId, names, dateLabel, fonts, o
       </div>
       <div className={s.stageColumn}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/art/valaikappu/murugan.webp" alt="" aria-hidden className={s.stageMurugan} fetchPriority="high" />
+        <img src={artSrc(design, design.intro.top)} alt="" aria-hidden className={s.stageMurugan} fetchPriority="high" />
         <InvocationFrame>{t("invocation")}</InvocationFrame>
         <p className={s.stageTitle}>{t("title")}</p>
-        <h1 className={s.stageName} style={{ fontFamily: fonts.display }} lang={scriptLang(names.a)}>
-          {names.a}
+        <h1 className={s.stageName} style={{ fontFamily: fonts.display }} lang={scriptLang(shownNames)}>
+          {shownNames}
         </h1>
         {dateLabel && (
           <p className={s.stageDate} style={{ fontFamily: fonts.caps }}>
@@ -115,7 +120,7 @@ export default function ValaikappuIntro({ templateId, names, dateLabel, fonts, o
               transition={{ duration: 1.1, ease: "easeInOut" }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/art/valaikappu/bangles.webp" alt="" className={s.bangles} fetchPriority="high" />
+              <img src={artSrc(design, design.intro.tap)} alt="" className={s.bangles} fetchPriority="high" />
             </motion.button>
             {!open && <p className={s.stageHint}>{t("hint")}</p>}
           </>
