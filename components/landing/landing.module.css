@@ -674,6 +674,13 @@
     transform: scale(0.9, 1.1) skewX(3deg);
   }
 }
+/* Touch devices: a flame is a shape inside an SVG, so its flicker runs on
+   the main thread and lays the page out every frame — the lamps hold still. */
+@media (pointer: coarse) {
+  .flame {
+    animation: none;
+  }
+}
 
 /* Paper hills: the hero's bottom edge, fading into the page. */
 .hills {

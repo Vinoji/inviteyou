@@ -27,7 +27,16 @@ import s from "./intro.module.css";
  *   scroll, never plays audio.
  * - Both: a particle canvas that outlives the intro (so a burst can keep
  *   falling after it's gone), and replay via REPLAY_INTRO_EVENT.
+ * - Both: the intro opens by itself. Guests found "tap to open" hard to
+ *   use (and a missed tap felt like a stuck page), so after a moment on
+ *   the cover the host presses the intro's own button for it — again for
+ *   openings with several steps — and the animation plays unprompted.
+ *   A guest's own tap still works. Sound waits for a real touch (browsers
+ *   block it otherwise); the music starts on the guest's first touch.
  */
+const AUTO_OPEN_AFTER_MS = 1100;
+const AUTO_OPEN_EVERY_MS = 1000;
+const AUTO_OPEN_TRIES = 12;
 export default function IntroHost({
   introId,
   templateId,
@@ -62,6 +71,7 @@ export default function IntroHost({
   const [gone, setGone] = useState(false); // intro finished and removed
   const [run, setRun] = useState(0); // bumps on replay to remount the intro
   const layerRef = useRef<HTMLDivElement>(null);
+  const slotRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<ParticleFieldHandle>(null);
   const paneHeight = usePaneHeight(layerRef, preview);
   const storageKey = `envelope-opened:${slug}`;
@@ -92,6 +102,19 @@ export default function IntroHost({
       document.body.style.overflow = "";
     };
   }, [open, preview]);
+
+  // Open the intro without a tap (see above).
+  useEffect(() => {
+    if (open || gone) return;
+    let tries = 0;
+    let timer: ReturnType<typeof setTimeout>;
+    const press = () => {
+      slotRef.current?.querySelector<HTMLButtonElement>("button:not([disabled])")?.click();
+      if (++tries < AUTO_OPEN_TRIES) timer = setTimeout(press, AUTO_OPEN_EVERY_MS);
+    };
+    timer = setTimeout(press, AUTO_OPEN_AFTER_MS);
+    return () => clearTimeout(timer);
+  }, [open, gone, run]);
 
   useEffect(() => {
     const replay = () => {
@@ -141,6 +164,7 @@ export default function IntroHost({
       <div className={s.frame} style={preview && paneHeight ? { height: paneHeight } : undefined}>
         {!gone && (
           <div
+            ref={slotRef}
             className={s.slot}
             style={{ ["--name-fit" as string]: nameFitScale(names.a, names.b) }}
           >

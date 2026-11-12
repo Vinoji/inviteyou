@@ -8,6 +8,8 @@ import { Petals, Thoranam } from "./festive";
 import s from "../landing/landing.module.css";
 
 const KEY = "iy-entered";
+/** The doors' whole sequence in landing.module.css (.gate): 1.95s + 0.45s. */
+const GATE_MS = 2600;
 
 /**
  * Arriving at the site feels like arriving at a function: carved temple
@@ -15,12 +17,17 @@ const KEY = "iy-entered";
  * a bilingual "Welcome · நல்வரவு". Once per browser session, ~1.9s, any
  * tap skips it. The whole sequence is CSS (see .gate in
  * landing.module.css), so it finishes even before scripts load; the script
- * only skips it for returning visitors and on tap.
+ * only skips it for returning visitors and on tap — and takes the gate
+ * off the page once it has played. Left in place it is only hidden, and
+ * its petals and garland keep animating over every page for the whole
+ * visit; hidden animations can't run on the GPU, so the browser redid its
+ * layers on every frame (the site felt laggy and stuck on phones).
  */
 export default function EntranceGate() {
   const t = useTranslations("site.gate");
   const pathname = usePathname();
   const [gone, setGone] = useState(false);
+  const [removed, setRemoved] = useState(false);
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -36,7 +43,14 @@ export default function EntranceGate() {
     return () => clearTimeout(id);
   }, []);
 
-  if (!isSitePage(pathname)) return null;
+  // Off the page when the sequence ends (timed from the page's load, since
+  // the CSS may have finished before this script ran), or just after a skip.
+  useEffect(() => {
+    const id = setTimeout(() => setRemoved(true), gone ? 250 : Math.max(0, GATE_MS - performance.now()));
+    return () => clearTimeout(id);
+  }, [gone]);
+
+  if (removed || !isSitePage(pathname)) return null;
 
   return (
     <div
