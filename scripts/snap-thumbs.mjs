@@ -49,7 +49,8 @@ const W = 390, H = Math.round((390 * 16) / 9); // a phone screen, as the cards s
       let res = "ok";
       try {
         await p.goto(`${BASE}/${loc}/sample/${id}`, { waitUntil: "domcontentloaded", timeout: 120000 });
-        await p.waitForSelector("[data-invite-root]", { state: "attached", timeout: 120000 });
+        // the designed pages mark their root; the plain section layout doesn't
+        await p.waitForSelector("[data-invite-root], section", { state: "attached", timeout: 120000 });
         // the opening plays by itself; wait for it to leave
         await p.waitForTimeout(1200);
         await p
