@@ -15,12 +15,13 @@ import { activeFestival, festivalWindow, type FestivalOffer, type FestivalTheme 
 
 export type Tier = "free" | "standard" | "premium";
 
-/** Launch offer ends at the end of 12 November 2026, India time. */
-export const OFFER_ENDS_AT = Date.parse("2026-11-12T23:59:59.999+05:30");
+/** The ₹49 offer — every paid design, live or 3D — ends at the end of
+ * 31 December 2026, India time. */
+export const OFFER_ENDS_AT = Date.parse("2026-12-31T23:59:59.999+05:30");
 
 export const TIER_PRICES: Record<Exclude<Tier, "free">, { offer: number; usual: number }> = {
   standard: { offer: 49, usual: 299 },
-  premium: { offer: 99, usual: 599 },
+  premium: { offer: 49, usual: 599 },
 };
 
 /** The standard tier's prices, for copy that names one price. */

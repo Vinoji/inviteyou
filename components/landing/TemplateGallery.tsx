@@ -244,7 +244,7 @@ export default function TemplateGallery({
 
 /** A short card: the live opening (4:5), its price, and one row with the
  * name and an arrow into the editor. */
-function DesignCard({
+export function DesignCard({
   tpl,
   rating,
   asFree = false,
@@ -265,7 +265,7 @@ function DesignCard({
       }`}
     >
       <div className="relative">
-        <TemplateShowcase {...tpl.showcase} aspect={4 / 5} />
+        <TemplateShowcase {...tpl.showcase} aspect={9 / 16} />
         <span
           className={`pointer-events-none absolute top-2 right-2 z-30 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-bold shadow-md ${
             tier === "free"

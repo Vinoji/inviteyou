@@ -13,6 +13,7 @@ export default function PreviewWatermark() {
   return (
     <div
       aria-hidden
+      data-preview-watermark
       className="pointer-events-none absolute inset-0 z-30"
       style={{ backgroundImage: `url("data:image/svg+xml,${TILE}")`, backgroundSize: "360px 260px" }}
     />

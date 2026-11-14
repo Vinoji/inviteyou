@@ -1689,6 +1689,16 @@ export function isNewTemplate(id: string, now = Date.now()): boolean {
   return Boolean(added) && now - Date.parse(added!) < NEW_FOR_DAYS * 86_400_000;
 }
 
+const TRENDING_FOR_DAYS = 14;
+
+/** The home page's "Trending now": designs added in the last two weeks
+ * (TemplateConfig.addedAt), newest first. */
+export function trendingTemplateIds(now = Date.now()): string[] {
+  return TEMPLATES.filter((tpl) => !tpl.hidden && tpl.addedAt && now - Date.parse(tpl.addedAt) < TRENDING_FOR_DAYS * 86_400_000)
+    .sort((a, b) => Date.parse(b.addedAt!) - Date.parse(a.addedAt!))
+    .map((tpl) => tpl.id);
+}
+
 /** Designs whose functions section has a kicker + title the couple can
  * rename (InvitationData.eventsKicker / eventsTitle), with where the
  * design's own wording lives in the messages. */

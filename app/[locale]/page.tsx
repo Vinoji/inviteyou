@@ -12,6 +12,8 @@ import { getAllCategoryMeta } from "@/lib/i18n/categories";
 import { getTemplatesByCategory } from "@/lib/i18n/templates";
 import { showcaseProps } from "@/lib/i18n/showcase";
 import TemplateGallery, { type GalleryTemplate } from "@/components/landing/TemplateGallery";
+import Trending from "@/components/landing/Trending";
+import { trendingTemplateIds } from "@/lib/templates";
 import Pricing from "@/components/landing/Pricing";
 import Hero from "@/components/landing/Hero";
 import paper from "@/components/landing/landing.module.css";
@@ -58,7 +60,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       showcase: showcaseProps(tpl, category.singlePerson, tDefaults, tCommon),
     }))
   );
-  const featured = FEATURED.flatMap((id) => templates.find((tpl) => tpl.id === id)?.showcase ?? []);
+  // The hero's phone shows the newest designs, topped up with favourites.
+  const heroIds = [...new Set([...trendingTemplateIds(), ...FEATURED])].slice(0, 6);
+  const featured = heroIds.flatMap((id) => templates.find((tpl) => tpl.id === id)?.showcase ?? []);
 
   const stats = await getSiteStats();
 
@@ -71,6 +75,11 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <div className="relative">
         <SideGarlands />
       </div>
+      <Trending
+        templates={trendingTemplateIds().flatMap((id) => templates.find((tpl) => tpl.id === id) ?? [])}
+        ratings={stats.designRatings}
+      />
+
       <section id="templates" className="relative mx-auto max-w-6xl scroll-mt-24 px-4 pt-14 pb-16 sm:px-6">
         <SectionHeading eyebrow={t("gallery.eyebrow")} title={t("gallery.title")} sub={t("gallery.sub")} />
         <div className="mt-6">

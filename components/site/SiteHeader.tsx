@@ -14,7 +14,12 @@ import s from "./site.module.css";
 
 /** Pages that get the full site header and footer (not the editor or invites). */
 export function isSitePage(pathname: string) {
-  return !pathname.startsWith("/invite/") && !pathname.startsWith("/create/") && !pathname.startsWith("/rsvps/");
+  return (
+    !pathname.startsWith("/invite/") &&
+    !pathname.startsWith("/create/") &&
+    !pathname.startsWith("/rsvps/") &&
+    !pathname.startsWith("/sample/")
+  );
 }
 
 /** Pages that open with a dark FestiveBanner / hero under the header. */

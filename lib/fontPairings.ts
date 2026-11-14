@@ -57,13 +57,17 @@ export const FONT_PAIRINGS: FontPairing[] = [
     // glyphs, not a Latin fallback rendering of an English label.
     id: "tamil-calligraphy",
     name: "தமிழ் எழில் (Tamil Calligraphy)",
-    headingVar: `var(--font-kavivanar), ${FALLBACK_SANS}`,
+    // Playfair first for English letters: the Tamil faces are loaded with
+    // Tamil letters only, and their Arial-metric stand-ins would otherwise
+    // draw any English heading (names, "Wedding Invitation") in plain Arial.
+    // Tamil letters aren't in Playfair, so they fall through to the Tamil face.
+    headingVar: `var(--font-playfair), var(--font-kavivanar), ${FALLBACK_SANS}`,
     bodyVar: `var(--font-catamaran), ${FALLBACK_SANS}`,
   },
   {
     id: "tamil-classic",
     name: "தமிழ் பாரம்பரியம் (Tamil Classic)",
-    headingVar: `var(--font-meera-inimai), ${FALLBACK_SANS}`,
+    headingVar: `var(--font-playfair), var(--font-meera-inimai), ${FALLBACK_SANS}`,
     bodyVar: `var(--font-catamaran), ${FALLBACK_SANS}`,
   },
 ];

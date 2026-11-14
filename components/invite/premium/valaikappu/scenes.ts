@@ -93,7 +93,7 @@ const KANNAN: SceneDesign = {
   ns: "kannan",
   art: "kannan-valaikaappu",
   screens: [
-    { ground: [28, 250], figures: [{ src: "krishna", place: "wide" }] },
+    { ground: [30, 250], figures: [{ src: "krishna", place: "center" }] },
     { ground: [36, 300], figures: [{ src: "bangle-ceremony", place: "wide" }] },
     { ground: [42, 360], figures: [{ src: "couple", place: "center" }] },
     { ground: [22, 190], figures: [{ src: "bangle-tray", place: "bleed" }] },

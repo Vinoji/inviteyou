@@ -10,7 +10,8 @@
     "art": "node scripts/art-manifest.mjs",
     "start": "next start",
     "lint": "eslint",
-    "lint:css": "stylelint \"**/*.css\""
+    "lint:css": "stylelint \"**/*.css\"",
+    "thumbs": "node scripts/snap-thumbs.mjs"
   },
   "dependencies": {
     "@breezystack/lamejs": "^1.2.7",

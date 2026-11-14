@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Hand, RotateCcw } from "lucide-react";
 import type { IntroId } from "@/lib/templates";
 import { perfTier } from "@/lib/perfTier";
 import { INTROS } from "@/components/invite/intros/registry";
+import THUMBS from "@/lib/thumbs.generated.json";
 import ParticleField, {
   type BurstOptions,
   type ParticleFieldHandle,
@@ -45,14 +46,48 @@ export interface ShowcaseProps {
   /** Width / height of the card. Shorter than the phone-shaped stage crops
    * its top and bottom evenly (the gallery uses 4 / 5). */
   aspect?: number;
+  /** Play the real opening (the hero's phone). Otherwise the card shows the
+   * design itself — a snapshot of its first screen, opened. */
+  live?: boolean;
+}
+
+const SNAPSHOTS = THUMBS as Record<string, string[]>;
+
+/** The design's snapshot in this language (else English), if one was taken. */
+function snapshotSrc(templateId: string, locale: string): string | null {
+  for (const l of [locale, "en"]) if (SNAPSHOTS[l]?.includes(templateId)) return `/thumbs/${l}/${templateId}.webp`;
+  return null;
 }
 
 /**
- * A landing-page card's live preview: the template's real opening animation,
- * playable (tap the bell, pull the tassel, scratch the foil…), silent, and
- * only mounted while the card is on screen so a page of sixteen stays light.
+ * A design's card. Normally the design itself — a snapshot of its first
+ * screen after the opening (public/thumbs, taken from the real page), so a
+ * guest sees what they'll get rather than an opening to tap through, and a
+ * page of cards stays light. With `live` (the hero's phone), or for a design
+ * with no snapshot yet, the template's real opening animation plays,
+ * silent, and only while the card is on screen.
  */
 export default function TemplateShowcase(p: ShowcaseProps) {
+  const locale = useLocale();
+  const snapshot = p.live ? null : snapshotSrc(p.templateId, locale);
+  if (snapshot) {
+    return (
+      <div className={`relative w-full overflow-hidden bg-gradient-to-br ${p.gradient}`} style={{ aspectRatio: p.aspect ?? 9 / 16 }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={snapshot}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+        />
+      </div>
+    );
+  }
+  return <LiveShowcase {...p} />;
+}
+
+function LiveShowcase(p: ShowcaseProps) {
   const t = useTranslations("landing");
   const boxRef = useRef<HTMLDivElement>(null);
   const particlesRef = useRef<ParticleFieldHandle>(null);

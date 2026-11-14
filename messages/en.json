@@ -112,7 +112,7 @@
     "pricing": {
       "eyebrow": "Pricing",
       "title": "Simple, one-time pricing",
-      "subtitle": "Free cards, ₹49 live invitations and ₹99 3D designs — pay once, no subscription.",
+      "subtitle": "Free cards, and ₹49 for any live invitation — even the 3D designs. Pay once, no subscription.",
       "teamCta": "Contact us",
       "note": "Payments are processed securely by Razorpay (UPI, cards, net banking).",
       "trustNoSub": "No subscription",
@@ -142,7 +142,7 @@
     "gallery": {
       "eyebrow": "Designs",
       "title": "What are you celebrating?",
-      "sub": "Pick your occasion — every design opens with its own animation. Tap a card to try it."
+      "sub": "Pick your occasion and see each design as your guests will — tap one to make it yours."
     },
     "how": {
       "eyebrow": "How it works",
@@ -395,7 +395,12 @@
       "badgeFree": "Free card",
       "badgeLive": "Live ₹{price}",
       "badge3d": "3D ₹{price}",
-      "freeAlso": "Free card · Live ₹{price}"
+      "freeAlso": "Free card · Live ₹{price}",
+      "trending": {
+        "eyebrow": "Trending now",
+        "title": "New this fortnight",
+        "sub": "The latest designs, added in the last two weeks."
+      }
     }
   },
   "notFound": {
