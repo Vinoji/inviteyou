@@ -34,6 +34,8 @@ export default function VideoOffer({ slug, token, accentColor }: { slug: string;
   const [error, setError] = useState("");
   // bumped after a purchase, to start checking again
   const [round, setRound] = useState(0);
+  // the payment test: ?dev_option=1 on the page (the server decides whether it's honoured)
+  const [devPrice] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("dev_option") === "1");
 
   // The video's state, checked again every 10s while it's being made.
   useEffect(() => {
@@ -68,7 +70,7 @@ export default function VideoOffer({ slug, token, accentColor }: { slug: string;
       const orderRes = await fetch("/api/video/order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ slug, token }),
+        body: JSON.stringify({ slug, token, devPrice }),
       });
       const order = await orderRes.json();
       if (!orderRes.ok) throw new Error(order.error ?? t("error"));
@@ -126,7 +128,7 @@ export default function VideoOffer({ slug, token, accentColor }: { slug: string;
             className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 text-sm font-bold text-white transition hover:brightness-105 disabled:opacity-60"
           >
             {busy ? <Loader2 size={16} className="animate-spin" aria-hidden /> : <Clapperboard size={16} aria-hidden />}
-            {t("buy", { price })}
+            {t("buy", { price: devPrice ? 1 : price })}
           </button>
         </>
       )}

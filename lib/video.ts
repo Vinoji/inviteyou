@@ -6,6 +6,7 @@ import { getTemplateConfig } from "./templates";
 import { getCategoryConfig } from "./categories";
 import { MUSIC_LIBRARY, forCategory } from "./mediaLibrary";
 import type { OrderNotes } from "./payments";
+import { DEV_PRICE_INR, devPriceEnabled } from "./pricing";
 
 /**
  * The ₹99 WhatsApp video: an owner pays (video/order → Razorpay →
@@ -17,6 +18,8 @@ import type { OrderNotes } from "./payments";
  */
 export const VIDEO_PRICE_PAISE = 9900;
 export const VIDEO_PRICE_INR = VIDEO_PRICE_PAISE / 100;
+/** The payment test (?dev_option=1, see lib/pricing devPriceEnabled): ₹1. */
+export const VIDEO_DEV_PRICE_PAISE = DEV_PRICE_INR * 100;
 const REGION = "asia-south1";
 const JOB = "invite-video";
 const BUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "vinoji-291fa.firebasestorage.app";
@@ -38,8 +41,11 @@ export interface VideoState {
 }
 
 export function isVideoOrder(order: { amount: number; notes: OrderNotes }, slug?: string) {
+  const priceOk =
+    order.amount === VIDEO_PRICE_PAISE ||
+    (order.notes.devPrice === "1" && devPriceEnabled() && order.amount === VIDEO_DEV_PRICE_PAISE);
   return (
-    order.amount === VIDEO_PRICE_PAISE &&
+    priceOk &&
     order.notes.purpose === "video" &&
     typeof order.notes.slug === "string" &&
     (slug === undefined || order.notes.slug === slug)
