@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   switch (body?.action) {
     case "paid": {
       const stamp = Date.now().toString(36);
-      await applyVideoPayment(slug, `test_order_${stamp}`, `test_pay_${stamp}`);
+      await applyVideoPayment(slug, `test_order_${stamp}`, `test_pay_${stamp}`, { amountPaise: 0, test: true });
       note = "Recorded a test payment and started the render.";
       break;
     }

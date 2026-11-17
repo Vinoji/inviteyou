@@ -56,7 +56,13 @@ export function isVideoOrder(order: { amount: number; notes: OrderNotes }, slug?
  * Records a paid video and starts the job. Idempotent: the same payment
  * (the browser and the webhook both arrive) starts it once.
  */
-export async function applyVideoPayment(slug: string, orderId: string, paymentId: string) {
+export async function applyVideoPayment(
+  slug: string,
+  orderId: string,
+  paymentId: string,
+  /** For the payments ledger (admin revenue). A test (₹1 or simulated) is marked so. */
+  sale: { amountPaise: number; test?: boolean } = { amountPaise: VIDEO_PRICE_PAISE }
+) {
   const db = getAdminDb();
   const metaRef = db.collection("invitations").doc(slug).collection("private").doc("meta");
   const started = await db.runTransaction(async (tx) => {
@@ -67,6 +73,14 @@ export async function applyVideoPayment(slug: string, orderId: string, paymentId
     tx.update(metaRef, {
       videoPayments: FieldValue.arrayUnion({ paymentId, orderId, at: Date.now() }),
       video: { status: "queued", paymentId, orderId, queuedAt: Date.now(), attempts: 0, error: null } satisfies VideoState,
+    });
+    tx.set(db.collection("payments").doc(orderId), {
+      purpose: "video",
+      slug,
+      paymentId,
+      at: Date.now(),
+      amountPaise: sale.amountPaise,
+      ...(sale.test ? { devPrice: true } : {}),
     });
     return true;
   });

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Clapperboard, Download, Loader2, RotateCcw } from "lucide-react";
+import { track } from "@/lib/analytics";
 
 type Status = "loading" | "none" | "queued" | "rendering" | "ready" | "failed" | "error";
 
@@ -48,6 +49,7 @@ export default function VideoOffer({ slug, token, accentColor }: { slug: string;
         const j = await res.json();
         if (!live) return;
         if (j.priceInr) setPrice(j.priceInr);
+        if (j.status === "none") track("video_offer_seen");
         if (j.url) setUrl(j.url);
         setStatus(j.failed ? "failed" : j.status);
         if (j.status === "queued" || j.status === "rendering") timer = setTimeout(check, POLL_MS);
@@ -93,12 +95,14 @@ export default function VideoOffer({ slug, token, accentColor }: { slug: string;
             setBusy(false);
             return;
           }
+          track("video_paid", { test: devPrice });
           setBusy(false);
           setStatus("queued");
           setRound((r) => r + 1);
         },
         modal: { ondismiss: () => setBusy(false) },
       });
+      track("video_payment_started", { test: devPrice });
       rz.on("payment.failed", () => {
         setError(t("paymentFailed"));
         setBusy(false);
@@ -141,6 +145,7 @@ export default function VideoOffer({ slug, token, accentColor }: { slug: string;
       {status === "ready" && url && (
         <a
           href={url}
+          onClick={() => track("video_downloaded")}
           className="mt-3 inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 text-sm font-bold text-white transition hover:brightness-105"
         >
           <Download size={16} aria-hidden />

@@ -8,6 +8,7 @@ import { DEV_PRICE_INR, templateListPriceInr, templatePriceInr } from "@/lib/pri
 import { waPhone } from "@/lib/share";
 import { SITE } from "@/lib/site";
 import { whatsappUrl } from "@/lib/whatsapp";
+import { track } from "@/lib/analytics";
 import CouponField from "./CouponField";
 
 /**
@@ -152,6 +153,7 @@ export default function CheckoutSheet({
               href={wa}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track("whatsapp_chat_clicked", { from: "checkout", design: templateId })}
               className="flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-emerald-700 underline-offset-2 hover:underline dark:text-emerald-400"
             >
               <MessageCircle size={13} aria-hidden />

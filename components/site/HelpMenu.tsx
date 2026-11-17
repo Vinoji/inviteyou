@@ -8,6 +8,7 @@ import { SITE } from "@/lib/site";
 import { supportMailUrl } from "@/lib/support";
 import { TEMPLATE_IDS } from "@/lib/templates";
 import { whatsappUrl } from "@/lib/whatsapp";
+import { track } from "@/lib/analytics";
 import { isSitePage } from "./SiteHeader";
 
 /**
@@ -60,7 +61,13 @@ export default function HelpMenu({ variant = "floating" }: { variant?: "floating
       <p className="px-3 pt-1 font-serif text-base font-bold text-neutral-900 dark:text-neutral-50">{t("title")}</p>
       <p className="px-3 pb-2 text-xs text-neutral-500 dark:text-neutral-400">{t("subtitle")}</p>
       {wa && (
-        <a href={wa} target="_blank" rel="noopener noreferrer" className={item}>
+        <a
+          href={wa}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => track("whatsapp_chat_clicked", { from: "help", design: designId })}
+          className={item}
+        >
           <span className={`${icon} bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300`}>
             <MessageCircle size={15} aria-hidden />
           </span>

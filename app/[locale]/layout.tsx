@@ -31,6 +31,7 @@ import EntranceGate from "@/components/site/EntranceGate";
 import HelpMenu from "@/components/site/HelpMenu";
 import OffscreenPause from "@/components/site/OffscreenPause";
 import ThemeSync from "@/components/site/ThemeSync";
+import Analytics from "@/components/analytics/Analytics";
 import { MotionPrefSync } from "@/components/invite/MotionToggle";
 import "../globals.css";
 
@@ -250,6 +251,7 @@ export default async function RootLayout({
           <OfferBar />
           <SiteHeader />
           <RefCapture />
+          <Analytics />
           {children}
           <SiteFooter />
           <HelpMenu />

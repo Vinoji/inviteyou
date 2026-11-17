@@ -32,7 +32,7 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: securityHeaders },
-      ...["/invite/:path*", "/rsvps/:path*", "/create/:path*", "/card-sample/:path*", "/sample/:path*"].flatMap((p) => [
+      ...["/invite/:path*", "/rsvps/:path*", "/create/:path*", "/card-sample/:path*", "/sample/:path*", "/admin", "/dev/:path*"].flatMap((p) => [
         { source: p, headers: noindex },
         { source: `/ta${p}`, headers: noindex },
       ]),

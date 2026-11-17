@@ -203,6 +203,14 @@ export async function applyRestorePayment(
     tx.update(metaRef, {
       restorePayments: FieldValue.arrayUnion({ paymentId, orderId, at: Date.now() }),
     });
+    // the payments ledger (admin revenue)
+    tx.set(db.collection("payments").doc(orderId), {
+      purpose: "restore",
+      slug,
+      paymentId,
+      at: Date.now(),
+      amountPaise: RESTORE_PRICE_PAISE,
+    });
     return { until: next, applied: true };
   });
   if (!outcome) return { found: false, expiresAt: null };

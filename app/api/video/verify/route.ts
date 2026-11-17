@@ -23,9 +23,10 @@ export async function POST(req: NextRequest) {
   if (!verifyPaymentSignature(orderId, paymentId, signature)) {
     return NextResponse.json({ error: "Payment verification failed." }, { status: 400 });
   }
-  if (!isVideoOrder(await fetchOrder(orderId), slug)) {
+  const order = await fetchOrder(orderId);
+  if (!isVideoOrder(order, slug)) {
     return NextResponse.json({ error: "This payment isn't a video for this invitation." }, { status: 400 });
   }
-  await applyVideoPayment(slug, orderId, paymentId);
+  await applyVideoPayment(slug, orderId, paymentId, { amountPaise: order.amount, test: order.notes.devPrice === "1" });
   return NextResponse.json({ ok: true });
 }

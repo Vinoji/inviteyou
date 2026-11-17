@@ -12,7 +12,7 @@ const BASE = (process.env.NEXT_PUBLIC_SITE_URL || SITE.url).replace(/\/+$/, "");
  * (/ta/...) follow the same rules.
  */
 export default function robots(): MetadataRoute.Robots {
-  const privatePaths = ["/rsvps/", "/create/", "/card-sample/", "/sample/"];
+  const privatePaths = ["/rsvps/", "/create/", "/card-sample/", "/sample/", "/admin", "/dev/"];
   return {
     rules: {
       userAgent: "*",

@@ -110,6 +110,7 @@ import { REPLAY_INTRO_EVENT } from "@/components/invite/intros/events";
 import { Thoranam } from "@/components/site/festive";
 import festive from "@/components/landing/landing.module.css";
 import ed from "@/components/editor/editor.module.css";
+import { track } from "@/lib/analytics";
 
 interface RazorpayResponse {
   razorpay_order_id: string;
@@ -227,6 +228,9 @@ export default function Editor({
     forceFullMotion(true);
     return () => forceFullMotion(false);
   }, []);
+  useEffect(() => {
+    track("design_opened", { templateId });
+  }, [templateId]);
   const motionReducedElsewhere = useSavedReducedMotion();
   const tTemplates = useTranslations("templates");
   const tCategories = useTranslations("categories");
@@ -328,6 +332,7 @@ export default function Editor({
   const panelRef = useRef<HTMLDivElement>(null);
   function goTo(id: string) {
     setStep(id);
+    track("editor_step", { templateId, step: id });
     formScrollRef.current?.scrollTo({ top: 0 });
     panelRef.current?.scrollTo({ top: 0 });
   }
@@ -1069,6 +1074,7 @@ export default function Editor({
         a.click();
         setTimeout(() => URL.revokeObjectURL(url), 2000);
       }
+      track("free_card_downloaded", { templateId });
       setUpgradeOpen(true);
     } catch (err) {
       setPublishError(err instanceof Error ? err.message : t("errGeneric"));
@@ -1091,6 +1097,7 @@ export default function Editor({
       return;
     }
     setCheckoutOpen(true);
+    track("checkout_opened", { templateId });
   }
 
   /** Pay from the checkout sheet (it has checked the number). */
@@ -1172,6 +1179,7 @@ export default function Editor({
             } catch {
               // Not critical — the buttons just open without a number.
             }
+            track("invitation_published", { templateId });
             // Stays up until the invitation page replaces the editor.
             showProgress("opening");
             router.push(
@@ -1189,9 +1197,13 @@ export default function Editor({
           },
         },
       });
-      rz.on("payment.failed", () => stop(t("errPaymentFailed")));
+      rz.on("payment.failed", () => {
+        track("payment_failed", { templateId });
+        stop(t("errPaymentFailed"));
+      });
       // Razorpay's own window takes over the screen from here.
       showProgress("checkout");
+      track("payment_started", { templateId });
       rz.open();
     } catch (err) {
       stop(err instanceof Error ? err.message : t("errGeneric"));

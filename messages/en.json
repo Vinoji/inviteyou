@@ -5783,7 +5783,7 @@
       "metaTitle": "Privacy policy",
       "eyebrow": "Legal",
       "title": "Privacy policy",
-      "updated": "Last updated: 29 September 2026",
+      "updated": "Last updated: 17 November 2026",
       "intro": "InviteForYou (inviteforyou.in) helps you create and share invitations. This policy explains, in plain language, what information we handle, why, who helps us handle it, and the choices you have. It is written with India's Digital Personal Data Protection Act, 2023 in mind.",
       "collect": {
         "title": "What we collect",
@@ -5856,7 +5856,7 @@
         "title": "Cookies & storage on your device",
         "body": [
           "We use a few functional cookies and browser storage: your language, theme and motion preferences, an unsaved draft of the invitation you are creating (kept only on your device), and a note that you have already seen an invitation's opening so it does not replay on every visit.",
-          "We do not use advertising or tracking cookies."
+          "To improve the site we use PostHog, a product-analytics service: it counts which pages are visited and which buttons are tapped, and records anonymous replays of visits to our own pages — with everything you type (names, phone numbers) hidden before it leaves your browser. Guests' invitation pages are counted but never recorded. It is never used for advertising, and if your browser asks sites not to track you, we don't."
         ]
       },
       "support": {

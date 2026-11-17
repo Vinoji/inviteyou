@@ -52,7 +52,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ restored: found });
     }
     if (isVideoOrder(order)) {
-      const { found } = await applyVideoPayment(order.notes.slug as string, orderEntity.id, paymentId);
+      const { found } = await applyVideoPayment(order.notes.slug as string, orderEntity.id, paymentId, {
+        amountPaise: order.amount,
+        test: order.notes.devPrice === "1",
+      });
       return NextResponse.json({ video: found });
     }
     if (isPublishOrder(order)) {
