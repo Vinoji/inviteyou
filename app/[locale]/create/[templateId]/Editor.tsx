@@ -100,6 +100,7 @@ import { AddPhotos, PhotoList } from "@/components/editor/PhotoSlot";
 import PhotoCropper from "@/components/editor/PhotoCropper";
 import PhotoLibrary from "@/components/editor/PhotoLibrary";
 import MusicPicker from "@/components/editor/MusicPicker";
+import AudioTrimmer from "@/components/editor/AudioTrimmer";
 import AudioToggle from "@/components/invite/AudioToggle";
 import { findTrack } from "@/lib/mediaLibrary";
 import TravelFields from "@/components/editor/TravelFields";
@@ -260,12 +261,19 @@ export default function Editor({
   const [photoProgress, setPhotoProgress] = useState<{ done: number; total: number } | null>(null);
   const [uploadingMusic, setUploadingMusic] = useState(false);
   const [musicProgress, setMusicProgress] = useState<number | null>(null);
+  // A chosen song waiting in the trimmer (AudioTrimmer) before it's uploaded.
+  const [songToTrim, setSongToTrim] = useState<File | null>(null);
   const [publishing, setPublishing] = useState(false);
   // The full-screen progress for publish / save / restore (PublishOverlay).
   const [progress, setProgress] = useState<{ phase: PublishPhase; steps?: PublishPhase[] } | null>(null);
   const showProgress = (phase: PublishPhase, steps?: PublishPhase[]) => setProgress({ phase, steps });
   const [publishError, setPublishError] = useState<string | null>(null);
-  const [mobileView, setMobileView] = useState<"edit" | "preview">("edit");
+  // Phones: a newly opened design starts on its preview, so the visitor
+  // first sees the invitation they picked (the Edit tab is right below);
+  // editing a published one, or coming back to a step, starts on the form.
+  const [mobileView, setMobileView] = useState<"edit" | "preview">(() =>
+    searchParams.get("edit") || searchParams.get("step") ? "edit" : "preview"
+  );
   // Phones: the bottom bar steps aside while the keyboard is up.
   const keyboardOpen = useKeyboardOpen();
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
@@ -837,11 +845,20 @@ export default function Editor({
       alert(t("errAudioSize"));
       return;
     }
+    // First the trimmer: which part of the song the guests hear.
+    setSongToTrim(file);
+  }
+
+  /** Uploads the song from the trimmer: its cut part (already an MP3), or
+   * the whole file, re-encoded in the browser when that helps. */
+  async function uploadSong(original: File, chosen: Blob, trimmed: boolean) {
+    setSongToTrim(null);
+    const file = original;
     setUploadingMusic(true);
     try {
       // Re-encoded in the browser when it helps (WAV, FLAC, 320 kbps MP3…).
       setMusicProgress(0);
-      const song = await compressAudio(file, setMusicProgress);
+      const song = trimmed ? chosen : await compressAudio(file, setMusicProgress);
       setMusicProgress(null);
       if (song.size > 15 * 1024 * 1024) {
         alert(t("errAudioSize"));
@@ -1245,6 +1262,13 @@ export default function Editor({
     // the phone's Edit / Preview tabs stay in view.
     <div className="flex h-[calc(100dvh-2.75rem)] flex-col lg:flex-row">
       <PublishOverlay phase={progress?.phase ?? null} steps={progress?.steps} accent={data.accentColor} />
+      {songToTrim && (
+        <AudioTrimmer
+          file={songToTrim}
+          onDone={(song, trimmed) => uploadSong(songToTrim, song, trimmed)}
+          onCancel={() => setSongToTrim(null)}
+        />
+      )}
       {checkoutOpen && (
         <CheckoutSheet
           templateId={templateId}

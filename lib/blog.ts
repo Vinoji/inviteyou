@@ -10,6 +10,8 @@
  * `{price}` in any text is replaced with the live invitation's current price.
  */
 
+import { MORE_POSTS } from "./blogPostsMore";
+
 export type Block =
   | { t: "p"; text: string }
   | { t: "h2"; text: string; id?: string }
@@ -1364,7 +1366,8 @@ export const POSTS: Post[] = [
         a: "Yes, that is now the usual way. Call elders and close family as well, and share one link with the time, the address and directions.",
       },
     ],
-  }
+  },
+  ...MORE_POSTS,
 ];
 
 export function getPost(slug: string): Post | undefined {

@@ -883,7 +883,21 @@
       "hostsLabel": "Hosts heading"
     },
     "goLiveLine": "Go live for ₹{price} — opening animation, maps & RSVP",
-    "freeCardLink": "Or download a free card (image)"
+    "freeCardLink": "Or download a free card (image)",
+    "trim": {
+      "title": "Choose the part to play",
+      "sub": "Guests hear this part on a loop. Drag the start and end, then listen.",
+      "reading": "Reading the song…",
+      "start": "Start",
+      "end": "End",
+      "play": "Play this part",
+      "stop": "Stop",
+      "length": "{time} selected",
+      "use": "Use this part",
+      "useWhole": "Use the whole song",
+      "working": "Cutting… {percent}%",
+      "cancel": "Cancel"
+    }
   },
   "invite": {
     "hero": {

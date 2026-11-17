@@ -42,6 +42,11 @@ export interface SceneDesign {
   ornament: string;
   /** The opening: the figure at the top and the piece over the hint. */
   intro: { top: string; tap: string };
+  /** Across the top: a mango-leaf thoranam with temple bells (the default),
+   * or a jasmine garland without bells (a church wedding, a nikah). */
+  canopy?: "thoranam" | "jasmine";
+  /** The kolam under the first screen's title (default true). */
+  kolam?: boolean;
 }
 
 const VELUM: SceneDesign = {
@@ -128,6 +133,8 @@ const MINNU_KETTU: SceneDesign = {
   ],
   ornament: "lilies",
   intro: { top: "doves", tap: "doves" },
+  canopy: "jasmine",
+  kolam: false,
 };
 
 const MYLANCHI_NIKAH: SceneDesign = {
@@ -141,6 +148,8 @@ const MYLANCHI_NIKAH: SceneDesign = {
   ],
   ornament: "mylanchi",
   intro: { top: "lantern", tap: "mylanchi" },
+  canopy: "jasmine",
+  kolam: false,
 };
 
 const KERALA_GRUHAPRAVESHAM: SceneDesign = {

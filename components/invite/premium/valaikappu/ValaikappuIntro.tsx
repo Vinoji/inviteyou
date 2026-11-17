@@ -7,7 +7,7 @@ import { useIntroText } from "../../intros/useIntroText";
 import { playSound, useWarmAudio } from "../../intros/audio";
 import useSafeReducedMotion from "../../useSafeReducedMotion";
 import { scriptLang } from "@/lib/monogram";
-import { Bell, InvocationFrame, Thoranam } from "./Ornaments";
+import { Bell, InvocationFrame, JasmineGarland, Thoranam } from "./Ornaments";
 import { artSrc, sceneDesign } from "./scenes";
 import s from "./valaikappu.module.css";
 
@@ -86,9 +86,15 @@ export default function ValaikappuIntro({ templateId, names, dateLabel, fonts, o
       transition={{ duration: 2.3, times: [0, 0.7, 1] }}
     >
       <div className={s.stageCanopy} aria-hidden>
-        <Thoranam id="vk-intro-thoranam" />
-        <Bell id="vk-intro-bell-l" className={`${s.bellL} ${open ? s.ringing : ""}`} />
-        <Bell id="vk-intro-bell-r" className={`${s.bellR} ${open ? s.ringing : ""}`} />
+        {design.canopy === "jasmine" ? (
+          <JasmineGarland id="vk-intro-thoranam" />
+        ) : (
+          <>
+            <Thoranam id="vk-intro-thoranam" />
+            <Bell id="vk-intro-bell-l" className={`${s.bellL} ${open ? s.ringing : ""}`} />
+            <Bell id="vk-intro-bell-r" className={`${s.bellR} ${open ? s.ringing : ""}`} />
+          </>
+        )}
       </div>
       <div className={s.stageColumn}>
         {/* eslint-disable-next-line @next/next/no-img-element */}

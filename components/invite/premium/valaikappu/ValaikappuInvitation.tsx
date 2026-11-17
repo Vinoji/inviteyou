@@ -20,7 +20,7 @@ import { usePremiumText } from "../usePremiumText";
 import CinemaCountdown from "../cinema/CinemaCountdown";
 import Reveal from "../cinema/Reveal";
 import { EventCards, Guide, Heading, Photos, Story, Working, hasGuide, useEvents } from "../cinema/CinemaBlocks";
-import { Bell, Divider, Grass, InvocationFrame, Kolam, Thoranam } from "./Ornaments";
+import { Bell, Divider, Grass, InvocationFrame, JasmineGarland, Kolam, Thoranam } from "./Ornaments";
 import { artSrc, sceneDesign, type SceneDesign, type Screen } from "./scenes";
 import s from "./valaikappu.module.css";
 
@@ -142,9 +142,15 @@ export default function ValaikappuInvitation(props: PremiumProps) {
       {/* ── The card: four screens under the thoranam and the bells ── */}
       <div className={s.scene}>
         <div className={s.canopy} aria-hidden>
-          <Thoranam id="vk-thoranam" />
-          <Bell id="vk-bell-l" className={s.bellL} />
-          <Bell id="vk-bell-r" className={s.bellR} />
+          {design.canopy === "jasmine" ? (
+            <JasmineGarland id="vk-thoranam" />
+          ) : (
+            <>
+              <Thoranam id="vk-thoranam" />
+              <Bell id="vk-bell-l" className={s.bellL} />
+              <Bell id="vk-bell-r" className={s.bellR} />
+            </>
+          )}
         </div>
 
         {/* 1 · Baby Murugan, the invocation and the title */}
@@ -157,9 +163,11 @@ export default function ValaikappuInvitation(props: PremiumProps) {
               {t("title")}
               <span className={s.bigTitleSub}>{t("titleSub")}</span>
             </Reveal>
-            <Reveal delay={0.3}>
-              <Kolam />
-            </Reveal>
+            {design.kolam !== false && (
+              <Reveal delay={0.3}>
+                <Kolam />
+              </Reveal>
+            )}
           </div>
           <Ground design={design} screen={design.screens[0]} n={0} />
           <p className={s.scrollHint} aria-hidden>

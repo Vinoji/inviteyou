@@ -12,7 +12,7 @@ const PLAYS_EVERYWHERE = /^audio\/(mpeg|mp3|mp4|aac|x-m4a|m4a)$/;
 
 type AudioCtor = typeof AudioContext;
 
-async function decode(file: Blob): Promise<AudioBuffer | null> {
+export async function decode(file: Blob): Promise<AudioBuffer | null> {
   const Ctor: AudioCtor | undefined =
     window.AudioContext ?? (window as unknown as { webkitAudioContext?: AudioCtor }).webkitAudioContext;
   if (!Ctor) return null;
@@ -88,4 +88,45 @@ export async function compressAudio(file: File, onProgress?: (p: number) => void
     console.error(err);
     return file;
   }
+}
+
+/** A short fade at each end of a trimmed part, so it doesn't start or stop mid-note. */
+const FADE_S = 1.2;
+
+/**
+ * Just the part of the song from `start` to `end` (seconds), with a gentle
+ * fade in and out, as a 160 kbps MP3 — the song the guests will hear.
+ */
+export async function trimAudio(audio: AudioBuffer, start: number, end: number, onProgress?: (p: number) => void): Promise<Blob> {
+  const rate = audio.sampleRate;
+  const from = Math.max(0, Math.floor(start * rate));
+  const to = Math.min(audio.length, Math.ceil(end * rate));
+  const length = Math.max(1, to - from);
+  const out = new AudioBuffer({ length, numberOfChannels: Math.min(2, audio.numberOfChannels), sampleRate: rate });
+  const fade = Math.min(Math.floor(FADE_S * rate), Math.floor(length / 4));
+  for (let c = 0; c < out.numberOfChannels; c++) {
+    const src = audio.getChannelData(c).subarray(from, to);
+    const dst = out.getChannelData(c);
+    dst.set(src);
+    for (let i = 0; i < fade; i++) {
+      const k = i / fade;
+      dst[i] *= k;
+      dst[length - 1 - i] *= k;
+    }
+  }
+  return encode(out, onProgress);
+}
+
+/** Loudness in `bars` slices, 0–1, for drawing the song. */
+export function peaks(audio: AudioBuffer, bars: number): number[] {
+  const data = audio.getChannelData(0);
+  const step = Math.max(1, Math.floor(data.length / bars));
+  const out: number[] = [];
+  for (let b = 0; b < bars; b++) {
+    let max = 0;
+    for (let i = b * step; i < Math.min(data.length, (b + 1) * step); i += 16) max = Math.max(max, Math.abs(data[i]));
+    out.push(max);
+  }
+  const top = Math.max(0.01, ...out);
+  return out.map((v) => v / top);
 }

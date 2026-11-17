@@ -54,6 +54,48 @@ export function Thoranam({ id }: { id: string }) {
   );
 }
 
+/** Strands of jasmine with a rose, from a cord — the canopy for the designs
+ * where a mango-leaf thoranam and temple bells don't belong (a church
+ * wedding, a nikah). */
+export function JasmineGarland({ id }: { id: string }) {
+  const strands = [
+    { x: 14, n: 7 },
+    { x: 42, n: 5 },
+    { x: 70, n: 7 },
+    { x: 98, n: 5 },
+  ];
+  return (
+    <svg className={s.thoranam} width="100%" height="96" aria-hidden>
+      <defs>
+        <radialGradient id={`${id}-bud`} cx="0.4" cy="0.35" r="0.65">
+          <stop offset="0" stopColor="#ffffff" />
+          <stop offset="0.7" stopColor="#f7f1e3" />
+          <stop offset="1" stopColor="#e3d8bd" />
+        </radialGradient>
+        <radialGradient id={`${id}-rose`} cx="0.45" cy="0.4" r="0.6">
+          <stop offset="0" stopColor="#f6a3b5" />
+          <stop offset="0.65" stopColor="#d9466a" />
+          <stop offset="1" stopColor="#a8274a" />
+        </radialGradient>
+        <pattern id={`${id}-tile`} width="112" height="96" patternUnits="userSpaceOnUse">
+          {strands.map((st, i) => (
+            <g key={i}>
+              <line x1={st.x} y1="9" x2={st.x} y2={9 + st.n * 10} stroke="#7c9a5a" strokeWidth="0.9" />
+              {Array.from({ length: st.n }, (_, j) => (
+                <ellipse key={j} cx={st.x} cy={16 + j * 10} rx="4.6" ry="5.2" fill={`url(#${id}-bud)`} stroke="#d8ccb0" strokeWidth="0.5" />
+              ))}
+              {i % 2 === 0 && <circle cx={st.x} cy={20 + st.n * 10} r="6.5" fill={`url(#${id}-rose)`} />}
+              {i % 2 === 0 && <path d={`M${st.x - 7} ${18 + st.n * 10} q-5 4 -2 9 q5 -1 6 -6Z`} fill="#4a8a3e" />}
+            </g>
+          ))}
+          <path d="M0 8 Q28 13 56 8 T112 8" fill="none" stroke="#c9a24a" strokeWidth="2" />
+        </pattern>
+      </defs>
+      <rect width="100%" height="96" fill={`url(#${id}-tile)`} />
+    </svg>
+  );
+}
+
 /** A brass temple bell on a chain; it swings from the top. */
 export function Bell({ id, className = "" }: { id: string; className?: string }) {
   return (

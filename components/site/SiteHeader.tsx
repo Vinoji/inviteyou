@@ -148,10 +148,12 @@ export default function SiteHeader() {
   return (
     <header className={`${s.header} ${solid ? s.headerFloating : ""}`}>
       <div className={`${s.capsule} ${solid ? s.capsuleSolid : ""} ${open ? s.capsuleOpen : ""}`}>
-      <div className={`flex items-center gap-4 px-4 sm:px-5 ${s.bar}`}>
-        <Link href="/" className="group flex shrink-0 items-center gap-2.5" aria-label={t("home")}>
+      {/* Small phones (320–375px): tighter gaps, and the name gives way
+          (truncates) before the search, music and menu buttons do. */}
+      <div className={`flex items-center gap-2 px-3 sm:gap-4 sm:px-5 ${s.bar}`}>
+        <Link href="/" className="group flex min-w-0 items-center gap-2 sm:gap-2.5" aria-label={t("home")}>
           <LogoMark />
-          <span className={`font-serif text-lg font-bold sm:text-xl ${s.wordmark} ${s.wordmarkLight}`}>
+          <span className={`truncate font-serif text-lg font-bold sm:text-xl ${s.wordmark} ${s.wordmarkLight}`}>
             {t("brand")}
           </span>
         </Link>
@@ -175,7 +177,7 @@ export default function SiteHeader() {
           })}
         </nav>
 
-        <GlobalSearch className="ml-auto" />
+        <GlobalSearch className="ml-auto shrink-0" />
 
         <div className="ml-2 hidden items-center gap-2 md:flex">
           <SettingsMenu />
@@ -185,12 +187,12 @@ export default function SiteHeader() {
           </Link>
         </div>
 
-        <SiteMusic className="ml-2" />
+        <SiteMusic className="ml-1 shrink-0 sm:ml-2" />
 
         <button
           type="button"
           onClick={() => setOpenFor(open ? null : pathname)}
-          className="ml-2 flex h-10 w-10 items-center justify-center rounded-full border border-[#e8b04a]/50 text-[#ffe9b8] md:hidden"
+          className="ml-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#e8b04a]/50 text-[#ffe9b8] sm:ml-2 md:hidden"
           aria-expanded={open}
           aria-controls="site-menu"
           aria-label={open ? t("closeMenu") : t("openMenu")}

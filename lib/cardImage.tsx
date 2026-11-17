@@ -12,6 +12,7 @@ import { loadFonts, tamilVisualOrder as v } from "./ogFonts";
 import { CARD_FONTS, cardOrnaments, getCardTheme, isDarkPaper } from "./cardTheme";
 import { hasTamil, shapeTamil } from "./tamilText";
 import { SCENE_DESIGNS } from "@/components/invite/premium/valaikappu/scenes";
+import { cardArtFor, cardImage, type CardPicture } from "./cardArt";
 
 /** A5 portrait. */
 export const CARD_RATIO = 1.4142;
@@ -61,6 +62,19 @@ export async function renderCardImage({
   // The couple's own accent colour when they changed it from the template's.
   const accent = data.accentColor && data.accentColor !== template.defaultAccent ? data.accentColor : theme.accent;
   const ornaments = cardOrnaments(theme);
+  // The design's own pictures, as on a printed card: a figure at the head
+  // and one at the foot, on textured paper (lib/cardArt.ts).
+  const art = cardArtFor(template.id);
+  const [topArt, bottomArt, paper] = await Promise.all([
+    cardImage(art.top, 520),
+    cardImage(art.bottom, 760),
+    dark ? Promise.resolve(null) : cardImage(art.paper, 900, "jpeg"),
+  ]);
+  /** A picture scaled to a height, its width following. */
+  const pic = (p: CardPicture, h: number, maxW: number) => {
+    const w = Math.min(maxW, Math.round((p.width / p.height) * h));
+    return { src: p.src, width: w, height: Math.round((w / p.width) * p.height) };
+  };
 
   const bride = data.brideName || tCommon(category.singlePerson ? "friendFallback" : "brideFallback");
   const groom = category.singlePerson ? "" : data.groomName || tCommon("groomFallback");
@@ -145,7 +159,7 @@ export async function renderCardImage({
       align?: "left" | "centre";
     }
   ) {
-    const box = { display: "flex", marginTop: o.marginTop ?? 0 } as const;
+    const box = { display: "flex", marginTop: o.marginTop ?? 0, flexShrink: 0 } as const;
     if (text && hasTamil(text)) {
       try {
         const img = await shapeTamil(text, {
@@ -187,7 +201,8 @@ export async function renderCardImage({
 
   // Fewer lines, bigger type: a one-function card fills the page.
   const lines = family.length + events.length * 3 + (groom ? 2 : 0);
-  const grow = lines <= 4 ? 1.3 : lines <= 7 ? 1.15 : 1;
+  // With pictures at the head and foot there's less room to grow into.
+  const grow = (topArt || bottomArt ? Math.min(1.12, lines <= 4 ? 1.3 : lines <= 7 ? 1.15 : 1) : lines <= 4 ? 1.3 : lines <= 7 ? 1.15 : 1);
   const g = (n: number) => px(n * grow);
   const nameFamily = display;
   const [eyebrowEl, brideEl, groomEl, requestEl, dateEl, scanEl, ...familyEls] = await Promise.all([
@@ -231,6 +246,15 @@ export async function renderCardImage({
             textAlign: "center",
           }}
         >
+          {paper && (
+            // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+            <img
+              src={paper.src}
+              width={width - px(76)}
+              height={height - px(76)}
+              style={{ position: "absolute", top: 0, left: 0, borderRadius: px(18), opacity: 0.55, objectFit: "cover" }}
+            />
+          )}
           {/* inner hairline frame */}
           <div
             style={{
@@ -260,7 +284,13 @@ export async function renderCardImage({
           {/* Everything but the footer, centred in the space below the
               thoranam so short cards don't leave the bottom half empty. */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%" }}>
-            {!category.singlePerson && (
+            {topArt ? (
+              (() => {
+                const p = pic(topArt, px(lines <= 7 ? 230 : 190), px(400));
+                // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+                return <img src={p.src} width={p.width} height={p.height} style={{ marginBottom: px(14) }} />;
+              })()
+            ) : !category.singlePerson && (
               <div
                 style={{
                   display: "flex",
@@ -281,7 +311,7 @@ export async function renderCardImage({
             )}
             {eyebrowEl}
 
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: g(24), lineHeight: 1.08 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginTop: g(24), lineHeight: 1.08, flexShrink: 0 }}>
               {brideEl}
               {groom && (
                 <div style={{ display: "flex", fontFamily: display, fontSize: nameSize * grow * 0.5, color: theme.trim, margin: `${px(4)}px 0` }}>&</div>
@@ -321,6 +351,12 @@ export async function renderCardImage({
                 ))}
               </div>
             )}
+            {bottomArt &&
+              (() => {
+                const p = pic(bottomArt, px(lines <= 7 ? 330 : 260), px(780));
+                // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
+                return <img src={p.src} width={p.width} height={p.height} style={{ marginTop: g(26) }} />;
+              })()}
           </div>
 
           {qr && inviteUrl ? (

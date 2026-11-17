@@ -73,7 +73,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
         <div className={`${paper.festiveCard} p-6`}>
           <h2 className="font-serif text-xl font-bold text-[#2a0c27] dark:text-[#fff6e6]">{t("contactTitle")}</h2>
           <p className="mt-2 leading-relaxed text-neutral-700 dark:text-neutral-300">{t("contactText")}</p>
-          <a href={`mailto:${SITE.contact.email}`} className="mt-3 inline-flex items-center gap-2 font-semibold text-amber-700 hover:underline dark:text-amber-400">
+          <a href={`mailto:${SITE.contact.email}`} className="mt-3 inline-flex max-w-full items-center gap-2 font-semibold break-all text-amber-700 hover:underline dark:text-amber-400">
             <Mail size={16} aria-hidden />
             {SITE.contact.email}
           </a>
