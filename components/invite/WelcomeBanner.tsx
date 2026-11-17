@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Check, Copy, MessageCircle, MessageSquare, PartyPopper, Users, X } from "lucide-react";
 import { whatsappUrl, waPhone } from "@/lib/share";
+import VideoOffer from "./VideoOffer";
 
 /** sessionStorage key the editor leaves the buyer's number under, just
  * before redirecting here — so it never travels in the URL. */
@@ -152,6 +153,10 @@ export default function WelcomeBanner({
             <MessageSquare size={14} aria-hidden />
             {t("sendSms")}
           </a>
+        </div>
+
+        <div className="mt-4">
+          <VideoOffer slug={slug} token={editToken} accentColor={accentColor} />
         </div>
 
         <p className="mt-4 text-xs text-neutral-500 dark:text-neutral-400">{t("expiryNote")}</p>

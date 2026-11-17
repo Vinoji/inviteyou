@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Check, KeyRound, Pencil, Share2, Users } from "lucide-react";
+import { Check, Clapperboard, KeyRound, Pencil, Share2, Users } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import WelcomeBanner from "./WelcomeBanner";
+import VideoOffer from "./VideoOffer";
 
 /** sessionStorage key holding the owner's token for one invitation. */
 const ownerKey = (slug: string) => `inviteyou:owner:${slug}`;
@@ -48,6 +49,7 @@ export default function OwnerAccess({
   const [owner, setOwner] = useState<OwnerSession | null>(fromUrl);
   const [popupOpen, setPopupOpen] = useState(welcome && Boolean(fromUrl));
   const [copied, setCopied] = useState(false);
+  const [videoOpen, setVideoOpen] = useState(false);
 
   useEffect(() => {
     const id = setTimeout(() => {
@@ -130,7 +132,16 @@ export default function OwnerAccess({
           <KeyRound size={13} aria-hidden />
           {t("editLink")}
         </button>
+        <button type="button" onClick={() => setVideoOpen((o) => !o)} aria-expanded={videoOpen} className={pill}>
+          <Clapperboard size={13} aria-hidden />
+          {t("video")}
+        </button>
       </nav>
+      {videoOpen && (
+        <div className="fixed inset-x-0 top-16 z-[66] mx-auto w-[min(22rem,calc(100%-2rem))] rounded-2xl bg-white p-2 shadow-2xl dark:bg-neutral-900">
+          <VideoOffer slug={slug} token={owner.token} accentColor={accentColor} />
+        </div>
+      )}
     </>
   );
 }

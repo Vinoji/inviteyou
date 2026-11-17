@@ -6,6 +6,7 @@ import {
   isRestoreOrder,
   publishPaidDraft,
 } from "@/lib/payments";
+import { applyVideoPayment, isVideoOrder } from "@/lib/video";
 
 /**
  * Razorpay webhook (subscribe to `order.paid`). The browser normally
@@ -49,6 +50,10 @@ export async function POST(req: NextRequest) {
         paymentId
       );
       return NextResponse.json({ restored: found });
+    }
+    if (isVideoOrder(order)) {
+      const { found } = await applyVideoPayment(order.notes.slug as string, orderEntity.id, paymentId);
+      return NextResponse.json({ video: found });
     }
     if (isPublishOrder(order)) {
       const result = await publishPaidDraft(

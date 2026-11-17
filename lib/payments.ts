@@ -21,7 +21,7 @@ import { ownerLinks } from "./ownerLinks";
  * other finds it done and just reports the result.
  */
 
-type OrderNotes = Record<string, unknown>;
+export type OrderNotes = Record<string, unknown>;
 
 /** Fetches the order from Razorpay so its amount and notes can be trusted. */
 export async function fetchOrder(orderId: string) {
@@ -37,6 +37,7 @@ export function isPublishOrder(order: { amount: number; notes: OrderNotes }, dra
   return (
     order.amount > 0 &&
     order.notes.purpose !== "restore" &&
+    order.notes.purpose !== "video" &&
     typeof order.notes.draftId === "string" &&
     (draftId === undefined || order.notes.draftId === draftId)
   );

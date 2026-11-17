@@ -39,4 +39,20 @@ export function getAdminDb() {
   return getFirestore(getAdminApp());
 }
 
+/** The admin app, for other Firebase services (Storage). */
+export { getAdminApp };
+
+/** An OAuth access token for Google Cloud APIs, as the site's service
+ * account (Cloud Run: starting the video job). */
+export async function getAdminAccessToken(): Promise<string> {
+  const credential = getAdminApp().options.credential;
+  if (!credential) throw new Error("No Firebase admin credential.");
+  return (await credential.getAccessToken()).access_token;
+}
+
+/** The Google Cloud project the service account belongs to. */
+export function getAdminProjectId(): string {
+  return JSON.parse(process.env.FIREBASE_ADMIN_KEY ?? "{}").project_id ?? "";
+}
+
 export { FieldValue };

@@ -1,12 +1,15 @@
 // The WhatsApp video of an invitation: the real page, recorded
 // frame-perfect in a headless browser — its opening, then every screen —
-// with music and an end card, as a 1080×1920 MP4.
+// with music and an end card, as a 720×1280 MP4 (scale 2; WhatsApp sends
+// videos at about 720p anyway, so more pixels only cost render time).
 //
 // Time in the page is frozen and moved on exactly one frame at a time
 // (Playwright's clock for timers and requestAnimationFrame; CSS animations
 // stepped by hand), with a screenshot after each step, so the video is
 // smooth however slow the machine is.
 //
+// As a module: recordInvite({ url, out, music, names, date, link }) (the
+// Cloud Run job, render/job.mjs). From the command line:
 // node render/record-invite.mjs --url <page> --out <file.mp4>
 //   [--music <file.mp3>] [--names "A & B"] [--date "24 Jan 2027"]
 //   [--link inviteforyou.in/invite/slug] [--fps 30] [--chromium <path>]
@@ -14,24 +17,12 @@ import path from "node:path";
 import fs from "node:fs";
 import os from "node:os";
 import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
-const arg = (name, dflt) => {
-  const i = process.argv.indexOf(`--${name}`);
-  return i > 0 ? process.argv[i + 1] : dflt;
-};
-const URL_ = arg("url");
-const OUT = arg("out");
-const MUSIC = arg("music");
-const NAMES = arg("names", "");
-const DATE = arg("date", "");
-const LINK = arg("link", "inviteforyou.in");
-const FPS = Number(arg("fps", 30));
-const DT = 1000 / FPS;
 const TOTAL_MS = 32000; // the whole video, roughly
 const OPENING_MS = 4800;
 const END_MS = 3200;
-if (!URL_ || !OUT) throw new Error("--url and --out are required");
 
 // Steps every CSS animation/transition by dt ms (scroll-linked ones follow
 // the scroll and are left alone).
@@ -50,16 +41,16 @@ const STEPPER = () => {
   };
 };
 
-const log = (() => {
+export async function recordInvite({ url: URL_, out: OUT, music: MUSIC, names: NAMES = "", date: DATE = "", link: LINK = "inviteforyou.in", fps = 30, scale = 2, chromiumPath }) {
+  if (!URL_ || !OUT) throw new Error("url and out are required");
+  const FPS = Number(fps);
+  const DT = 1000 / FPS;
   const t0 = Date.now();
-  return (msg) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)}s] ${msg}`);
-})();
-
-(async () => {
+  const log = (msg) => console.log(`[${((Date.now() - t0) / 1000).toFixed(1)}s] ${msg}`);
   const frames = fs.mkdtempSync(path.join(os.tmpdir(), "invite-video-"));
-  const b = await chromium.launch({ executablePath: arg("chromium") || undefined, args: ["--use-gl=angle", "--use-angle=swiftshader"] });
-  // a phone's screen: 360×640 at 3× = 1080×1920
-  const ctx = await b.newContext({ viewport: { width: 360, height: 640 }, deviceScaleFactor: 3 });
+  const b = await chromium.launch({ executablePath: chromiumPath || undefined });
+  // a phone's screen: 360×640 at 2× = 720×1280 (3× = 1080×1920)
+  const ctx = await b.newContext({ viewport: { width: 360, height: 640 }, deviceScaleFactor: scale });
   // recording never writes anything (RSVPs, view counts…)
   await ctx.route("**/api/**", (r) => (r.request().method() === "GET" ? r.continue() : r.abort()));
   await ctx.addInitScript(STEPPER);
@@ -88,13 +79,13 @@ const log = (() => {
   const frame = async () => {
     await ctx.clock.runFor(DT);
     await p.evaluate((dt) => window.__step(dt), DT);
-    // A clip with scale 3 captures at the phone's full 1080×1920 (a plain
+    // A clip with a scale captures at the phone's full resolution (a plain
     // capture comes back at CSS size, 360×640); the clip is in page
     // coordinates, so it follows the scroll.
     const r = await cdp.send("Page.captureScreenshot", {
       format: "jpeg",
       quality: 90,
-      clip: { x: 0, y, width: 360, height: 640, scale: 3 },
+      clip: { x: 0, y, width: 360, height: 640, scale },
     });
     fs.writeFileSync(path.join(frames, `f${String(n++).padStart(5, "0")}.jpg`), Buffer.from(r.data, "base64"));
   };
@@ -174,4 +165,24 @@ const log = (() => {
   execFileSync("ffmpeg", ff);
   fs.rmSync(frames, { recursive: true, force: true });
   log(`done: ${OUT} (${(fs.statSync(OUT).size / 1048576).toFixed(1)} MB)`);
-})();
+  return { frames: n, seconds: secs, bytes: fs.statSync(OUT).size };
+}
+
+// Run from the command line
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const arg = (name, dflt) => {
+    const i = process.argv.indexOf(`--${name}`);
+    return i > 0 ? process.argv[i + 1] : dflt;
+  };
+  await recordInvite({
+    url: arg("url"),
+    out: arg("out"),
+    music: arg("music"),
+    names: arg("names", ""),
+    date: arg("date", ""),
+    link: arg("link", "inviteforyou.in"),
+    fps: arg("fps", 30),
+    scale: Number(arg("scale", 2)),
+    chromiumPath: arg("chromium"),
+  });
+}
