@@ -848,10 +848,11 @@
       "later": "Maybe later",
       "close": "Close",
       "liveTitle": "Make {name} live",
-      "liveSub": "Your card image is free. The live invitation gives your guests the whole experience.",
+      "liveSub": "Your card image is free, with our mark on it. Going live removes it and gives your guests the whole experience.",
       "colFree": "Free card",
       "colLive": "Live",
       "c1": "Card image to share",
+      "c0": "No InviteForYou watermark",
       "c2": "Animated opening with your names",
       "c3": "Google Maps & Add to Calendar",
       "c4": "Live countdown, story & photos",
@@ -6002,7 +6003,13 @@
       "fab": "Help",
       "close": "Close",
       "hello": "Hello {brand}, I need some help.",
-      "mailSubject": "Help with {brand}"
+      "mailSubject": "Help with {brand}",
+      "whatsapp": "Chat on WhatsApp",
+      "whatsappSub": "We'll help you choose, or make it for you",
+      "fabChat": "Chat with us",
+      "waHello": "Hi {brand}, I'd like help with an invitation.",
+      "waDesign": "Hi {brand}, I'd like the {design} invitation. Can you help me?",
+      "checkoutWa": "Prefer we set it up for you? Chat on WhatsApp"
     },
     "music": {
       "on": "Play music",

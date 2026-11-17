@@ -131,7 +131,7 @@ export default function Hero({ featured }: { featured: ShowcaseProps[] }) {
                   aria-label={tLanding("useTemplate")}
                   className={`${s.fadeIn} group block`}
                 >
-                  <TemplateShowcase {...current} />
+                  <TemplateShowcase {...current} priority />
                 </DesignLink>
               )}
             </div>

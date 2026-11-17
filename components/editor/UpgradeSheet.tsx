@@ -10,6 +10,7 @@ import { isFreeTemplate, templatePriceInr } from "@/lib/pricing";
  * shown after downloading a live design's free card. */
 const COMPARE = [
   { key: "c1", free: true },
+  { key: "c0", free: false },
   { key: "c2", free: false },
   { key: "c3", free: false },
   { key: "c4", free: false },

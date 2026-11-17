@@ -350,31 +350,41 @@ export async function renderCardImage({
             </div>
           )}
         </div>
+        {/* A paid design's free card: a tiled mark, faint enough to read the
+            card through, plain enough that it isn't passed off as the paid
+            invitation. */}
         {watermark && (
           <div
             style={{
               position: "absolute",
-              top: 0,
-              left: 0,
-              width,
-              height,
+              top: -height * 0.25,
+              left: -width * 0.25,
+              width: width * 1.5,
+              height: height * 1.5,
               display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
+              flexDirection: "column",
+              justifyContent: "space-around",
+              transform: "rotate(-28deg)",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                fontSize: px(120),
-                fontWeight: 700,
-                letterSpacing: px(6),
-                color: "rgba(128,128,128,0.035)",
-                transform: "rotate(-30deg)",
-              }}
-            >
-              InviteForYou
-            </div>
+            {Array.from({ length: 9 }, (_, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-around",
+                  fontSize: px(46),
+                  fontWeight: 700,
+                  letterSpacing: px(3),
+                  color: "rgba(110,110,110,0.16)",
+                  marginLeft: i % 2 ? px(180) : 0,
+                }}
+              >
+                <span>inviteforyou.in</span>
+                <span>inviteforyou.in</span>
+                <span>inviteforyou.in</span>
+              </div>
+            ))}
           </div>
         )}
       </div>

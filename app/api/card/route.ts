@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { TEMPLATE_IDS, getTemplateConfig } from "@/lib/templates";
 import { getCategoryConfig } from "@/lib/categories";
 import { renderCardImage } from "@/lib/cardImage";
+import { templateTier } from "@/lib/pricing";
 import { tooMany } from "@/lib/rateLimit";
 import { recordFreeCardMaker } from "@/lib/stats";
 import {
@@ -23,7 +24,8 @@ export const runtime = "nodejs";
  * PNG, drawn from the editor's current details (nothing is saved), with a
  * small "Made with InviteForYou" line where a published card has its QR
  * code. Free for every design — card-only designs and live designs alike
- * (a live design's link, RSVP and site are what's paid).
+ * (a live design's link, RSVP and site are what's paid). A paid design's
+ * free card carries a visible InviteForYou mark; going live removes it.
  */
 export async function POST(req: NextRequest) {
   const limited = tooMany(req, "card", 30, 60 * 60 * 1000);
@@ -67,7 +69,7 @@ export async function POST(req: NextRequest) {
     contentLocale,
   } as unknown as InvitationData;
 
-  const image = await renderCardImage({ data, locale: contentLocale, width: 1500 });
+  const image = await renderCardImage({ data, locale: contentLocale, width: 1500, watermark: templateTier(templateId) !== "free" });
   // Funnel: one count per device's first free card (the editor says so).
   if (body?.firstCard === true) await recordFreeCardMaker();
   const headers = new Headers(image.headers);

@@ -2,20 +2,25 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { HelpCircle, LifeBuoy, Mail, X } from "lucide-react";
+import { HelpCircle, LifeBuoy, Mail, MessageCircle, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { SITE } from "@/lib/site";
 import { supportMailUrl } from "@/lib/support";
+import { TEMPLATE_IDS } from "@/lib/templates";
+import { whatsappUrl } from "@/lib/whatsapp";
 import { isSitePage } from "./SiteHeader";
 
 /**
- * "Need help?" — email us, or open the support form, one tap away. A floating button on the site's
+ * "Need help?" — chat on WhatsApp (when the number is set), email us, or
+ * open the support form, one tap away. On a design's page the WhatsApp
+ * message names the design, so the order starts there. A floating button on the site's
  * own pages (`floating`), a small icon in the editor / guest-list toolbar
  * (`toolbar`). Never on a couple's invitation — guests aren't our
  * customers there.
  */
 export default function HelpMenu({ variant = "floating" }: { variant?: "floating" | "toolbar" }) {
   const t = useTranslations("site.help");
+  const tTemplates = useTranslations("templates");
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
@@ -35,6 +40,11 @@ export default function HelpMenu({ variant = "floating" }: { variant?: "floating
   if (variant === "floating" && !isSitePage(pathname)) return null;
 
   const hello = t("hello", { brand: SITE.name });
+  // /create/<id> or /templates/<id>: the design they're looking at
+  const designId = pathname.split("/").find((part) => TEMPLATE_IDS.includes(part));
+  const wa = whatsappUrl(
+    designId ? t("waDesign", { brand: SITE.name, design: tTemplates(`${designId}.name`) }) : t("waHello", { brand: SITE.name })
+  );
   const item =
     "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-neutral-800 transition hover:bg-amber-50 dark:text-neutral-100 dark:hover:bg-amber-950/40";
   const icon = "flex h-8 w-8 shrink-0 items-center justify-center rounded-full";
@@ -49,6 +59,17 @@ export default function HelpMenu({ variant = "floating" }: { variant?: "floating
     >
       <p className="px-3 pt-1 font-serif text-base font-bold text-neutral-900 dark:text-neutral-50">{t("title")}</p>
       <p className="px-3 pb-2 text-xs text-neutral-500 dark:text-neutral-400">{t("subtitle")}</p>
+      {wa && (
+        <a href={wa} target="_blank" rel="noopener noreferrer" className={item}>
+          <span className={`${icon} bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300`}>
+            <MessageCircle size={15} aria-hidden />
+          </span>
+          <span className="min-w-0">
+            <span className="block font-semibold">{t("whatsapp")}</span>
+            <span className="block text-xs text-neutral-500">{t("whatsappSub")}</span>
+          </span>
+        </a>
+      )}
       <a href={supportMailUrl(t("mailSubject", { brand: SITE.name }), hello)} className={item}>
         <span className={`${icon} bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300`}>
           <Mail size={15} aria-hidden />
@@ -95,10 +116,12 @@ export default function HelpMenu({ variant = "floating" }: { variant?: "floating
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-label={open ? t("close") : t("title")}
-        className="flex h-13 items-center gap-2 rounded-full bg-gradient-to-br from-amber-500 to-rose-600 px-4 text-sm font-semibold text-white shadow-lg shadow-rose-900/30 transition hover:brightness-110 active:scale-95"
+        className={`flex h-13 items-center gap-2 rounded-full px-4 text-sm font-semibold text-white shadow-lg transition hover:brightness-110 active:scale-95 ${
+          wa ? "bg-[#25D366] shadow-emerald-900/30" : "bg-gradient-to-br from-amber-500 to-rose-600 shadow-rose-900/30"
+        }`}
       >
-        {open ? <X size={18} aria-hidden /> : <HelpCircle size={18} aria-hidden />}
-        <span className="hidden sm:inline">{open ? t("close") : t("fab")}</span>
+        {open ? <X size={18} aria-hidden /> : wa ? <MessageCircle size={18} aria-hidden /> : <HelpCircle size={18} aria-hidden />}
+        <span className="hidden sm:inline">{open ? t("close") : wa ? t("fabChat") : t("fab")}</span>
       </button>
     </div>
   );

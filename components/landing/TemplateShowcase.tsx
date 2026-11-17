@@ -49,6 +49,8 @@ export interface ShowcaseProps {
   /** Play the real opening (the hero's phone). Otherwise the card shows the
    * design itself — a snapshot of its first screen, opened. */
   live?: boolean;
+  /** Above the fold (the hero's phone): load the snapshot at once, first. */
+  priority?: boolean;
 }
 
 const SNAPSHOTS = THUMBS as Record<string, string[]>;
@@ -77,7 +79,8 @@ export default function TemplateShowcase(p: ShowcaseProps) {
         <img
           src={snapshot}
           alt=""
-          loading="lazy"
+          loading={p.priority ? undefined : "lazy"}
+          fetchPriority={p.priority ? "high" : undefined}
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />

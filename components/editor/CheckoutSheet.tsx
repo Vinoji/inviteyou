@@ -2,10 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Lock, Sparkles, X } from "lucide-react";
+import { Lock, MessageCircle, Sparkles, X } from "lucide-react";
 import { couponOffInr } from "@/lib/coupons";
 import { DEV_PRICE_INR, templateListPriceInr, templatePriceInr } from "@/lib/pricing";
 import { waPhone } from "@/lib/share";
+import { SITE } from "@/lib/site";
+import { whatsappUrl } from "@/lib/whatsapp";
 import CouponField from "./CouponField";
 
 /**
@@ -42,6 +44,9 @@ export default function CheckoutSheet({
 }) {
   const t = useTranslations("editor");
   const tc = useTranslations("editor.checkout");
+  const tHelp = useTranslations("site.help");
+  // Not ready to pay alone? A person on WhatsApp, the design already named.
+  const wa = whatsappUrl(tHelp("waDesign", { brand: SITE.name, design: designName }));
   const [touched, setTouched] = useState(false);
   const phoneRef = useRef<HTMLInputElement>(null);
   const price = devPrice ? DEV_PRICE_INR : templatePriceInr(templateId);
@@ -142,6 +147,17 @@ export default function CheckoutSheet({
             <Lock size={11} aria-hidden />
             {tc("secure")}
           </p>
+          {wa && (
+            <a
+              href={wa}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-1.5 text-center text-xs font-semibold text-emerald-700 underline-offset-2 hover:underline dark:text-emerald-400"
+            >
+              <MessageCircle size={13} aria-hidden />
+              {tHelp("checkoutWa")}
+            </a>
+          )}
         </div>
       </div>
     </div>
