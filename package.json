@@ -20,6 +20,7 @@
     "firebase": "^12.19.0",
     "firebase-admin": "^14.4.0",
     "framer-motion": "^13.4.1",
+    "jose": "^6.2.13",
     "lucide-react": "^1.47.0",
     "next": "16.3.5",
     "next-intl": "^4.14.7",
