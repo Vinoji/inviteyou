@@ -14,6 +14,13 @@
     "cake.webp",
     "sparkler.webp"
   ],
+  "choroonu": [
+    "elephant.webp",
+    "elephants.webp",
+    "feeding.webp",
+    "payasam.webp",
+    "sadya.webp"
+  ],
   "festivals": [
     "akshaya.webp",
     "christmas.webp",
@@ -34,6 +41,21 @@
     "couple.webp",
     "krishna.webp",
     "seer.webp"
+  ],
+  "kerala-gruhapravesham": [
+    "couple.webp",
+    "kindi.webp",
+    "nalukettu.webp",
+    "nirapara.webp",
+    "paal-kaachal.webp"
+  ],
+  "kerala-kalyanam": [
+    "ashtamangalyam.webp",
+    "chenda.webp",
+    "couple.webp",
+    "guruvayurappan.webp",
+    "nilavilakku.webp",
+    "uruli.webp"
   ],
   "living-temple": [
     "corridor-depth.webp",
@@ -68,6 +90,30 @@
     "paper-grain-light.webp",
     "paper-grain.webp",
     "wax-seal.webp"
+  ],
+  "minnu-kettu": [
+    "church.webp",
+    "couple.webp",
+    "doves.webp",
+    "lilies.webp",
+    "margamkali.webp",
+    "minnu.webp"
+  ],
+  "mylanchi-nikah": [
+    "couple.webp",
+    "lantern.webp",
+    "mosque.webp",
+    "mylanchi-hand.webp",
+    "mylanchi.webp",
+    "oppana.webp"
+  ],
+  "noolukettu": [
+    "aranjanam.webp",
+    "baby-hand.webp",
+    "grandparents.webp",
+    "krishna.webp",
+    "parents.webp",
+    "thottil.webp"
   ],
   "pastel-palace": [
     "castle.webp",

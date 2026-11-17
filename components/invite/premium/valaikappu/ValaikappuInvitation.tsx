@@ -38,7 +38,10 @@ function Ground({ design, screen, n }: { design: SceneDesign; screen: Screen; n:
           src={artSrc(design, f.src)}
           alt=""
           aria-hidden
-          loading={n === 0 ? undefined : "lazy"}
+          // A figure reaching in from the edge is sized by its own picture, so
+          // before it loads it has no width — and a lazy image with no width
+          // is never "in view", so it would never load. Load those up front.
+          loading={n === 0 || f.place === "edge" ? undefined : "lazy"}
           fetchPriority={n === 0 ? "high" : undefined}
           className={`${s.figure} ${PLACE[f.place]}`}
           style={f.scale ? { height: `calc(var(--fig) * ${f.scale})` } : undefined}

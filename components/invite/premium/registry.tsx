@@ -68,6 +68,12 @@ const PREMIUM_IDS = new Set([
   "mangala-thirumanam",
   "pudhumanai-puguvizha",
   "kannan-valaikaappu",
+  "kerala-kalyanam",
+  "minnu-kettu",
+  "mylanchi-nikah",
+  "kerala-gruhapravesham",
+  "noolukettu",
+  "choroonu",
   "shashtiabdapoorthi-card",
   "lilac-seal-anniversary",
   "cinematic-film-anniversary",
@@ -119,6 +125,12 @@ export default function PremiumInvitation(props: PremiumProps) {
     case "mangala-thirumanam":
     case "pudhumanai-puguvizha":
     case "kannan-valaikaappu":
+    case "kerala-kalyanam":
+    case "minnu-kettu":
+    case "mylanchi-nikah":
+    case "kerala-gruhapravesham":
+    case "noolukettu":
+    case "choroonu":
       return <Valaikappu {...props} />;
     case "madurai-meenakshi":
     case "meenakshi-nichayathartham":

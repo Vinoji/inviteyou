@@ -102,11 +102,97 @@ const KANNAN: SceneDesign = {
   intro: { top: "krishna", tap: "bangle-tray" },
 };
 
+// ── Kerala ──
+
+const KERALA_KALYANAM: SceneDesign = {
+  ns: "keralaKalyanam",
+  art: "kerala-kalyanam",
+  screens: [
+    { ground: [30, 260], figures: [{ src: "nilavilakku", place: "wide" }] },
+    { ground: [42, 360], figures: [{ src: "couple", place: "center" }] },
+    { ground: [30, 250], figures: [{ src: "chenda", place: "wide" }] },
+    { ground: [26, 220], figures: [{ src: "uruli", place: "bleed" }] },
+  ],
+  ornament: "ashtamangalyam",
+  intro: { top: "guruvayurappan", tap: "ashtamangalyam" },
+};
+
+const MINNU_KETTU: SceneDesign = {
+  ns: "minnuKettu",
+  art: "minnu-kettu",
+  screens: [
+    { ground: [30, 260], figures: [{ src: "church", place: "wide" }] },
+    { ground: [42, 360], figures: [{ src: "couple", place: "center" }] },
+    { ground: [32, 270], figures: [{ src: "margamkali", place: "wide" }] },
+    { ground: [34, 290], figures: [{ src: "minnu", place: "center" }] },
+  ],
+  ornament: "lilies",
+  intro: { top: "doves", tap: "doves" },
+};
+
+const MYLANCHI_NIKAH: SceneDesign = {
+  ns: "mylanchiNikah",
+  art: "mylanchi-nikah",
+  screens: [
+    { ground: [32, 280], figures: [{ src: "mosque", place: "wide" }] },
+    { ground: [42, 360], figures: [{ src: "couple", place: "center" }] },
+    { ground: [30, 250], figures: [{ src: "oppana", place: "wide" }] },
+    { ground: [26, 220], figures: [{ src: "mylanchi-hand", place: "edge" }] },
+  ],
+  ornament: "mylanchi",
+  intro: { top: "lantern", tap: "mylanchi" },
+};
+
+const KERALA_GRUHAPRAVESHAM: SceneDesign = {
+  ns: "keralaGruha",
+  art: "kerala-gruhapravesham",
+  screens: [
+    { ground: [30, 260], figures: [{ src: "nalukettu", place: "wide" }] },
+    { ground: [42, 360], figures: [{ src: "couple", place: "center" }] },
+    { ground: [28, 240], figures: [{ src: "paal-kaachal", place: "wide" }] },
+    { ground: [26, 220], figures: [{ src: "kindi", place: "edge" }] },
+  ],
+  ornament: "nirapara",
+  intro: { top: "nirapara", tap: "kindi" },
+};
+
+const NOOLUKETTU: SceneDesign = {
+  ns: "noolukettu",
+  art: "noolukettu",
+  screens: [
+    { ground: [30, 260], figures: [{ src: "thottil", place: "wide" }] },
+    { ground: [40, 340], figures: [{ src: "parents", place: "center" }] },
+    { ground: [36, 300], figures: [{ src: "grandparents", place: "center" }] },
+    { ground: [22, 190], figures: [{ src: "baby-hand", place: "edge" }] },
+  ],
+  ornament: "aranjanam",
+  intro: { top: "krishna", tap: "aranjanam" },
+};
+
+const CHOROONU: SceneDesign = {
+  ns: "choroonu",
+  art: "choroonu",
+  screens: [
+    { ground: [32, 280], figures: [{ src: "elephants", place: "wide" }] },
+    { ground: [40, 340], figures: [{ src: "feeding", place: "center" }] },
+    { ground: [30, 250], figures: [{ src: "payasam", place: "center" }] },
+    { ground: [24, 210], figures: [{ src: "sadya", place: "bleed" }] },
+  ],
+  ornament: "elephant",
+  intro: { top: "elephant", tap: "payasam" },
+};
+
 export const SCENE_DESIGNS: Record<string, SceneDesign> = {
   "velum-mayilum-valaikappu": VELUM,
   "mangala-thirumanam": MANGALA,
   "pudhumanai-puguvizha": PUDHUMANAI,
   "kannan-valaikaappu": KANNAN,
+  "kerala-kalyanam": KERALA_KALYANAM,
+  "minnu-kettu": MINNU_KETTU,
+  "mylanchi-nikah": MYLANCHI_NIKAH,
+  "kerala-gruhapravesham": KERALA_GRUHAPRAVESHAM,
+  "noolukettu": NOOLUKETTU,
+  "choroonu": CHOROONU,
 };
 
 export function sceneDesign(templateId: string): SceneDesign {

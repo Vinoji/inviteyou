@@ -39,17 +39,18 @@ export const COLLECTIONS: Collection[] = [
   {
     slug: "kerala-wedding-invitation",
     category: "wedding",
-    templates: ["kerala-sumuhurtham", "kerala-sadya", "kerala-christian-kasavu", "kerala-muslim-nikah", "kerala-kasavu", "pookalam"],
+    templates: ["kerala-kalyanam", "minnu-kettu", "mylanchi-nikah", "kerala-sumuhurtham", "kerala-sadya", "kerala-christian-kasavu", "kerala-muslim-nikah", "kerala-kasavu", "pookalam"],
   },
   {
     slug: "nikah-invitation",
     category: "wedding",
-    templates: ["emerald-nikah", "jaali-velvet-nikah", "ivory-nikah", "kerala-muslim-nikah", "nikah-emerald", "walima-moonlit"],
+    templates: ["mylanchi-nikah", "emerald-nikah", "jaali-velvet-nikah", "ivory-nikah", "kerala-muslim-nikah", "nikah-emerald", "walima-moonlit"],
   },
   {
     slug: "christian-wedding-invitation",
     category: "wedding",
     templates: [
+      "minnu-kettu",
       "ivory-holy-matrimony",
       "royal-blue-matrimony",
       "kerala-christian-kasavu",
@@ -79,6 +80,7 @@ export const COLLECTIONS: Collection[] = [
     templates: [
       "pudhumanai-puguvizha",
       "griha-pravesam-pathirikai",
+      "kerala-gruhapravesham",
       "housewarming-griha-pravesam",
       "housewarming-vastu-lamp",
       "cinematic-film-housewarming",

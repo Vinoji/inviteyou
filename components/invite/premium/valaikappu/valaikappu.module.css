@@ -349,6 +349,9 @@
   display: block;
   width: min(84vw, 380px);
   height: auto;
+  /* a tall ornament (an elephant, a nirapara) keeps to a third of the screen */
+  max-height: 32svh;
+  object-fit: contain;
   margin-top: 10px;
   transform-origin: 50% 0;
   animation: sway 3.2s ease-in-out infinite alternate;
