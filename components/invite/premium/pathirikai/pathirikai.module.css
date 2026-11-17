@@ -260,7 +260,7 @@
 .with span {
   width: 42px;
   height: 1px;
-  background: currentColor;
+  background: currentcolor;
   opacity: 0.4;
 }
 
@@ -554,10 +554,7 @@
   left: 2px;
 }
 .corner + .corner {
-  top: auto;
-  left: auto;
-  bottom: 21px;
-  right: 2px;
+  inset: auto 2px 21px auto;
   transform: rotate(180deg);
 }
 

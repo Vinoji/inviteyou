@@ -187,7 +187,7 @@
   width: 42px;
   height: 36px;
   border: 7px solid #d9dbe0;
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  border-radius: 50% / 60% 60% 40% 40%;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 .loopL {

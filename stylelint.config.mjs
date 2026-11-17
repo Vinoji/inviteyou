@@ -48,5 +48,24 @@ export default {
 
     // Avoid false positives around nested Tailwind directives
     "nesting-selector-no-missing-scoping-root": null,
+
+    // CSS Modules: :global(...) / :local(...) are how a module reaches
+    // outside its own scope (html[data-motion], the invite root).
+    "selector-pseudo-class-no-unknown": [true, { ignorePseudoClasses: ["global", "local"] }],
+
+    // Formatting and ordering preferences, not errors — in line with the
+    // note above about existing CSS.
+    "no-descending-specificity": null,
+    "declaration-empty-line-before": null,
+    "declaration-block-single-line-max-declarations": null,
+
+    // A later rule for the same selector is usually a deliberate override;
+    // reported, but not a failure.
+    "no-duplicate-selectors": [true, { severity: "warning" }],
+    // A value followed by a newer one is a fallback (100vh, then 100svh).
+    "declaration-block-no-duplicate-properties": [
+      true,
+      { ignore: ["consecutive-duplicates-with-different-values"], severity: "warning" },
+    ],
   },
 };

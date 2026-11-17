@@ -98,10 +98,7 @@
 }
 .beyond {
   position: absolute;
-  left: 14%;
-  right: 14%;
-  top: 17%;
-  bottom: 9%;
+  inset: 17% 14% 9%;
   border-radius: 50% 50% 0 0 / 22% 22% 0 0;
   overflow: hidden;
   background: radial-gradient(ellipse at 50% 60%, #fff8e4 0%, var(--rp-gold-light) 35%, var(--rp-gold) 70%, var(--rp-gold-deep) 100%);
@@ -181,10 +178,7 @@
 }
 .archRim {
   position: absolute;
-  left: 12%;
-  right: 12%;
-  top: 15.5%;
-  bottom: 9%;
+  inset: 15.5% 12% 9%;
   border-radius: 50% 50% 0 0 / 23% 23% 0 0;
   border: 9px solid var(--rp-gold);
   border-bottom: 0;
@@ -214,10 +208,7 @@
 }
 .doorway {
   position: absolute;
-  left: 14%;
-  right: 14%;
-  top: 17%;
-  bottom: 9%;
+  inset: 17% 14% 9%;
   display: flex;
   transform-style: preserve-3d;
 }

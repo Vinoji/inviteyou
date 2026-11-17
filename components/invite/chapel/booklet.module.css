@@ -115,10 +115,7 @@
 /* Shared sections placed on a page (travel, FAQ, RSVP…) bring their own
  * page-sized padding and backgrounds; on a booklet page they sit flush. */
 .pageScroll section {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  padding-top: 4px !important;
-  padding-bottom: 8px !important;
+  padding: 4px 0 8px !important;
   background: transparent !important;
 }
 .folio {

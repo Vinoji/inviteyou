@@ -30,7 +30,7 @@
 }
 .wall {
   position: absolute;
-  inset: 0 0 38% 0;
+  inset: 0 0 38%;
   background: repeating-linear-gradient(90deg, rgba(31, 42, 68, 0.025) 0 1px, transparent 1px 90px);
 }
 .heroWindow {
@@ -121,7 +121,7 @@
   50% {
     transform: scale(0.9, 1.08) rotate(-3deg);
   }
-  to {
+  100% {
     transform: scale(1.05, 0.95) rotate(2deg);
   }
 }

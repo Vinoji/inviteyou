@@ -120,20 +120,14 @@
 }
 .belfry {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 39%;
-  bottom: -2%;
+  inset: 39% 0 -2%;
   background: #fdfbf7;
   box-shadow: inset -6px 0 0 rgba(31, 42, 68, 0.05);
 }
 .belfry::before {
   content: "";
   position: absolute;
-  left: 22%;
-  right: 22%;
-  top: 14%;
-  bottom: 18%;
+  inset: 14% 22% 18%;
   border-radius: 50% 50% 0 0 / 40% 40% 0 0;
   background: #2a3552;
 }
@@ -313,7 +307,7 @@
   50% {
     transform: scale(0.9, 1.08) rotate(-3deg);
   }
-  to {
+  100% {
     transform: scale(1.05, 0.95) rotate(2deg);
   }
 }

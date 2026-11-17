@@ -157,10 +157,7 @@
 .kasavu::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  inset: 0;
   z-index: -1;
   pointer-events: none;
   background:
@@ -211,13 +208,13 @@
   font-weight: 700;
 }
 .glyphGurmukhi {
-  font-family: var(--font-gurmukhi), "Noto Sans Gurmukhi", "Mukta Mahee", "Gurmukhi MN", "Raavi", sans-serif;
+  font-family: var(--font-gurmukhi), "Noto Sans Gurmukhi", "Mukta Mahee", "Gurmukhi MN", Raavi, sans-serif;
   font-size: 50px;
 }
 .bismillah {
   display: block;
   padding: 4px 0;
-  font-family: var(--font-amiri), "Amiri", "Noto Naskh Arabic", "Geeza Pro", serif;
+  font-family: var(--font-amiri), Amiri, "Noto Naskh Arabic", "Geeza Pro", serif;
   font-size: clamp(24px, 8.6cqi, 34px);
   line-height: 1.7;
 }
@@ -257,13 +254,13 @@
 .root:not(.dark) .cardTitle {
   background: none;
   color: var(--accent);
-  -webkit-text-fill-color: currentColor;
+  -webkit-text-fill-color: currentcolor;
   animation: none;
 }
 .root:not(.dark) .thanksLine {
   background: none;
   color: var(--accent);
-  -webkit-text-fill-color: currentColor;
+  -webkit-text-fill-color: currentcolor;
   animation: none;
 }
 .rule {
@@ -1051,7 +1048,7 @@
 }
 .envSeal :global(*) {
   color: color-mix(in srgb, var(--seal) 40%, #000 60%) !important;
-  -webkit-text-fill-color: currentColor;
+  -webkit-text-fill-color: currentcolor;
   background: none !important;
   animation: none !important;
 }
@@ -1077,7 +1074,7 @@
   translate: -0.06em 0.21em;
 }
 .sealArabic {
-  font-family: var(--font-amiri), "Amiri", "Noto Naskh Arabic", serif;
+  font-family: var(--font-amiri), Amiri, "Noto Naskh Arabic", serif;
   font-size: clamp(14px, 4.6cqw, 19px);
   line-height: 1.4;
   white-space: nowrap;
@@ -1217,7 +1214,7 @@
 .leaf {
   position: relative;
   padding: 18px 14px 18px 22px;
-  border-radius: 6px 90px 6px 90px / 6px 40px 6px 40px;
+  border-radius: 6px 90px / 6px 40px;
   background:
     linear-gradient(90deg, transparent 49.6%, rgba(240, 250, 200, 0.55) 49.6% 50.4%, transparent 50.4%) center / 100% 100% no-repeat,
     repeating-linear-gradient(72deg, transparent 0 13px, rgba(255, 255, 255, 0.09) 13px 14px),

@@ -18,7 +18,7 @@
 /* ---------- sky ---------- */
 .sky {
   position: absolute;
-  inset: 0 0 40% 0;
+  inset: 0 0 40%;
   pointer-events: none;
 }
 .cloud {
@@ -132,7 +132,7 @@
 /* White-painted frame around the doorway. */
 .gable {
   position: absolute;
-  inset: 4% 4% 0 4%;
+  inset: 4% 4% 0;
   border-radius: 50% 50% 0 0 / 28% 28% 0 0;
   background: linear-gradient(180deg, #ffffff, #f2efe6);
   box-shadow:
@@ -141,10 +141,7 @@
 }
 .doorway {
   position: absolute;
-  left: 10%;
-  right: 10%;
-  top: 8%;
-  bottom: 0;
+  inset: 8% 10% 0;
   /* Semicircular top: width/height of this box is 0.591. */
   border-radius: 50% 50% 0 0 / 29.6% 29.6% 0 0;
   overflow: hidden;

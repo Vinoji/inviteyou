@@ -313,10 +313,7 @@ a:hover .petals {
 .footerKolam {
   position: absolute !important;
   z-index: -1;
-  left: 50% !important;
-  right: auto !important;
-  top: 40px !important;
-  bottom: auto !important;
+  inset: 40px auto auto 50% !important;
   width: min(680px, 120vw) !important;
   translate: -50% 0;
   opacity: 0.09 !important;

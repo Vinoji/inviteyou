@@ -77,7 +77,7 @@
 }
 
 @page {
-  size: A5 portrait;
+  size: a5 portrait;
   margin: 0;
 }
 @media print {

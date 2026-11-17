@@ -149,7 +149,7 @@
 .playIcon {
   width: 0;
   height: 0;
-  border-left: 11px solid currentColor;
+  border-left: 11px solid currentcolor;
   border-top: 7px solid transparent;
   border-bottom: 7px solid transparent;
 }

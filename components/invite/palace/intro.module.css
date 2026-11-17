@@ -250,7 +250,7 @@
   height: 26%;
   transform: translateX(-50%) scale(0);
   background: radial-gradient(ellipse at 50% 70%, #fff6d6 0%, #ffc24a 45%, transparent 72%);
-  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  border-radius: 50% / 70% 70% 30% 30%;
   transition: transform 0.6s cubic-bezier(0.3, 1.6, 0.5, 1);
 }
 .lamp.lit .flame {
@@ -861,7 +861,7 @@
   top: -4%;
   width: 9px;
   height: 7px;
-  border-radius: 80% 0 80% 0;
+  border-radius: 80% 0;
   background: #f7c6d9;
   animation: petalFall 7s linear infinite;
 }
