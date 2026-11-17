@@ -137,6 +137,7 @@ export default async function InvitePage({
             // Non-null: an invitation can only be expired if it has an expiry.
             endedAt={expiresAt(data) ?? 0}
             accentColor={data.accentColor}
+            homeHref={locale === "en" ? "/" : `/${locale}`}
           />
         </div>
       </NextIntlClientProvider>

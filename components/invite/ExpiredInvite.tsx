@@ -2,7 +2,6 @@
 
 import { useTranslations, useFormatter } from "next-intl";
 import { Hourglass } from "lucide-react";
-import { Link } from "@/i18n/navigation";
 
 /**
  * What guests see once an invitation has expired (lib/expiry.ts): who it
@@ -13,10 +12,13 @@ export default function ExpiredInvite({
   title,
   endedAt,
   accentColor,
+  homeHref,
 }: {
   title: string;
   endedAt: number;
   accentColor: string;
+  /** The site's home in the visitor's language ("/" or "/ta"). */
+  homeHref: string;
 }) {
   const t = useTranslations("invitePage");
   const format = useFormatter();
@@ -48,13 +50,17 @@ export default function ExpiredInvite({
         <p className="mt-6 rounded-xl bg-neutral-50 p-4 text-sm text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300">
           {t("expiredHostHint")}
         </p>
-        <Link
-          href="/"
+        {/* A plain link, straight to the home page in the visitor's language:
+            a full page load the browser shows progress for. (The client-side
+            link fetched the home in the background with no sign of it — and
+            via the "/" → "/ta" redirect — so a tap looked dead for seconds.) */}
+        <a
+          href={homeHref}
           className="mt-6 inline-block text-sm font-semibold underline underline-offset-4"
           style={{ color: accentColor }}
         >
           {t("expiredCta")}
-        </Link>
+        </a>
       </div>
     </main>
   );
